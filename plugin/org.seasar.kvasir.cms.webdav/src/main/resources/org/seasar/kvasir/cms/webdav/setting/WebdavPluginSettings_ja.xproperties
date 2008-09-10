@@ -1,0 +1,5 @@
+webdav-enabled.description=WebDAV機能を有効にするかどうかです。指定しない場合はtrueになります。
+default-charset.description=テキストファイルを扱う際のデフォルトの文字エンコーディングです。指定しない場合はサーバのデフォルトの文字エンコーディングになります。
+internal-charset.description=システムの内部でテキストファイルを保持する際の文字エンコーディングです。指定しない場合はdefault-charsetと同じになります。
+keep-concealed-when-created.description=ページを作成した時に不可視状態にしておくかどうかです。この設定がfalseの場合、ページを作成した瞬間に可視状態になります。ページを作成した瞬間に可視状態にしたくない場合はtrueを指定して下さい。指定しない場合はfalseになります。
+

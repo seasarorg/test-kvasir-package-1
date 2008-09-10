@@ -1,0 +1,19 @@
+<div id="notes"><div class="notes" tal:condition="self/notes" tal:repeat="note self/notes/notes" tal:content="note/%value"></div></div>
+<input type="button" id="searchPluginForUpdate" value="更新を確認" />
+<input type="checkbox" id="excludeSnapshotForUpdate" />SNAPSHOTを含めない
+<table>
+  <thead>
+    <tr>
+      <th>プラグイン名</th>
+      <th>プラグインID</th>
+      <th>バージョン</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr tal:repeat="plugin self/plugins">
+      <td tal:content="plugin/name">hogeプラグイン</td>
+      <td tal:content="plugin/id">hoge plugin</td>
+      <td tal:content="plugin/version">1.0.0</td>
+    </tr>
+  </tbody>
+</table>

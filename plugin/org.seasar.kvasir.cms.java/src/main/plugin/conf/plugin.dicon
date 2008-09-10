@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+  "http://www.seasar.org/dtd/components24.dtd">
+<components>
+  <component name="plugin"
+    class="org.seasar.kvasir.cms.java.impl.JavaPluginImpl" />
+  <component name="javaPageProcessor"
+    class="org.seasar.kvasir.cms.java.impl.JavaPageProcessor"
+    instance="prototype" />
+  <component name="localPathResolver"
+    class="org.seasar.kvasir.cms.java.impl.JavaTemplatePathResolver"
+    instance="prototype" />
+</components>

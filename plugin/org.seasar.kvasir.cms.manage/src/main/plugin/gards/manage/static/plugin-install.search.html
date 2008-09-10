@@ -1,0 +1,9 @@
+<div class="notes" tal:condition="self/notes">
+  <p tal:repeat="note self/notes/notes" tal:content="note/%value">NOTE</p>
+</div>
+<p class="form-help">
+インストールするプラグインIDを入力してください。
+</p>
+<input type="text" id="searchPluginId" size="80" /><br />
+<input type="button" id="searchPluginForInstall" value="検索" />
+<input type="checkbox" id="excludeSnapshotForInstall" />SNAPSHOTを含めない

@@ -1,0 +1,4 @@
+plugin.name=Kvasir/Sora CMS ZPT Plugin
+plugin.provider-name=The Seasar Foundation
+zptTemplateHandler.display-name=Zope Page Template
+zptContentHandler.display-name=Zope Page Template

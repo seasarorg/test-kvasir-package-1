@@ -1,0 +1,139 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <script metal:fill-slot="script" type="text/javascript" tal:attributes="src page:@/js/edit-content.js"></script>
+  </head>
+  <body>
+    <div metal:fill-slot="body" tal:define="page self/page; definedVariants self/definedVariants; variant self/variant; mediaType self/mediaType">
+<p class="form-help">
+下のフォームを用いてこのページの本文を編集することができます。
+</p>
+<p class="form-help">
+「メディアタイプ」を空にするとメディアタイプとしてtext/plainが設定されます。また「エンコーディング」を空にするとエンコーディングとしてUTF-8が設定されます。
+</p>
+<form tal:define='exists self/exists; text java:mediaType.startsWith("text/")' tal:attributes="action page:@/edit-content.do${self/pathname}" name="contentForm" method="post">
+  <input type="hidden" name="command" value="set" />
+  <table tal:define="earliestRevisionNumber self/earliestRevisionNumber; latestRevisionNumber self/latestRevisionNumber; revision self/revision | latestRevisionNumber" cellspacing="2" cellpadding="2" width="100%" border="0">
+    <tr>
+      <td width="1%" valign="top" align="left" nowrap="nowrap">
+        <span class="form-label">メディアタイプ</span>
+      </td>
+      <td valign="top" align="left" colspan="3">
+        <input tal:attributes="value mediaType" type="text" name="mediaType" value="" size="40" />
+      </td>
+    </tr>
+    <tr>
+      <td width="1%" valign="top" align="left" nowrap="nowrap">
+        <span class="form-label">バリアント</span>
+      </td>
+      <td width="99%" colspan="2" valign="top" align="left">
+        <input tal:attributes="value variant" type="hidden" name="variants" />
+        <select onchange="location.href=this.options[this.selectedIndex].value">
+          <option tal:attributes="value page:@/edit-content.do${self/pathname}?variant=_undefined">（新しいバリアントを追加）</option>
+          <option tal:repeat="definedVariant definedVariants" tal:attributes="value page:@/edit-content.do${self/pathname}?variant=${definedVariant}; selected java:definedVariant.equals(variant)" tal:content="definedVariant | string:デフォルト">バリアント</option>
+        </select>
+        <input tal:condition="self/undefinedVariant" type="text" size="16" name="variants" value="" />
+      </td>
+    </tr>
+    <tr>
+      <td width="1%" valign="top" align="left" nowrap="nowrap">
+        <span class="form-label">エンコーディング</span>
+      </td>
+      <td valign="top" align="left" colspan="3">
+        <input tal:attributes="value self/encoding | default" type="text" name="encoding" value="" size="40" />
+      </td>
+    </tr>
+    <tr tal:condition="java:earliestRevisionNumber &lt; latestRevisionNumber &amp;&amp; text">
+      <td width="99%" colspan="2" valign="top" align="left">
+        <font size="-1">
+          <span tal:omit-tag="" tal:repeat="rev java:range(earliestRevisionNumber, latestRevisionNumber)">
+            <a tal:attributes="href page:@/edit-content.do${self/pathname}?revision=${rev}&amp;variant=${variant}" href="#"><b tal:omit-tag="not:java:rev == revision" tal:content="rev">1</b></a>&nbsp;&nbsp;
+          </span>
+          <a tal:attributes="href page:@/edit-content.do${self/pathname}?variant=${variant}" href="#"><b tal:omit-tag="not:java:revision == latestRevisionNumber">最新</b></a>
+        </font>
+      </td>
+      <td width="1%" valign="top" align="right" nowrap="nowrap">
+        <font size="-1">
+          <a tal:attributes="href page:@/edit-content.do${self/pathname}?revision=${revision}&amp;variant=${variant}&amp;mode=diff" href="#">差分を表示…</a>
+        </font>
+      </td>
+    </tr>
+    <tr tal:condition="text" tal:attributes="action page:@/edit-content.do${self/pathname}" name="contentForm" method="post">
+      <td colspan="3" valign="top" align="left">
+        <textarea tal:content="self/bodyString | default" style="width: 100%" name="bodyString" cols="50" rows="20" wrap="off"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" valign="top" align="left">
+        <input tal:condition="not:exists" type="submit" value="追加" onclick='setCommand(this.form, "set")' />
+        <input tal:condition="java:exists &amp;&amp; text" type="submit" value="更新" onclick='setCommand(this.form, "update")' />
+        <input tal:condition="exists" type="submit" value="上書き" onclick='setCommand(this.form, "set")' />
+        <input tal:condition="exists" type="submit" value="削除" onclick='return clearContents(this.form)' />
+        <input tal:condition="exists" type="submit" value="全てのコンテンツを削除" onclick='return clearAllContents(this.form)' />
+      </td>
+    </tr>
+  </table>
+</form>
+<p class="form-help">
+下のフォームを用いてこのページの本文となるファイルをアップロードすることができます。ファイル名を入力するか「参照」ボタンをクリックしてローカルコンピュータのファイルを選択して下さい。
+</p>
+<p class="form-help">
+「メディアタイプ」を空にするとアップロードされたファイルのメディアタイプが自動的に設定されます。また「エンコーディング」を空にするとエンコーディングとしてUTF-8が設定されます。
+</p>
+<p class="form-help">
+<a tal:attributes="href page:@/view-page.do${self/pathname}" href="#">ここをクリック</a>することで現在の本文を見たりダウンロードしたりすることができます。
+</p>
+<form tal:attributes="action page:@/edit-content.do${self/pathname}" name="contentForm" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="command" value="set" />
+  <table cellspacing="2" cellpadding="2" width="100%" border="0">
+    <tr>
+      <td width="1%" valign="top" align="left" nowrap="nowrap">
+        <span class="form-label">メディアタイプ</span>
+      </td>
+      <td valign="top" align="left" colspan="3">
+        <input type="text" name="mediaType" value="" size="40" />
+      </td>
+    </tr>
+    <tr>
+      <td width="1%" valign="top" align="left" nowrap="nowrap">
+        <span class="form-label">バリアント</span>
+      </td>
+      <td width="99%" valign="top" align="left">
+        <div tal:condition="self/undefinedVariant" tal:omit-tag="">
+          <input type="text" size="16" name="variant" value="" />
+        </div>
+        <div tal:condition="not:self/undefinedVariant" tal:omit-tag="">
+          <input tal:attributes="value variant" type="hidden" name="variant" />
+          <span tal:replace="variant | string:デフォルト">バリアント</span>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td width="1%" valign="top" align="left" nowrap="nowrap">
+        <span class="form-label">エンコーディング</span>
+      </td>
+      <td valign="top" align="left" colspan="3">
+        <input tal:attributes="value self/encoding | default" type="text" name="encoding" value="" size="40" />
+      </td>
+    </tr>
+    <tr>
+      <td width="1%" valign="top" align="left" nowrap="nowrap">
+        <span class="form-label">ファイル</span>
+      </td>
+      <td width="99%" valign="top" align="left">
+        <input type="file" name="body" size="32" />
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" align="left">&nbsp;</td>
+      <td valign="top" align="left">
+        <input tal:condition="not:exists" type="submit" value="アップロード" onclick='setCommand(this.form, "set")' />
+        <input tal:condition="exists" type="submit" value="更新アップロード" onclick='setCommand(this.form, "set")' />
+        <input tal:condition="exists" type="submit" value="上書きアップロード" onclick='setCommand(this.form, "update")' />
+      </td>
+    </tr>
+  </table>
+</form>
+    </div>
+  </body>
+</html>

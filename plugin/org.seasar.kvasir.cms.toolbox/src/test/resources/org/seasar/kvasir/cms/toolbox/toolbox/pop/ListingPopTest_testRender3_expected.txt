@@ -1,0 +1,23 @@
+<dl>
+  
+    <dt>
+      <a class="label" href="/context/dir/page1">page1</a>
+      <span class="date">(1970-01-01 00:00:00)</span>
+    </dt>
+    <dd>
+      <div class="summary">This is Summary1...</div>
+      <div class="continuing">
+        <a href="/context/dir/page1">Read more...</a>
+      </div>
+    </dd>
+  
+    <dt class="concealed">
+      <a class="label" href="/context/dir/page2">page2</a>
+      <span class="date">(1970-01-01 00:00:00)</span>
+    </dt>
+    <dd class="concealed">
+      <div class="summary">Summary2</div>
+      
+    </dd>
+  
+</dl>

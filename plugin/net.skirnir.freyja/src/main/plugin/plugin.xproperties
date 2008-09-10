@@ -1,0 +1,3 @@
+plugin.name=Freyja Library Plugin
+plugin.provider-name=The Seasar Foundation
+extension-point.points.name=Extension Point

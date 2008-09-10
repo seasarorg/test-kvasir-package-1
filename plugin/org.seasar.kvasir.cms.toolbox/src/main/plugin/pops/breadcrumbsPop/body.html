@@ -1,0 +1,3 @@
+<ul>
+  <li tal:repeat="breadcrumb breadcrumbs" tal:attributes="class breadcrumb/styleClass"><a tal:omit-tag="repeat/breadcrumb/end" tal:attributes="href page:${breadcrumb/href}" tal:content="breadcrumb/content">LABEL</a></li>
+</ul>

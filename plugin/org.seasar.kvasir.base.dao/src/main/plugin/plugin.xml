@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="org.seasar.kvasir.base.dao" name="%plugin.name"
+  version="3.0.0-SNAPSHOT" provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="conf" filter="true">
+      <export name="jdbc.dicon" resource="true" />
+      <export name="dao.dicon" resource="true" />
+    </library>
+    <library name="org.seasar.kvasir.base.dao.jar">
+      <export name="**" />
+      <export name="dbms.properties" resource="true" />
+    </library>
+    <library name="lib/commons-dbutils-1.1.jar">
+      <export name="**" />
+    </library>
+    <library name="lib/s2-dao-1.0.40.jar">
+      <export name="**" />
+      <export name="**/*.properties" resource="true" />
+    </library>
+    <library name="lib/s2-dao-tiger-1.0.40.jar">
+      <export name="**" />
+    </library>
+    <library name="lib/database-0.0.2.jar">
+      <export name="**" />
+    </library>
+    <library name="lib/beantable-0.0.2.jar">
+      <export name="**" />
+    </library>
+    <library name="lib" expand="true" />
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.base" />
+  </requires>
+
+  <extension point="org.seasar.kvasir.base.corePlugins">
+    <core-plugin />
+  </extension>
+
+  <extension point="org.seasar.kvasir.base.dao.databaseSystems">
+    <database-system id="h2" name="%database-system.h2"
+      driver-class="org.h2.Driver" validation-query="CALL 1" />
+    <!--
+      <database-system id="mysql"
+      name="%database-system.mysql"
+      driver-class="com.mysql.jdbc.Driver"
+      validation-query="SELECT 1" />
+    -->
+  </extension>
+
+  <extension-point id="databaseSystems"
+    element-class="org.seasar.kvasir.base.dao.extension.DatabaseSystemElement" />
+  <extension-point id="persistentBeans"
+    element-class="org.seasar.kvasir.base.dao.extension.PersistentBeanElement" />
+</plugin>

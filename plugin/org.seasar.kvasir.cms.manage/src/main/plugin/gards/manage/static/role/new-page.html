@@ -1,0 +1,15 @@
+<html metal:use-macro="%/new-page.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="../css/manage.css" />
+  </head>
+  <body>
+    <div class="title-bar">
+      <span metal:fill-slot="subtitle">ロールを追加</span>
+    </div>
+    <div>
+<p metal:fill-slot="description" class="form-help">
+ロールはユーザやグループの役割を表すページオブジェクトです。Kvasir/Soraでは各種権限をロール単位に割り当てられるようになっているため、ロールをユーザやグループに割り当てることによってユーザやグループ（実際はグループに所属するユーザ）に対して権限を割り当てることができます。
+</p>
+    </div>
+  </body>
+</html>

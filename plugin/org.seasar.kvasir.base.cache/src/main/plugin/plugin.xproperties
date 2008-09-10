@@ -1,0 +1,5 @@
+plugin.name=Cache Plugin
+plugin.provider-name=The Seasar Project
+pop.cachePop.name=Cache Plugin POP
+pop.cachePop.description=Cache Plugin POP
+pop.cachePop.title=Cache Plugin POP

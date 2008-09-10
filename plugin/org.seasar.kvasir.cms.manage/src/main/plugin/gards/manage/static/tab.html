@@ -1,0 +1,39 @@
+<table tal:define="tabs self/tabs; elems tabs/elements" border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tbody>
+    <tr>
+      <td rowspan="5" align="left" bgcolor="#000000" valign="bottom" width="10%">&nbsp;&nbsp;<img src="img/null.gif" tal:attributes="src page:@/img/null.gif" alt="" height="1" width="2" /></td>
+      <td colspan="12" tal:attributes="colspan tabs/colspan" bgcolor="#000000"><img src="img/null.gif" tal:attributes="src page:@/img/null.gif" alt="" height="5" width="1" /></td>
+    </tr>
+    <tr>
+      <div tal:repeat="elem elems" tal:omit-tag="">
+      <td tal:attributes="bgcolor elem/color" rowspan="2" align="left" bgcolor="#ffffff" valign="top"><img src="img/ltab.gif" tal:attributes="src page:@/img/ltab.gif" alt="" height="5" width="5" /></td>
+      <td tal:attributes="bgcolor elem/color" bgcolor="#ffffff"><img src="img/null.gif" tal:attributes="src page:@/img/null.gif" alt="" height="2" width="1" /></td>
+      <td tal:attributes="bgcolor elem/color" rowspan="2" align="right" bgcolor="#ffffff" valign="top"><img src="img/rtab.gif" tal:attributes="src page:@/img/rtab.gif" alt="" height="5" width="5" /></td>
+      <td rowspan="4" bgcolor="#000000"><img src="img/null.gif" tal:attributes="src page:@/img/null.gif" alt="" height="1" width="2" /></td>
+      </div>
+      <td tal:replace="" rowspan="2" align="left" bgcolor="#efefef" valign="top"><img src="img/ltab.gif" tal:attributes="src page:@/img/ltab.gif" alt="" height="5" width="5" /></td>
+      <td bgcolor="#efefef"><img src="img/null.gif" tal:attributes="src page:@/img/null.gif" alt="" height="2" width="1" /></td>
+      <td tal:replace="" rowspan="2" align="right" bgcolor="#efefef" valign="top"><img src="img/rtab.gif" tal:attributes="src page:@/img/rtab.gif" alt="" height="5" width="5" /></td>
+      <td tal:replace="" rowspan="4" bgcolor="#000000"><img src="img/null.gif" tal:attributes="src page:@/img/null.gif" alt="" height="1" width="2" /></td>
+      <td tal:replace="" rowspan="2" align="left" bgcolor="#efefef" valign="top"><img src="img/ltab.gif" tal:attributes="src page:@/img/ltab.gif" alt="" height="5" width="5" /></td>
+      <td tal:replace="" bgcolor="#efefef"><img src="img/null.gif" tal:attributes="src page:@/img/null.gif" alt="" height="2" width="1" /></td>
+      <td tal:replace="" rowspan="2" align="right" bgcolor="#efefef" valign="top"><img src="img/rtab.gif" tal:attributes="src page:@/img/rtab.gif" alt="" height="5" width="5" /></td>
+      <td tal:replace="" rowspan="4" bgcolor="#000000"><img src="img/null.gif" tal:attributes="src page:@/img/null.gif" alt="" height="1" width="2" /></td>
+    </tr>
+    <tr>
+      <td tal:repeat="elem elems" tal:attributes="bgcolor elem/color" class="tab-small" align="center" bgcolor="#ffffff" valign="bottom"><font color="#000000" face="Verdana, Arial, Helvetica" size="1">&nbsp;<a href="pt_editForm"><span style="color: rgb(0, 0, 0);"><strong tal:content="elem/name">Edit</strong></span></a>&nbsp;</font /></td>
+      <td tal:replace="" class="tab-small" align="center" bgcolor="#efefef" valign="bottom"><font color="#000000" face="Verdana, Arial, Helvetica" size="1">&nbsp;<a href="ZScriptHTML_tryForm"><span style="color: rgb(0, 0, 0);"><strong>Test</strong></span></a>&nbsp;</font /></td>
+      <td tal:replace="" class="tab-small" align="center" bgcolor="#efefef" valign="bottom"><font color="#000000" face="Verdana, Arial, Helvetica" size="1">&nbsp;<a href="manage_propertiesForm"><span style="color: rgb(0, 0, 0);"><strong>Properties</strong></span></a>&nbsp;</font /></td>
+    </tr>
+    <tr>
+      <td tal:repeat="elem elems" tal:attributes="bgcolor elem/color" colspan="3" bgcolor="#ffffff"><img src="img/null.gif" tal:attributes="src page:@/img/null.gif" alt="" height="1" width="2" /></td>
+      <td tal:replace="" colspan="3" bgcolor="#efefef"><img src="img/null.gif" tal:attributes="src page:@/img/null.gif" alt="" height="1" width="2" /></td>
+      <td tal:replace="" colspan="3" bgcolor="#efefef"><img src="img/null.gif" tal:attributes="src page:@/img/null.gif" alt="" height="1" width="2" /></td>
+    </tr>
+    <tr>
+      <td tal:repeat="elem elems" tal:attributes="bgcolor elem/separatorColor" colspan="3" bgcolor="#ffffff"><img src="img/null.gif" tal:attributes="src page:@/img/null.gif" alt="" height="1" width="2" /></td>
+      <td tal:replace="" colspan="3" bgcolor="#c0c0c0"><img src="img/null.gif" tal:attributes="src page:@/img/null.gif" alt="" height="1" width="2" /></td>
+      <td tal:replace="" colspan="3" bgcolor="#c0c0c0"><img src="img/null.gif" tal:attributes="src page:@/img/null.gif" alt="" height="1" width="2" /></td>
+    </tr>
+  </tbody>
+</table>

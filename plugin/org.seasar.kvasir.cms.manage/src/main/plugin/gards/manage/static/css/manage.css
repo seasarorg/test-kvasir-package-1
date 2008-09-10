@@ -1,0 +1,196 @@
+a:link {
+    color: #000099; text-decoration: none
+}
+a {
+    color: #000099; text-decoration: none
+}
+a:hover {
+    color: #333333; text-decoration: underline
+}
+
+.form-title {
+    background-color: #EEEEEE; font-weight: bold;
+    font-size: x-small;
+}
+
+.form-help {
+    font-size: x-small;
+}
+
+div.form-help {
+    margin: 1em 0px 2em 0px;
+    padding: 4px 4px 4px 4px;
+    background-color: #EEEEEE;
+}
+
+.form-help p {
+    margin: 0.4em 0px 0.4em 0px;
+}
+
+.form-help ul {
+    margin-top: 0.4em;
+    margin-bottom: 0.4em;
+}
+
+.form-label {
+    margin-right: 0.4em;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.form-help * {
+    font-size: x-small;
+}
+
+.form-help-weak {
+    font-size: x-small;
+    color: #999999;
+}
+
+.form-msg {
+    font-size: small; text-align: center;
+}
+
+.form-button {
+    margin-top: 2em;
+    text-align: right;
+    font-size: small;
+}
+
+.notes {
+    border-right: #000000 1px solid; padding-right: 4px;
+    border-top: #000000 1px solid; margin-top: 6px; padding-left: 4px;
+    font-size: 10pt; margin-bottom: 6px; padding-bottom: 4px;
+    border-left: #000000 1px solid; width: 98%; color: #660033;
+    padding-top: 4px; border-bottom: #000000 1px solid;
+    background-color: #FFFFFF
+}
+
+.title-bar {
+    background-color: #EEEEEE; font-weight: bold;
+    font-size: 12pt;
+    padding: 2pt;
+    margin-bottom: 2ex;
+}
+
+.title-bar .subtitle {
+    font-weight: normal;
+    font-size: 12pt;
+}
+
+.help {
+    font-size: small;
+}
+
+.list-header {
+    background-color: #CCCCCC; font-weight: bold;
+}
+.list-header-hilite {
+    background-color: #999999; font-weight: bold;
+}
+
+.list-header a:link {
+    color: #000000; text-decoration: none
+}
+.list-header a {
+    color: #000000; text-decoration: none
+}
+.list-header a:hover {
+    color: #333333; text-decoration: underline
+}
+
+.row-hilite {
+    background-color: #EEEEEE;
+}
+th {
+    background-color: #CCCCCC;
+}
+
+.deleted {
+    background-color: #ff9999; color: #000000;
+}
+.inserted {
+    background-color: #99ff99; color: #000000;
+}
+pre.diff {
+    border-right: #000000 1px solid; padding-right: 4px;
+    border-top: #000000 1px solid; margin-top: 6px; padding-left: 4px;
+    border-left: #000000 1px solid; width: 100%; color: #777777;
+    padding-top: 4px; border-bottom: #000000 1px solid;
+    background-color: #FFFFFF
+}
+
+.page-indicator {
+    font-size: 10pt;
+}
+.page-indicator a:link {
+    color: #000000; text-decoration: none
+}
+.page-indicator a {
+    color: #000000; text-decoration: none
+}
+.page-indicator a:hover {
+    color: #333333; text-decoration: underline
+}
+
+optgroup {
+    font-style: normal;
+}
+
+h2.subtitle {
+    background-color: #EEEEEE;
+    font-size: 10pt;
+    font-weight: bold;
+    margin-top: 2em;
+}
+
+#popList {
+  padding-left:10px;
+  padding-right:20px;
+}
+
+#popList img.pop {
+  float:left;
+  border:solid 1px #ccc;
+}
+
+#popList div.aPop {
+  padding-top:8px;
+}
+
+#popList div {
+  margin-left:220px;
+}
+
+#popList div.title {
+  font-weight:bold;
+  font-size:larger;
+  font-family:"Bitstream Vera Sans", "Verdana", sans-serif, fantasy;
+  border-style:solid;
+  border-color:#6c6;
+  border-width:0 0 2px 0;
+}
+
+#popList p.clear {
+  clear:both;
+}
+
+form dt {
+    font-weight: bold;
+    font-size: large;
+}
+
+form dd {
+    margin-top: 1ex;
+    margin-bottom: 3ex;
+}
+
+form dd .description {
+    font-size: small;
+}
+
+.tabified {
+    margin-top: 4ex;
+}

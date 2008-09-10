@@ -1,0 +1,33 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <script metal:fill-slot="script" type="text/javascript" tal:attributes="src page:@/js/property.js" src="js/property.js"></script>
+  </head>
+  <body>
+    <div metal:fill-slot="body">
+<p class="form-help">
+名前を変更して「変更を保存」ボタンを押して下さい。
+</p>
+<form tal:attributes="action page:@/property.rename.do${self/pathname}" action="" method="post">
+  <input type="hidden" name="action" value="update" />
+  <table cellspacing="0" cellpadding="2" width="100%" border="0">
+    <tr tal:repeat="name self/names">
+      <td valign="center" align="left" width="1" nowrap="nowrap">
+        <span tal:content="name" class="form-label">NAME1</span>
+      </td>
+      <td valign="center" align="left">
+        <input tal:attributes="value name; name string::${name}" type="text" name="" value="" size="40" />
+      </td>
+    </tr>
+    <tr>
+      <td valign="center" align="left">&nbsp;</td>
+      <td valign="top" align="left">
+        <input tal:condition="self/names" type="submit" name="submit" value="変更を保存" />
+        <input tal:attributes="onclick string:location.href='${page:@/property.list.do${self/pathname}}'" type="button" value="戻る" onclick="" />
+      </td>
+    </tr>
+  </table>
+</form>
+    </div>
+  </body>
+</html>

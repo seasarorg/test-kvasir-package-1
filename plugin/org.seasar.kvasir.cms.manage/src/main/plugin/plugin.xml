@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="org.seasar.kvasir.cms.manage" name="%plugin.name"
+  version="3.0.0-SNAPSHOT" provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="conf" />
+    <library name="org.seasar.kvasir.cms.manage.jar">
+      <export name="**" />
+    </library>
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.base.mime" />
+    <import plugin="org.seasar.kvasir.base.webapp" />
+    <import plugin="org.seasar.kvasir.page" />
+    <import plugin="org.seasar.kvasir.page.auth" />
+    <import plugin="org.seasar.kvasir.page.ability.content" />
+    <import plugin="org.seasar.kvasir.page.ability.template" />
+    <import plugin="org.seasar.kvasir.page.search" />
+    <import plugin="org.seasar.kvasir.cms" />
+    <import plugin="org.seasar.kvasir.cms.pop" />
+    <import plugin="org.seasar.kvasir.cms.ymir" />
+    <import plugin="org.seasar.kvasir.cms.zpt" />
+    <import plugin="net.skirnir.freyja" />
+  </requires>
+
+  <extension point="org.seasar.kvasir.page.pageGards">
+    <page-gard id="manage" version="3.0.0-SNAPSHOT" singleton="true"
+      display-name="%manage.display-name" default-pathname="/manage" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.page.pageGardInstalls">
+    <page-gard-install gard-id="org.seasar.kvasir.cms.manage.manage" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.cms.ymir.applications">
+    <application id="manageApplication"
+      gard-id="org.seasar.kvasir.cms.manage.manage"
+      landmark="org.seasar.kvasir.cms.manage.ManagePlugin" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.cms.pageFilters">
+    <page-filter id="basicAuthenticationPageFilter"
+      gard-id="org.seasar.kvasir.cms.manage.manage"
+      phase="authentication"
+      after="org.seasar.kvasir.cms.actorBindingPageFilter" />
+    <page-filter id="phantomPageFilter"
+      gard-id="org.seasar.kvasir.cms.manage.manage"
+      phase="initialization" what="path" how="^.+\.html$"
+      except="^/[^/]+\.do/.*\.html$" regex="true" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.cms.pageExceptionHandlers">
+    <page-exception-handler id="basicAuthenticationPageExceptionHandler"
+      gard-id="org.seasar.kvasir.cms.manage.manage"
+      type="org.seasar.kvasir.page.SecurityRuntimeException">
+      <init-param>
+        <param-name>errorPage</param-name>
+        <param-value>@/error/error.html</param-value>
+      </init-param>
+    </page-exception-handler>
+  </extension>
+
+  <extension point="org.seasar.kvasir.base.webapp.javascripts">
+    <javascript id="litbox" version="2.0" resource-path="js/litbox" />
+    <javascript id="dock" version="1.0" resource-path="js/dock" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.cms.manage.tabs">
+    <tab name="view" id="viewTab" display-name="%tab.view.display-name"
+      path="@/view-page.do" icon-path="@/img/outer.gif"
+      icon-link-path="@/view-page.switch.do" />
+    <tab name="edit" id="editTab" display-name="%tab.edit.display-name"
+      path="@/edit-page.do" />
+    <tab name="property" id="propertyTab"
+      display-name="%tab.property.display-name"
+      path="@/property.list.do" />
+    <tab name="permission" id="permissionTab"
+      display-name="%tab.permission.display-name"
+      path="@/permission.list.do" />
+    <tab name="content" id="contentTab"
+      display-name="%tab.content.display-name" path="@/edit-content.do" />
+    <tab name="template" id="templateTab"
+      display-name="%tab.template.display-name"
+      path="@/edit-template.do" />
+    <tab name="list" id="listTab" display-name="%tab.list.display-name"
+      path="@/list-page.do" />
+    <tab name="groupOfUser" id="groupOfUserTab"
+      display-name="%tab.groupOfUser.display-name"
+      path="@/edit-groupOfUser.do" />
+    <tab name="roleOfUser" id="roleOfUserTab"
+      display-name="%tab.roleOfUser.display-name"
+      path="@/edit-roleOfUser.do" />
+    <tab name="userOfGroup" id="userOfGroupTab"
+      display-name="%tab.userOfGroup.display-name"
+      path="@/edit-userOfGroup.do" />
+    <tab name="roleOfGroup" id="roleOfGroupTab"
+      display-name="%tab.roleOfGroup.display-name"
+      path="@/edit-roleOfGroup.do" />
+    <tab name="memberOfRole" id="memberOfRoleTab"
+      display-name="%tab.memberOfRole.display-name"
+      path="@/edit-memberOfRole.do" />
+  </extension>
+  <extension point="org.seasar.kvasir.cms.manage.newItemMenuEntries">
+    <new-item-menu-entry name="page" id="pageNewItemMenuEntry"
+      display-name="%app.pageType.name.page" path="@/new-page.do" />
+    <new-item-menu-entry name="directory" id="directoryNewItemMenuEntry"
+      display-name="%app.pageType.name.directory" path="@/new-page.do"
+      parameter="?type=directory" />
+    <new-item-menu-entry name="user" id="userNewItemMenuEntry"
+      display-name="%app.pageType.name.user" path="@/new-page.do"
+      parameter="?type=user" />
+    <new-item-menu-entry name="group" id="groupNewItemMenuEntry"
+      display-name="%app.pageType.name.group" path="@/new-page.do"
+      parameter="?type=group" />
+    <new-item-menu-entry name="role" id="roleNewItemMenuEntry"
+      display-name="%app.pageType.name.role" path="@/new-page.do"
+      parameter="?type=role" />
+    <new-item-menu-entry name="import" id="importNewItemMenuEntry"
+      category="else"
+      display-name="%new-item-menu-entry.import.display-name"
+      path="@/import-page.do" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.cms.pop.pops">
+    <pop id="managePop">
+      <form-unit kind="property" id="title" />
+      <form-unit kind="property" id="managePathname"
+        human-readable="false" default="/manage" />
+      <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="body" />
+    </pop>
+  </extension>
+
+  <extension-point id="tabs"
+    element-class="org.seasar.kvasir.cms.manage.extension.TabElement" />
+  <extension-point id="newItemMenuEntries"
+    element-class="org.seasar.kvasir.cms.manage.extension.NewItemMenuEntryElement" />
+</plugin>

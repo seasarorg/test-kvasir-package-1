@@ -1,0 +1,11 @@
+<html metal:use-macro="templates/frame">
+  <head>
+    <title metal:fill-slot="frame.head.title" tal:content="plugin/%pop.searchPop.title">Search</title>
+  </head>
+  <body>
+    <h2 metal:fill-slot="frame.body.main.title" tal:content="plugin/%pop.searchPop.title">Search</h2>
+    <div metal:fill-slot="frame.body.main.content" class="main-content org.seasar.kvasir.cms.toolbox.searchPop" tal:content="plugin/%line.search.error.unavailable">
+      Service not unavailable.
+    </div>
+  </body>
+</html>

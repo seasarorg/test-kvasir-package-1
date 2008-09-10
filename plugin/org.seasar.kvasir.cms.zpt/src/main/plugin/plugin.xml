@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="org.seasar.kvasir.cms.zpt" name="%plugin.name"
+  version="3.0.0-SNAPSHOT" provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="conf" />
+    <library name="org.seasar.kvasir.cms.zpt.jar">
+      <export name="**" />
+    </library>
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.page" />
+    <import plugin="org.seasar.kvasir.page.ability.content" />
+    <import plugin="org.seasar.kvasir.page.ability.template" />
+    <import plugin="org.seasar.kvasir.cms" />
+    <import plugin="net.skirnir.freyja" />
+  </requires>
+
+  <extension point="org.seasar.kvasir.cms.pageProcessors">
+    <page-processor id="zptPageProcessor" phase="presentation"
+      what="templateType" how="zpt">
+      <init-param>
+        <param-name>local-path-resolver-id</param-name>
+        <param-value>localPathResolver</param-value>
+      </init-param>
+    </page-processor>
+  </extension>
+
+  <extension
+    point="org.seasar.kvasir.page.ability.content.contentHandlers">
+    <content-handler type="text/x-zpt" id="zptContentHandler"
+      display-name="%zptContentHandler.display-name" />
+  </extension>
+
+  <extension
+    point="org.seasar.kvasir.page.ability.template.templateHandlers">
+    <template-handler type="zpt"
+      display-name="%zptTemplateHandler.display-name" />
+  </extension>
+
+  <extension
+    point="org.seasar.kvasir.cms.pageFilterLifecycleListeners">
+    <page-filter-lifecycle-listener id="zptPageProcessor" />
+  </extension>
+
+  <extension
+    point="org.seasar.kvasir.cms.pageProcessorLifecycleListeners">
+    <page-processor-lifecycle-listener id="zptPageProcessor" />
+  </extension>
+</plugin>

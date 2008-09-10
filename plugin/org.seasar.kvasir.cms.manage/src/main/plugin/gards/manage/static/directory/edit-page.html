@@ -1,0 +1,15 @@
+<html metal:use-macro="%/edit-page.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="../css/manage.css" />
+  </head>
+  <body>
+<table cellspacing="0" cellpadding="2" width="100%" border="0">
+  <tr metal:fill-slot="fields">
+    <td valign="center" align="left">ロード</td>
+    <td valign="center" align="left">
+      <input tal:attributes="checked page/lord" type="checkbox" name="lord" value="true" /> ロードである
+    </td>
+  </tr>
+</table>
+  </body>
+</html>

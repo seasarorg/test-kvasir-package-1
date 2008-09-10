@@ -1,0 +1,48 @@
+.tabified {
+    margin: 0;
+    padding: 0;
+}
+
+.tabified ul.tabs {
+    list-style: none;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #FFFFFF #FFFFFF #000000 #FFFFFF;
+    margin: 0 0 2ex 0;
+    padding: 10px 0 4px 0;
+    background-color: #CCCCCC;
+    font-family: helvetica,sans-serif;
+    font-size: 10pt;
+    line-height: 100%;
+}
+
+* html .tabified ul.tabs {
+    padding-bottom: 3px;
+}
+
+.tabified .tabs li {
+    display: inline;
+    font-size: 10pt;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #666666 #666666 #000000 #666666;
+    margin: 0 0 0 1em;
+    padding: 3px 6px 2.5px 6px;
+    background-color: #DDDDDD;
+    font-weight: bold;
+    line-height: 100%;
+}
+
+.tabified .tabs li.current {
+    border-color: #000000 #000000 #FFFFFF #000000;
+    background-color: #FFFFFF;
+}
+
+.tabified .tabcontent {
+    margin-left: 1em;
+    display: none;
+}
+
+.tabified .tabcontent.current {
+    display: block;
+}

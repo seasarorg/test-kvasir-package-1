@@ -1,0 +1,4 @@
+webdav-enabled.description=Whether WebDAV functionality is enabled. (default: true)
+default-charset.description=Default encoding of text file. (default: system encoding)
+internal-charset.description=Text file's encoding in the system. (default: the same as 'default-charset')
+keep-concealed-when-created.description=Whether keeping a page concealed when it is created. (default: false)

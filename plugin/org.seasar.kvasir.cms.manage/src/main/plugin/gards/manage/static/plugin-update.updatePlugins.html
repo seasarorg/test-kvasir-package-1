@@ -1,0 +1,26 @@
+<div id="notes"><div class="notes" tal:condition="self/notes" tal:repeat="note self/notes/notes" tal:content="note/%value"></div></div>
+<div tal:condition="self/plugins">
+新しい更新が見つかりました。<br />
+<input type="button" id="updatePlugin" value="全て更新" />
+<input type="button" id="backToListPlugins" value="キャンセル" />
+<input type="hidden" id="excludeSnapshotForUpdate" tal:attributes="value self/excludeSnapshot"/>
+<table>
+  <thead>
+    <tr>
+      <th>プラグイン名</th>
+      <th>プラグインID</th>
+      <th>バージョン</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr tal:repeat="plugin self/plugins">
+      <td tal:content="plugin/name">hogeプラグイン</td>
+      <td tal:content="plugin/id">hoge plugin</td>
+      <td tal:content="plugin/version">1.0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div tal:condition="not:self/plugins">
+  <input type="button" id="backToListPlugins" value="一覧へ戻る" />
+</div>

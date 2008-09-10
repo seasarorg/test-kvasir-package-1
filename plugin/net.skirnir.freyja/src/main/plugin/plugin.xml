@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="net.skirnir.freyja"
+        name="%plugin.name"
+        version="1.0.7"
+        provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="lib/freyja-1.0.7.jar">
+      <export name="**" />
+    </library>
+    <library name="lib" expand="true" />
+  </runtime>
+
+  <requires>
+  </requires>
+</plugin>

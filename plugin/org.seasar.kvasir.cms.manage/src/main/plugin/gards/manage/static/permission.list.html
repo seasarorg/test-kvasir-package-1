@@ -1,0 +1,91 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <script metal:fill-slot="includedScript" type="text/javascript" tal:content="structure string:
+    "></script>
+  </head>
+  <body>
+    <div metal:fill-slot="body" tal:define="page self/page">
+<p class="form-help">
+以下の一覧はこのページに関する現在の操作の許可設定です。各行にロール（役割）が並び、各列に操作権限が並んでいます。あるロールに対してある操作が許可されると、そのロールを持つユーザはその操作を実行することができます。
+</p>
+<p class="form-help">
+操作権限にはアクセス権限があります。<strong>アクセス権限</strong>は、このページの属性や（あれば）本文を参照したり変更したりする権限です。アクセス権限のレベルには「なし」、「属性のみ参照」、「参照」、「参照とコメント」、「フルアクセス」があります。
+</p>
+<p tal:condition="page/node" class="form-help">
+<em>再帰的に変更する</em>をチェックすることで、
+このページの子孫ページに関する操作の許可状態を併せて変更することもできます。
+</p>
+<form tal:attributes="action page:@/permission.update.do${self/pathname}" action="" method="post">
+  <table width="100%" cellspacing="0" cellpadding="2" border="0" nowrap="nowrap">
+    <tr class="list-header">
+      <td align="left" valign="top">ロール</td>
+      <td align="left">操作</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td align="left" nowrap="nowrap">アクセス権限</td>
+    </tr>
+    <div tal:omit-tag="" tal:repeat="permission self/permissions">
+      <tr tal:define="even repeat/permission/even" tal:attributes='class java:even ? "row-hilite" : null' class="row-hilite">
+        <td align="left"><span tal:replace="permission/rolePathname">/path/to/role</span><span tal:condition="permission/roleLabel" tal:replace="string: (${permission/roleLabel})"> (Role1)</span></td>
+        <td align="left">
+          <select tal:attributes="name string:privilege:${permission/roleId}" name="privilege:10">
+            <option tal:repeat="option permission/options" tal:attributes="selected option/selected; value option/value" tal:content="option/content" value="access.never">LEVEL</option>
+          </select>
+        </td>
+      </tr>
+    </div>
+    <tr tal:condition="page/node">
+      <td colspan="2" valign="top" align="left">
+        <input type="checkbox" name="recursive" value="true" /> 再帰的に変更する
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="left">
+        <input type="submit" value="変更を保存" />
+      </td>
+    </tr>
+  </table>
+</form>
+<form tal:condition="page/node" tal:attributes="action page:@/permission.update.do${self/pathname}" action="" method="post">
+<p class="form-help">
+このノードアイテム以下のアイテムに対して再帰的に操作の許可状態を変更することができます。許可状態として<em>決して許可しない</em> を選択すると、このロールを持つユーザが持つ他のロールがこのアイテムに対する権限を持っている場合でもこのアイテムへの権限を持たないものとします。
+</p>
+  <input type="hidden" name="recursive" value="true" />
+  <table cellspacing="0" cellpadding="2" border="0">
+    <tr>
+      <td valign="top" align="left">
+        <select name="roleId">
+          <option value="" disabled="disabled" selected="selected">- 選択して下さい -</option>
+          <option tal:repeat="role self/roles" tal:attributes="value role/id" value="10"><span tal:replace="role/pathname">/path/to/role</span><span tal:condition="role/label" tal:replace="string: (${role/label})"> (Role1)</span></option>
+        </select>
+      </td>
+      <td valign="top" align="left">に</td>
+      <td valign="top" align="left">
+        <select name="privilege">
+          <option value="" disabled="disabled" selected="selected">- 選択して下さい -</option>
+          <option value="access.peek">属性のみ参照</option>
+          <option value="access.view">参照</option>
+          <option value="access.comment">参照とコメント</option>
+          <option value="access">フルアクセス</option>
+        </select>
+      </td>
+      <td valign="top" align="left">を</td>
+      <td valign="top" align="left">
+        <select name="do">
+          <option value="" disabled="disabled" selected="selected">- 選択して下さい -</option>
+          <option value="grant">許可する</option>
+          <option value="revoke">許可しない</option>
+          <option value="never">決して許可しない</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" align="left"><input type="submit" value="実行" /></td>
+    </tr>
+  </table>
+</form>
+  </div>
+  </body>
+</html>

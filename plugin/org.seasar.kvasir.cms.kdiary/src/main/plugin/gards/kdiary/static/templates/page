@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html metal:use-macro="%/templates/frame" lang="ja-JP">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div metal:fill-slot="body" tal:omit-tag="">
+<p class="message" tal:condition="self/message" tal:content="self/message">MESSAGE</p>
+<div class="day" tal:define="entry self/entry" tal:condition="entry">
+<h2><span class="date"><a tal:attributes="href entry/URL" tal:content="entry/date" href="/diary/200603/01">2006-03-01</a></span>
+  <span tal:content="entry/title" class="title">TITLE</span></h2>
+<div class="body" tal:content="structure entry/body">
+BODY
+</div>
+<div class="comment">
+  <div class="caption">本日のツッコミ(全<span tal:replace="entry/commentCount">1</span>件) [<a tal:attributes="href string:${entry/URL}#c" href="#c">ツッコミを入れる</a>]</div>
+  <div class="commentbody" tal:repeat="comment entry/comments">
+    <div class="commentator">
+      <a tal:attributes="name comment/anchor; href string:#${comment/anchor}" tal:content="structure self/common/commentAnchor" name="c01" href="#c01"><span class="canchor">_</span></a>
+      <span class="commentator" tal:content="comment/commentator">Skirnir</span>
+      <span class="commenttime" tal:content="comment/commenttimeString">(2006-10-04 17:54)</span>
+    </div>
+    <div tal:replace="comment/body">BODY</div>
+  </div>
+</div>
+<div class="form">
+  <div class="caption"><a name="c">ツッコミ・コメントがあればどうぞ! E-mailアドレスは公開されません。</a></div>
+  <div tal:condition="notes">
+    <p class="message" tal:repeat="note notes/notes" tal:content="note/%value">ERROR MESSAGE</p>
+  </div>
+  <form class="comment" tal:attributes="action page:${that/pathname}" method="post" action="#"><div>
+    <div class="field name">
+      お名前:<input class="field" name="name" value="" />
+    </div>
+    <div class="field mail">
+      E-mail:<input class="field" name="mail" value="" />
+    </div>
+    <div class="textarea">
+      コメント:<textarea name="body" cols="60" rows="5"></textarea>
+    </div>
+    <div class="button">
+      <input type="submit" name="comment" value="投稿" />
+    </div>
+  </div></form>
+</div>
+</div>
+</div>
+</body>
+</html>

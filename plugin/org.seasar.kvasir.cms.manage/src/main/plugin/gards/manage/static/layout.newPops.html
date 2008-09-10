@@ -1,0 +1,18 @@
+<div tal:define="newPops self/newPops">
+  <div class="leftArrowBox">
+    <div class="arrowTopPadding"></div>
+    <input tal:attributes="id newPops/leftButtonId; src page:%/img/${newPops/leftButtonName}.gif; title newPops/leftButtonTitle" type="image" alt="previous" />
+  </div>
+  <div tal:omit-tag="" tal:condition="newPops/pops">
+    <div class="dock">
+      <div tal:omit-tag="" tal:repeat="pop newPops/pops">
+        <img class="pop immutable popIcon" tal:condition="not:pop/padding" tal:attributes="id pop/id; src page:%/layout.viewImage.do?popId=${pop/id}" /><div class="popIcon" tal:condition="pop/padding" tal:attributes="id pop/id"></div><div tal:condition="not:pop/padding" style="display: none"><dl><dt tal:content="pop/name"></dt><dd tal:content="pop/description"></dd></dl></div><div tal:condition="pop/padding" style="display: none"></div>
+      </div>
+    </div>
+    <div class="rightArrowBox" tal:condition="newPops/ableToGoForward">
+      <div class="arrowTopPadding"></div>
+      <input id="goForward" tal:attributes="src page:%/img/green_right.gif" type="image" alt="next" title="Next POPs" />
+    </div>
+    <div style="clear: both"></div>
+  </div>
+</div>

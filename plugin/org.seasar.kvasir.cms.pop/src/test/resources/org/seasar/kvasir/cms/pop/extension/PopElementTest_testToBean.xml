@@ -1,0 +1,5 @@
+<pops>
+  <pop id="ID">
+    <property-def id="ID" name="NAME" description="DESCRIPTION" />
+  </pop>
+</pops>

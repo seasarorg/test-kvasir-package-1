@@ -1,0 +1,7 @@
+<form tal:attributes="class styleClass; action page:/plugins/toolbox/selectLanguage.do" method="post" action="#">
+  <input tal:attributes="value here" type="hidden" name="here" />
+  <select name="language">
+    <option tal:repeat="language languages" tal:attributes="value language/value; selected language/selected" tal:content="language/content">LANGUAGE</option>
+  </select>
+  <input tal:attributes="value plugin/%pop.languageSelectorPop.label.submit" type="submit" />
+</form>

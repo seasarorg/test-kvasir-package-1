@@ -1,0 +1,16 @@
+authorMailAddress=
+authorName=
+bodyMediaType=text/x-wiki
+commentAnchor=<span class\="canchor">_</span>
+commentLimit=3
+css=@/theme/default/default.css
+dateFormat=%Y-%m-%d
+footer=
+header=<%\= navi %>
+indexPage=
+javaDateFormat=yyyy-MM-dd
+latestLimit=10
+label=diary
+paragraphAnchor=<span class\="sanchor">_</span>
+showComment=true
+theme=default

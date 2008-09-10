@@ -1,0 +1,3 @@
+plugin.name=Kvasir/Sora Page Ability Table Plugin
+plugin.provider-name=The Seasar Foundation
+extensionPoint.tables.name=Tables

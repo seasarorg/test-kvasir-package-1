@@ -1,0 +1,25 @@
+<span id="newRepositoryNotes"></span>
+<p>
+リモートレポジトリを登録します。
+</p>
+<form action="">
+  <table>
+    <tr>
+      <th>ID</th>
+      <td>
+        <input type="text" id="repositoryId" size="30"
+          tal:attributes="value self/repositoryId"
+        /> (英数字と幾つかの記号のみ)
+      </td>
+    </tr>
+    <tr>
+      <th>URL</th>
+      <td>
+        <input type="text" id="repositoryUrl" size="80"
+          tal:attributes="value self/repositoryUrl"
+        />
+      </td>
+    </tr>
+  </table>
+  <input type="button" id="addRepository" value="追加" />
+</form>

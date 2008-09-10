@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF tal:attributes="xml:lang self/lang"
+  xmlns="http://purl.org/rss/1.0/"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <channel tal:attributes="rdf:about self/rdfURL">
+  <title tal:content="self/title">TITLE</title>
+  <link tal:content="page:${self/basePathname}">LINK</link>
+  <description tal:content="self/description">DESCRIPTION</description>
+  <items>
+   <rdf:Seq>
+    <rdf:li tal:repeat="rdfEntry self/rdfEntries" tal:attributes="rdf:resource rdfEntry/URL" />
+   </rdf:Seq>
+  </items>
+ </channel>
+ <item tal:repeat="rdfEntry self/rdfEntries" tal:attributes="rdf:about rdfEntry/URL">
+  <title tal:content="rdfEntry/title">TITLE</title>
+  <link tal:content="rdfEntry/URL">LINK</link>
+  <description tal:content="rdfEntry/description">DESCRIPTION</description>
+  <dc:date tal:content="rdfEntry/date">DATE</dc:date>
+  <dc:subject tal:content="rdfEntry/subject">SUBJECT</dc:subject>
+ </item>
+</rdf:RDF>

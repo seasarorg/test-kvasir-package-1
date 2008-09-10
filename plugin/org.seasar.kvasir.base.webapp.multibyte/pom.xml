@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <parent>
+    <artifactId>plugin-project</artifactId>
+    <groupId>org.seasar.kvasir.plugin</groupId>
+    <version>3.0.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.seasar.kvasir.base.webapp.multibyte</groupId>
+  <artifactId>org.seasar.kvasir.base.webapp.multibyte</artifactId>
+  <packaging>kvasir-plugin</packaging>
+  <name>Multibyte Plugin</name>
+  <version>3.0.0-SNAPSHOT</version>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>/LICENSE.txt</url>
+    </license>
+  </licenses>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.seasar.kvasir.maven.plugin</groupId>
+        <artifactId>maven-kvasir-plugin</artifactId>
+        <configuration>
+          <additionalBaseLibraries>
+            kvasir-webapp
+          </additionalBaseLibraries>
+          <pluginOuterLibraries>webdav-jp</pluginOuterLibraries>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <repositories>
+    <repository>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>http://maven.seasar.org/maven2</url>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>snapshot.maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Snapshot Repository</name>
+      <url>http://maven.seasar.org/maven2-snapshot</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>http://maven.seasar.org/maven2</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <dependencies>
+    <dependency>
+      <groupId>org.seasar.kvasir</groupId>
+      <artifactId>kvasir-webapp</artifactId>
+      <version>3.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seasar.cms.webdav-jp</groupId>
+      <artifactId>webdav-jp</artifactId>
+      <version>0.1.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seasar.kvasir.base.webapp</groupId>
+      <artifactId>org.seasar.kvasir.base.webapp</artifactId>
+      <version>3.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seasar.kvasir.base.webapp</groupId>
+      <artifactId>org.seasar.kvasir.base.webapp</artifactId>
+      <version>3.0.0-SNAPSHOT</version>
+      <type>zip</type>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+</project>

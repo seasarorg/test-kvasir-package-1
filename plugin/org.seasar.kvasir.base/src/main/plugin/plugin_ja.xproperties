@@ -1,0 +1,4 @@
+plugin.name=ベースプラグイン
+extension-point.kvasirLifecycleListeners.description=\
+    Kvasir/Soraの開始・終了といった、Kvasir/Soraのライフサイクルに紐付けて\
+    処理を行なわせるためのハンドラを追加するための拡張ポイントです。

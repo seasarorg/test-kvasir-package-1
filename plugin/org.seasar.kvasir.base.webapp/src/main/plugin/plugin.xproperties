@@ -1,0 +1,7 @@
+plugin.name=Kvasir/Sora Webapp-Base Plugin
+plugin.provider-name=The Seasar Foundation
+
+requestFilter.phases=initialization,authentication,permission,filtering,else
+requestFilter.phase.default=filtering
+requestProcessor.phases=initialization,controller,logic,presentation,else
+requestProcessor.phase.default=logic

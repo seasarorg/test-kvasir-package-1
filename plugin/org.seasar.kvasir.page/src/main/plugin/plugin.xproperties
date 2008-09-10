@@ -1,0 +1,5 @@
+plugin.name=Kvasir/Sora Page Plugin
+plugin.providerName=The Seasar Foundation
+extensionPoint.pageListeners.name=Page Listeners
+extensionPoint.pageTypes.name=Page Types
+extensionPoint.pageFeatures.name=Page Features

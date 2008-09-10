@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="org.seasar.kvasir.page.search"
+        name="%plugin.name"
+        version="3.0.0-SNAPSHOT"
+        provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="conf" />
+    <library name="org.seasar.kvasir.page.search.jar">
+      <export name="**" />
+    </library>
+    <library name="lib" expand="true" />
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.page" />
+    <import plugin="org.seasar.kvasir.page.ability.content" />
+  </requires>
+
+  <extension point="org.seasar.kvasir.page.search.searchSystems">
+    <search-system id="defaultSearchSystem">
+      <property name="indexDirPath">lucene/default</property>
+    </search-system>
+  </extension>
+
+  <extension point="org.seasar.kvasir.page.pageListeners">
+    <page-listener id="indexUpdaterPageListener" />
+  </extension>
+
+  <extension-point id="searchSystems"
+    element-class="org.seasar.kvasir.page.search.extension.SearchSystemElement" />
+</plugin>

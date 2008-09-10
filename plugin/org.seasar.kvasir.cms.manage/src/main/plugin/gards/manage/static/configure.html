@@ -1,0 +1,29 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+  <body>
+    <div metal:fill-slot="title" class="title-bar">
+      サイト管理者パスワードの設定
+    </div>
+    <div metal:fill-slot="body">
+<p class="help">
+Kvasir/Soraへようこそ！サイト管理ツールを使う前に、サイト管理者のパスワードを設定しておくことを強くお勧めします。
+<strong>サイト管理者のパスワードは、インストール直後は空です！</strong>
+インターネットのような、不特定多数のユーザからアクセス可能な場所にKvasir/Soraを設置する場合は、
+<strong>必ずサイト管理者のパスワードを設定して下さい。</strong>
+</p>
+<form tal:attributes="action page:%/configure.apply.do" method="post">
+  <table cellspacing="0" cellpadding="2" border="0" align="center">
+    <tr>
+      <td nowrap="nowrap">サイト管理者のパスワード</td>
+      <td>
+        <input type="password" name="password" value="" autocomplete="off" />
+        <input type="submit" value="設定" />
+      </td>
+    </tr>
+  </table>
+</form>
+    </div>
+  </body>
+</html>

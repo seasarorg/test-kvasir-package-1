@@ -1,0 +1,7 @@
+<p class="adminmenu" tal:define="indexPage that/gardRootPage/ability(property)/indexPage">
+  <span class="adminmenu" tal:condition="indexPage"><a tal:attributes="href indexPage" tal:content="plugin/%pop.naviPop.label.indexPage" href="#">TOP</a></span>
+  <span class="adminmenu" tal:condition="showRecentButton"><a tal:attributes="href page:@" tal:content="plugin/%pop.naviPop.label.recent" href="#">Recent</a></span>
+  <span class="adminmenu" tal:condition="showAppendButton"><a tal:attributes="href page:@/action/edit.do" tal:content="plugin/%pop.naviPop.label.append" href="#">Append</a></span>
+  <span class="adminmenu" tal:condition="showEditButton"><a tal:attributes="href page:@/action/edit.do?date=${date}" tal:content="plugin/%pop.naviPop.label.edit" href="#">Edit</a></span>
+  <span class="adminmenu" tal:condition="showConfigButton"><a tal:attributes="href page:@/action/config.do" tal:content="plugin/%pop.naviPop.label.configure" href="#">Configure</a></span>
+</p>

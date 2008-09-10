@@ -1,0 +1,155 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <script metal:fill-slot="includedScript" type="text/javascript" tal:content="structure string:
+&lt;!--
+isSelected = false;
+
+function toggleSelect(form)
+{
+    if (isSelected == false) {
+        for (i = 0; i &lt; form.length; i++) {
+            form.elements[i].checked = true;
+        }
+        isSelected = true;
+        form.selectButton.value = '選択を解除';
+        return isSelected;
+    } else {
+        for (i = 0; i &lt; form.length; i++) {
+            form.elements[i].checked = false;
+        }
+        isSelected = false;
+        form.selectButton.value = '全て選択';
+        return isSelected;
+    }
+}
+
+function renamePage(form)
+{
+    form.action = '${page:@/rename-page.do${self/pathname}}';
+}
+
+function memoryPage(form)
+{
+    form.action = '${page:@/clipboard.memory.do${self/pathname}}';
+}
+
+function copyPage(form)
+{
+    form.action = '${page:@/copy-page.do${self/pathname}}';
+}
+
+function movePage(form)
+{
+    form.action = '${page:@/move-page.do${self/pathname}}';
+}
+
+function deletePage(form)
+{
+    if (confirm('選択されているページを削除します。よろしいですか？')) {
+        form.action
+            = '${page:@/delete-page.do${self/pathname}}';
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function changePages(form)
+{
+    form.action = '${page:@/change-pages.do${self/pathname}}';
+}
+
+function sortPage(form)
+{
+    form.action = '${page:@/sort-page.do${self/pathname}}';
+}
+//--&gt;
+    "></script>
+  </head>
+  <body>
+    <div metal:fill-slot="body">
+<div class="form-help" tal:define="description self/page/ability(property)/%description" tal:condition="description" tal:content="description">Description</div>
+<table cellspacing="0" cellpadding="2" width="100%" border="0">
+  <tr>
+    <td valign="top" align="left">&nbsp;</td>
+    <td valign="top" align="right">
+      <form action="" method="get">
+        <select onchange="location.href=this.options[this.selectedIndex].value">
+          <option tal:attributes="value page:@/list-page.do${self/pathname}" disabled="disabled" value="" selected="selected">追加するものを選択...</option>
+          <optgroup tal:repeat="optgroup self/newItemMenuEntries" tal:attributes="label optgroup/label" label="ページ">
+            <option tal:repeat="option optgroup/content" tal:attributes="value page:${option/value}" tal:content="option/content" value="#">ページ</option>
+          </optgroup>
+        </select>
+        <input type="submit" value=" 追加 " />
+      </form>
+    </td>
+  </tr>
+</table>
+<form tal:attributes="action page:@/list-page.do${self/pathname}" action="" method="post">
+  <input tal:condition="self/sortBy" tal:attributes="value self/sortBy" type="hidden" name="sortBy" />
+  <input tal:attributes="value self/ascend" type="hidden" name="ascend" />
+  <table tal:define="indicator self/pageIndicator" tal:condition="java:indicator.getElements().length &gt; 1" cellspacing="0" cellpadding="2" width="100%" border="0">
+    <tr>
+      <td align="right" class="page-indicator">
+        <a tal:attributes="href page:@/list-page.do${self/pathname}?ascend=${indicator/ascend}&amp;sortBy=${indicator/sortBy}" href="#">|&lt; 最初</a>
+        <a tal:repeat="elem indicator/elements" tal:attributes="href page:@/list-page.do${self/pathname}?ascend=${indicator/ascend}&amp;start=${elem/position}&amp;sortBy=${indicator/sortBy}" href="#"><b tal:content="elem/number" tal:omit-tag="not:elem/current">1</b></a>
+        <a tal:condition="false" href="#">2</a>
+        <a tal:attributes="href page:@/list-page.do${self/pathname}?ascend=${indicator/ascend}&amp;start=${indicator/lastPosition}&amp;sortBy=${indicator/sortBy}" href="#">最後 &gt;|</a>
+      </td>
+    </tr>
+  </table>
+  <table cellspacing="0" cellpadding="2" width="100%" border="0">
+    <tr class="list-header">
+      <td align="right" width="5%" colspan="2" nowrap="nowrap"><a tal:attributes="href page:@/list-page.do${self/pathname}?start=${self/start}&amp;sortBy=type&amp;ascend=${self/changedAscend}" href="">種類</a></td>
+      <td align="left" width="50%"><a tal:attributes="href page:@/list-page.do${self/pathname}?start=${self/start}&amp;sortBy=name&amp;ascend=${self/changedAscend}" href="">名前</a></td>
+      <td align="right" width="15%">サイズ&nbsp;&nbsp;</td>
+      <td align="left" width="29%"><a tal:attributes="href page:@/list-page.do${self/pathname}?start=${self/start}&amp;sortBy=modifyDate&amp;ascend=${self/changedAscend}" href="">更新日時</a></td>
+    </tr>
+    <tr tal:repeat="page self/pages" tal:attributes="class page/styleClass" class="row-hilite">
+      <td valign="top" align="left" width="16">
+        <input tal:attributes="value page/name" type="checkbox" name="names" value="name" />
+      </td>
+      <td valign="top" align="left"><a tal:attributes="href page:@/main-manage.do${page/pathname}" href="#"><img tal:attributes="src page/iconURL" src="img/page.gif" width="16" height="16" border="0" alt="" /></a></td>
+      <td valign="top" align="left"><a tal:attributes="href page:@/main-manage.do${page/pathname}" tal:content="string:${page/name}&nbsp;(${page/label})" href="#">page&nbsp;(Page)</a></td>
+      <td valign="top" align="right"><span tal:replace="page/size">10KB</span>&nbsp;</td>
+      <td tal:content="page/modifyDate" valign="top" align="left">2002-09-17 12:00:00</td>
+    </tr>
+    <tr tal:condition="">
+      <td valign="top" align="left" width="16">
+        <input type="checkbox" name="names" value="name" />
+      </td>
+      <td valign="top" align="left"><a href="#"><img src="img/page.gif" width="16" height="16" border="0" alt="" /></a></td>
+      <td valign="top" align="left"><a href="#">page&nbsp;(Page)</a></td>
+      <td valign="top" align="right">10KB&nbsp;</td>
+      <td valign="top" align="left">2002-09-17 12:00:00</td>
+    </tr>
+    <tr tal:condition="" class="row-hilite">
+      <td valign="top" align="left" width="16">
+        <input type="checkbox" name="names" value="name" />
+      </td>
+      <td valign="top" align="left"><a href="#"><img src="img/page.gif" width="16" height="16" border="0" alt="" /></a></td>
+      <td valign="top" align="left"><a href="#">page&nbsp;(Page)</a></td>
+      <td valign="top" align="right">10KB&nbsp;</td>
+      <td valign="top" align="left">2002-09-17 12:00:00</td>
+    </tr>
+  </table>
+  <table cellspacing="0" cellpadding="2" border="0">
+    <tr>
+      <td valign="top" align="left" width="16">&nbsp;</td>
+      <td valign="top" align="left">
+        <input type="submit" value="名前を変更..." onclick="renamePage(this.form)" />
+        <input type="submit" value="記憶" onclick="memoryPage(this.form)" />
+        <input tal:condition="self/clipboardNotEmpty" type="submit" value="ここにコピー" onclick="copyPage(this.form)" />
+        <input tal:condition="self/clipboardNotEmpty" type="submit" value="ここに移動" onclick="movePage(this.form)" />
+        <input type="submit" value="削除" onclick="return deletePage(this.form)" />
+        <input type="submit" value="属性を変更" onclick="changePages(this.form)" />
+        <input type="submit" value="並べ替え" onclick="sortPage(this.form)" />
+        <input type="submit" name="selectButton" value="全て選択" onclick="toggleSelect(this.form); return false">
+      </td>
+    </tr>
+  </table>
+</form>
+    </div>
+  </body>
+</html>

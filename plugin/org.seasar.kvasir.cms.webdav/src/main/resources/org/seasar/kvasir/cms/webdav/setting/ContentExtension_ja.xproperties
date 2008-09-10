@@ -1,0 +1,5 @@
+description=拡張子に関する情報です。
+name.description=「txt」、「html」などの、拡張子の名前です。
+mime-type.description=この拡張子を持つコンテンツのMime-Typeです。指定しない場合はシステムが持つマッピングルールに従ってMime-Typeが決定されます。
+embedded.description=この拡張子を持つコンテンツを埋め込みコンテンツとみなすかどうかです。指定しない場合は埋め込みコンテンツとみなしません。
+charset.description=この拡張子を持つコンテンツの文字エンコーディングです。指定しない場合はinternal-charsetで指定した文字エンコーディングになります。

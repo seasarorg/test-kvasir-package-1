@@ -1,0 +1,64 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <script metal:fill-slot="script" type="text/javascript" tal:attributes="src page:@/js/edit-template.js"></script>
+  </head>
+  <body>
+    <div metal:fill-slot="body" tal:define="page self/page; definedVariants self/definedVariants; variant self/variant; type self/type">
+<p class="form-help">
+テンプレートはページの外観を決定するためのものです。下のフォームを用いてこのページのテンプレートを編集することができます。
+</p>
+<p tal:condition="not:self/custom" class="form-help">
+<strong>このページはテンプレートを持っていません。フォームにはデフォルトのテンプレートが表示されています。このページにテンプレートを追加するには、デフォルトバリアントを選択してからフォームの内容を適宜変更して「追加」ボタンを押して下さい。</strong>
+</p>
+<form tal:attributes="action page:@/edit-template.do${self/pathname}" name="templateForm" method="post">
+  <input type="hidden" name="command" value="set" />
+  <table cellspacing="2" cellpadding="2" width="100%" border="0">
+    <tr>
+      <td width="1%" valign="top" align="left" nowrap="nowrap">
+        <span class="form-label">タイプ</span>
+      </td>
+      <td valign="top" align="left" colspan="3">
+        <span tal:condition="self/unknownType" tal:replace="string:（未定義のタイプ）">UNKNOWN TYPE</span>
+        <select tal:condition="not:self/unknownType" name="type">
+          <option tal:repeat="definedType self/definedTypes" tal:attributes="value definedType/value; selected definedType/selected" tal:content="definedType/content">TYPE</option>
+        </select>
+      </td>
+    </tr>
+      <td width="1%" valign="top" align="left" nowrap="nowrap">
+        <span class="form-label">バリアント</span>
+      </td>
+      <td width="99%" colspan="2" valign="top" align="left">
+        <input tal:attributes="value variant" type="hidden" name="variants" />
+        <select onchange="location.href=this.options[this.selectedIndex].value">
+          <option tal:condition="self/custom" tal:attributes="value page:@/edit-template.do${self/pathname}?variant=_undefined">新しいバリアントを追加...</option>
+          <option tal:repeat="definedVariant definedVariants" tal:attributes="value page:@/edit-template.do${self/pathname}?variant=${definedVariant}; selected java:definedVariant.equals(variant)" tal:content="definedVariant | string:デフォルト">バリアント</option>
+        </select>
+        <input tal:condition="self/undefinedVariant" type="text" size="16" name="variants" value="" />
+      </td>
+    </tr>
+    <tr>
+      <td width="1%" valign="top" align="left" nowrap="nowrap">
+        <span class="form-label">レスポンスのコンテントタイプ</span>
+      </td>
+      <td valign="top" align="left" colspan="3">
+        <input tal:attributes="value self/responseContentType | default" type="text" name="responseContentType" value="" size="40" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" valign="top" align="left">
+        <textarea tal:content="self/bodyString | default" style="width: 100%" name="bodyString" cols="50" rows="20" wrap="off"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" valign="top" align="left">
+        <input tal:condition="self/canAdd" type="submit" value="追加" onclick='setCommand(this.form, "set")' />
+        <input tal:condition="self/exists" type="submit" value="変更" onclick='setCommand(this.form, "set")' />
+        <input tal:condition="self/canRevert" type="submit" value="デフォルトに戻す" onclick="if (!deleteTemplate(this.form)) return false" />
+      </td>
+    </tr>
+  </table>
+</form>
+    </div>
+  </body>
+</html>

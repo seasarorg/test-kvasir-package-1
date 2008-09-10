@@ -1,0 +1,14 @@
+<dl>
+  <div tal:omit-tag="" tal:repeat="entry entries">
+    <dt tal:attributes="class entry/styleClass">
+      <a class="label" tal:attributes="href page:${entry/page/pathname}" tal:content="entry/label">LABEL</a>
+      <span class="date" tal:define="date entry/date | entry/page/modifyDate" tal:content="date/(yyyy-MM-dd HH:mm:ss)">DATE</span>
+    </dt>
+    <dd tal:attributes="class entry/styleClass">
+      <div class="summary" tal:content="structure entry/summary">SUMMARY</div>
+      <div class="continuing" tal:condition="entry/continuing">
+        <a tal:attributes="href page:${entry/page/pathname}" tal:content="entry/continuingLabel">READ MORE</a>
+      </div>
+    </dd>
+  </div>
+</dl>

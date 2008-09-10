@@ -1,0 +1,16 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+  </head>
+  <body>
+    <table metal:fill-slot="title" width="100%" cellspacing="0" cellpadding="2" border="0">
+      <tr class="title-bar">
+        <td valign="top" align="left">
+          エラー
+        </td>
+      </tr>
+    </table>
+    <div metal:fill-slot="body" tal:condition="">
+    </div>
+  </body>
+</html>

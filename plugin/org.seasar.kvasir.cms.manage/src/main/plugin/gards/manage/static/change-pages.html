@@ -1,0 +1,105 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <script metal:fill-slot="includedScript" type="text/javascript" tal:content="structure string:
+&lt;!--
+function concealPage(form, conceal)
+{
+    form.action = '${page:@/conceal-page.do${self/pathname}}'
+        + '?value=' + conceal;
+}
+//--&gt;
+    "></script>
+  </head>
+  <body>
+    <table width="100%" cellspacing="0" cellpadding="2" border="0">
+      <tr>
+        <td valign="top" align="left" bgcolor="#EEEEEE">
+          <span metal:fill-slot="subtitle" class="subtitle">&gt;&gt;
+            ページの属性を変更
+          </span>
+        </td>
+      </tr>
+    </table>
+    <div metal:fill-slot="body">
+<p class="form-help">
+設定したい属性について、状態を選択してから「変更」ボタンを押して下さい。
+</p>
+<form tal:attributes="action page:@/change-pages.do${self/pathname}" action="" method="post">
+  <input type="hidden" name="commit" value="true" />
+  <table cellspacing="0" cellpadding="2" width="100%" border="0">
+    <tr class="list-header">
+      <td align="right" width="5%" colspan="2" nowrap="nowrap">種類</td>
+      <td align="left" width="45%">名前</td>
+      <td align="left" width="10%">公開</td>
+      <td align="left" width="15%">一覧</td>
+      <td align="left" width="15%">文書タイプ</td>
+      <td align="left" width="10%">検索</td>
+    </tr>
+    <tr tal:repeat="page self/pages" tal:attributes="class page/styleClass" class="row-hilite">
+      <td valign="top" align="left" width="16">
+        <input tal:attributes="value page/name" type="hidden" name="names" />
+      </td>
+      <td valign="top" align="left"><img tal:attributes="src page/iconURL" src="img/page.gif" width="16" height="16" border="0" alt="" /></a></td>
+      <td valign="top" align="left"><span tal:replace="string:${page/name}&nbsp;(${page/label})">page&nbsp;(Page)</span></td>
+      <td valign="top" align="left"><span tal:replace="page/publishing">公開中</span>&nbsp;</td>
+      <td valign="top" align="left"><span tal:replace="page/listing">含める</span>&nbsp;</td>
+      <td valign="top" align="left"><span tal:replace="page/asFile">文書</span>&nbsp;</td>
+      <td valign="top" align="left"><span tal:replace="page/indexed">含める</span>&nbsp;</td>
+    </tr>
+  </table>
+  <br />
+  <table cellspacing="0" cellpadding="2" border="0">
+    <tr>
+      <td valign="top" align="left" width="16">&nbsp;</td>
+      <th valign="top" align="left">公開</th>
+      <td valign="top" align="left">
+        <input type="radio" name="publishing" value="true" /> 公開する&nbsp;&nbsp;
+      </td>
+      <td valign="top" align="left">
+        <input type="radio" name="publishing" value="false" /> 公開を中止する
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" align="left" width="16">&nbsp;</td>
+      <th valign="top" align="left">一覧</th>
+      <td valign="top" align="left">
+        <input type="radio" name="listing" value="true" /> 一覧表示に含める&nbsp;&nbsp;
+      </td>
+      <td valign="top" align="left">
+        <input type="radio" name="listing" value="false" /> 含めない
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" align="left" width="16">&nbsp;</td>
+      <th valign="top" align="left">文書タイプ</th>
+      <td valign="top" align="left">
+        <input type="radio" name="asFile" value="false" /> 文書&nbsp;&nbsp;
+      </td>
+      <td valign="top" align="left">
+        <input type="radio" name="asFile" value="true" /> ファイル
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" align="left" width="16">&nbsp;</td>
+      <th valign="top" align="left">検索</th>
+      <td valign="top" align="left">
+        <input type="radio" name="indexed" value="true" /> 検索対象にする&nbsp;&nbsp;
+      </td>
+      <td valign="top" align="left">
+        <input type="radio" name="indexed" value="false" /> しない
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" align="left" width="16">&nbsp;</td>
+      <td valign="top" align="left">&nbsp;</td>
+      <td valign="top" align="left" colspan="2">
+        <input type="submit" value="変更" />
+        <input tal:attributes="onclick string:location.href='${page:@/list-page.do${self/pathname}}'" type="button" value="戻る" onclick="" />
+      </td>
+    </tr>
+  </table>
+</form>
+    </div>
+  </body>
+</html>

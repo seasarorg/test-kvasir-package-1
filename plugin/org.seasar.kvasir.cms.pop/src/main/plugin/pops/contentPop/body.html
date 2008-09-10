@@ -1,0 +1,6 @@
+<div class="description" tal:condition="showDescription" tal:content="contentDescription">DESCRIPTION</div>
+<ul class="information" tal:condition="showInformation">
+  <li tal:condition="author" tal:content="author">AUTHOR</li>
+  <li tal:content="date/yyyy-MM-dd HH:mm:ss">DATE</li>
+</ul>
+<div class="content" tal:condition="showContent" tal:content="structure contentBody">CONTENT</div>

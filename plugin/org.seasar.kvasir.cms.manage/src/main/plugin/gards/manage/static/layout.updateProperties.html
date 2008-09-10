@@ -1,0 +1,4 @@
+<div class="pop" tal:define="pop self/renderedPop" tal:attributes="id pop/id; class string:pop ${pop/popId}">
+  <h2 tal:content="structure pop/title">Sidebar Entry Title</h2>
+  <div tal:content="structure pop/body">Sidebar Entry Body</div>
+</div>

@@ -1,0 +1,118 @@
+<div class="optional-console">
+<div id="optionalConsole_tabified" class="tabified">
+  <ul class="tabs">
+    <li id="addPage" tal:condition="not:self/startPage">ページの作成</li>
+    <li id="addChildPage" tal:condition="self/startPageAbleToHaveChildren">子ページの追加</li>
+    <li id="modifyPage" tal:condition="self/startPage">ページの変更</li>
+    <li id="deletePage" tal:condition="self/deletable">ページの削除</li>
+    <li id="otherOperations">その他の操作</li>
+  </ul>
+
+<div id="addPage_content" class="tabcontent" tal:condition="not:self/startPage">
+<p class="title"><img tal:attributes="src page:%/img/page-add.png" /> ページの作成</p>
+<p class="description">ページを作成したい場合は各項目を必要に応じて埋めてから「ページを作成する」ボタンをクリックして下さい。</p>
+<p class="description">「名前」はページを識別するための文字列です。基本的には、ファイル名のようにアルファベットと数字などからなる文字列を指定して下さい。名前として「/」を含むパスを指定した場合はパスに対応するディレクトリが作成された上でページが作成されます。指定した名前と同じページが既に存在する場合は上書きされます。</p>
+<p class="description">「ラベル」はページの題名です。基本的にどの文字を使っても構いませんし、他のページのラベルと重複していても構いません。</p>
+<form tal:attributes="action page:%/optional-console.addPage.do${self/startPathname|string:}" method="post" enctype="multipart/form-data">
+  <table>
+    <tr>
+      <td align="right">名前</td>
+      <td tal:content="self/name"></td>
+      <td align="right"><label for="optionalConsole.addPage.label">ラベル</label></td>
+      <td><input id="optionalConsole.addPage.label" type="text" name="label" length="24" /></td>
+      <td align="right"><label for="optionalConsole.addPage.body">アップロード</label></td>
+      <td><input id="optionalConsole.addPage.body" type="file" name="body" length="24" /></td>
+    </tr>
+    <tr>
+      <td align="right"><input id="optionalConsole.addPage.asDirectory" type="checkbox" name="asDirectory" /></td>
+      <td><label for="optionalConsole.addPage.asDirectory">ディレクトリとして作成</label></td>
+      <td align="right"><input id="optionalConsole.addPage.listing" type="checkbox" name="listing" checked="checked" /></td>
+      <td colspan="3"><label for="optionalConsole.addPage.listing">一覧表示に含める</label></td>
+    </tr>
+    <tr>
+      <td colspan="6" align="right"><input type="submit" value="ページを作成する" /></td>
+    </tr>
+  </table>
+</form>
+</div>
+<div id="addChildPage_content" class="tabcontent" tal:condition="self/startPageAbleToHaveChildren">
+<script type="text/javascript">
+  validateParameters_addChildPage = function(form) {
+    if (form.name.value == '' && form.body.value == '') {
+      alert('名前を指定して下さい');
+      return false;
+    }
+    return true;
+  };
+</script>
+<p class="title"><img tal:attributes="src page:%/img/page-add.png" /> 子ページの追加</p>
+<p class="description">このページに子ページを追加したい場合は各項目を必要に応じて埋めてから「子ページを追加する」ボタンをクリックして下さい。「*」のついている項目は必須項目です。</p>
+<p class="description">「名前」はページを識別するための文字列です。基本的には、ファイル名のようにアルファベットと数字などからなる文字列を指定して下さい。名前として「/」を含むパスを指定した場合はパスに対応するディレクトリが作成された上でページが作成されます。指定した名前と同じページが既に存在する場合は上書きされます。</p>
+<p class="description">「ラベル」はページの題名です。基本的にどの文字を使っても構いませんし、他のページのラベルと重複していても構いません。</p>
+<form tal:attributes="action page:%/optional-console.addChildPage.do${self/startPathname}" method="post" enctype="multipart/form-data" onsubmit="return validateParameters_addChildPage(this)">
+  <table>
+    <tr>
+      <td align="right"><label for="optionalConsole.addChildPage.name">* 名前</label></td>
+      <td>
+        <div class="pageSelector">
+          <div class="input">
+            <div>
+              <input id="optionalConsole.addChildPage.name" type="text" name="name" length="24" autocomplete="off" />
+              <span class="wrapper">
+                <span id="optionalConsole.addChildPage.name_preview" class="preview"></span>
+              </span>
+            </div>
+            <div class="wrapper">
+              <div id="optionalConsole.addChildPage.name_candidates" class="candidates"></div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td align="right"><label for="optionalConsole.addChildPage.label">ラベル</label></td>
+      <td><input id="optionalConsole.addChildPage.label" type="text" name="label" length="24" /></td>
+      <td align="right"><label for="optionalConsole.addChildPage.body">アップロード</label></td>
+      <td><input id="optionalConsole.addChildPage.body" type="file" name="body" length="24" /></td>
+    </tr>
+    <tr>
+      <td align="right"><input id="optionalConsole.addChildPage.asDirectory" type="checkbox" name="asDirectory" /></td>
+      <td><label for="optionalConsole.addChildPage.asDirectory">ディレクトリとして作成</label></td>
+      <td align="right"><input id="optionalConsole.addChildPage.listing" type="checkbox" name="listing" checked="checked" /></td>
+      <td colspan="3"><label for="optionalConsole.addChildPage.listing">一覧表示に含める</label></td>
+    </tr>
+    <tr>
+      <td colspan="6" align="right"><input type="submit" value="子ページを追加する" /></td>
+    </tr>
+  </table>
+</form>
+</div>
+
+<div id="modifyPage_content" class="tabcontent" tal:condition="self/startPage">
+<p class="title"><img tal:attributes="src page:%/img/page.png" /> ページの表示・非表示の切り替え</p>
+<p class="description">このページの表示・非表示を切り替えたい場合は状態を選択して「切り替える」ボタンをクリックして下さい。</p>
+<form tal:attributes="action page:%/optional-console.setConcealed.do${self/startPathname}" method="post">
+  <p>
+    <input id="optionalConsole-concealed-false" tal:attributes="checked not:self/concealed" type="radio" name="concealed" value="false" /> <label for="optionalConsole-concealed-false">表示する</label>&nbsp;&nbsp;
+    <input id="optionalConsole-concealed-true" tal:attributes="checked self/concealed" type="radio" name="concealed" value="true" /> <label for="optionalConsole-concealed-true">隠す</label>&nbsp;&nbsp;
+    <input type="submit" value="切り替える" />
+  </p>
+</form>
+</div>
+
+<div id="deletePage_content" class="tabcontent" tal:condition="self/deletable">
+<p class="title"><img tal:attributes="src page:%/img/page-delete.png" /> ページの削除</p>
+<p class="description">このページを削除したい場合は「このページを削除する」ボタンをクリックして下さい。</p>
+<form tal:attributes="action page:%/optional-console.deletePage.do${self/startPathname}" method="post" onsubmit="return confirm('このページを削除します。よろしいですか？')">
+  <p><input type="submit" value="このページを削除する" /></p>
+</form>
+</div>
+
+<div id="otherOperations_content" class="tabcontent">
+<p class="title">その他の操作</p>
+<ul>
+  <li><a tal:attributes="href page:%/view-managePage.do${self/startPathname}" target="_top">管理ツールに戻る</a></li>
+  <li><a tal:attributes="href page:%/optional-console.updatePanes.do${self/startPathname}">全てのペインをリフレッシュする</a></li>
+</ul>
+</div>
+
+</div>
+</div>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="org.seasar.kvasir.base" name="%plugin.name"
+  version="3.0.0-SNAPSHOT" provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="org.seasar.kvasir.base.jar">
+      <export name="**" />
+    </library>
+  </runtime>
+
+  <requires></requires>
+
+  <extension point="org.seasar.kvasir.base.corePlugins">
+    <core-plugin />
+  </extension>
+
+  <extension-point id="sessionListeners"
+    element-class="org.seasar.kvasir.base.extension.SessionListenerElement" />
+  <extension-point id="kvasirLifecycleListeners"
+    element-class="org.seasar.kvasir.base.extension.KvasirLifecycleListenerElement" />
+  <extension-point id="corePlugins"
+    element-class="org.seasar.kvasir.base.extension.CorePluginElement" />
+</plugin>

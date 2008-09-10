@@ -1,0 +1,97 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <script metal:fill-slot="includedScript" type="text/javascript" tal:content="structure string:
+&lt;!--
+function moveSelected(from, to)
+{
+    while (from.selectedIndex >= 0) {
+        move(from, from.selectedIndex, to);
+    }
+}
+
+function move(from, idx, to)
+{
+    if (idx == -1) {
+        return;
+    }
+    var o1 = from.options[idx];
+    var o2 = document.createElement('option');
+    o2.value = o1.value;
+    o2.appendChild(document.createTextNode(o1.text));
+    to.appendChild(o2);
+    from.removeChild(o1);
+}
+
+function moveAll(from, to)
+{
+    while (from.options.length > 0) {
+        move(from, 0, to);
+    }
+}
+
+function commitMove(form)
+{
+    if (form.current.options.length > 0) {
+        alert('左側のボックスの全てのページを右側のボックスに移動させて下さい。');
+        return false;
+    }
+    for (var idx = 0; idx < form.newer.options.length; idx++) {
+        form.newer.options[idx].selected = true;
+    }
+    return true;
+}
+//--&gt;
+    "></script>
+  </head>
+  <body>
+    <table width="100%" cellspacing="0" cellpadding="2" border="0">
+      <tr>
+        <td valign="top" align="left" bgcolor="#EEEEEE">
+          <span metal:fill-slot="subtitle" class="subtitle">&gt;&gt;
+            子ページの並べ替え
+          </span>
+        </td>
+      </tr>
+    </table>
+    <div metal:fill-slot="body">
+<p class="form-help">
+このページが持つ子ページの順序を変更することができます。左側のボックスに並んでいるページを右側のボックスに移動させて「確定」ボタンを押すと、指定した順序に並び替えられます。
+</p>
+<form tal:attributes="action page:@/sort-page.do${self/pathname}" action="" method="post">
+  <table cellspacing="0" cellpadding="8" width="100%" border="0">
+    <tr>
+      <td width="40%" valign="middle" align="right">
+        <select name="current" size="20" multiple="multiple">
+          <option tal:repeat="option self/current" tal:attributes="value option/value" tal:content="option/content" value="1">PAGE1</option>
+          <option tal:condition="" value="2">PAGE2</option>
+          <option tal:condition="" value="3">PAGE3</option>
+        </select>
+      </td>
+      <td width="20%" valign="middle" align="center">
+        <input type="button" value=" &gt; " onclick="moveSelected(form.current, form.newer)" /><br />
+        <input type="button" value="&gt;&gt;" onclick="moveAll(form.current, form.newer)" /><br />
+        <br />
+        <input type="button" value=" &lt; " onclick="moveSelected(form.newer, form.current)" /><br />
+        <input type="button" value="&lt;&lt;" onclick="moveAll(form.newer, form.current)" /><br />
+      </td>
+      <td width="40%" valign="middle" align="left">
+        <select name="newer" size="20" multiple="multiple">
+          <option tal:condition="" value="4">PAGE4</option>
+          <option tal:condition="" value="5">PAGE5</option>
+          <option tal:condition="" value="6">PAGE6</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">&nbsp;</td>
+      <td align="left">
+        <input type="submit" value="確定" onclick="return commitMove(this.form)" />
+        <input tal:attributes="onclick string:location.href='${page:@/list-page.do${self/pathname}}'" type="button" value="戻る" onclick="" />
+      </td>
+    </tr>
+  </table>
+</form>
+    </div>
+  </body>
+</html>

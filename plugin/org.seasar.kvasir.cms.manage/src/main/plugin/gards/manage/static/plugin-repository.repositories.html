@@ -1,0 +1,30 @@
+<div id="notes"><div class="notes" tal:condition="self/notes" tal:repeat="note self/notes/notes" tal:content="note/%value"></div></div>
+
+<p class="form-help">
+リモートレポジトリの一覧です。
+</p>
+<table id="repositoriesTable">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>URL</th>
+      <th>Enabled</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr tal:repeat="repository self/repositoties">
+      <td tal:content="repository/id">aaa.bbb</td>
+      <td tal:content="repository/url">http://localhost/foo/bar/</td>
+      <td>
+        <span tal:condition="repository/enabled">enabled</span>
+        <span tal:condition="not:repository/enabled">disabled</span>
+      </td>
+      <td>
+        <a href="#" 
+          tal:attributes="id string:editRepo_${repository/id}" 
+          class="repositoryEdit">変更</a>
+      </td>
+    </tr>
+  </tbody>
+</table>

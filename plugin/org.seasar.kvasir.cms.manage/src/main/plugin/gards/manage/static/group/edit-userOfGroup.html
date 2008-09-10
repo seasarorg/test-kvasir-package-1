@@ -1,0 +1,21 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="../css/manage.css" />
+  </head>
+  <body>
+    <div metal:fill-slot="body">
+<p class="form-text">
+このグループに所属するユーザ
+</p>
+<form tal:attributes="action page:@/edit-userOfGroup.do${self/pathname}" action="" method="post">
+  <p>
+    <select name="userIds" multiple size="10">
+      <option tal:repeat="user self/users" tal:attributes="selected user/inGroup; value user/id" value="10"><span tal:replace="user/pathname">/path/to/user1</span><span tal:define="label user/%label" tal:condition="label" tal:replace="string: ($label)"> (User1)</span></option>
+      <option tal:condition="">/path/to/user2 (User2)</option>
+    </select>
+  </p>
+  <p><input type="submit" value="変更を保存" /></p>
+</form>
+    </div>
+  </body>
+</html>

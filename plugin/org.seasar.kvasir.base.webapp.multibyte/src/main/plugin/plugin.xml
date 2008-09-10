@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://kvasir.sandbox.seasar.org/plugin/3.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://kvasir.sandbox.seasar.org/plugin/3.0.0 http://kvasir.sandbox.seasar.org/support/plugin-3_0_0.xsd"
+  id="org.seasar.kvasir.base.webapp.multibyte" name="%plugin.name"
+  version="3.0.0-SNAPSHOT" provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="conf" />
+    <library name="org.seasar.kvasir.base.webapp.multibyte.jar">
+      <export name="**" />
+      <export name="**" resource="true" />
+    </library>
+    <library name="lib" expand="true" />
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.base.webapp" />
+  </requires>
+
+  <extension point="org.seasar.kvasir.base.webapp.requestFilters">
+    <request-filter id="multibyteRequestFilter" dispatcher="REQUEST"
+      phase="initialization">
+      <init-param>
+        <param-name>useServletPathAsPathInfo</param-name>
+        <param-value>true</param-value>
+      </init-param>
+      <init-param>
+        <param-name>disallowNullPathInfo</param-name>
+        <param-value>true</param-value>
+      </init-param>
+      <init-param>
+        <param-name>nativeEncoding</param-name>
+        <param-value>UTF-8</param-value>
+      </init-param>
+      <init-param>
+        <param-name>urlEncoding</param-name>
+        <param-value>UTF-8</param-value>
+      </init-param>
+
+      <!-- Microsoft Windows Web folder (Windows 2000) -->
+      <init-param>
+        <param-name>nativeEncoding.Microsoft Data Access Internet Publishing Provider DAV 1.1
+        </param-name>
+        <param-value>MS932</param-value>
+      </init-param>
+      <init-param>
+        <param-name>urlEncoding.Microsoft Data Access Internet Publishing Provider DAV 1.1
+        </param-name>
+        <param-value>MS932</param-value>
+      </init-param>
+
+      <!-- Microsoft Windows Web folder -->
+      <init-param>
+        <param-name>nativeEncoding.Microsoft Data Access</param-name>
+        <param-value>UTF-8</param-value>
+      </init-param>
+      <init-param>
+        <param-name>urlEncoding.Microsoft Data Access</param-name>
+        <param-value>UTF-8</param-value>
+      </init-param>
+
+      <!-- Linux davfs -->
+      <init-param>
+        <param-name>nativeEncoding.DAV-FS</param-name>
+        <param-value>euc-jp</param-value>
+      </init-param>
+      <init-param>
+        <param-name>urlEncoding.DAV-FS</param-name>
+        <param-value>euc-jp</param-value>
+      </init-param>
+
+      <!-- WebDrive (with 'Always send URL as UTF-8' option) -->
+      <init-param>
+        <param-name>nativeEncoding.WebDrive</param-name>
+        <param-value>UTF-8</param-value>
+      </init-param>
+      <init-param>
+        <param-name>urlEncoding.WebDrive</param-name>
+        <param-value>UTF-8</param-value>
+      </init-param>
+    </request-filter>
+  </extension>
+</plugin>

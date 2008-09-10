@@ -1,0 +1,5 @@
+<ul>
+  <li><a tal:attributes="href page:${managePathname}/view-managePage.do${that/pathname}" tal:content="plugin/%pop.managePop.label.link.manage" target="_top">MANAGE</a></li>
+  <li tal:condition="not:finish"><a tal:attributes="href page:${managePathname}/edit-website.do${that/pathname}" tal:content="plugin/%pop.managePop.label.link.edit-website">EDIT WEBSITE</a></li>
+  <li tal:condition="finish"><a tal:attributes="href page:${managePathname}/edit-website.do${that/pathname}?finish=${finish}" tal:content="plugin/%pop.managePop.label.link.finish-editing-website">FINISH EDITING WEBSITE</a></li>
+</ul>

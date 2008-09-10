@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="org.seasar.kvasir.cms.ymir" name="%plugin.name"
+  version="3.0.0-SNAPSHOT" provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="conf">
+      <export name="ymir-application.dicon" resource="true" />
+    </library>
+    <library name="org.seasar.kvasir.cms.ymir.jar">
+      <export name="**" />
+    </library>
+    <library name="lib" expand="true">
+      <export name="**" />
+      <export name="ymir-creator.dicon" resource="true" />
+    </library>
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.base.dao" />
+    <import plugin="org.seasar.kvasir.page" />
+    <import plugin="org.seasar.kvasir.page.auth" />
+    <import plugin="org.seasar.kvasir.cms" />
+    <import plugin="org.seasar.kvasir.cms.zpt" />
+    <import plugin="net.skirnir.freyja" />
+  </requires>
+
+  <!-- PAGE FILTERS -->
+  <extension point="org.seasar.kvasir.cms.pageFilters">
+    <page-filter id="multipartRequestPageFilter" phase="initialization"
+      gard-id-provider-id="ymirGardIdProvider" />
+    <page-filter id="setCharacterEncodingPageFilter"
+      phase="initialization" gard-id-provider-id="ymirGardIdProvider">
+      <init-param>
+        <param-name>requestEncoding</param-name>
+        <param-value>UTF-8</param-value>
+      </init-param>
+    </page-filter>
+    <page-filter id="ymirPageFilter" dispatcher="REQUEST,INCLUDE"
+      gard-id-provider-id="ymirGardIdProvider" />
+  </extension>
+
+  <!-- PAGE PROCESSORS -->
+  <extension point="org.seasar.kvasir.cms.pageProcessors">
+    <page-processor id="resourcePageProcessor" phase="presentation"
+      gard-id-provider-id="ymirGardIdProvider">
+      <init-param>
+        <param-name>process-virtual-path</param-name>
+        <param-value>true</param-value>
+      </init-param>
+      <init-param>
+        <param-name>local-path-resolver-id</param-name>
+        <param-value>ymirDefaultLocalPathResolver</param-value>
+      </init-param>
+      <init-param>
+        <param-name>local-path-resolver.directory-path</param-name>
+        <param-value>gards/${gard-id}/static</param-value>
+      </init-param>
+    </page-processor>
+    <page-processor id="zptPageProcessor" phase="presentation"
+      what="path" how="^(.+\.html|.+\.js)$" regex="true"
+      gard-id-provider-id="ymirGardIdProvider">
+      <init-param>
+        <param-name>local-path-resolver-id</param-name>
+        <param-value>ymirDefaultLocalPathResolver</param-value>
+      </init-param>
+      <init-param>
+        <param-name>local-path-resolver.directory-path</param-name>
+        <param-value>gards/${gard-id}/static</param-value>
+      </init-param>
+    </page-processor>
+  </extension>
+
+  <extension-point id="applications"
+    element-class="org.seasar.kvasir.cms.ymir.extension.ApplicationElement" />
+  <extension-point id="externalTemplates"
+    element-class="org.seasar.kvasir.cms.ymir.extension.ExternalTemplateElement" />
+  <extension-point id="applicationMappings"
+    element-class="org.seasar.kvasir.cms.ymir.extension.ApplicationMappingElement" />
+</plugin>

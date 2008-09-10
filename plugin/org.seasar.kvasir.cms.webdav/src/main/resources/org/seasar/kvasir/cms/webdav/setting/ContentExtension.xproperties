@@ -1,0 +1,5 @@
+description=Information about file extension.
+name.description=Name of the extension.
+mime-type.description=Mime-Type corresponding to the extension.
+embedded.description=Whether contents having the extension are embed-type contents.
+charset.description=Character set of contents having the extension.

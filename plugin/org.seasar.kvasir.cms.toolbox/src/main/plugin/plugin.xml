@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://kvasir.sandbox.seasar.org/plugin/3.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://kvasir.sandbox.seasar.org/plugin/3.0.0 http://kvasir.sandbox.seasar.org/support/plugin-3_0_0.xsd"
+  id="org.seasar.kvasir.cms.toolbox" name="%plugin.name"
+  version="3.0.0-SNAPSHOT" provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="conf" />
+    <library name="org.seasar.kvasir.cms.toolbox.jar">
+      <export name="**" />
+      <export name="**" resource="true" />
+    </library>
+    <library name="lib" expand="true" />
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.base.dao" />
+    <import plugin="org.seasar.kvasir.page" />
+    <import plugin="org.seasar.kvasir.page.ability.content" />
+    <import plugin="org.seasar.kvasir.page.ability.template" />
+    <import plugin="org.seasar.kvasir.page.ability.table" />
+    <import plugin="org.seasar.kvasir.page.auth" />
+    <import plugin="org.seasar.kvasir.page.search" />
+    <import plugin="org.seasar.kvasir.cms" />
+    <import plugin="org.seasar.kvasir.cms.java" />
+    <import plugin="org.seasar.kvasir.cms.pop" />
+    <import plugin="org.seasar.kvasir.cms.ymir" />
+    <import plugin="net.skirnir.freyja" />
+  </requires>
+
+  <extension point="org.seasar.kvasir.page.pageGards">
+    <page-gard id="toolbox" version="3.0.0-SNAPSHOT" singleton="true"
+      display-name="%toolbox.display-name" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.page.pageGardInstalls">
+    <page-gard-install gard-id="org.seasar.kvasir.cms.toolbox.toolbox" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.cms.pageProcessors">
+    <page-processor id="zptPageProcessor" phase="presentation"
+      what="path" how="^.+\.rdf$" regex="true"
+      gard-id="org.seasar.kvasir.cms.toolbox.toolbox" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.cms.pop.pops">
+    <pop id="menuPop">
+      <form-unit kind="property" id="title" />
+      <form-unit kind="property" id="cols" human-readable="false" />
+      <form-unit kind="property" id="onlyDirectory"
+        human-readable="false" type="boolean" />
+      <form-unit kind="property" id="displayDescription"
+        human-readable="false" type="boolean" />
+      <form-unit kind="property" id="displayOnlyViewable"
+        human-readable="false" type="boolean" />
+      <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="body" />
+    </pop>
+    <pop id="languageSelectorPop">
+      <form-unit kind="property" id="title" />
+      <form-unit kind="property" id="languages" human-readable="false"
+        default="*" />
+      <form-unit kind="property" id="styleClass" human-readable="false" />
+      <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="body" />
+    </pop>
+    <pop id="breadcrumbsPop">
+      <form-unit kind="property" id="topLabel" />
+      <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="body" />
+    </pop>
+    <pop id="listingPop">
+      <form-unit kind="property" id="title" />
+      <form-unit kind="property" id="baseDirectory"
+        human-readable="false" type="page" default="." />
+      <form-unit kind="property" id="numberOfEntries"
+        human-readable="false" default="10" />
+      <form-unit kind="property" id="displayOnlyViewable"
+        human-readable="false" type="boolean" />
+      <form-unit kind="group" id="group.sorting" />
+      <form-unit kind="property" id="sortKey" human-readable="false"
+        type="select" default="createDate">
+        <option>createDate</option>
+        <option>modifyDate</option>
+        <option>orderNumber</option>
+      </form-unit>
+      <form-unit kind="property" id="ascending" human-readable="false"
+        type="boolean" default="true" />
+      <form-unit kind="group" id="group.summary" />
+      <form-unit kind="property" id="summaryLength"
+        human-readable="false" default="128" />
+      <form-unit kind="property" id="continuingLabel" />
+      <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="body" />
+    </pop>
+    <pop id="loginPop" body-resource-path="pops/loginPop/login.html">
+      <form-unit kind="property" id="title" />
+      <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="body" />
+    </pop>
+    <pop id="searchPop">
+      <form-unit kind="property" id="title" />
+      <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="body" />
+    </pop>
+    <pop id="imagePop">
+      <form-unit kind="property" id="title" />
+      <form-unit kind="property" id="imageURL" human-readable="false"
+        type="page" />
+      <form-unit kind="property" id="linkURL" human-readable="false"
+        type="page" />
+      <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="styleClass" human-readable="false" />
+      <form-unit kind="property" id="body" />
+    </pop>
+    <pop id="customPop">
+      <form-unit kind="property" id="title" />
+      <form-unit kind="property" id="body" />
+      <form-unit kind="property" id="body-type" human-readable="false" />
+      <form-unit kind="group" id="group.logic" />
+      <form-unit kind="property" id="logic" human-readable="false" />
+    </pop>
+  </extension>
+
+  <extension point="org.seasar.kvasir.cms.ymir.applications">
+    <application id="toolboxApplication"
+      gard-id="org.seasar.kvasir.cms.toolbox.toolbox"
+      landmark="org.seasar.kvasir.cms.toolbox.ToolboxPlugin" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.cms.ymir.externalTemplates">
+    <external-template
+      application-id="org.seasar.kvasir.cms.toolbox.toolboxApplication">
+      <resourceset dir="pops">
+        <include name="*/*.html" />
+      </resourceset>
+    </external-template>
+  </extension>
+</plugin>

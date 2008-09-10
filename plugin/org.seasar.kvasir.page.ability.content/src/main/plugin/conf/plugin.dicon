@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+  "http://www.seasar.org/dtd/components24.dtd">
+<components>
+  <component name="plugin"
+    class="org.seasar.kvasir.page.ability.content.impl.ContentAbilityPluginImpl" />
+  <component name="contentAbilityAlfr"
+    class="org.seasar.kvasir.page.ability.content.impl.ContentAbilityAlfrImpl">
+    <property name="cache">contentCache</property>
+  </component>
+  <component name="contentCache"
+    class="org.seasar.kvasir.page.ability.content.impl.ContentCache">
+    <property name="provider">contentProvider</property>
+  </component>
+  <component name="contentProvider"
+    class="org.seasar.kvasir.page.ability.content.impl.ContentProvider">
+  </component>
+  <component name="contentDao"
+    class="org.seasar.kvasir.page.ability.content.dao.impl.GenericContentDao">
+    <aspect>beantableDaoInterceptor</aspect>
+  </component>
+  <component name="contentsDao"
+    class="org.seasar.kvasir.page.ability.content.dao.impl.GenericContentsDao">
+    <aspect>beantableDaoInterceptor</aspect>
+  </component>
+  <component name="defaultContentHandler"
+    class="org.seasar.kvasir.page.ability.content.impl.StandardContentHandler" />
+  <component name="plainContentHandler"
+    class="org.seasar.kvasir.page.ability.content.impl.StandardContentHandler" />
+  <component name="htmlContentHandler"
+    class="org.seasar.kvasir.page.ability.content.impl.StandardContentHandler" />
+  <component name="wikiContentHandler"
+    class="org.seasar.kvasir.page.ability.content.impl.WikiContentHandler" />
+  <component name="rstContentHandler"
+    class="org.seasar.kvasir.page.ability.content.impl.RstContentHandler" />
+</components>

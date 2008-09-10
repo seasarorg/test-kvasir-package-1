@@ -1,0 +1,22 @@
+<div class="directory-list" tal:condition="directory.entries">
+  <table align="center" cellspacing="8" width="95%">
+    <tbody>
+      <tr tal:repeat="rows directory.entries">
+        <td tal:repeat="entry rows" tal:attributes="width entry/width" valign="top">
+          <div tal:condition="exists:entry" tal:attributes="class entry/styleClass" class="entry">
+            <a tal:attributes="href page:${entry/pathname}" href="/users/"><span tal:content="entry/label" class="title">Users</span></a>
+            <div class="description" tal:condition="entry/description" tal:content="entry/description">Users directory.</div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div tal:condition="not:onlyDirectory" class="document-list" style="margin-top:4ex">
+  <ul style="margin-left:0px" tal:condition="document.entries">
+    <li tal:repeat="entry document.entries" tal:attributes="class entry/styleClass; style string:list-style-type:none;; list-style-image:none;; list-style-position:outside;; padding-left:24px;; background-image:url(${entry/iconURL});; background-repeat:no-repeat;; background-position:left 0pt;;margin-bottom:16px">
+      <a tal:attributes="href page:${entry/pathname}" href="/diary/"><span tal:content="entry/label">Diary</span></a>
+      <div class="description" tal:condition="exists:entry/description" tal:content="entry/description">This is a diary.</div>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,26 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <script metal:fill-slot="includedScript" type="text/javascript" tal:content="structure string:
+&lt;!--
+//--&gt;
+    "></script>
+  </head>
+  <body>
+    <div metal:fill-slot="title" class="title-bar">
+     Heim管理
+    </div>
+    <div metal:fill-slot="body">
+<p class="form-help">
+この画面ではHeimに関する管理操作を行なうことができます。
+</p>
+<h2 class="subtitle">全てのペインをリフレッシュする</h2>
+<p class="form-help">
+サイトレイアウトをインストールした場合など、ペインやPOPに関する情報が更新された場合はこのボタンを押して全てのペインをリフレッシュして下さい。
+</p>
+<form tal:attributes="action page:@/heim.updatePanes.do" method="post">
+  <input type="submit" value="全てのペインをリフレッシュする" />
+</form>
+    </div>
+  </body>
+</html>

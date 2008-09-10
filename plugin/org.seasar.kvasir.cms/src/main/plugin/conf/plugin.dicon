@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+  "http://www.seasar.org/dtd/components24.dtd">
+<components>
+  <component name="plugin"
+    class="org.seasar.kvasir.cms.impl.CmsPluginImpl" />
+  <component name="pageRequestFilter"
+    class="org.seasar.kvasir.cms.filter.impl.PageRequestFilter" />
+  <component name="pageRequestProcessor"
+    class="org.seasar.kvasir.cms.processor.impl.PageRequestProcessor" />
+  <!-- PAGE FILTERS -->
+  <component name="actorBindingPageFilter"
+    class="org.seasar.kvasir.cms.filter.impl.ActorBindingPageFilter"
+    instance="prototype" />
+  <component name="basicAuthenticationPageFilter"
+    class="org.seasar.kvasir.cms.filter.impl.BasicAuthenticationPageFilter"
+    instance="prototype" />
+  <component name="concealPageFilter"
+    class="org.seasar.kvasir.cms.filter.impl.ConcealPageFilter"
+    instance="prototype" />
+  <component name="permissionPageFilter"
+    class="org.seasar.kvasir.cms.filter.impl.PermissionPageFilter"
+    instance="prototype" />
+  <component name="phantomPageFilter"
+    class="org.seasar.kvasir.cms.filter.impl.PhantomPageFilter"
+    instance="prototype" />
+  <component name="setCharacterEncodingPageFilter"
+    class="org.seasar.kvasir.cms.filter.impl.SetCharacterEncodingPageFilter"
+    instance="prototype" />
+  <!-- PAGE PROCESSORS -->
+  <component name="noEntryPageProcessor"
+    class="org.seasar.kvasir.cms.processor.impl.NoEntryPageProcessor"
+    instance="prototype" />
+  <component name="resourcePageProcessor"
+    class="org.seasar.kvasir.cms.processor.impl.ResourcePageProcessor"
+    instance="prototype" />
+  <component name="standardPageProcessor"
+    class="org.seasar.kvasir.cms.processor.impl.StandardPageProcessor"
+    instance="prototype" />
+  <component name="transitionPageProcessor"
+    class="org.seasar.kvasir.cms.processor.impl.TransitionPageProcessor"
+    instance="prototype" />
+  <!-- PAGE EXCEPTION HANDLERS -->
+  <component name="standardPageExceptionHandler"
+    class="org.seasar.kvasir.cms.handler.impl.StandardPageExceptionHandler"
+    instance="prototype" />
+  <component name="basicAuthenticationPageExceptionHandler"
+    class="org.seasar.kvasir.cms.handler.impl.BasicAuthenticationPageExceptionHandler"
+    instance="prototype" />
+  <!-- MISC -->
+  <component name="defaultLocalPathResolver"
+    class="org.seasar.kvasir.cms.processor.impl.PluginResourcePathResolver"
+    instance="prototype" />
+</components>

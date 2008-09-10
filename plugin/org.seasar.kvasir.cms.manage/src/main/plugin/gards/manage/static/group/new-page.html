@@ -1,0 +1,15 @@
+<html metal:use-macro="%/new-page.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="../css/manage.css" />
+  </head>
+  <body>
+    <div class="title-bar">
+      <span metal:fill-slot="subtitle">グループを追加</span>
+    </div>
+    <div>
+<p metal:fill-slot="description" class="form-help">
+グループはユーザの集合を表すページオブジェクトです。
+</p>
+    </div>
+  </body>
+</html>

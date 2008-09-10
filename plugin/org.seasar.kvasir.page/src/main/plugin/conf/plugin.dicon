@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+  "http://www.seasar.org/dtd/components24.dtd">
+<components>
+  <component name="plugin"
+    class="org.seasar.kvasir.page.impl.PagePluginImpl" />
+  <component name="pageAlfr"
+    class="org.seasar.kvasir.page.impl.PageAlfrImpl" />
+  <component name="pageCache"
+    class="org.seasar.kvasir.page.impl.PageCache">
+    <property name="provider">pageProvider</property>
+    <property name="pathPairProvider">pathPairProvider</property>
+  </component>
+  <component name="pageProvider"
+    class="org.seasar.kvasir.page.impl.PageProvider" />
+  <component name="pathPairProvider"
+    class="org.seasar.kvasir.page.impl.PathPairProvider" />
+  <component name="pageDao"
+    class="org.seasar.kvasir.page.dao.impl.GenericPageDao">
+    <aspect>beantableDaoInterceptor</aspect>
+  </component>
+  <component name="memberDao"
+    class="org.seasar.kvasir.page.dao.impl.GenericMemberDao">
+    <aspect>beantableDaoInterceptor</aspect>
+  </component>
+  <component name="castDao"
+    class="org.seasar.kvasir.page.dao.impl.GenericCastDao">
+    <aspect>beantableDaoInterceptor</aspect>
+  </component>
+  <component name="permissionDao"
+    class="org.seasar.kvasir.page.dao.impl.GenericPermissionDao">
+    <aspect>beantableDaoInterceptor</aspect>
+  </component>
+  <component name="propertyDao"
+    class="org.seasar.kvasir.page.dao.impl.GenericPropertyDao">
+    <aspect>beantableDaoInterceptor</aspect>
+  </component>
+  <component name="propertiesDao"
+    class="org.seasar.kvasir.page.dao.impl.GenericPropertiesDao">
+    <aspect>beantableDaoInterceptor</aspect>
+  </component>
+
+  <component name="page"
+    class="org.seasar.kvasir.page.type.GenericPageType" />
+  <component name="user"
+    class="org.seasar.kvasir.page.type.UserPageType" />
+  <component name="group"
+    class="org.seasar.kvasir.page.type.GroupPageType" />
+  <component name="role"
+    class="org.seasar.kvasir.page.type.RolePageType" />
+  <component name="directory"
+    class="org.seasar.kvasir.page.type.DirectoryPageType" />
+
+  <component name="propertyAbilityAlfr"
+    class="org.seasar.kvasir.page.ability.impl.PropertyAbilityAlfrImpl">
+    <property name="cache">propertyCache</property>
+  </component>
+  <component name="propertyCache"
+    class="org.seasar.kvasir.page.ability.impl.PropertyCache">
+    <property name="provider">propertyProvider</property>
+  </component>
+  <component name="propertyProvider"
+    class="org.seasar.kvasir.page.ability.impl.PropertyProvider" />
+  <component name="groupAbilityAlfr"
+    class="org.seasar.kvasir.page.ability.impl.GroupAbilityAlfrImpl" />
+  <component name="roleAbilityAlfr"
+    class="org.seasar.kvasir.page.ability.impl.RoleAbilityAlfrImpl" />
+  <component name="permissionAbilityAlfr"
+    class="org.seasar.kvasir.page.ability.impl.PermissionAbilityAlfrImpl" />
+
+  <component name="pageGardInstaller"
+    class="org.seasar.kvasir.page.gard.impl.PageGardInstallerImpl" />
+  <component name="pageGardImporter"
+    class="org.seasar.kvasir.page.gard.impl.PageGardImporterImpl" />
+  <component name="pageGardExporter"
+    class="org.seasar.kvasir.page.gard.impl.PageGardExporterImpl" />
+</components>

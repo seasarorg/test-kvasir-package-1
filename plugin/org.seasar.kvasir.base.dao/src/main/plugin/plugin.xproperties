@@ -1,0 +1,15 @@
+db.pool.timeout=600
+db.pool.maxPoolSize=10
+db.url=jdbc:${db.productId}:${db.database}${db.url.queryString}
+db.productId=h2
+db.host=localhost
+db.database=${plugin.configuration.dir}/h2/h2
+db.url.queryString=
+db.user=sa
+db.password=
+extension-point.databaseSystems=Database Systems
+extension-point.persistentBeans=Persistent Beans
+plugin.name=Kvasir/Sora Base DAO Plugin
+plugin.provider-name=The Seasar Foundation
+database-system.h2=H2 Database Engine
+database-system.mysql=MySQL

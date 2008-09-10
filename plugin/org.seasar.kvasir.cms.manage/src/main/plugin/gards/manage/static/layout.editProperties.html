@@ -1,0 +1,91 @@
+<div class="layout.editProperties">
+<input tal:attributes="value self/popId" type="hidden" name="popId" />
+<input tal:attributes="value self/startPathname" type="hidden" name="start" />
+<div class="toplevel-title" tal:content="string:${self/pop/name}">POP NAME</div>
+<p>
+  <span tal:content="plugin/%app.note.layout.editingVariant">Variant</span>
+  <input class="variant" tal:attributes="value self/variant; id string:${self/popId}-variant" type="text" name="variant" size="4" autocomplete="off" />
+  <input class="removeVariant" tal:attributes="id string:${self/popId}-removeVariant; value plugin/%app.note.layout.removeVariant" type="button" />
+</p>
+<p class="error-message" tal:condition="exists:self/errorMessage" tal:content="self/errorMessage">ERROR MESSAGE</p>
+<div class="tabified" tal:attributes="id self/tabifiedFormHtmlId">
+  <ul class="tabs" tal:condition="self/formTabified">
+    <li tal:repeat="group self/formUnitGroups" tal:attributes="id group/htmlId; class group/styleClass" tal:content="group/name">TAB TITLE</li>
+    <li tal:attributes="id string:${self/popId}_popinfo" tal:content="plugin/%app.label.popinfo">POP INFO</li>
+    <li tal:attributes="id string:${self/popId}_preview" tal:content="plugin/%app.label.preview">PREVIEW</li>
+  </ul>
+
+<div tal:repeat="group self/formUnitGroups" tal:attributes="id string:${group/htmlId}_content; class self/groupStyleClass">
+  <p class="title" tal:condition="not:formTabified" tal:content="group/name">TITLE</p>
+
+<div tal:omit-tag="" tal:repeat="formUnit group/formUnits">
+  <dl tal:condition="formUnit/kindIsProperty" tal:attributes="class formUnit/styleClass">
+    <dt tal:content="formUnit/name">NAME</dt>
+    <dd>
+      <div class="description error-message" tal:condition="exists:formUnit/error" tal:content="formUnit/error">ERROR</div>
+      <div class="description" tal:condition="formUnit/description" tal:content="formUnit/description">DESCRIPTION</div>
+      <div tal:condition="formUnit/boolean" tal:omit-tag="">
+        <span class="enum">
+          <input tal:attributes='id formUnit/htmlId; name formUnit/id; checked formUnit/valueIsTrue' type="radio" value="true" />
+          true
+        </span>
+        <span class="enum">
+          <input tal:attributes='id formUnit/htmlId; name formUnit/id; checked not:formUnit/valueIsTrue' type="radio" value="false" />
+          false
+        </span>
+      </div>
+      <div tal:condition="formUnit/select" tal:omit-tag="">
+        <select tal:attributes="id formUnit/htmlId; name formUnit/id">
+          <option tal:repeat="option formUnit/options" tal:attributes="value option/value; selected option/selected" tal:content="option/content">OPTION</option>
+        </select>
+      </div>
+      <div tal:condition="formUnit/text" tal:omit-tag="">
+        <div tal:condition="formUnit/large" tal:omit-tag="">
+          <textarea tal:attributes="id formUnit/htmlId; name formUnit/id" tal:content="formUnit/value"></textarea>
+        </div>
+        <div tal:condition="not:formUnit/large" tal:omit-tag="">
+          <input class="expand" tal:attributes="id string:${formUnit/htmlId}-expand" type="button" value="+" />
+          <input class="line" tal:attributes="id formUnit/htmlId; name formUnit/id; value formUnit/value" type="text" />
+        </div>
+      </div>
+      <div class="pageSelector" tal:condition="formUnit/page">
+        <div class="input">
+          <div>
+            <input class="pageSelector_input" tal:attributes="id formUnit/htmlId; name formUnit/id; value formUnit/value" type="text" autocomplete="off" />
+            <span class="wrapper">
+              <span class="preview" tal:attributes="id string:${formUnit/htmlId}_preview"></span>
+            </span>
+          </div>
+          <div class="wrapper">
+            <div class="candidates" tal:attributes="id string:${formUnit/htmlId}_candidates"></div>
+          </div>
+        </div>
+      </div>
+    </dd>
+  </dl>
+  <div tal:condition="formUnit/kindIsAction">
+    <a tal:attributes="href page:${action/path}" tal:content="action/name">NAME</a>
+    <div class="description" tal:condition="action/description" tal:content="action/description">DESCRIPTION</div>
+  </div>
+</div>
+
+</div>
+<div tal:condition="self/formTabified" tal:omit-tag="">
+  <div class="tabcontent" tal:attributes="id string:${self/popId}_popinfo_content; class self/groupStyleClass">
+    <dl>
+      <dt tal:content="plugin/%app.label.layout.editProperties.pop.name">NAME</dt>
+      <dd tal:content="self/pop/name">TITLE</dd>
+      <dt tal:content="plugin/%app.label.layout.editProperties.pop.description">DESCRIPTION</dt>
+      <dd tal:content="self/pop/description">DESCRIPTION</dd>
+      <dt tal:content="plugin/%app.label.layout.editProperties.pop.id">ID</dt>
+      <dd tal:content="self/pop/id">ID</dd>
+    </dl>
+  </div>
+  <div class="tabcontent" tal:attributes="id string:${self/popId}_preview_content; class self/groupStyleClass"></div>
+</div>
+
+</div>
+
+</div>
+
+</div>

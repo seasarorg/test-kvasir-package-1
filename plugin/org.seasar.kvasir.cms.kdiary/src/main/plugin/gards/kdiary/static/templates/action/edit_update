@@ -1,0 +1,12 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html metal:use-macro="%/templates/frame" lang="ja-JP">
+<head metal:fill-slot="head">
+  <meta tal:replace="structure slot/evaluated" http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta tal:attributes="content string:2;;url=${page:${self/targetPathname}}" http-equiv="refresh" />
+</head>
+<body>
+<div metal:fill-slot="body" tal:omit-tag="">
+<p tal:content="that/plugin/%message.updated">Updated.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+description=Kvasir/Soraで管理するWebサイトに関する情報です。\
+    heimを追加することで、管理対象のWebサイトを増やすことができます。
+id.description=WebサイトのIDです。0はデフォルトのWebサイトを表します。\
+    Kvasir/Soraで管理するWebサイトを追加したい場合は、通常10以上の番号を指定して下さい。
+site.description=Webサイトを表すURLです。\
+    ここに指定したURLと、idで指定した番号に対応するPageツリーが対応付けられ、\
+    URL以下へのリクエストに対して対応するPageツリーの対応するPageの内容がレスポンスとして返されるようになります。\
+    例えばhttp://www.kvasir-sora.org/というWebサイトをKvasir/Soraを使って管理する場合は、\
+    siteの値として「http://www.kvasir-sora.org/」を指定して下さい。

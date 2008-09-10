@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+  "http://www.seasar.org/dtd/components24.dtd">
+<components>
+  <component name="plugin" class="org.seasar.kvasir.cms.pop.impl.PopPluginImpl" />
+  <!-- PROTOTYPE -->
+  <component name="genericPop" class="org.seasar.kvasir.cms.pop.pop.GenericPop" instance="prototype" />
+  <component name="introductionPop" class="org.seasar.kvasir.cms.pop.pop.GenericPop" instance="prototype" />
+  <component name="siteTitlePop" class="org.seasar.kvasir.cms.pop.pop.SiteTitlePop" instance="prototype" />
+  <component name="loginUserPop" class="org.seasar.kvasir.cms.pop.pop.LoginUserPop" instance="prototype" />
+  <component name="poweredByPop" class="org.seasar.kvasir.cms.pop.pop.GenericPop" instance="prototype" />
+  <component name="contentPop" class="org.seasar.kvasir.cms.pop.pop.ContentPop" instance="prototype" />
+</components>

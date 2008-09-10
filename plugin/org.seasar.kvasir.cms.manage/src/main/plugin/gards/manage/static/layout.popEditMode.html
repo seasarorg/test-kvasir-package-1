@@ -1,0 +1,2 @@
+<input id="popEditMode" tal:condition="not:self/popEditModeInPlace" tal:attributes="src page:%/img/popEditModeDialog.jpg" type="image" name="dialog" alt="" title="POP edit mode: Dialog mode" />
+<input id="popEditMode" tal:condition="self/popEditModeInPlace" tal:attributes="src page:%/img/popEditModeInPlace.jpg" type="image" name="inPlace" alt="" title="POP edit mode: In-place mode" />

@@ -1,0 +1,42 @@
+<html metal:use-macro="%/edit-page.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="../css/manage.css" />
+  </head>
+  <body>
+  <table cellspacing="0" cellpadding="2" width="100%" border="0">
+    <div metal:fill-slot="fields" tal:omit-tag="">
+    <tr>
+      <td valign="top" align="left">
+        <span class="form-label">メールアドレス</span>
+      </td>
+      <td valign="center" align="left" colspan="3">
+        <input tal:attributes="value request/parameter(mailAddresses) | java:join(page.getMailAddresses())" name="mailAddresses" value="" size="40" />
+      </td>
+    </tr>
+    </div>
+  </table>
+<div metal:fill-slot="extension" tal:omit-tag="">
+<p class="form-help">
+下のフォームを用いてこのユーザのパスワードを変更することができます。
+</p>
+<form tal:attributes="action page:@/edit-page.do${self/pathname}" method="post">
+  <table cellspacing="0" cellpadding="2" width="100%" border="0">
+    <tr>
+      <td valign="center" align="left" width="1%" nowrap="nowrap">
+        <span class="form-label">新しいパスワード</span>
+      </td>
+      <td valign="center" align="left">
+        <input type="password" name="password" value="" size="40" autocomplete="off" />
+      </td>
+    </tr>
+    <tr>
+      <td valign="center" align="left">&nbsp;</td>
+      <td valign="top" align="left">
+        <input type="submit" name="submit" value="パスワードを変更" />
+      </td>
+    </tr>
+  </table>
+</form>
+</div>
+  </body>
+</html>

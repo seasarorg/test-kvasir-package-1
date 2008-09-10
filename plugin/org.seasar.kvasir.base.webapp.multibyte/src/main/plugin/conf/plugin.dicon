@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+  "http://www.seasar.org/dtd/components24.dtd">
+<components>
+  <component name="plugin"
+    class="org.seasar.kvasir.base.webapp.multibyte.impl.MultibytePluginImpl" />
+  <component name="multibyteRequestFilter"
+    class="org.seasar.kvasir.webapp.filter.impl.ServletRequestFilter">
+    <property name="filter">
+      <component
+        class="org.seasar.cms.webdavjp.RequestURIDecodingFilter" />
+    </property>
+  </component>
+</components>

@@ -1,0 +1,59 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+  </head>
+  <body>
+    <div class="title-bar">
+      <span metal:fill-slot="subtitle" tal:content="string:&gt;&gt; ${self/applicationName}のインストール" class="subtitle">&gt;&gt; INSTALL APPLICATION</span>
+    </div>
+    <div metal:fill-slot="body">
+<p tal:condition="self/applicationDescription" tal:content="self/applicationDescription" class="form-help">
+DESCRIPTION OF APPLICATION
+</p>
+<form tal:attributes="action page:@/new-application.do${self/pathname}" method="post">
+  <input tal:attributes="value self/gardId" type="hidden" name="gardId" value="" />
+  <table cellspacing="0" cellpadding="2" width="100%" border="0">
+    <div tal:condition="not:exists:self/installPathname" tal:omit-tag="">
+    <tr>
+      <td valign="center" align="left">
+        <span class="form-label">名前</span>
+      </td>
+      <td valign="center" align="left">
+        <input tal:attributes="value self/name | default" type="text" name="name" value="" size="40" />
+      </td>
+    </tr>
+    <tr>
+      <td valign="center" align="left">
+        <span class="form-label">ラベル</span>
+      </td>
+      <td valign="center" align="left">
+        <input tal:attributes="value request/parameter(label) | default" type="text" name="label" value="" size="40" />
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" align="left">
+        <span class="form-label">説明</span>
+      </td>
+      <td valign="center" align="left" colspan="3">
+        <textarea tal:content="request/parameter(description) | default" style="width:100%" name="description" cols="50" rows="5"></textarea>
+      </td>
+    </tr>
+    </div>
+    <tr tal:condition="exists:self/installPathname">
+      <td valign="center" align="left" width="1%" nowrap="nowrap">
+        <span class="form-label">インストールパス</span>
+      </td>
+      <td tal:content="self/installPathname" valign="center" align="left">
+      </td>
+    </tr>
+    <tr>
+      <td valign="center" align="left">&nbsp;</td>
+      <td valign="top" align="left">
+        <input type="submit" value="インストール" />
+      </td>
+    </tr>
+  </table>
+</form>
+    </div>
+  </body>
+</html>

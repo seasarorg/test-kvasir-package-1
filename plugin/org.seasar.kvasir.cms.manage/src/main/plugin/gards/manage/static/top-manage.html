@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <title>Kvasir/Sora Management Tool</title>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <script tal:attributes="src page:/plugins/js/prototype/prototype.js" type="text/javascript"></script>
+    <script tal:attributes="src page:@/js/top-manage.js" type="text/javascript"></script>
+  </head>
+  <body marginheight="0" marginwidth="0" bgcolor="#339966">
+    <table cellspacing="0" cellpadding="0" width="100%" border="0">
+      <tr>
+        <td valign="top" align="left">
+          <img tal:attributes="src page:@/img/kvasir-icon-edged-small.jpg" width="32" height="30" align="middle" alt="" src="img/kvasir-icon-edged-small.jpg" />&nbsp;
+          <span style="font-size: 14pt; font-family: Verdana">Kvasir/Sora</span>
+          <span tal:content="string: ver.${kvasir/version}" style="font-size: 8pt; font-family: Verdana"> ver.3.0.0</span>
+          <span tal:content="string: (Build: ${kvasir/buildNumber})" style="font-size: 8pt; font-family: Verdana"> (Build: 1)</span>
+        </td>
+        <td tal:condition="self/sites" valign="top" align="right">
+          <form tal:attributes="action page:@/top-manage.changeSite.do" method="post" target="_parent">
+            <select id="selectionForChangingSite" name="heimId">
+              <option tal:repeat="site self/sites" tal:attributes="value site/value; selected site/selected" tal:content="site/content">http://localhost:8080</option>
+            </select>
+            <input id="changeSite" type="button" value="切り替え" /> &nbsp;
+          </form>
+        </td>
+        <td valign="top" align="right">
+          <form action="" method="get">
+            <select id="selectionForGoing" name="selection">
+              <option class="unframe" tal:attributes="value self/top">トップページ</option>
+              <option tal:attributes="value page:@/clipboard.do" value="">クリップボード</option>
+              <option class="unframe" tal:attributes="value page:@/edit-website.do">Webサイト編集</option>
+              <option tal:attributes="value page:@/heim.do" value="">Heim管理</option>
+              <!--
+              <option value="madassu">検索</option>
+              <option value="madassu">Webサイト管理</option>
+              -->
+              <option tal:condition="self/inMidgard" tal:attributes="value page:@/plugin.do" value="">プラグイン管理</option>
+              <!--
+              <option value="madassu">ログビューワ</option>
+              -->
+              <option class="unframe" tal:attributes="value page:@/logout.do" value="">ログアウト</option>
+            </select>
+            <input id="goToSelectedPage" type="button" value=" Go " /> &nbsp;
+          </form>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="org.seasar.kvasir.cms" name="%plugin.name"
+  version="3.0.0-SNAPSHOT" provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="conf" />
+    <library name="org.seasar.kvasir.cms.jar">
+      <export name="**" />
+    </library>
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.base.webapp" />
+    <import plugin="org.seasar.kvasir.page" />
+    <import plugin="org.seasar.kvasir.page.auth" />
+    <import plugin="org.seasar.kvasir.page.ability.content" />
+    <import plugin="org.seasar.kvasir.page.ability.template" />
+  </requires>
+
+  <extension point="org.seasar.kvasir.base.webapp.requestFilters">
+    <request-filter id="pageRequestFilter"
+      dispatcher="REQUEST,FORWARD,INCLUDE" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.base.webapp.requestProcessors">
+    <request-processor id="pageRequestProcessor" method="*" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.cms.pageFilterPhases">
+    <phase id="initialization" after="_first" />
+    <phase id="authentication" after="initialization" />
+    <phase id="permission" after="authentication" />
+    <phase id="filtering" after="permission" default="true" />
+    <phase id="else" after="filtering" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.cms.pageProcessorPhases">
+    <phase id="initialization" after="_first" />
+    <phase id="controller" after="initialization" />
+    <phase id="logic" after="controller" default="true" />
+    <phase id="presentation" after="logic" />
+    <phase id="else" after="presentation" />
+  </extension>
+
+  <!-- PAGE FILTERS -->
+  <extension point="org.seasar.kvasir.cms.pageFilters">
+    <page-filter id="actorBindingPageFilter" phase="authentication" />
+    <page-filter id="permissionPageFilter" phase="permission" />
+    <page-filter id="concealPageFilter" phase="permission" />
+  </extension>
+
+  <!-- PAGE PROCESSORS -->
+  <extension point="org.seasar.kvasir.cms.pageProcessors">
+    <page-processor id="standardPageProcessor" phase="presentation" />
+    <page-processor id="noEntryPageProcessor" phase="else"
+      after="_last" />
+  </extension>
+
+  <!-- PAGE EXCEPTION HANDLERS -->
+  <extension point="org.seasar.kvasir.cms.pageExceptionHandlers">
+    <page-exception-handler id="standardPageExceptionHandler" />
+  </extension>
+
+  <!-- EXCEPTION HANDLERS -->
+  <extension point="org.seasar.kvasir.base.webapp.exceptionHandlers">
+    <exception-handler id="transitionExceptionHandler">
+      <init-param>
+        <param-name>pathname</param-name>
+        <param-value>/templates/exceptions/Exception</param-value>
+      </init-param>
+      <init-param>
+        <param-name>redirect</param-name>
+        <param-value>false</param-value>
+      </init-param>
+    </exception-handler>
+  </extension>
+
+  <!-- JAVASCRIPTS -->
+  <extension point="org.seasar.kvasir.base.webapp.javascripts">
+    <javascript id="prototype" version="1.5.0_rc1"
+      resource-path="js/prototype" />
+    <javascript id="scriptaculous" version="1.6.5"
+      resource-path="js/scriptaculous" />
+  </extension>
+
+  <extension-point id="pageFilters"
+    element-class="org.seasar.kvasir.cms.extension.PageFilterElement" />
+
+  <extension-point id="pageProcessors"
+    element-class="org.seasar.kvasir.cms.extension.PageProcessorElement" />
+
+  <extension-point id="pageExceptionHandlers"
+    element-class="org.seasar.kvasir.cms.extension.PageExceptionHandlerElement" />
+
+  <extension-point id="pageFilterLifecycleListeners"
+    element-class="org.seasar.kvasir.cms.extension.PageFilterLifecycleListenerElement" />
+
+  <extension-point id="pageProcessorLifecycleListeners"
+    element-class="org.seasar.kvasir.cms.extension.PageProcessorLifecycleListenerElement" />
+
+  <extension-point id="pageFilterPhases"
+    element-class="org.seasar.kvasir.cms.extension.PageFilterPhaseElement" />
+
+  <extension-point id="pageProcessorPhases"
+    element-class="org.seasar.kvasir.cms.extension.PageProcessorPhaseElement" />
+</plugin>

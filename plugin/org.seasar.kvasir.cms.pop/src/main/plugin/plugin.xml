@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="org.seasar.kvasir.cms.pop" name="%plugin.name"
+  version="3.0.0-SNAPSHOT" provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="conf" />
+    <library name="org.seasar.kvasir.cms.pop.jar">
+      <export name="**" />
+    </library>
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.page" />
+    <import plugin="org.seasar.kvasir.page.ability.content" />
+    <import plugin="org.seasar.kvasir.page.auth" />
+    <import plugin="org.seasar.kvasir.cms" />
+    <import plugin="org.seasar.kvasir.cms.zpt" />
+  </requires>
+
+  <extension point="org.seasar.kvasir.cms.pop.pops">
+    <pop id="poweredByPop">
+      <form-unit kind="property" id="body" />
+    </pop>
+    <pop id="introductionPop">
+      <form-unit kind="property" id="title" />
+      <form-unit kind="property" id="body" />
+      <form-unit kind="property" id="body-type" human-readable="false" />
+    </pop>
+    <pop id="siteTitlePop">
+      <form-unit kind="property" id="siteTitle" />
+      <form-unit kind="property" id="imageURL" human-readable="false"
+        type="page" />
+      <form-unit kind="property" id="imageAlign" human-readable="false"
+        type="select" default="right top">
+        <option>top</option>
+        <option>right top</option>
+        <option>right</option>
+        <option>right bottom</option>
+        <option>bottom</option>
+        <option>left bottom</option>
+        <option>left</option>
+        <option>left top</option>
+      </form-unit>
+      <form-unit kind="property" id="imageWidth" human-readable="false" />
+      <form-unit kind="property" id="imageHeight"
+        human-readable="false" />
+      <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="body" />
+    </pop>
+    <pop id="contentPop">
+      <form-unit kind="group" id="group.body" />
+      <form-unit kind="property" id="contentBody" />
+      <form-unit kind="property" id="contentMediaType" />
+      <form-unit kind="group" id="group.information" />
+      <form-unit kind="property" id="contentLabel" />
+      <form-unit kind="property" id="contentDescription" />
+      <form-unit kind="property" id="author" />
+      <form-unit kind="property" id="date" human-readable="false" />
+      <form-unit kind="property" id="icon" human-readable="false"
+        type="page" />
+      <form-unit kind="group" id="group.whichToShow" />
+      <form-unit kind="property" id="showInformation"
+        human-readable="false" type="boolean" default="true" />
+      <form-unit kind="property" id="showDescription"
+        human-readable="false" type="boolean" default="true" />
+      <form-unit kind="property" id="showContent" human-readable="false"
+        type="boolean" default="true" />
+      <form-unit kind="group" id="group.template" />
+      <form-unit kind="property" id="body" />
+      <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="defaultContentMediaType"
+        human-readable="false" default="text/x-rst" />
+      <form-unit kind="property" id="usePageLabelAsTitle"
+        human-readable="false" type="boolean" default="true" />
+      <form-unit kind="property" id="title" />
+      <form-unit kind="property" id="pathname"
+        human-readable="false" type="page" default="." />
+    </pop>
+    <pop id="loginUserPop">
+      <form-unit kind="property" id="title" />
+      <form-unit kind="property" id="body" />
+    </pop>
+  </extension>
+  <extension point="org.seasar.kvasir.base.webapp.staticContents">
+    <static-content path="/plugins/images/breadcrumbs-delimiter.gif"
+      resource-path="resources/breadcrumbs-delimiter.gif" />
+  </extension>
+
+  <extension-point id="pops"
+    element-class="org.seasar.kvasir.cms.pop.extension.PopElement" />
+</plugin>

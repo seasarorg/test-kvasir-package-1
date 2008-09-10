@@ -1,0 +1,4 @@
+plainContentHandler.display-name=テキスト形式
+htmlContentHandler.display-name=HTML形式
+wikiContentHandler.display-name=Wiki形式
+rstContentHandler.display-name=reStructuredText形式

@@ -1,0 +1,123 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <script metal:fill-slot="script" type="text/javascript" tal:attributes="src page:@/js/property.js" src="js/property.js"></script>
+    <script metal:fill-slot="includedScript" type="text/javascript" tal:content="structure string:
+function changeVariant(select)
+{
+    location.href='${page:@/property.list.do${self/pathname}}?variant='
+        + select.options[select.selectedIndex].value;
+}
+
+function deleteProperty(form)
+{
+    if (confirm('選択されているプロパティを削除します。よろしいですか？')) {
+        form.action = '${page:@/property.delete.do${self/pathname}}';
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function deleteVariant(form)
+{
+    if (confirm('バリアント「${self/variant}」を削除します。' +
+    'バリアントが持つ全てのプロパティは削除されます。よろしいですか？')) {
+        form.action = '${page:@/property.deleteVariant.do${self/pathname}}';
+        return true;
+    } else {
+        return false;
+    }
+}
+    "></script>
+  </head>
+  <body>
+    <div metal:fill-slot="body" tal:define="variant self/variant">
+<p class="form-help">
+このページが持つプロパティの一覧です。
+</p>
+<table tal:condition="not:variant" cellspacing="0" cellpadding="2" width="100%" border="0">
+  <tr>
+    <td valign="top" align="right">
+      <form tal:attributes="action page:@/property.new.do${self/pathname}" action="" method="get">
+        <input type="submit" value="プロパティを追加..." />
+      </form>
+    </td>
+  </tr>
+</table>
+<form tal:attributes="action page:@/property.list.do${self/pathname}" action="" method="post">
+  <table cellspacing="0" cellpadding="2" width="100%" border="0">
+    <tr>
+      <td width="1%" valign="top" align="left" nowrap="nowrap">
+        <span class="form-label">バリアント</span>
+      </td>
+      <td width="99%" valign="top" align="left">
+        <select name="variants" onchange="changeVariant(this)">
+          <option tal:repeat="definedVariant self/definedVariants" tal:attributes="value definedVariant; selected java:definedVariant.equals(variant)" tal:content="definedVariant | string:デフォルト">バリアント</option>
+        </select>
+      </td>
+    </tr>
+  </table>
+  <table cellspacing="0" cellpadding="2" width="100%" border="0">
+    <tr class="list-header">
+      <td align="left" width="5%">&nbsp;</td>
+      <td align="left" width="30%">名前</td>
+      <td align="left" width="65%">値</td>
+    </tr>
+    <div tal:omit-tag="" tal:repeat="property self/properties">
+      <tr tal:define="even repeat/property/even" tal:attributes='class java:even ? "row-hilite" : null' class="row-hilite">
+        <td valign="top" align="left">
+          <input tal:attributes="value property/name" type="checkbox" name="names" value="name" />
+        </td>
+        <td valign="top" align="left"><a tal:attributes="href page:@/property.edit.do${self/pathname}?names=${property/name}&amp;variant=${variant}" tal:content="string:${property/name}" href="#">a.b.c</a></td>
+        <td tal:define="name property/name" valign="top" align="left">
+          <table tal:condition='java:name.startsWith("color.")' border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>
+                <table border="1" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td tal:attributes="bgcolor property/value" width="24" height="24" bgcolor="#ccffee">&nbsp;</td>
+                  </tr>
+                </table>
+              </td>
+              <td>&nbsp;<span tal:replace="property/value">value1</span></td>
+            </tr>
+          </table>
+          <span tal:condition='java:!name.startsWith("color.")' tal:replace="structure property/renderedValue">value1</span>
+        </td>
+      </tr>
+    </div>
+    <tr tal:condition="">
+      <td valign="top" align="left">
+        <input type="checkbox" name="names" value="name" />
+      </td>
+      <td valign="top" align="left"><a href="#">d.e.f</a></td>
+      <td valign="top" align="left">value2</td>
+    </tr>
+    <tr tal:condition="" class="row-hilite">
+      <td valign="top" align="left">
+        <input type="checkbox" name="names" value="name" />
+      </td>
+      <td valign="top" align="left"><a href="#">g.h.i</a></td>
+      <td valign="top" align="left">value3</td>
+    </tr>
+  </table>
+  <table cellspacing="0" cellpadding="2" border="0">
+    <tr>
+      <td align="left" width="5%">&nbsp;</td>
+      <td align="left" width="95%" nowrap="nowrap">
+        <input tal:condition="" tal:attributes="onclick string:this.form.action='${page:@/property.memory.do${self/pathname}}'" type="submit" value="記憶" />
+        <input tal:condition="self/memoryCount" tal:attributes="onclick string:this.form.action='${page:@/property.copy.do${self/pathname}}'" type="submit" value="ここにコピー" />
+        <input tal:attributes="onclick string:this.form.action='${page:@/property.edit.do${self/pathname}}'" type="submit" value="編集..." />
+        <input tal:attributes="onclick string:this.form.action='${page:@/property.edit2.do${self/pathname}}'" type="submit" value="一括編集..." />
+        <input tal:attributes="onclick string:this.form.action='${page:@/property.rename.do${self/pathname}}'" type="submit" value="名前を変更..." />
+        <input type="submit" value="削除..." onclick="return deleteProperty(this.form)" />
+        <input tal:condition="variant" type="submit" value="このバリアントを削除..." onclick="return deleteVariant(this.form)" />
+        <input type="button" name="selectButton" value="全て選択" onclick="toggleSelect(this.form)" />
+      </td>
+    </tr>
+  </table>
+</form>
+  </div>
+  </body>
+</html>

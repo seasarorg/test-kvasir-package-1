@@ -1,0 +1,6 @@
+plugin.name=Kvasir/Sora Page Ability Content Plugin
+plugin.provider-name=The Seasar Foundation
+plainContentHandler.display-name=Plain Text
+htmlContentHandler.display-name=HTML
+wikiContentHandler.display-name=Wiki
+rstContentHandler.display-name=reStructuredText

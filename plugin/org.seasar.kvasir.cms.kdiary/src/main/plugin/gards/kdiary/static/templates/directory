@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html metal:use-macro="%/templates/frame" lang="ja-JP">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div metal:fill-slot="body" tal:omit-tag="">
+<div tal:repeat="entry self/entries" class="day">
+<h2><span class="date"><a tal:attributes="href entry/URL" tal:content="entry/date" href="/diary/200603/01">2006年03月01日</a></span>
+  <span tal:content="entry/title" class="title">Kvasirミーティング</span></h2>
+<div class="body" tal:content="structure entry/body">
+BODY
+</div>
+<div class="comment" tal:condition="self/common/showComment">
+  <div class="caption">本日のツッコミ(全<span tal:replace="entry/commentCount">1</span>件) [<a tal:attributes="href string:${entry/URL}#c" href="#c">ツッコミを入れる</a>]</div>
+  <div class="commentshort">
+    <p tal:condition="entry/moreComments"><a tal:attributes="href string:${entry/URL}#c01" href="#c01">Before...</a></p>
+    <p tal:repeat="comment entry/comments">
+      <a tal:attributes="name comment/anchor; href string:#${comment/anchor}" tal:content="structure self/common/commentAnchor" name="c01" href="#c01"><span class="canchor">_</span></a>
+      <span class="commentator" tal:content="comment/commentator">Skirnir</span>&nbsp;[<span tal:replace="comment/body">BODY</span>]
+    </p>
+  </div>
+</div>
+</div>
+</div>
+</body>
+</html>

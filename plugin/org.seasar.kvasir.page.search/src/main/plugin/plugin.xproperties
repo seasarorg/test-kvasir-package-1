@@ -1,0 +1,7 @@
+searchSystem=org.seasar.kvasir.page.search.defaultSearchSystem
+plugin.name=Kvasir/Sora Page Search Plugin
+plugin.providerName=The Seasar Foundation
+extensionPoint.searchSystems.name=Search Systems
+searchSystems.luceneSearchSystem.analyzerClassName=org.apache.lucene.analysis.cjk.CJKAnalyzer
+#searchSystems.luceneSearchSystem.analyzerClassName=org.seasar.kvasir.page.search.lucene.WrappedJapaneseAnalyzer
+searchSystems.luceneSearchSystem.senHome=

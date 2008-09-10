@@ -1,0 +1,43 @@
+<html metal:use-macro="templates/frame">
+  <head>
+    <title metal:fill-slot="frame.head.title" tal:content="my/plugin/%pop.searchPop.title">Search</title>
+  </head>
+  <body>
+    <div class="main" metal:fill-slot="frame.body.main">
+    <h2 tal:content="my/plugin/%pop.searchPop.title">Search</h2>
+    <div class="main-content org.seasar.kvasir.cms.toolbox.searchPop">
+      <div class="search-form">
+        <form tal:attributes="action page:@/search.do" method="get" action="">
+          <input type="hidden" name="reset" value="false" />
+          <input tal:attributes="value self/query" type="text" name="query" size="32" value="" />
+          <input tal:attributes="value my/plugin/%pop.searchPop.label.submit" type="submit" value="Go!" />
+        </form>
+      </div>
+      <div class="search-description">
+        <p tal:content="self/lineDescription">DESCRIPTION</p>
+      </div>
+      <div tal:define="indicator self/indicator" tal:condition="exists:indicator" class="search-indicator">
+        <a tal:attributes="href page:@/search.do?query=${self/query}" href="#">|&lt; 譛�蛻�</a>
+        <a tal:repeat="elem indicator/elements" tal:attributes="href page:@/search.do?query=${self/query}&amp;offset=${elem/position}" href="#"><b tal:content="elem/number" tal:omit-tag="not:elem/current">1</b></a>
+        <a tal:condition="" href="#">2</a>
+        <a tal:attributes="href page:@/search.do?query=${self/query}&amp;offset=${indicator/lastPosition}" href="#">譛�蠕� &gt;|</a>
+      </div>
+      <div tal:define="results self/results" class="search-results">
+        <ul tal:condition="results">
+          <li tal:repeat="result results" tal:attributes="style string:list-style-type:none;; list-style-image:none;; list-style-position:outside;; padding-left:24px;; background-image:url(${page:${result/iconURL}});; background-repeat:no-repeat;; background-position:left 0pt;;margin-bottom:16px" class="title">
+            <a tal:attributes="href page:${result/URL}" tal:content="result/title" href="">RESULT1</a></td>
+            <div tal:content="result/summary" class="summary">SUMMARY</div>
+            <div tal:content="string:${result/URL} - ${result/size} - ${result/modifyDate}" class="url">URL</div>
+          </li>
+        </ul>
+      </div>
+      <div tal:define="indicator self/indicator" tal:condition="exists:indicator" class="search-indicator">
+        <a tal:attributes="href page:@/search.do?query=${self/query}" href="#">|&lt; 譛�蛻�</a>
+        <a tal:repeat="elem indicator/elements" tal:attributes="href page:@/search.do?query=${self/query}&amp;offset=${elem/position}" href="#"><b tal:content="elem/number" tal:omit-tag="not:elem/current">1</b></a>
+        <a tal:condition="" href="#">2</a>
+        <a tal:attributes="href page:@/search.do?query=${self/query}&amp;offset=${indicator/lastPosition}" href="#">譛�蠕� &gt;|</a>
+      </div>
+    </div>
+    </div>
+  </body>
+</html>

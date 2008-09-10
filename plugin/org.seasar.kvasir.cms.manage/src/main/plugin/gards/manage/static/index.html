@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" tal:attributes="href page:@/css/manage.css" />
+    <title>Kvasir/Sora Management Tool</title>
+  </head>
+  <frameset rows="30,*">
+    <frame name="manageTop" marginHeight="0" scrolling="no" tal:attributes="src page:@/top-manage.do" src="top-manage.html" />
+    <frameset cols="200,*">
+      <frame name="manageMenu" marginWidth="2" marginHeight="2" tal:attributes="src page:@/menu-manage.do" src="menu-manage.html" />
+      <frame name="manageMain" marginWidth="2" marginHeight="2" tal:attributes="src page:@/main-manage.do${self/pathname}" src="list-page.html" />
+    </frameset>
+  </frameset>
+</html>

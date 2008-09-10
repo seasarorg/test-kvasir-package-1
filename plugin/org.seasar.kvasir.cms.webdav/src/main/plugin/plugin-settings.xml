@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<webdav-plugin-settings>
+  <content-extension>
+    <name>txt</name>
+    <embedded>true</embedded>
+  </content-extension>
+  <content-extension>
+    <name>rst</name>
+    <embedded>true</embedded>
+  </content-extension>
+  <content-extension>
+    <name>wiki</name>
+    <embedded>true</embedded>
+  </content-extension>
+  <content-extension>
+    <name>xproperties</name>
+    <charset>UTF-8</charset>
+  </content-extension>
+  <match path="/root/system/maven2">
+    <charset>UTF-8</charset>
+    <embedded>false</embedded>
+  </match>
+</webdav-plugin-settings>

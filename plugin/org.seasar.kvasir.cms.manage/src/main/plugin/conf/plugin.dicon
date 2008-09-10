@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+  "http://www.seasar.org/dtd/components24.dtd">
+<components>
+  <meta name="expand">"ymir-application.dicon"</meta>
+  <component name="plugin"
+    class="org.seasar.kvasir.cms.manage.impl.ManagePluginImpl" />
+  <component name="manageApplication"
+    class="org.seasar.kvasir.cms.ymir.impl.ApplicationImpl" />
+  <!-- COMPONENT CREATORS -->
+  <component class="org.seasar.kvasir.cms.pop.creator.PopCreator" />
+  <!-- PATH MAPPINGS -->
+  <component class="org.seasar.cms.ymir.impl.PathMappingProviderImpl">
+    <property name="pathMappings">
+      container.findLocalComponents(@org.seasar.cms.ymir.PathMapping@class)
+    </property>
+  </component>
+  <component class="org.seasar.cms.ymir.impl.PathMappingImpl">
+    <arg>"^$"</arg>
+    <arg>"_RootPage"</arg>
+    <arg>"do_execute"</arg>
+    <arg>""</arg>
+    <arg>null</arg>
+    <arg>null</arg>
+  </component>
+  <component class="org.seasar.cms.ymir.impl.PathMappingImpl">
+    <arg>"([^/]+)-([^/]+)\\.([^/]+)\\.do($|/)"</arg>
+    <arg>"${1}${2u}Page"</arg>
+    <arg>"do_${3}"</arg>
+    <arg>"${4}${'}"</arg>
+    <arg>null</arg>
+    <arg>null</arg>
+  </component>
+  <component class="org.seasar.cms.ymir.impl.PathMappingImpl">
+    <arg>"([^/]+)-([^/]+)\\.do($|/)"</arg>
+    <arg>"${1}${2u}Page"</arg>
+    <arg>"do_execute"</arg>
+    <arg>"${3}${'}"</arg>
+    <arg>null</arg>
+    <arg>null</arg>
+  </component>
+  <component class="org.seasar.cms.ymir.impl.PathMappingImpl">
+    <arg>"([^/]+)\\.([^/]+)\\.do($|/)"</arg>
+    <arg>"${1}Page"</arg>
+    <arg>"do_${2}"</arg>
+    <arg>"${3}${'}"</arg>
+    <arg>null</arg>
+    <arg>null</arg>
+  </component>
+  <component class="org.seasar.cms.ymir.impl.PathMappingImpl">
+    <arg>"([^/]+)\\.do($|/)"</arg>
+    <arg>"${1}Page"</arg>
+    <arg>"do_execute"</arg>
+    <arg>"${2}${'}"</arg>
+    <arg>null</arg>
+    <arg>null</arg>
+  </component>
+  <!-- TAB -->
+  <component name="viewTab"
+    class="org.seasar.kvasir.cms.manage.tab.impl.PageTab" />
+  <component name="editTab"
+    class="org.seasar.kvasir.cms.manage.tab.impl.PageTab" />
+  <component name="propertyTab"
+    class="org.seasar.kvasir.cms.manage.tab.impl.PageTab" />
+  <component name="permissionTab"
+    class="org.seasar.kvasir.cms.manage.tab.impl.PageTab" />
+  <component name="contentTab"
+    class="org.seasar.kvasir.cms.manage.tab.impl.PageTab" />
+  <component name="templateTab"
+    class="org.seasar.kvasir.cms.manage.tab.impl.PageTab" />
+  <component name="listTab"
+    class="org.seasar.kvasir.cms.manage.tab.impl.ParentPageTab" />
+  <component name="groupOfUserTab"
+    class="org.seasar.kvasir.cms.manage.tab.impl.UserTab" />
+  <component name="roleOfUserTab"
+    class="org.seasar.kvasir.cms.manage.tab.impl.UserTab" />
+  <component name="userOfGroupTab"
+    class="org.seasar.kvasir.cms.manage.tab.impl.GroupTab" />
+  <component name="roleOfGroupTab"
+    class="org.seasar.kvasir.cms.manage.tab.impl.GroupTab" />
+  <component name="memberOfRoleTab"
+    class="org.seasar.kvasir.cms.manage.tab.impl.RoleTab" />
+  <!-- MENU ENTRY -->
+  <component name="pageNewItemMenuEntry"
+    class="org.seasar.kvasir.cms.manage.menu.impl.PageNewItemMenuEntry" />
+  <component name="directoryNewItemMenuEntry"
+    class="org.seasar.kvasir.cms.manage.menu.impl.PageNewItemMenuEntry" />
+  <component name="userNewItemMenuEntry"
+    class="org.seasar.kvasir.cms.manage.menu.impl.UserNewItemMenuEntry" />
+  <component name="groupNewItemMenuEntry"
+    class="org.seasar.kvasir.cms.manage.menu.impl.GroupNewItemMenuEntry" />
+  <component name="roleNewItemMenuEntry"
+    class="org.seasar.kvasir.cms.manage.menu.impl.RoleNewItemMenuEntry" />
+  <component name="importNewItemMenuEntry"
+    class="org.seasar.kvasir.cms.manage.menu.impl.PageNewItemMenuEntry" />
+</components>

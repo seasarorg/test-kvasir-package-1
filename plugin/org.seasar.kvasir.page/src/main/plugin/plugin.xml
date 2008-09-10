@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="org.seasar.kvasir.page" name="%plugin.name"
+  version="3.0.0-SNAPSHOT" provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="conf" />
+    <library name="org.seasar.kvasir.page.jar">
+      <export name="**" />
+    </library>
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.base.cache" />
+    <import plugin="org.seasar.kvasir.base.dao" />
+  </requires>
+
+  <extension point="org.seasar.kvasir.page.pageTypes">
+    <page-type id="page" icon-resource-path="conf/page/icon.gif" />
+    <page-type id="user" icon-resource-path="conf/user/icon.gif" />
+    <page-type id="group" icon-resource-path="conf/group/icon.gif" />
+    <page-type id="role" icon-resource-path="conf/role/icon.gif" />
+    <page-type id="directory"
+      icon-resource-path="conf/directory/icon.gif" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.page.pageAbilityAlfrs">
+    <page-ability-alfr id="propertyAbilityAlfr" />
+    <page-ability-alfr id="groupAbilityAlfr" />
+    <page-ability-alfr id="roleAbilityAlfr" />
+    <page-ability-alfr id="permissionAbilityAlfr" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.page.nameRestrictions">
+    <name-restriction>
+      <invalid-name></invalid-name>
+      <invalid-name>.</invalid-name>
+      <invalid-name>..</invalid-name>
+      <invalid-char>
+        <![CDATA[\/:*?"<>|;]]>
+      </invalid-char>
+    </name-restriction>
+  </extension>
+
+  <extension-point id="pageListeners"
+    element-class="org.seasar.kvasir.page.extension.PageListenerElement" />
+
+  <extension-point id="pageTypes"
+    element-class="org.seasar.kvasir.page.extension.PageTypeElement" />
+
+  <extension-point id="pageAbilityAlfrs"
+    element-class="org.seasar.kvasir.page.extension.PageAbilityAlfrElement" />
+
+  <extension-point id="pageGards"
+    element-class="org.seasar.kvasir.page.extension.PageGardElement" />
+
+  <extension-point id="pageGardInstalls"
+    element-class="org.seasar.kvasir.page.extension.PageGardInstallElement" />
+
+  <extension-point id="nameRestrictions"
+    element-class="org.seasar.kvasir.page.extension.NameRestrictionElement" />
+</plugin>

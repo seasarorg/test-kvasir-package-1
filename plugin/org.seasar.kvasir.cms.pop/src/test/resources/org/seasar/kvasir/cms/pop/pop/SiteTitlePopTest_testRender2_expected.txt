@@ -1,0 +1,1 @@
+<div style="background-image:url(page:/image.jpg); background-repeat:no-repeat; background-position:right; height:100px"><a href="page:" style="margin-right:200px">Web Site by Kvasir/Sora</a></div>

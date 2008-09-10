@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <title>Kvasir/Sora Management Tool</title>
+  </head>
+  <body>
+    <table tal:content="structure self/pageTree" width="100" border="0" cellspacing="0" cellpadding="0" style="font-size: 9pt">
+      <tr>
+        <td nowrap="nowrap">
+          <a name="" href="#"><img src="img/icon_minus.gif" border="0"></a><a target="manageMain" href="#"><img src="img/icons/directory.gif" width="16" height="16" border="0" alt="" /></a>&nbsp;<a target="manageMain" href="#"> (Root)</a>
+        </td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">
+          <img src="img/icon_space.gif" border="0" /><a name="/users" href="#"><img src="img/icon_plus.gif" border="0"></a><a target="manageMain" href="#"><img src="img/icon_org.seasar.kvasir.plugin.page.type.Directory.gif" width="16" height="16" border="0" alt="" /></a>&nbsp;<a target="manageMain" href="main-manage.do/users">users (Users)</a>
+        </td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">
+          <img src="img/icon_space.gif" border="0" /><a name="/groups" href="#"><img src="img/icon_plus.gif" border="0"></a><a target="manageMain" href="#"><img src="img/icon_org.seasar.kvasir.plugin.page.type.Directory.gif" width="16" height="16" border="0" alt="" /></a>&nbsp;<a target="manageMain" href="main-manage.do/groups">groups (Groups)</a>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

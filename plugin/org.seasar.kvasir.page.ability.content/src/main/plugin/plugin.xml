@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://kvasir.sandbox.seasar.org/plugin/3.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://kvasir.sandbox.seasar.org/plugin/3.0.0 http://kvasir.sandbox.seasar.org/support/plugin-3_0_0.xsd"
+  id="org.seasar.kvasir.page.ability.content" name="%plugin.name"
+  version="3.0.0-SNAPSHOT" provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="conf" />
+    <library name="org.seasar.kvasir.page.ability.content.jar">
+      <export name="**" />
+    </library>
+    <library name="lib" expand="true" />
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.base.dao" />
+    <import plugin="org.seasar.kvasir.page" />
+  </requires>
+
+  <extension point="org.seasar.kvasir.page.pageAbilityAlfrs">
+    <page-ability-alfr id="contentAbilityAlfr" />
+  </extension>
+
+  <extension
+    point="org.seasar.kvasir.page.ability.content.contentHandlers">
+    <content-handler id="defaultContentHandler" />
+    <content-handler id="plainContentHandler" type="text/plain"
+      display-name="%plainContentHandler.display-name" />
+    <content-handler id="htmlContentHandler" type="text/html"
+      display-name="%htmlContentHandler.display-name" />
+    <content-handler id="wikiContentHandler" type="text/x-wiki"
+      display-name="%wikiContentHandler.display-name" />
+    <content-handler id="rstContentHandler" type="text/x-rst"
+      display-name="%rstContentHandler.display-name" />
+  </extension>
+
+  <extension-point id="contentHandlers"
+    element-class="org.seasar.kvasir.page.ability.content.extension.ContentHandlerElement" />
+</plugin>

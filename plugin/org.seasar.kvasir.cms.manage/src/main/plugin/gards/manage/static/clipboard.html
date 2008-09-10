@@ -1,0 +1,92 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <script metal:fill-slot="includedScript" type="text/javascript" tal:content="structure string:
+&lt;!--
+isSelected = false;
+
+function toggleSelect(form)
+{
+    if (isSelected == false) {
+        for (i = 0; i &lt; form.length; i++) {
+            form.elements[i].checked = true;
+        }
+        isSelected = true;
+        form.selectButton.value = '選択を解除';
+        return isSelected;
+    } else {
+        for (i = 0; i &lt; form.length; i++) {
+            form.elements[i].checked = false;
+        }
+        isSelected = false;
+        form.selectButton.value = '全て選択';
+        return isSelected;
+    }
+}
+
+function deleteObject(form)
+{
+    if (confirm('選択されているオブジェクトをクリップボードから除去します。よろしいですか？')) {
+        form.action = '${page:@/clipboard.delete.do}';
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function clearObject(form)
+{
+    if (confirm('全てのオブジェクトをクリップボードから除去します。よろしいですか？')) {
+        form.action = '${page:@/clipboard.clear.do}';
+        return true;
+    } else {
+        return false;
+    }
+}
+//--&gt;
+    "></script>
+  </head>
+  <body>
+    <div metal:fill-slot="title" class="title-bar">
+      クリップボード
+    </div>
+    <div metal:fill-slot="body">
+<p class="form-help">
+クリップボードはオブジェクトを一時的に保存しておくための領域です。クリップボードにオブジェクトを追加するには、オブジェクトの一覧表示画面などで保存したいオブジェクトにチェックをつけて <em>記憶</em> ボタンを押して下さい。クリップボードを利用することで、例えばページをディレクトリにコピーしたり移動したりすることができます。
+</p>
+<form action="" method="post">
+  <table cellspacing="0" cellpadding="2" width="100%" border="0">
+    <tr class="list-header">
+      <td width="16">&nbsp;</td>
+      <td align="left" width="19%" nowrap="nowrap">種類</td>
+      <td align="left" width="80%">内容</td>
+    </tr>
+    <div tal:repeat="entry self/clipboard/entries">
+      <tr tal:define="even repeat/entry/even" tal:attributes='class java:even ? null : "row-hilite"' class="row-hilite">
+        <td valign="top" align="left" width="16">
+          <input tal:attributes="value entry/name" type="checkbox" name="names" value="" />
+        </td>
+        <td tal:content="entry/type" valign="top" align="left" width="19%">TYPE</td>
+        <td tal:content="entry/detail" valign="top" align="left">DETAIL</td>
+      </tr>
+    </div>
+    <tr tal:condition="">
+      <td valign="top" align="left" width="16">
+        <input type="checkbox" name="names" value="" />
+      </td>
+      <td valign="top" align="left">TYPE</td>
+      <td valign="top" align="left">DETAIL</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td colspan="2" valign="top" align="left">
+        <input type="submit" value="削除" onclick="return deleteObject(this.form)" />
+        <input type="submit" value="クリア" onclick="return clearObject(this.form)" />
+        <input type="submit" name="selectButton" value="全て選択" onclick="toggleSelect(this.form); return false">
+      </td>
+    </tr>
+  </table>
+</form>
+    </div>
+  </body>
+</html>

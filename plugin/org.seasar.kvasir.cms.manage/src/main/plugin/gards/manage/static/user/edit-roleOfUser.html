@@ -1,0 +1,21 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="../css/manage.css" />
+  </head>
+  <body>
+    <div metal:fill-slot="body">
+<p class="form-text">
+このユーザに直接割り当てられているロール
+</p>
+<form tal:attributes="action page:@/edit-roleOfUser.do${self/pathname}" action="" method="post">
+  <p>
+    <select name="roleIds" multiple size="10">
+      <option tal:repeat="role self/roles" tal:attributes="selected role/userInRole; value role/id" value="10"><span tal:replace="role/pathname">/path/to/role1</span><span tal:define="label role/%label" tal:condition="label" tal:replace="string: ($label)"> (Role1)</span></option>
+      <option tal:condition="">/path/to/role2 (Role2)</option>
+    </select>
+  </p>
+  <p><input type="submit" value="変更を保存" /></p>
+</form>
+    </div>
+  </body>
+</html>

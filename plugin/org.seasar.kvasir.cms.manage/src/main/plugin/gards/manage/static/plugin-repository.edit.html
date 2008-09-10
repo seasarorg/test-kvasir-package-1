@@ -1,0 +1,48 @@
+<span id="editRepositoryNotes"></span>
+<p>
+リモートレポジトリを修正します。
+</p>
+<form action="">
+  <div tal:condition="self/systemRepo" tal:omit-tag="">
+    <input type="hidden" id="repositoryId"
+      tal:attributes="value self/repositoryId"
+    />
+    <input type="hidden" id="repositoryUrl"
+      tal:attributes="value self/repositoryUrl"
+    />
+  </div>
+  <table>
+    <tr>
+      <th>ID</th>
+      <td>
+        <input tal:condition="not:self/systemRepo" type="text" id="repositoryId" size="30"
+          tal:attributes="value self/repositoryId"
+        />
+        <span tal:condition="self/systemRepo"
+          tal:content="self/repositoryId">REPOSITORY ID</span>
+        <span tal:condition="not:self/systemRepo">(英数字と幾つかの記号のみ)</span>
+      </td>
+    </tr>
+    <tr>
+      <th>URL</th>
+      <td>
+        <input tal:condition="not:self/systemRepo" type="text" id="repositoryUrl" size="80"
+          tal:attributes="value self/repositoryUrl"
+        />
+        <span tal:condition="self/systemRepo"
+          tal:content="self/repositoryUrl">REPOSITORY URL</span>
+      </td>
+    </tr>
+    <tr>
+      <th>Enabled</th>
+      <td>
+        <input type="checkbox" id="repositoryEnabled" 
+          tal:attributes="checked self/repositoryEnabled"
+        />
+      </td>
+    </tr>
+  </table>
+  <input type="hidden" id="targetRepositoryId" tal:attributes="value self/repositoryId" />
+  <input type="button" id="updateRepository" value="更新" />
+  <input tal:condition="not:self/systemRepo" type="button" id="deleteRepository" value="削除" />
+</form>

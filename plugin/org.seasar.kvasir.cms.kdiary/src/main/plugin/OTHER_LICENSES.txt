@@ -1,0 +1,5 @@
+This product includes original or modified version of third party
+product(s):
+
+  kdiary.css - tDiary (http://www.tdiary.org/)
+    licensed by GPL.

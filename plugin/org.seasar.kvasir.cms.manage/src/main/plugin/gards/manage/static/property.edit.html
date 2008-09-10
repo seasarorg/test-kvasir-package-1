@@ -1,0 +1,90 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <script metal:fill-slot="script" type="text/javascript" tal:attributes="src page:@/js/property.js" src="js/property.js"></script>
+  </head>
+  <body>
+    <div metal:fill-slot="body" tal:define="variant self/variant">
+<p class="form-help">
+下のフォームを用いてこのページが持つプロパティを編集することができます。
+</p>
+<form tal:attributes="action page:@/property.edit.do${self/pathname}" action="" method="post">
+  <table tal:condition="self/properties" cellspacing="0" cellpadding="2" width="100%" border="0">
+    <tr>
+      <td width="1%" valign="top" align="left" nowrap="nowrap">
+        <span class="form-label">バリアント</span>
+      </td>
+      <td width="99%" valign="top" align="left">
+        <select id="variantSelector" name="variants">
+          <option value="_undefined">バリアントを追加...</option>
+          <option tal:repeat="definedVariant self/definedVariants" tal:attributes="value definedVariant; selected java:definedVariant.equals(variant)" tal:content="definedVariant | string:デフォルト">バリアント</option>
+        </select>
+        <input tal:condition="self/undefinedVariant" type="text" name="variants" size="24" value="" />
+      </td>
+    </tr>
+  </table>
+  <table tal:condition="self/properties" cellspacing="0" cellpadding="0" width="100%" border="0">
+    <tr tal:repeat="property self/properties">
+      <td tal:define='even repeat/property/even; rowStyleClass java:even ? "row-hilite" : null; listHeaderStyleClass java:even ? "list-header-hilite" : "list-header"; name property/name; value property/value'>
+        <input tal:attributes="value property/name" type="hidden" name="names" value="a.b.c" />
+        <table cellspacing="0" cellpadding="2" width="100%" border="0">
+          <tr tal:attributes="class rowStyleClass" class="row-hilite">
+            <td tal:attributes="class listHeaderStyleClass" class="list-header-hilite" align="left" valign="top" width="1%" nowrap="nowrap">名前</td>
+            <td tal:content="name" align="left" valign="top">a.b.c</td>
+          </tr>
+          <tr tal:attributes="class rowStyleClass" class="row-hilite">
+            <td tal:attributes="class listHeaderStyleClass" class="list-header-hilite" align="left" valign="top" width="1%" nowrap="nowrap">値</td>
+            <td align="left" valign="top">
+              <div tal:condition='java:name.startsWith("color.")' tal:omit-tag="">
+                <table border="0" cellspacing="2" cellpadding="0">
+                  <tr>
+                    <td width="36" valign="top" nowrap="nowrap">
+                      <table border="1" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td class="colorSample" tal:attributes="id string:sample:${name}; bgcolor value" width="24" height="24" id="color:a.b.c" bgcolor="#ccffee">&nbsp;</td>
+                        </tr>
+                      </table>
+                      &nbsp;
+                    </td>
+                    <td width="1%" valign="top" nowrap="nowrap">
+                      <input class="colorInput" tal:attributes="id string:input:${name}; name string:value:${name}; value value" type="text" id="text:a.b.c" name="value:a.b.c" size="36" value="value1" />&nbsp;
+                    </td>
+                    <td width="98%" valign="top" nowrap="nowrap">
+                      <input class="colorResetter" tal:attributes="id string:resetter:${name}" type="button" value="元に戻す" />
+                    </td>
+                  </tr>
+                  <tr class="palette" tal:attributes="id string:paletteHolder:${name}">
+                    <td colspan="3">
+                      <div style="float:left" tal:attributes="id string:palette:${name}"></div>
+                      <input class="paletteCloser" tal:attributes="id string:closer:${name}" type="button" value="閉じる" />
+                      <div style="clear:both"></div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div tal:condition='java:!name.startsWith("color.")' tal:omit-tag="">
+                <textarea tal:condition="property/large" class="valueInput" tal:attributes="id string:input:${name}; name string:value:${name}" tal:content="value" rows="10"></textarea>
+                <div tal:condition="not:property/large" tal:omit-tag="">
+                  <input class="valueInput" tal:attributes="id string:input:${name}; name string:value:${name}; value value" />
+                  <input class="valueResizer" tal:attributes="id string:resizer:${name}" type="button" value="+" />
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input tal:attributes="onclick string:this.form.action='${page:@/property.update.do${self/pathname}}'" type="submit" value="変更" />
+        <input tal:attributes="onclick string:this.form.action='${page:@/property.list.do${self/pathname}}'" type="submit" value="戻る" />
+      </td>
+    </tr>
+  </table>
+  <p tal:condition="not:self/properties" class="form-msg">
+    <input tal:attributes="onclick string:this.form.action='${page:@/property.list.do${self/pathname}}'" type="submit" value="戻る" />
+  </p>
+</form>
+    </div>
+  </body>
+</html>

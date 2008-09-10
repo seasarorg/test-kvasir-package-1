@@ -1,0 +1,47 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <script metal:fill-slot="script" type="text/javascript" tal:attributes="src page:@/js/property.js" src="js/property.js"></script>
+    <script metal:fill-slot="includedScript" type="text/javascript" tal:content="structure string:
+&lt;!--
+//--&gt;
+    "></script>
+  </head>
+  <body>
+    <div metal:fill-slot="body" tal:define="variant self/variant">
+<p class="form-help">
+下のフォームを用いてこのページが持つプロパティを一括編集することができます。Javaのプロパティファイルと同じ形式で記述して下さい。（非ASCII文字が含まれている場合は自動的にUnicodeエスケープされます。）なお同名のプロパティが存在しない場合は新たに追加されます。
+</p>
+<form tal:attributes="action page:@/property.update2.do${self/pathname}" action="" method="post">
+  <input tal:attributes="value variant" type="hidden" name="variant" value="" />
+  <table cellspacing="0" cellpadding="2" width="100%" border="0">
+    <tr>
+      <td width="1%" valign="top" align="left" nowrap="nowrap">
+        <span class="form-label">バリアント：</span>
+      </td>
+      <td tal:content="variant | string:デフォルト" width="99%" valign="top" align="left"></td>
+  </tr>
+  </table>
+  <table cellspacing="0" cellpadding="0" width="100%" border="0">
+    <tr>
+      <td valign="top" align="left">
+        <textarea tal:content="self/body | default" style="width: 100%" name="body" cols="50" rows="20" wrap="off"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" align="right">
+        <input type="checkbox" name="replace" value="true" />&nbsp;
+        この内容で現在のバリアントに含まれる全てのプロパティを置き換える
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" align="left">
+        <input type="submit" value="変更" />
+        <input tal:attributes="onclick string:this.form.action='${page:@/property.list.do${self/pathname}}'" type="submit" value="戻る" />
+      </td>
+    </tr>
+  </table>
+</form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+<html metal:use-macro="%/frame.html">
+  <head>
+    <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
+    <script metal:fill-slot="script" type="text/javascript" tal:attributes="src page:@/js/property.js" src="js/property.js"></script>
+    <script metal:fill-slot="includedScript" type="text/javascript" tal:content="structure string:
+function changeHeight(form)
+{
+    var idx = form.elements['type'].selectedIndex;
+    var type = form.elements['type'].options[idx].value;
+    var rows = 1;
+    if (type == 'text') {
+        rows = 10;
+    } else if (type == 'lines') {
+        rows = 10;
+    }
+    form.elements['value'].rows = rows;
+}
+    "></script>
+  </head>
+  <body>
+    <div metal:fill-slot="body">
+<p class="form-help">
+以下のフォームを用いてプロパティを追加することができます。
+</p>
+<form tal:attributes="action page:@/property.new.do${self/pathname}" action="" method="post">
+  <table cellspacing="0" cellpadding="2" width="100%" border="0">
+    <tr>
+      <td align="left" valign="top" width="1%" nowrap="nowrap">
+        <span class="form-label">名前</span>
+      </td>
+      <td align="left" valign="top">
+        <input tal:attributes="value self/name" type="text" name="name" size="64" value=""/>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" width="1%" nowrap="nowrap">
+        <span class="form-label">値</span>
+      </td>
+      <td align="left" valign="top">
+        <textarea tal:content="self/value" name="value" style="width:100%" cols="36" rows="1"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" align="left">&nbsp;</td>
+      <td valign="top" align="left">
+        <input type="submit" value="追加" />
+        <input tal:attributes="onclick string:this.form.action='${page:@/property.list.do${self/pathname}}'" type="submit" value="キャンセル" />
+      </td>
+    </tr>
+  </table>
+</form>
+<p class="form-help">
+以下のフォームを用いてプロパティを一括追加することができます。Javaのプロパティファイルと同じ形式で記述して下さい。（非ASCII文字が含まれている場合は自動的にUnicodeエスケープされます。）
+</p>
+<form tal:attributes="action page:@/property.new.do${self/pathname}" action="" method="post">
+  <table cellspacing="0" cellpadding="2" width="100%" border="0">
+    <tr>
+      <td valign="top" align="left">
+        <textarea tal:content="body | default" style="width: 100%" name="properties" cols="50" rows="20" wrap="off"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" align="right">
+        <input type="checkbox" name="overwrite" value="true" />
+        同名のプロパティが既に存在する場合は上書きする
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" align="left">
+        <input type="submit" value="追加" />
+        <input tal:attributes="onclick string:this.form.action='${page:@/property.list.do${self/pathname}}'" type="submit" value="キャンセル" />
+      </td>
+    </tr>
+  </table>
+</form>
+    </div>
+  </body>
+</html>

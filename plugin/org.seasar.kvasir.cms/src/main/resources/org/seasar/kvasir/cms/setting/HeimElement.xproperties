@@ -1,0 +1,8 @@
+description=Element that represents a Web site managed by Kvasir/Sora.
+id.description=ID for Web site. 0 is bound to the default Web site. \
+    You can specify any number (larger than 9) for new Web site.
+site.description=URL of Web site. \
+    Kvasir/Sora maps URL and site ID, and When request for the URL is sent,
+    it responds the page in page tree bound to site ID. \
+    If you would like to manage http://www.kvasir-sora.org/, \
+    specify like "http://www.kvasir-sora.org/".

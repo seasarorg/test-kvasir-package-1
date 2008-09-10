@@ -1,0 +1,80 @@
+.plugin .text {
+    width: 50%;
+    min-width: 16em;
+}
+
+.plugin textarea {
+    width: 90%;
+}
+
+.plugin .label {
+    font-weight: normal;
+    font-family: 'arial black' sans-serif;
+    margin-top: 2ex;
+    padding-bottom: 1ex;
+}
+
+.plugin .description {
+    font-size: small;
+    margin-left: 1em;
+    padding-bottom: 1ex;
+    padding-right: 2em;
+    color: #666666;
+}
+
+.plugin .value {
+    margin-left: 1em;
+}
+
+.plugin .subunit {
+    padding-right: 1em;
+    font-family: 'arial', sans-selif;
+}
+
+.plugin ul.first {
+    border-style: dashed;
+    border-width: 1px;
+    border-color: #666666;
+    background-color: #f9f9f9;
+}
+
+.plugin ul.second {
+    border-style: dashed;
+    border-width: 1px;
+    border-color: #666666;
+    background-color: #f0f0f0;
+    margin-right: 1em;
+    margin-bottom: 2ex;
+    padding-right: 1em;
+    padding-bottom: 2ex;
+}
+
+.plugin ul.second .label {
+    font-size: small;
+}
+
+.plugin ul.second .value {
+    font-size: small;
+}
+
+.plugin .buttons {
+    text-align: right;
+}
+
+.plugin .prototype .value {
+    display: none;
+}
+
+.plugin .prototype .prototype .add {
+    display: none;
+}
+
+.plugin .prototype .delete {
+    display: none;
+}
+
+.plugin .required {
+    color: red;
+    font-weight: bold;
+    font-family: 'arial', sans-selif;
+}

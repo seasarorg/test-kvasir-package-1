@@ -1,0 +1,71 @@
+<div id="notes"><div class="notes" tal:condition="self/notes" tal:repeat="note self/notes/notes" tal:content="note/%value"></div></div>
+<form>
+  <input tal:attributes="value self/pluginId" type="hidden" name="pluginId" />
+  <ul class="first">
+    <li tal:repeat="attribute self/settings/attributes" tal:attributes="class attribute/styleClass">
+      <input tal:condition="exists:attribute/index" tal:attributes="name attribute/name; value attribute/index" type="hidden" />
+      <div class="label">
+        <span tal:content="attribute/label">LABEL</span><span class="required" tal:condition="attribute/required" tal:content="my/plugin/%app.label.plugin.required">REQUIRED</span>
+        <input class="delete" tal:condition="attribute/deletable" tal:attributes="value my/plugin/%app.label.plugin.delete" type="button" />
+        <input class="add" tal:condition="attribute/addable" tal:attributes="value my/plugin/%app.label.plugin.add" type="button" />
+      </div>
+      <div class="description" tal:content="attribute/description">DESCRIPTION</div>
+      <div class="value" tal:condition="attribute/large">
+        <textarea tal:attributes="id attribute/id; name attribute/indexedName" tal:content="attribute/value" rows="10"></textarea>
+      </div>
+      <div class="value" tal:condition="not:attribute/large">
+        <div tal:omit-tag="" tal:condition="attribute/boolean">
+          <span class="subunit">
+            <input tal:attributes='id attribute/id; name attribute/indexedName; checked java:"true".equals(attribute.getValue())' type="radio" value="true" /> true
+          </span>
+          <span class="subunit">
+            <input tal:attributes='id attribute/id; name attribute/indexedName; checked java:!"true".equals(attribute.getValue())' type="radio" value="false" /> false
+          </span>
+        </div>
+        <div tal:omit-tag="" tal:condition="not:attribute/boolean">
+          <span><input class="expand" type="button" value="+" /><input class="text" tal:attributes="id attribute/id; name attribute/indexedName; value attribute/value" type="text" /></span>
+        </div>
+      </div>
+    </li>
+    <li tal:repeat="child self/settings/children" tal:attributes="class child/styleClass">
+      <input tal:condition="exists:child/index" tal:attributes="name child/name; value child/index" type="hidden" />
+      <div class="label">
+        <span tal:content="child/label">LABEL</span>
+        <input class="delete" tal:condition="child/deletable" tal:attributes="value my/plugin/%app.label.plugin.delete" type="button" />
+        <input class="add" tal:condition="child/addable" tal:attributes="value my/plugin/%app.label.plugin.add" type="button" />
+      </div>
+      <div class="description" tal:content="child/description">DESCRIPTION</div>
+      <ul class="second">
+        <li tal:repeat="attribute child/attributes" tal:attributes="class attribute/styleClass">
+          <input tal:condition="exists:attribute/index" tal:attributes="name attribute/name; value attribute/index" type="hidden" />
+          <div class="label">
+            <span tal:content="attribute/label">LABEL</span><span class="required" tal:condition="attribute/required" tal:content="my/plugin/%app.label.plugin.required">REQUIRED</span>
+            <input class="delete" tal:condition="attribute/deletable" tal:attributes="value my/plugin/%app.label.plugin.delete" type="button" />
+            <input class="add" tal:condition="attribute/addable" tal:attributes="value my/plugin/%app.label.plugin.add" type="button" />
+          </div>
+          <div class="description" tal:content="attribute/description">DESCRIPTION</div>
+          <div class="value" tal:condition="attribute/large">
+            <textarea tal:attributes="id attribute/id; name attribute/indexedName" tal:content="attribute/value" rows="10"></textarea>
+          </div>
+          <div class="value" tal:condition="not:attribute/large">
+            <div tal:omit-tag="" tal:condition="attribute/boolean">
+              <span class="subunit">
+                <input tal:attributes='id attribute/id; name attribute/indexedName; checked java:"true".equals(attribute.getValue())' type="radio" value="true" /> true
+              </span>
+              <span class="subunit">
+                <input tal:attributes='id attribute/id; name attribute/indexedName; checked java:!"true".equals(attribute.getValue())' type="radio" value="false" /> false
+              </span>
+            </div>
+            <div tal:omit-tag="" tal:condition="not:attribute/boolean">
+              <span><input class="expand" type="button" value="+" /><input class="text" tal:attributes="id attribute/id; name attribute/indexedName; value attribute/value" type="text" /></span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <p class="buttons">
+    <input id="update" type="button" tal:attributes="value my/plugin/%app.label.plugin.update" value="UPDATE" />
+    <input id="reset" type="button" tal:attributes="value my/plugin/%app.label.plugin.reset" value="RESET" />
+  </p>
+</form>

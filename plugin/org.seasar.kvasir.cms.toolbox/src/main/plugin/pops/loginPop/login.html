@@ -1,0 +1,16 @@
+<div style="color:red;font-weight:bold;border-style:solid;border-width:1px;border-color:red;padding:0.5ex" tal:condition="note">
+  <p style="margin:0px;padding:0.5ex" tal:content="note">ERROR</p>
+</div>
+<form tal:attributes="action page:/plugins/toolbox/login.do${that/pathname | string:}" method="post" action="">
+    <div class="row">
+      <span class="label" tal:content="plugin/%pop.loginPop.label.name">USER NAME</span>
+      <span class="textinput"><input type="text" name="name" size="12" value="" /></span>
+    </div>
+    <div class="row">
+      <span class="label" tal:content="plugin/%pop.loginPop.label.password">PASSWORD</span>
+      <span class="textinput"><input type="password" name="password" size="12" value="" /></span>
+    </div>
+    <div class="row">
+      <span class="submit"><input tal:attributes="value plugin/%pop.loginPop.label.submit.login" type="submit" value="LOGIN" /></span>
+    </div>
+</form>

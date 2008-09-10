@@ -1,0 +1,27 @@
+<div id="notes"><div class="notes" tal:condition="self/notes" tal:repeat="note self/notes/notes" tal:content="note/%value"></div></div>
+プラグイン<span tal:content="self/pluginId">{0}</span>（バージョン : <span tal:content="self/pluginVersion">{1}</span>）をインストールしますか?
+<br />
+<input type="button" id="doInstallPlugin" value="インストール" />
+<input type="button" id="cancelInstallPlugin" value="キャンセル" />
+<input type="hidden" id="pluginIdForInstall" tal:attributes="value self/pluginId" />
+<input type="hidden" id="pluginVersionForInstall" tal:attributes="value self/pluginVersion" />
+<input type="hidden" id="excludeSnapshotForInstall" tal:attributes="value self/excludeSnapshot" />
+
+<div tal:condition="self/installCandidate/dependencies">
+<br />
+以下のプラグインが一緒にインストールされます。
+<table>
+  <thead>
+    <tr>
+      <th>プラグインID</th>
+      <th>バージョン</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr tal:repeat="plugin self/installCandidate/dependencies">
+      <td tal:content="plugin/id">hoge plugin id</td>
+      <td tal:content="plugin/version">1.0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>

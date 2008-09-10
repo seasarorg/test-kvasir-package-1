@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://kvasir.sandbox.seasar.org/plugin/3.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://kvasir.sandbox.seasar.org/plugin/3.0.0 http://kvasir.sandbox.seasar.org/support/plugin-3_0_0.xsd"
+  id="org.seasar.kvasir.base.webapp" name="%plugin.name"
+  version="3.0.0-SNAPSHOT" provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="conf" />
+    <library name="org.seasar.kvasir.base.webapp.jar">
+      <export name="**" />
+    </library>
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.base.mime" />
+  </requires>
+
+  <extension point="org.seasar.kvasir.base.webapp.requestProcessors">
+    <request-processor id="staticContentProcessor" phase="controller" />
+  </extension>
+
+  <extension-point id="requestFilters"
+    element-class="org.seasar.kvasir.webapp.extension.RequestFilterElement" />
+
+  <extension-point id="requestProcessors"
+    element-class="org.seasar.kvasir.webapp.extension.RequestProcessorElement" />
+
+  <extension-point id="exceptionHandlers"
+    element-class="org.seasar.kvasir.webapp.extension.ExceptionHandlerElement" />
+
+  <extension-point id="staticContents"
+    element-class="org.seasar.kvasir.base.webapp.extension.StaticContentElement" />
+
+  <extension-point id="javascripts"
+    element-class="org.seasar.kvasir.base.webapp.extension.JavascriptElement" />
+
+  <extension-point id="csss"
+    element-class="org.seasar.kvasir.base.webapp.extension.CssElement" />
+
+  <extension-point id="useJavascripts"
+    element-class="org.seasar.kvasir.base.webapp.extension.UseJavascriptElement" />
+
+  <extension-point id="useCsss"
+    element-class="org.seasar.kvasir.base.webapp.extension.UseCssElement" />
+</plugin>

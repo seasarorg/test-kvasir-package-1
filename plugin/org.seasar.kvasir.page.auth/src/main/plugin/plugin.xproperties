@@ -1,0 +1,3 @@
+authSystem=org.seasar.kvasir.page.auth.defaultAuthSystem
+plugin.name=Kvasir/Sora Page Auth Plugin
+plugin.providerName=The Seasar Foundation

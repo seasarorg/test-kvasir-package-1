@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html metal:use-macro="%/templates/frame" lang="ja-JP">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div metal:fill-slot="body" tal:omit-tag="">
+<div tal:condition="notes">
+  <p class="message" tal:repeat="note notes/notes" tal:content="note/%value">ERROR MESSAGE</p>
+</div>
+<div class="form">
+  <form tal:attributes="action page:@/action/edit.do" method="post">
+    <p>
+      <input class="field" tal:attributes="value year" name="year" tabindex="1" accesskey="Y" size="4" />年
+      <input class="field" tal:attributes="value month" name="month" tabindex="2" accesskey="M" size="2" />月
+      <input class="field" tal:attributes="value day" name="day" tabindex="3" accesskey="D" size="2" />日
+      <input type="submit" tabindex="4" accesskey="E" name="edit" value="この日付の日記を編集" />
+    </p>
+    <p>タイトル: <input class="field" tal:attributes="value title" name="title" tabindex="5" accesskey="T" size="40" /></p>
+    <p>本文:<br />
+    <textarea tal:content="body" name="body" tabindex="6" accesskey="C" cols="70" rows="15">BODY</textarea></p>
+    <p><input type="submit" tal:attributes="name self/submitName; value self/submitValue" tabindex="8" accesskey="A" value="登録" />&nbsp;&nbsp;この日の日記を隠す<input tal:attributes="checked self/hide" type="checkbox" name="hide" value="true" tabindex="9" accesskey="H" value="true" /></a>
+  </form>
+</div>
+</div>
+</body>
+</html>

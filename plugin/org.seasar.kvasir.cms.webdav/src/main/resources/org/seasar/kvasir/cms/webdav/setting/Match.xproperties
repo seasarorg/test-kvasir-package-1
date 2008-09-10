@@ -1,0 +1,6 @@
+description=Settings by condition.
+path.description=Path condition that represents pages to apply this setting.
+charset.description=Character set of contents having the extension.
+embedded.description=Whether contents having the extension are embed-type contents.
+internal-charset.description=Text file's encoding in the system. (default: the same as 'default-charset')
+keep-concealed-when-created.description=Whether keeping a page concealed when it is created. (default: false)

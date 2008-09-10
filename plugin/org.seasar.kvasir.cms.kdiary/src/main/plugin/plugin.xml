@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.seasar.org/kvasir_plugin/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.seasar.org/kvasir_plugin/4.0.0 http://www.skirnir.net/~skirnir/kvasir_plugin.xsd"
+  id="org.seasar.kvasir.cms.kdiary" name="Kvasir/Sora CMS Kdiary Plugin"
+  version="3.0.0-SNAPSHOT" provider-name="The Seasar Foundation">
+  <runtime>
+    <library name="conf" />
+    <library name="org.seasar.kvasir.cms.kdiary.jar">
+      <export name="**" />
+    </library>
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.base.dao" />
+    <import plugin="org.seasar.kvasir.page" />
+    <import plugin="org.seasar.kvasir.page.ability.content" />
+    <import plugin="org.seasar.kvasir.page.ability.template" />
+    <import plugin="org.seasar.kvasir.page.ability.table" />
+    <import plugin="org.seasar.kvasir.page.auth" />
+    <import plugin="org.seasar.kvasir.cms" />
+    <import plugin="org.seasar.kvasir.cms.pop" />
+    <import plugin="org.seasar.kvasir.cms.ymir" />
+    <import plugin="net.skirnir.freyja" />
+  </requires>
+
+  <extension point="org.seasar.kvasir.page.pageGards">
+    <page-gard id="kdiary" version="3.0.0-SNAPSHOT" singleton="false"
+      display-name="%kdiary.display-name" />
+  </extension>
+  <!--
+    <extension point="org.seasar.kvasir.page.pageGardInstalls">
+    <page-gard-install
+    gard-id="org.seasar.kvasir.cms.kdiary.kdiary"
+    pathname="/plugins/kdiary" />
+    </extension>
+  -->
+
+  <extension point="org.seasar.kvasir.cms.pageProcessors">
+    <page-processor id="zptPageProcessor" phase="presentation"
+      gard-id="org.seasar.kvasir.cms.kdiary.kdiary" what="path"
+      how="^/templates/" regex="true">
+      <init-param>
+        <param-name>local-path-resolver.directory-path</param-name>
+        <param-value>gards/kdiary/static</param-value>
+      </init-param>
+    </page-processor>
+  </extension>
+
+  <extension point="org.seasar.kvasir.cms.pageFilters">
+    <page-filter id="phantomPageFilter"
+      gard-id="org.seasar.kvasir.cms.kdiary.kdiary"
+      phase="initialization" what="path" how="^/templates/"
+      regex="true" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.cms.pop.pops">
+    <pop id="naviPop" body-type="text/x-zpt"
+      gard-id="org.seasar.kvasir.cms.kdiary.kdiary"
+      body-resource-path="pops/naviPop/body.html"
+      image-resource-path="pops/naviPop/image.jpg" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.cms.ymir.applications">
+    <application id="kdiaryApplication"
+      gard-id="org.seasar.kvasir.cms.kdiary.kdiary"
+      landmark="org.seasar.kvasir.cms.kdiary.KdiaryPlugin" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.base.dao.persistentBeans">
+    <persistent-bean
+      class="org.seasar.kvasir.cms.kdiary.kdiary.dao.Comment" />
+  </extension>
+
+  <extension point="org.seasar.kvasir.page.ability.table.tables">
+    <table gard-id="org.seasar.kvasir.cms.kdiary.kdiary"
+      table-name="comment" />
+  </extension>
+
+  <extension
+    point="org.seasar.kvasir.page.ability.content.contentHandlers">
+    <content-handler id="tdiaryContentHandler" type="text/x-tdiary"
+      display-name="%tdiaryContentHandler.display-name" />
+  </extension>
+</plugin>

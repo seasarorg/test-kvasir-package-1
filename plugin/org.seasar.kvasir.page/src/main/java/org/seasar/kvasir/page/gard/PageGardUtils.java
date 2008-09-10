@@ -1,0 +1,84 @@
+package org.seasar.kvasir.page.gard;
+
+import static org.seasar.kvasir.page.ability.PropertyAbility.PROPPREFIX_PAGEGARD_INSTALLED;
+
+import java.util.Arrays;
+
+import org.seasar.kvasir.base.Version;
+import org.seasar.kvasir.page.Page;
+import org.seasar.kvasir.page.PageUtils;
+import org.seasar.kvasir.page.ability.PropertyAbility;
+import org.seasar.kvasir.util.PropertyUtils;
+
+
+/**
+ * @author YOKOTA Takehiko
+ */
+public class PageGardUtils
+{
+    private PageGardUtils()
+    {
+    }
+
+
+    public static Version getLatestVersion(String gardId)
+    {
+        Page alfheimRoot = PageUtils.getPageAlfr()
+            .getPage(Page.ID_ALFHEIM_ROOT);
+        Page idPage = alfheimRoot.getChild(gardId);
+        if (idPage == null) {
+            return null;
+        }
+        String[] versionStrings = idPage.getChildNames();
+        if (versionStrings.length == 0) {
+            return null;
+        }
+        Version[] versions = new Version[versionStrings.length];
+        for (int i = 0; i < versions.length; i++) {
+            versions[i] = new Version(versionStrings[i]);
+        }
+        Arrays.sort(versions);
+        return versions[versions.length - 1];
+    }
+
+
+    public static Page getLatestVersionPage(String gardId)
+    {
+        Page alfheimRoot = PageUtils.getPageAlfr()
+            .getPage(Page.ID_ALFHEIM_ROOT);
+        Version latest = getLatestVersion(gardId);
+        if (latest == null) {
+            return null;
+        }
+        return alfheimRoot.getChild(gardId + "/" + latest.getString());
+    }
+
+
+    public static Page getVersionPage(String gardId, Version version)
+    {
+        if ((gardId == null) || (version == null)) {
+            return null;
+        }
+
+        Page alfheimRoot = PageUtils.getPageAlfr()
+            .getPage(Page.ID_ALFHEIM_ROOT);
+        return alfheimRoot.getChild(gardId + "/" + version.getString());
+    }
+
+
+    public static boolean isInstalled(String pageGardId, int heimId)
+    {
+        return isInstalled(pageGardId, PageUtils.getPageAlfr().getRootPage(
+            heimId));
+    }
+
+
+    public static boolean isInstalled(String pageGardId, Page page)
+    {
+        if (page == null) {
+            return false;
+        }
+        return PropertyUtils.valueOf(page.getAbility(PropertyAbility.class)
+            .getProperty(PROPPREFIX_PAGEGARD_INSTALLED + pageGardId), false);
+    }
+}

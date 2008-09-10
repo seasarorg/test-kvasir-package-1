@@ -1,0 +1,218 @@
+.pane {
+    min-height: 2em;
+}
+
+.optional-console {
+    padding: 8px;
+    font-size: 90%;
+    line-height: 150%;
+}
+
+.optional-console .title {
+    font-weight: bold;
+    margin-top: 1ex;
+}
+
+.optional-console p {
+    margin-bottom: 1ex;
+}
+
+.optional-console .description {
+    margin-bottom: 1ex;
+    color: #666666;
+}
+
+.optional-console form {
+    margin-left: 2em;
+}
+
+.optional-console form td {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.adminConsole {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.newPops {
+    height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.newPops .arrowTopPadding {
+    height: 68px;
+}
+
+.newPops .dock {
+    float: left;
+}
+
+.newPops .dock .pop {
+    border-style: solid;
+    border-width: 1px;
+    padding: 0px;
+}
+
+.newPops .leftArrowBox {
+    float: left;
+    width: 32px;
+}
+
+.newPops .rightArrowBox {
+    float: right;
+    width: 32px;
+}
+
+.newPops .popIcon {
+}
+
+.drag-hovered {
+    filter: alpha(opacity=40); /*IE*/
+    -moz-opacity: 0.4; /*FF*/
+    opacity: 0.4;
+}
+
+#currentPopDetail {
+    position: absolute;
+    left: 16px;
+    z-index: 1000;
+    width: 320px;
+    border-style: solid;
+    border-width: 1px;
+    padding: 8px;
+    background-color: #ffffff;
+}
+
+#currentPopDetail dl {
+    margin-left: 0px;
+}
+
+#currentPopDetail dd {
+    margin-top: 1ex;
+}
+
+.layout\.editProperties * {
+    margin: 0;
+    padding: 0;
+    color: #000000;
+    font-family: verdana,lucida,arial,helvetica,sans-serif;
+    font-size: 10pt;
+    line-height: 1.5;
+}
+
+.layout\.editProperties dt {
+    font-size: larger;
+    font-weight: bold;
+    margin-top:1ex;
+}
+
+.layout\.editProperties dd {
+    margin-left: 2em;
+}
+
+.layout\.editProperties .toplevel-title {
+    font-size: 150%;
+    font-weight: bold;
+    color: #999999;
+    text-align: right;
+}
+
+.layout\.editProperties {
+    margin: 2ex 1ex 0ex 1ex;
+    padding: 1ex;
+}
+
+.layout\.editProperties .formUnitGroup {
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 2ex;
+    padding: 1ex; 1ex 2ex 1ex;
+}
+
+.layout\.editProperties .formUnitGroup .title {
+    font-size: 150%;
+    color: #999999;
+    font-weight: bold;
+    margin-bottom: 2ex;
+    text-align: right;
+}
+
+.layout\.editProperties dd .enum {
+    margin-right: 2em;
+}
+
+.layout\.editProperties dd textarea {
+    width: 90%;
+    height: 30ex;
+}
+
+.layout\.editProperties dd .line {
+    width: 90%;
+}
+
+.inplaceeditor-form .editor_buttons {
+    margin: 0 1em 1.4ex 0;
+    padding: 0;
+    text-align: right;
+}
+
+.layout\.editProperties .tabified {
+    margin-top: 2ex;
+}
+
+.layout\.editProperties .tabified .tabcontent {
+    margin-bottom: 1ex;
+}
+
+.layout\.editProperties p.error-message {
+    margin-top: 1em;
+    padding: 4px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: red;
+    color: red;
+    font-weight: bold;
+}
+
+.layout\.editProperties .tabified .tabs li.error {
+    background-color: red;
+}
+
+.layout\.editProperties .error dt {
+    background-color: red;
+}
+
+.layout\.editProperties .error .description.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+.layout\.editProperties .pageSelector_input {
+    width: 40%;
+    margin-left: 1.8em;
+}
+
+.pageSelector .wrapper {
+    position: relative;
+}
+
+.pageSelector .candidates {
+    display: block;
+    position: absolute;
+    z-index: 20;
+}
+
+.pageSelector .preview {
+    position: absolute;
+    z-index: 10;
+    margin-left: 2em;
+}
+
+.pageSelector .preview img {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #666666;
+}

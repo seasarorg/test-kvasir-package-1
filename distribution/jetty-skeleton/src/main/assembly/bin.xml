@@ -1,0 +1,32 @@
+<assembly>
+  <id>bin</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>src/main/archive</directory>
+      <outputDirectory></outputDirectory>
+    </fileSet>
+  </fileSets>
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>lib</outputDirectory>
+      <scope>compile</scope>
+      <excludes>
+        <exclude>jetty:start</exclude>
+      </excludes>
+    </dependencySet>
+    <dependencySet>
+      <outputFileNameMapping>
+        ${artifactId}.${extension}
+      </outputFileNameMapping>
+      <outputDirectory></outputDirectory>
+      <scope>runtime</scope>
+      <includes>
+        <include>jetty:start</include>
+      </includes>
+    </dependencySet>
+  </dependencySets>
+</assembly>

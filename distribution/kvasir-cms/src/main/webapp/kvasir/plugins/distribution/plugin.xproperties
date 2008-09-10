@@ -1,0 +1,5 @@
+plugin.label=Kvasir/Sora CMS Distribution Plugin
+plugin.provider-label=The Seasar Foundation
+midgard.display-name=System contents for default heim
+heim.display-name=System contents for each heim
+site_default.display-name=Default site layout

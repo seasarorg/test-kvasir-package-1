@@ -1,0 +1,6 @@
+import javax.servlet.http.HttpServletResponse;
+
+public void execute()
+{
+    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+}

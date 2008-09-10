@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.seasar.kvasir</groupId>
+    <artifactId>kvasir-project</artifactId>
+    <version>3.0.0-SNAPSHOT</version>
+    <relativePath>../project/pom.xml</relativePath>
+  </parent>
+  <groupId>org.seasar.kvasir.distribution</groupId>
+  <artifactId>distribution-project</artifactId>
+  <packaging>pom</packaging>
+  <name>Kvasir/Sora Distribution Project</name>
+  <description>Kvasir/Sora distribution project</description>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.seasar.kvasir.maven.plugin</groupId>
+          <artifactId>maven-kvasir-plugin</artifactId>
+          <extensions>true</extensions>
+          <configuration>
+            <baseLibraries>
+              kvasir-util,kvasir-base,xom,xom-tiger
+            </baseLibraries>
+            <testLibraries>kvasir-test,servlet-api</testLibraries>
+            <commonLibraries>
+              kvasir-common,aopalliance,commons-logging,javassist,ognl,s2-tiger,s2-framework,s2-extension,geronimo-jta_1.0.1B_spec,geronimo-ejb_2.1_spec,s2-pluggable,s2-classbuilder
+            </commonLibraries>
+            <systemLibraries>kvasir-system,maven-embedder-dep</systemLibraries>
+            <pluginOuterLibraries></pluginOuterLibraries>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <repositories>
+    <repository>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>http://maven.seasar.org/maven2</url>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>snapshot.maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Snapshot Repository</name>
+      <url>http://maven.seasar.org/maven2-snapshot</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>http://maven.seasar.org/maven2</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <modules>
+    <module>jetty-skeleton</module>
+    <module>kvasir-cms</module>
+    <module>kvasir-server</module>
+  </modules>
+</project>

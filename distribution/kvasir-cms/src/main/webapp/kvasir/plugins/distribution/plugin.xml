@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="distribution" name="%plugin.name" version="3.0.0-SNAPSHOT"
+  provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="conf" />
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.page" />
+  </requires>
+
+  <!-- PAGE GARDS -->
+  <extension point="org.seasar.kvasir.page.pageGards">
+    <page-gard id="midgard" version="3.0.0" singleton="true"
+      source="gards/midgard/dynamic"
+      display-name="%midgard.display-name" default-pathname="" />
+    <page-gard id="heim" version="3.0.0" singleton="true"
+      source="gards/heim/dynamic" display-name="%heim.display-name"
+      default-pathname="" />
+    <page-gard id="site_default" version="3.0.0" singleton="true"
+      source="gards/site_default/dynamic" display-name="%site_default.display-name"
+      default-pathname="" />
+  </extension>
+
+  <!-- PAGE GARD INSTALLS -->
+  <extension point="org.seasar.kvasir.page.pageGardInstalls">
+    <page-gard-install gard-id="distribution.midgard" />
+    <page-gard-install gard-id="distribution.heim" />
+    <page-gard-install gard-id="distribution.site_default" />
+  </extension>
+</plugin>

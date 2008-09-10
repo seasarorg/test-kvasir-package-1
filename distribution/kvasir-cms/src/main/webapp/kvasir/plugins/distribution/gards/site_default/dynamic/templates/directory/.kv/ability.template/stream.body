@@ -1,0 +1,12 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" metal:use-macro="templates/frame">
+  <body>
+    <div id="pane.main-directory" class="pane main" metal:fill-slot="frame.body.main">
+      <div class="concealed" tal:omit-tag="not:that/page/concealed">
+        <div tal:repeat='pop java:org.seasar.kvasir.cms.pop.util.PopUtils.renderPane(request, response, pageRequest, "main-directory")' tal:attributes="id pop/id; class string:pop ${pop/popId}">
+          <h2 class="title" tal:condition="pop/title" tal:content="structure pop/title">POP TITLE</h2>
+          <div class="body" tal:content="structure pop/body">POP BODY</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

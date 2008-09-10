@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" metal:define-macro="frame">
+  <head metal:define-slot="frame.head">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <title metal:define-slot="frame.head.title" tal:content="that/page/ability(property)/%label">TITLE</title>
+    <link tal:attributes="href page:/css/style.css" rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+    <link tal:repeat="css java:org.seasar.kvasir.base.webapp.util.PresentationUtils.getCssPathnames()" tal:attributes="href page:${css}" rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+    <script tal:repeat="javascript java:org.seasar.kvasir.base.webapp.util.PresentationUtils.getJavascriptPathnames()" tal:attributes="src page:${javascript}" type="text/javascript"></script>
+  </head>
+  <body metal:define-slot="frame.body">
+    <div class="header">
+      <div id="pane.left-header" class="pane left">
+        <div tal:repeat='pop java:org.seasar.kvasir.cms.pop.util.PopUtils.renderPane(request, response, pageRequest, "left-header")' tal:attributes="id pop/id; class string:pop ${pop/popId}">
+          <div class="body" tal:content="structure pop/body">POP BODY</div>
+        </div>
+      </div>
+      <div id="pane.right-header" class="pane right">
+        <div tal:repeat='pop java:org.seasar.kvasir.cms.pop.util.PopUtils.renderPane(request, response, pageRequest, "right-header")' tal:attributes="id pop/id; class string:pop ${pop/popId}">
+          <div class="body" tal:content="structure pop/body">POP BODY</div>
+        </div>
+      </div>
+    </div>
+    <div class="page-frame" metal:define-slot="frame.body.content">
+      <div id="pane.left-sidebar" class="pane sidebar-frame sidebar subcontent">
+        <div tal:repeat='pop java:org.seasar.kvasir.cms.pop.util.PopUtils.renderPane(request, response, pageRequest, "left-sidebar")' tal:attributes="id pop/id; class string:pop ${pop/popId}">
+          <h2 class="title" tal:condition="pop/title" tal:content="structure pop/title">POP TITLE</h2>
+          <div class="body" tal:content="structure pop/body">POP BODY</div>
+        </div>
+      </div>
+      <div class="main" metal:define-slot="frame.body.main"></div>
+    </div>
+    <div class="footer-delimiter"></div>
+    <div id="pane.footer" class="pane footer">
+      <div tal:repeat='pop java:org.seasar.kvasir.cms.pop.util.PopUtils.renderPane(request, response, pageRequest, "footer")' tal:attributes="id pop/id; class string:pop ${pop/popId}">
+        <div class="body" tal:content="structure pop/body">POP BODY</div>
+      </div>
+    </div>
+  </body>
+</html>

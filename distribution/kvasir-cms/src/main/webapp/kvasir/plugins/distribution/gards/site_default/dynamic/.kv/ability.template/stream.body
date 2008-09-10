@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" metal:use-macro="templates/frame">
+  <body metal:fill-slot="frame.body">
+    <div id="pane.top-title" class="pane top-title">
+      <div tal:repeat='pop java:org.seasar.kvasir.cms.pop.util.PopUtils.renderPane(request, response, pageRequest, "top-title")' tal:attributes="id pop/id; class string:pop ${pop/popId}">
+        <div class="body" tal:content="structure pop/body">POP BODY</div>
+      </div>
+    </div>
+    <div tal:replace="structure slot/evaluated">
+      <div metal:fill-slot="frame.body.main">
+        <div class="main-right-frame">
+          <div id="pane.right-sidebar" class="pane main-right subcontent">
+            <div tal:repeat='pop java:org.seasar.kvasir.cms.pop.util.PopUtils.renderPane(request, response, pageRequest, "right-sidebar")' tal:attributes="id pop/id; class string:pop ${pop/popId}">
+              <h2 class="title" tal:condition="pop/title" tal:content="structure pop/title">Right Sidebar Title</h2>
+              <div class="body" tal:content="structure pop/body">Right Sidebar Body</div>
+            </div>
+          </div>
+        </div>
+        <div class="main-left-frame">
+          <div id="pane.top-main" class="pane main-left">
+            <div tal:repeat='pop java:org.seasar.kvasir.cms.pop.util.PopUtils.renderPane(request, response, pageRequest, "top-main")' tal:attributes="id pop/id; class string:pop ${pop/popId}">
+              <h2 class="title" tal:condition="pop/title" tal:content="structure pop/title">POP TITLE</h2>
+              <div class="body" tal:content="structure pop/body">POP BODY</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

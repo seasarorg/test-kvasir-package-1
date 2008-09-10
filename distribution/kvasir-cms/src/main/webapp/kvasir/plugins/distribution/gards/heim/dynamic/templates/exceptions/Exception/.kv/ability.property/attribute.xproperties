@@ -1,0 +1,4 @@
+description=
+label=Exception
+message.description=Error has occured.
+message.label.detail=Detail:

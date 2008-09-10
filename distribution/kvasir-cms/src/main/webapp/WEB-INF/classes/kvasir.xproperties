@@ -1,0 +1,4 @@
+system.componentContainer.config.resource=app.dicon
+system.componentContainerFactory.className=org.seasar.kvasir.system.container.PluggableS2ComponentContainerFactory
+system.filter.resources=_log4j.xml
+system.home.dir=

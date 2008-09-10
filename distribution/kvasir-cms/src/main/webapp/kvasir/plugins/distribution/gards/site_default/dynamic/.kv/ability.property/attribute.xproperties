@@ -1,0 +1,18 @@
+label=Web site by Kvasir/Sora
+org.seasar.kvasir.cms.pop.panes=left-header,right-header,left-sidebar,main,footer,top-title,top-main,right-sidebar,main-directory
+org.seasar.kvasir.cms.pop.pane.left-sidebar.pops=org.seasar.kvasir.cms.toolbox.loginPop-1\r\norg.seasar.kvasir.cms.toolbox.searchPop-1\r\norg.seasar.kvasir.cms.manage.managePop-1
+org.seasar.kvasir.cms.pop.pane.top-main.pops=org.seasar.kvasir.cms.pop.introductionPop-1\r\norg.seasar.kvasir.cms.toolbox.menuPop-1
+org.seasar.kvasir.cms.pop.pane.right-sidebar.pops=org.seasar.kvasir.cms.toolbox.imagePop-1
+org.seasar.kvasir.cms.pop.pane.top-title.pops=org.seasar.kvasir.cms.pop.siteTitlePop-1
+org.seasar.kvasir.cms.pop.pane.left-header.pops=org.seasar.kvasir.cms.pop.siteTitlePop-2\r\norg.seasar.kvasir.cms.pop.loginUserPop-1
+org.seasar.kvasir.cms.pop.pane.right-header.pops=
+org.seasar.kvasir.cms.pop.pane.footer.pops=org.seasar.kvasir.cms.pop.poweredByPop-1
+org.seasar.kvasir.cms.pop.pane.main.pops=org.seasar.kvasir.cms.toolbox.breadcrumbsPop-1,org.seasar.kvasir.cms.pop.contentPop-1
+org.seasar.kvasir.cms.pop.pane.main-directory.pops=org.seasar.kvasir.cms.toolbox.breadcrumbsPop-2,org.seasar.kvasir.cms.pop.contentPop-2,org.seasar.kvasir.cms.toolbox.menuPop-2
+pop.org.seasar.kvasir.cms.toolbox.menuPop-2.cols=1
+pop.org.seasar.kvasir.cms.toolbox.menuPop-2.title=
+pop.org.seasar.kvasir.cms.pop.siteTitlePop-1.body=<div tal:omit-tag="not:imageURL" tal:attributes="style outerStyle"><h1 tal:attributes="style innerStyle" tal:content="siteTitle | default">Web Site by Kvasir/Sora</h1></div>
+pop.org.seasar.kvasir.cms.toolbox.imagePop-1.imageURL=page\:/css/rss1.0.gif
+pop.org.seasar.kvasir.cms.toolbox.imagePop-1.linkURL=page\:/plugins/toolbox/rss.rdf
+pop.org.seasar.kvasir.cms.toolbox.imagePop-1.styleClass=right
+pop.org.seasar.kvasir.cms.toolbox.imagePop-1.title=

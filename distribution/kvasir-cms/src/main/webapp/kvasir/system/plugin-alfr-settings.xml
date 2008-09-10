@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin-alfr-settings>
+  <remote-repository repository-id="maven.seasar.org" url="http://maven.seasar.org/maven2" enabled="true" />
+  <remote-repository repository-id="www.ibiblio.org" url="http://www.ibiblio.org/maven2" enabled="true" />
+</plugin-alfr-settings>

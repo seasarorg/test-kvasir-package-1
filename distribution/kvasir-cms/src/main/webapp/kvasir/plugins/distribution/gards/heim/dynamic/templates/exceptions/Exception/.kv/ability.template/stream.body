@@ -1,0 +1,14 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <title>Error</title>
+  </head>
+  <body tal:define="property template/page/ability(property)">
+    <h1>Error</h1>
+    <div tal:content="property/%message.description">Error has occured.</div>
+    <dl tal:condition="kvasir/underDevelopment">
+      <dt tal:content="property/%message.label.detail">Detail:</dt>
+      <dd><pre tal:content="stackTrace">DETAIL</pre></dd>
+    </dl>
+  </body>
+</html>

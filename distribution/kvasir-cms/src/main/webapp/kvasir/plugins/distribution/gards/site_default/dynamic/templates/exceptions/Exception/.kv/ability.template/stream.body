@@ -1,0 +1,17 @@
+<html metal:use-macro="templates/frame">
+  <head>
+    <title metal:fill-slot="frame.head.title">Error</title>
+  </head>
+  <body>
+    <div class="page-frame" metal:fill-slot="frame.body.content">
+      <div class="main" tal:define="property my/page/ability(property)">
+        <h2>Error</h2>
+        <div tal:content="property/%message.description">Error has occured.</div>
+        <dl tal:condition="kvasir/underDevelopment">
+          <dt tal:content="property/%message.label.detail">Detail:</dt>
+          <dd><pre tal:content="stackTrace">DETAIL</pre></dd>
+        </dl>
+      </div>
+    </div>
+  </body>
+</html>

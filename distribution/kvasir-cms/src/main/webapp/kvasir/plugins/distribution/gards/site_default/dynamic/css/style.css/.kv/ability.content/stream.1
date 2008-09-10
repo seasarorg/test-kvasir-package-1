@@ -1,0 +1,499 @@
+@charset 'UTF-8';
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    margin-left: 2em;
+}
+
+ol {
+    margin-left: 2em;
+}
+
+dl {
+    margin-left: 1em;
+}
+
+dt {
+    font-weight: bold;
+}
+
+dd {
+    margin-left: 2em;
+}
+
+em {
+    font-style: normal;
+    font-weight: bold;
+}
+
+strong {
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+blockquote {
+    margin: 8px 1em 8px 1em;
+    padding: 8px;
+    color: #1B7A46;
+    background-color: #ccff99;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #7DA154;
+}
+
+pre {
+    font-size: small;
+    margin: 8px 1em 8px 1em;
+    padding: 8px;
+    color: #1B7A46;
+    background-color: #ccff99;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #7DA154;
+}
+
+a:link {
+    text-decoration: none;
+    color: #000000;
+}
+
+a:visited {
+    text-decoration: none;
+    color: #7DA154;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+body {
+    background-color: #FFFFFF;
+    color: #000000;
+    font-family: verdana, lucida, arial, helvetica, sans-serif;
+
+}
+
+.top-title {
+    color: #1B7A46;
+    background-color: #99cc66;
+}
+
+h1 {
+    padding: 8px;
+}
+
+.concealed {
+    filter: alpha(opacity=25); /*IE*/
+    -moz-opacity: 0.25; /*FF*/
+    opacity: 0.25;
+}
+
+.notes {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #E3584B;
+    color: #E3584B;
+    background-color: #FFFFFF;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding: 8px;
+}
+
+.error-notes {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #E3584B;
+    color: #E3584B;
+    background-color: #FFFFFF;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding: 8px;
+}
+
+.header {
+    font-size: small;
+    color: #5F9144;
+    background-color: #ccff99;
+    padding: 4px;
+}
+
+/* floatさせたボックスが親ボックスの外にはみ出す現象を回避（ここから） */
+
+.header {
+    overflow: hidden;
+}
+
+.header:after {
+    content: "";
+    display: block;
+    clear: both;
+    height: 1px;
+    overflow: hidden;
+}
+
+/*\*/
+* html .header {
+    height: 1em;
+    overflow: visible;
+}
+/**/
+
+/* floatさせたボックスが親ボックスの外にはみ出す現象を回避（ここまで） */
+
+.header ul {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.header li {
+    display: inline;
+    padding: 0 1ex 0 1ex;
+}
+
+.header .left {
+    float: left;
+    width: 48%;
+}
+
+.header .left .pop {
+    float: left;
+    padding-right: 2ex;
+}
+
+.header .right {
+    float: right;
+    width: 48%;
+}
+
+.header .right .pop {
+    float: right;
+    padding-left: 2ex;
+}
+
+
+.page-frame {
+    clear: both;
+}
+
+.sidebar-frame {
+    width: 200px;
+    float: left;
+}
+
+.main {
+    margin-left: 200px;
+    padding: 32px;
+    font-size: 90%;
+    line-height: 150%;
+}
+
+.main hr {
+    margin-top: 4ex;
+    margin-bottom: 4ex;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.main h2 {
+    margin-bottom: 32px;
+    font-weight: bold;
+}
+
+.main h3 {
+    font-weight: bold;
+    margin-top: 3ex;
+    margin-bottom: 2ex;
+}
+
+.main h4 {
+    font-weight: bold;
+    margin-top: 2ex;
+    margin-bottom: 1ex;
+}
+
+.main h5 {
+    font-weight: bold;
+    margin-top: 2ex;
+    margin-bottom: 1ex;
+}
+
+.main p {
+    margin-bottom: 1ex;
+}
+
+.main .pop {
+    padding-bottom: 32px;
+}
+
+.main .directory-index {
+    margin-bottom: 24px;
+}
+
+.main-left-frame {
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+.main-left {
+    padding: 24px;
+    line-height: 150%;
+}
+
+.main-left h2 {
+    margin: 0px 0px 24px 0px;
+}
+
+.main-left h3 {
+    font-weight: bold;
+    margin-top: 3ex;
+    margin-bottom: 2ex;
+}
+
+.main-left h4 {
+    font-weight: bold;
+    margin-top: 2ex;
+    margin-bottom: 1ex;
+}
+
+.main-left h5 {
+    font-weight: bold;
+    margin-top: 2ex;
+    margin-bottom: 1ex;
+}
+
+.main-left p {
+    margin-bottom: 1ex;
+}
+
+.main-left ul {
+    margin-bottom: 1ex;
+}
+
+.main-left .pop {
+  margin-bottom: 48px;
+}
+
+.main-right-frame {
+    width: 200px;
+    float: right;
+}
+
+.main-right {
+}
+
+.main-header {
+    font-size: small;
+    margin-bottom: 16px;
+}
+
+.main-footer {
+    font-size: small;
+    margin-top: 16px;
+}
+
+.footer-delimiter {
+    clear: both;
+    border-width: 1px;
+    border-style: solid none none none;
+    border-color: #808080;
+}
+
+.footer {
+    text-align: center;
+    font-size: small;
+    margin-left: 8px;
+    margin-right: 8px;
+    padding: 12px 4px 4px 4px;
+}
+
+.subcontent {
+    font-size: small;
+    line-height: 140%;
+}
+
+.subcontent h2 {
+    font-size: medium;
+}
+
+.subcontent ul {
+    margin-left: 1em;
+}
+
+.subcontent .pop {
+    padding: 4px;
+    margin-bottom: 8px;
+}
+
+.subcontent .pop h2 {
+    margin: -4px -4px 16px -4px;
+    padding: 2px 4px 2px 4px;
+    font-weight: bold;
+    color: #1B7A46;
+    background-color: #99cc66;
+}
+
+.subcontent .pop ul {
+}
+
+.subcontent .pop li {
+    list-style: none;
+    background-image: url(right-arrow.gif);
+    background-repeat: no-repeat;
+    background-position: left 0;
+    padding-left: 16px;
+}
+
+.subcontent .pop li .title {
+    font-weight: bold;
+}
+
+.subcontent .pop li .description {
+    margin-bottom: 2ex;
+}
+
+img.left {
+    float: left;
+    margin: 8px;
+}
+
+img.right {
+    float: right;
+    margin: 8px;
+}
+
+.org\.seasar\.kvasir\.cms\.toolbox\.searchPop form.simple {
+    text-align: right;
+}
+
+.org\.seasar\.kvasir\.cms\.toolbox\.searchPop .search-description {
+    margin-top: 4ex;
+    margin-bottom: 4ex;
+}
+
+.org\.seasar\.kvasir\.cms\.toolbox\.searchPop .search-results .title a {
+    text-decoration: underline;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.org\.seasar\.kvasir\.cms\.toolbox\.searchPop .search-results .summary {
+    margin-top: 1ex;
+    font-size: small;
+}
+
+.org\.seasar\.kvasir\.cms\.toolbox\.searchPop .search-results .url {
+    font-size: small;
+    color: gray;
+}
+
+.org\.seasar\.kvasir\.cms\.toolbox\.searchPop .search-indicator {
+    text-align: center;
+    font-size: small;
+}
+
+.org\.seasar\.kvasir\.cms\.toolbox\.searchPop .search-indicator a {
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+}
+
+
+.org\.seasar\.kvasir\.cms\.pop\.contentPop div.description {
+    font-size: small;
+    color: #808080;
+    margin: 0 0 0.5em 1em;
+    padding: 0.5ex 0 0.5ex 0;
+    border-style: solid none solid none;
+    border-width: 1px;
+    border-color: #808080;
+}
+
+.org\.seasar\.kvasir\.cms\.pop\.contentPop ul.information {
+    text-align: right;
+    font-size: small;
+    margin-bottom: 1.5em;
+    color: #808080;
+}
+
+.org\.seasar\.kvasir\.cms\.pop\.contentPop ul.information li {
+    display: inline;
+    margin-left: 1em;
+}
+
+.org\.seasar\.kvasir\.cms\.pop\.contentPop div.content {
+    margin-top: 0;
+}
+
+
+.org\.seasar\.kvasir\.cms\.toolbox\.loginPop .row {
+    text-align: right;
+}
+
+.header .org\.seasar\.kvasir\.cms\.toolbox\.loginPop .row {
+    display: inline;
+    padding-right: 6px;
+}
+
+
+.org\.seasar\.kvasir\.cms\.toolbox\.breadcrumbsPop ul {
+    margin: 0;
+    padding: 0;
+}
+
+.org\.seasar\.kvasir\.cms\.toolbox\.breadcrumbsPop li {
+    display: inline;
+    padding: 4px 4px 4px 20px;
+    background: url(../plugins/images/breadcrumbs-delimiter.gif) no-repeat 0px 50%;
+}
+
+.org\.seasar\.kvasir\.cms\.toolbox\.breadcrumbsPop li.first {
+    background-image: none;
+}
+
+
+.org\.seasar\.kvasir\.cms\.toolbox\.listingPop dl {
+    margin-left: 0;
+}
+
+.org\.seasar\.kvasir\.cms\.toolbox\.listingPop dt {
+    margin: 1ex 0 0 0;
+}
+
+.org\.seasar\.kvasir\.cms\.toolbox\.listingPop .date {
+    color: #666666;
+    font-weight: normal;
+    font-size: smaller;
+}
+
+.org\.seasar\.kvasir\.cms\.toolbox\.listingPop dd {
+    margin-top: 0.5ex;
+    margin-left: 2em;
+    font-size: smaller;
+    line-height: 1.5;
+}
+
+.org\.seasar\.kvasir\.cms\.toolbox\.listingPop .continuing {
+    text-align: right;
+    margin-top: 1ex;
+}
+
+
+.org\.seasar\.kvasir\.cms\.toolbox\.imagePop .right {
+    text-align: right;
+}
+
+
+.org\.seasar\.kvasir\.cms\.toolbox\.languageSelectorPop .right {
+    text-align: right;
+}
+
+
+.org\.seasar\.kvasir\.cms\.toolbox\.menuPop .description {
+    font-size: small;
+    padding-left: 1em;
+}

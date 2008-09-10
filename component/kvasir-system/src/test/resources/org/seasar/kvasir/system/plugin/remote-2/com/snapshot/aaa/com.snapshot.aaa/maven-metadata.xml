@@ -1,0 +1,12 @@
+<?xml version="1.0"?><metadata>
+  <groupId>com.snapshot.aaa</groupId>
+  <artifactId>com.snapshot.aaa</artifactId>
+  <version>1.0.0</version>
+  <versioning>
+    <release>1.0.0</release>
+    <versions>
+      <version>1.1.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20061210135922</lastUpdated>
+  </versioning>
+</metadata>

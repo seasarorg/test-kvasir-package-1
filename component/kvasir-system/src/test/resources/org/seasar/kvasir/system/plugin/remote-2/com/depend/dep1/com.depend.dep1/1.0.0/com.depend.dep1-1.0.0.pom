@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.depend.dep1</groupId>
+  <artifactId>com.depend.dep1</artifactId>
+  <packaging>kvasir-plugin</packaging>
+  <name>Example for Testing Plugin</name>
+  <version>1.0.0</version>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.seasar.kvasir.maven.plugin</groupId>
+        <artifactId>maven-kvasir-plugin</artifactId>
+        <configuration>
+          <pluginOuterLibraries></pluginOuterLibraries>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>	
+      <groupId>com.depend.dep2</groupId>
+      <artifactId>com.depend.dep2</artifactId>
+      <version>1.0.2</version>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>com.depend.dep4</groupId>
+      <artifactId>com.depend.dep4</artifactId>
+      <version>1.0.4</version>
+      <type>zip</type>
+    </dependency>
+  </dependencies>
+  <distributionManagement>
+    <status>deployed</status>
+  </distributionManagement>
+</project>

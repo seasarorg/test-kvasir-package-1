@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+  "http://www.seasar.org/dtd/components24.dtd">
+<components>
+  <component name="kvasir" class="org.seasar.kvasir.system.KvasirImpl" />
+  <component name="pluginAlfr"
+    class="org.seasar.kvasir.system.plugin.PluginAlfrImpl" />
+  <component name="_plugin"
+    class="org.seasar.kvasir.base.plugin.impl.PluginImpl"
+    instance="prototype">
+    <property name="projectDirectory" bindingType="none" />
+    <property name="descriptor" bindingType="none" />
+    <property name="componentContainer" bindingType="none" />
+  </component>
+</components>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?><project>
+  <parent>
+    <artifactId>plugin-project</artifactId>
+    <groupId>org.seasar.kvasir.plugin</groupId>
+    <version>3.0.0-EA3-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.seasar.kvasir.base</groupId>
+  <artifactId>org.seasar.kvasir.base</artifactId>
+  <packaging>kvasir-plugin</packaging>
+  <name>Kvasir/Sora Base Plugin</name>
+  <version>3.0.0-EA3-SNAPSHOT</version>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.seasar.kvasir.maven.plugin</groupId>
+        <artifactId>maven-kvasir-plugin</artifactId>
+        <configuration>
+          <pluginOuterLibraries></pluginOuterLibraries>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.seasar.kvasir</groupId>
+      <artifactId>kvasir-base</artifactId>
+      <version>3.0.0-EA3-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+  <distributionManagement>
+    <status>deployed</status>
+  </distributionManagement>
+</project>

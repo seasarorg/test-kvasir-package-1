@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<patch id="fuga1.patch2" version="1.0.0">
+<plugin id="fuga1" version="1.0.0">
+    <runtime>
+        <library name="patch2-1.0.0" />
+        <library name="classes" />
+    </runtime>
+</plugin>
+</patch>
+

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="plugin.id"
+        name="plugin.name"
+        version="1.0.0"
+        provider-name="plugin.provider-name">
+  <runtime>
+    <library name="conf" filter="true" encoding="ISO-8859-1" />
+    <library name="library.jar">
+      <export name="org.seasar.kvasir.*" />
+      <export name="org.seasar.kvasir.impl.*" />
+    </library>
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.import1" version="1.0.0" match="perfect" />
+    <import plugin="org.seasar.kvasir.import2" />
+  </requires>
+
+  <extension point="plugin.id.extension1s">
+  </extension>
+
+  <extension point="plugin.id.extension2s">
+  </extension>
+
+  <extension-point id="extension1s"
+    element-class="org.seasar.kvasir.system.plugin.Element1" />
+
+  <extension-point id="extension2s"
+    element-class="org.seasar.kvasir.system.plugin.Element2" />
+</plugin>

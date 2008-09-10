@@ -1,0 +1,12 @@
+<?xml version="1.0"?><metadata>
+  <groupId>com.depend.dep1</groupId>
+  <artifactId>com.depend.dep1</artifactId>
+  <version>1.0.0</version>
+  <versioning>
+    <release>1.0.0</release>
+    <versions>
+      <version>1.0.0</version>
+    </versions>
+    <lastUpdated>20061210135922</lastUpdated>
+  </versioning>
+</metadata>

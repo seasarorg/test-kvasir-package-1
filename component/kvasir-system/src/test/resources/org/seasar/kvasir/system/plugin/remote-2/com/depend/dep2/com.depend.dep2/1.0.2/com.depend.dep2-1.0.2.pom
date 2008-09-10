@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.depend.dep2</groupId>
+  <artifactId>com.depend.dep2</artifactId>
+  <packaging>kvasir-plugin</packaging>
+  <name>Example for Testing Plugin</name>
+  <version>1.0.2</version>
+  <dependencies>
+    <dependency>
+      <groupId>com.depend.dep3</groupId>
+      <artifactId>com.depend.dep3</artifactId>
+      <version>1.0.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.depend.dep3</groupId>
+      <artifactId>com.depend.dep3</artifactId>
+      <version>1.0.3</version>
+      <type>zip</type>
+    </dependency>
+  </dependencies>
+  <distributionManagement>
+    <status>deployed</status>
+  </distributionManagement>
+</project>

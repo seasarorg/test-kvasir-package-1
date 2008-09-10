@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.depend.dep4</groupId>
+  <artifactId>com.depend.dep4</artifactId>
+  <packaging>zip</packaging>
+  <name>Example for Testing Plugin</name>
+  <version>1.0.4</version>
+  <distributionManagement>
+    <status>deployed</status>
+  </distributionManagement>
+</project>

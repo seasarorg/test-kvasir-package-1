@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="fuga1" version="1.0.0">
+  <base plugin="hoge1" version="1.0.0" match="perfect" />
+  <runtime>
+      <library name="fuga1-1.0.0" />
+      <library name="classes" />
+  </runtime>
+</plugin>
+

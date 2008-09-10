@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+  <appender name="FILE_SYSTEM"
+    class="org.apache.log4j.RollingFileAppender">
+    <param name="File"
+      value="${system.home.dir}/rtwork/log/system-log.txt" />
+    <param name="MaxFileSize" value="10240KB" />
+    <param name="MaxBackupIndex" value="20" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d %5p %t [%c{1}] - %m %n" />
+    </layout>
+  </appender>
+  <appender name="FILE_ERROR"
+    class="org.apache.log4j.RollingFileAppender">
+    <param name="Threshold" value="ERROR" />
+    <param name="File"
+      value="${system.home.dir}/rtwork/log/error-log.txt" />
+    <param name="MaxFileSize" value="10240KB" />
+    <param name="MaxBackupIndex" value="20" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d %5p %t [%c{1}] - %m %n" />
+    </layout>
+  </appender>
+  <appender name="FILE_ALL"
+    class="org.apache.log4j.RollingFileAppender">
+    <param name="File"
+      value="${system.home.dir}/rtwork/log/all-log.txt" />
+    <param name="MaxFileSize" value="10240KB" />
+    <param name="MaxBackupIndex" value="20" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d %5p %t [%c{1}] - %m %n" />
+    </layout>
+  </appender>
+  <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+    <param name="Threshold" value="INFO" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d %5p %t [%c{1}] - %m %n" />
+    </layout>
+  </appender>
+  <logger name="org.seasar.kvasir.base">
+    <appender-ref ref="FILE_SYSTEM" />
+  </logger>
+  <logger name="org.seasar.kvasir.system">
+    <appender-ref ref="FILE_SYSTEM" />
+  </logger>
+  <logger name="org.seasar.kvasir.util">
+    <appender-ref ref="FILE_SYSTEM" />
+  </logger>
+  <logger name="org.seasar.kvasir">
+    <appender-ref ref="CONSOLE" />
+    <appender-ref ref="FILE_ERROR" />
+  </logger>
+  <root>
+    <level value="ALL" />
+    <appender-ref ref="FILE_ALL" />
+  </root>
+</log4j:configuration>

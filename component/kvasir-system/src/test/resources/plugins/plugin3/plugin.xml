@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="plugin3"
+        version="1.0.0">
+  <runtime>
+    <library name="classes">
+      <export name="resource2.properties" resource="true" />
+    </library>
+  </runtime>
+  <extension point="plugin3.points">
+    <element1 id="element1-1">
+      <property name="name1">value1</property>
+      <property name="name2">value2</property>
+      <child />
+    </element1>
+    <element1 id="element1-2">
+      <property name="name1">value3</property>
+      <property name="name2">value4</property>
+    </element1>
+  </extension>
+  <extension point="plugin3.points2">
+    <element2 id="element2-1" />
+    <element2 id="element2-2" />
+  </extension>
+  <extension-point id="points"
+    element-class="org.seasar.kvasir.system.plugin.Element1" />
+  <extension-point id="points2"
+    element-class="org.seasar.kvasir.system.plugin.Element2" />
+</plugin>

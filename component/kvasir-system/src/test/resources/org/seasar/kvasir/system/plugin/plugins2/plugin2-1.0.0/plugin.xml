@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="plugin2" version="1.0.0">
+  <runtime>
+    <library name="conf" />
+  </runtime>
+  <requires>
+    <import plugin="plugin1" />
+  </requires>
+</plugin>

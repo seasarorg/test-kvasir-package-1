@@ -1,0 +1,4 @@
+system.componentContainer.config.resource=
+system.componentContainerFactory.className=org.seasar.kvasir.base.mock.container.MockComponentContainerFactory
+system.filter.resources=
+system.home.dir=

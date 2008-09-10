@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<patch id="hoge1.patch" version="1.0.2">
+<plugin id="hoge1" version="1.0.1">
+</plugin>
+</patch>
+

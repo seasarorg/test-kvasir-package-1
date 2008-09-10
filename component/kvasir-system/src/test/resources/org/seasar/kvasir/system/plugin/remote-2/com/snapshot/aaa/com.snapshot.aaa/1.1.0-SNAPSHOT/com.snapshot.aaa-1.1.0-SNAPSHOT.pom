@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.snapshot.aaa</groupId>
+  <artifactId>com.snapshot.aaa</artifactId>
+  <packaging>kvasir-plugin</packaging>
+  <name>Example for Testing Plugin</name>
+  <version>1.1.0-SNAPSHOT</version>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.seasar.kvasir.maven.plugin</groupId>
+        <artifactId>maven-kvasir-plugin</artifactId>
+        <configuration>
+          <pluginOuterLibraries></pluginOuterLibraries>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>com.snapshot.bbb</groupId>
+      <artifactId>com.snapshot.bbb</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <type>zip</type>
+    </dependency>
+  </dependencies>
+  <distributionManagement>
+    <status>deployed</status>
+  </distributionManagement>
+</project>

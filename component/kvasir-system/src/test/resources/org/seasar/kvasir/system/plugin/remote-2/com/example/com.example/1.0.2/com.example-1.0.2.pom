@@ -1,0 +1,22 @@
+<?xml version="1.0"?><project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.example</groupId>
+  <artifactId>com.example</artifactId>
+  <packaging>kvasir-plugin</packaging>
+  <name>Example for Testing Plugin</name>
+  <version>1.0.2</version>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.seasar.kvasir.maven.plugin</groupId>
+        <artifactId>maven-kvasir-plugin</artifactId>
+        <configuration>
+          <pluginOuterLibraries></pluginOuterLibraries>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <distributionManagement>
+    <status>deployed</status>
+  </distributionManagement>
+</project>

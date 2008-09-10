@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="plugin4"
+        version="1.0.0">
+  <runtime>
+    <library name="classes" />
+  </runtime>
+  <requires>
+    <import plugin="plugin3" />
+  </requires>
+  <extension point="plugin3.points2">
+    <element2 id="element2-1" action="remove" />
+    <element2 id="element2-3" after="element2-2" />
+    <element2 id="element2-4" before="element2-2" />
+  </extension>
+  <extension point="plugin4.points">
+    <element1 id="element1-1">
+      <property name="name1">value1</property>
+      <property name="name2">value2</property>
+    </element1>
+  </extension>
+  <extension-point id="points"
+    element-class="org.seasar.kvasir.system.plugin.Element4" />
+</plugin>

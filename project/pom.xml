@@ -1,0 +1,225 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.seasar.kvasir</groupId>
+  <artifactId>kvasir-project</artifactId>
+  <packaging>pom</packaging>
+  <name>Kvasir/Sora Project</name>
+  <version>3.0.0-SNAPSHOT</version>
+  <description>Kvasir/Sora project</description>
+  <url>http://kvasir.sandbox.seasar.org/</url>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>https://www.seasar.org/issues/browse/KVASIR</url>
+  </issueManagement>
+  <inceptionYear>2001</inceptionYear>
+  <mailingLists>
+    <mailingList>
+      <name>Kvasir/Sora List</name>
+      <subscribe>
+        https://www.seasar.org/mailman/listinfo/seasar-kvasir
+      </subscribe>
+      <unsubscribe>
+        https://www.seasar.org/mailman/listinfo/seasar-kvasir
+      </unsubscribe>
+      <post>seasar-kvasir@ml.seasar.org</post>
+      <archive>
+        https://www.seasar.org/mailman/listinfo/seasar-kvasir
+      </archive>
+    </mailingList>
+  </mailingLists>
+  <developers>
+    <developer>
+      <id>skirnir</id>
+      <name>YOKOTA Takehiko</name>
+      <email>yokota at arksystems.co.jp</email>
+      <organization>ARK Systems Co., Ltd.</organization>
+      <organizationUrl>http://www.arksystems.co.jp/</organizationUrl>
+      <roles>
+        <role>Project Leader</role>
+      </roles>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>hanizo</id>
+      <name>HANYUDA Tsunenaga</name>
+      <email>hanizo at gmail.com</email>
+      <roles>
+        <role>Committer</role>
+      </roles>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>tsuboi</id>
+      <name>TSUBOI Sougo</name>
+      <email></email>
+      <url></url>
+      <roles>
+        <role>Committer</role>
+      </roles>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>manhole</id>
+      <name>HONMA Hirotaka</name>
+      <email>manholex at gmail.com</email>
+      <url></url>
+      <organization>ARK Systems Co., Ltd.</organization>
+      <organizationUrl>http://www.arksystems.co.jp/</organizationUrl>
+      <roles>
+        <role>Committer</role>
+      </roles>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>shida</id>
+      <name>SHIDA Takahiro</name>
+      <email>shida.takahiro at gmail.com</email>
+      <url></url>
+      <organization></organization>
+      <organizationUrl></organizationUrl>
+      <roles>
+        <role>Committer</role>
+      </roles>
+      <timezone>+9</timezone>
+    </developer>
+  </developers>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <connection>
+      scm:svn:https://www.seasar.org/svn/sandbox/kvasir/project/trunk/
+    </connection>
+    <developerConnection>
+      scm:svn:https://www.seasar.org/svn/sandbox/kvasir/project/trunk/
+    </developerConnection>
+    <url>
+      http://www.seasar.org/websvn/listing.php?repname=sandbox.kvasir&amp;path=%2Fproject%2F&amp;rev=0&amp;sc=0
+    </url>
+  </scm>
+  <organization>
+    <name>The Seasar Foundation</name>
+    <url>http://www.seasar.org/</url>
+  </organization>
+  <build>
+    <defaultGoal>validate</defaultGoal>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-webdav</artifactId>
+        <version>1.0-beta-2</version>
+      </extension>
+    </extensions>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <encoding>UTF-8</encoding>
+            <source>1.5</source>
+            <target>1.5</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <configuration>
+            <updateReleaseInfo>true</updateReleaseInfo>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <repositories>
+    <repository>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>http://maven.seasar.org/maven2</url>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>snapshot.maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Snapshot Repository</name>
+      <url>http://maven.seasar.org/maven2-snapshot</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>http://maven.seasar.org/maven2</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jxr-maven-plugin</artifactId>
+        <configuration>
+          <inputEncoding>UTF-8</inputEncoding>
+          <outputEncoding>UTF-8</outputEncoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>surefire-report-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>changelog-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>dav:https://www.seasar.org/maven/maven2</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Snapshot Repository</name>
+      <url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
+    </snapshotRepository>
+  </distributionManagement>
+  <modules>
+    <module>../util</module>
+    <module>../component</module>
+    <module>../maven</module>
+  </modules>
+</project>

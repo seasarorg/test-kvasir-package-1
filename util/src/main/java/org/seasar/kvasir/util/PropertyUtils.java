@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 
-
 /**
  * 文字列を数値などの他のクラスのインスタンスに変換したり、
  * その逆を行なったりするためのユーティリティクラスです。
@@ -62,10 +61,19 @@ public class PropertyUtils
             return (((Number)obj).intValue() != 0);
         } else {
             String str = obj.toString();
-            return ("true".equalsIgnoreCase(str)
-                || "yes".equalsIgnoreCase(str));
+            return ("true".equalsIgnoreCase(str) || "yes".equalsIgnoreCase(str));
         }
-        
+
+    }
+
+
+    public static Boolean valueOf(String str, Boolean defaultValue)
+    {
+        if (str == null) {
+            return defaultValue;
+        }
+        return Boolean.valueOf("true".equalsIgnoreCase(str)
+            || "on".equalsIgnoreCase(str) || "yes".equalsIgnoreCase(str));
     }
 
 
@@ -80,6 +88,25 @@ public class PropertyUtils
         } catch (Throwable t) {
             try {
                 value = (byte)Double.parseDouble(str);
+            } catch (Throwable t2) {
+                ;
+            }
+        }
+        return value;
+    }
+
+
+    public static Byte valueOf(String str, Byte defaultValue)
+    {
+        if (str == null) {
+            return defaultValue;
+        }
+        Byte value = defaultValue;
+        try {
+            value = Byte.valueOf(str);
+        } catch (Throwable t) {
+            try {
+                value = new Byte((byte)Double.parseDouble(str));
             } catch (Throwable t2) {
                 ;
             }
@@ -107,6 +134,25 @@ public class PropertyUtils
     }
 
 
+    public static Short valueOf(String str, Short defaultValue)
+    {
+        if (str == null) {
+            return defaultValue;
+        }
+        Short value = defaultValue;
+        try {
+            value = Short.valueOf(str);
+        } catch (Throwable t) {
+            try {
+                value = new Short((short)Double.parseDouble(str));
+            } catch (Throwable t2) {
+                ;
+            }
+        }
+        return value;
+    }
+
+
     public static int valueOf(String str, int defaultValue)
     {
         if (str == null) {
@@ -118,6 +164,25 @@ public class PropertyUtils
         } catch (Throwable t) {
             try {
                 value = (int)Double.parseDouble(str);
+            } catch (Throwable t2) {
+                ;
+            }
+        }
+        return value;
+    }
+
+
+    public static Integer valueOf(String str, Integer defaultValue)
+    {
+        if (str == null) {
+            return defaultValue;
+        }
+        Integer value = defaultValue;
+        try {
+            value = Integer.valueOf(str);
+        } catch (Throwable t) {
+            try {
+                value = new Integer((int)Double.parseDouble(str));
             } catch (Throwable t2) {
                 ;
             }
@@ -145,6 +210,25 @@ public class PropertyUtils
     }
 
 
+    public static Long valueOf(String str, Long defaultValue)
+    {
+        if (str == null) {
+            return defaultValue;
+        }
+        Long value = defaultValue;
+        try {
+            value = Long.valueOf(str);
+        } catch (Throwable t) {
+            try {
+                value = new Long((long)Double.parseDouble(str));
+            } catch (Throwable t2) {
+                ;
+            }
+        }
+        return value;
+    }
+
+
     public static float valueOf(String str, float defaultValue)
     {
         if (str == null) {
@@ -164,6 +248,25 @@ public class PropertyUtils
     }
 
 
+    public static Float valueOf(String str, Float defaultValue)
+    {
+        if (str == null) {
+            return defaultValue;
+        }
+        Float value = defaultValue;
+        try {
+            value = Float.valueOf(str);
+        } catch (Throwable t) {
+            try {
+                value = new Float((float)Double.parseDouble(str));
+            } catch (Throwable t2) {
+                ;
+            }
+        }
+        return value;
+    }
+
+
     public static double valueOf(String str, double defaultValue)
     {
         if (str == null) {
@@ -172,6 +275,21 @@ public class PropertyUtils
         double value = defaultValue;
         try {
             value = Double.parseDouble(str);
+        } catch (Throwable t) {
+            ;
+        }
+        return value;
+    }
+
+
+    public static Double valueOf(String str, Double defaultValue)
+    {
+        if (str == null) {
+            return defaultValue;
+        }
+        Double value = defaultValue;
+        try {
+            value = Double.valueOf(str);
         } catch (Throwable t) {
             ;
         }

@@ -1,5 +1,6 @@
 <html metal:use-macro="templates/frame">
   <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
     <title metal:fill-slot="frame.head.title" tal:content="my/plugin/%pop.searchPop.title">Search</title>
   </head>
   <body>
@@ -17,10 +18,10 @@
         <p tal:content="self/lineDescription">DESCRIPTION</p>
       </div>
       <div tal:define="indicator self/indicator" tal:condition="exists:indicator" class="search-indicator">
-        <a tal:attributes="href page:@/search.do?query=${self/query}" href="#">|&lt; 譛�蛻�</a>
+        <a tal:attributes="href page:@/search.do?query=${self/query}" href="#">|&lt; 最初</a>
         <a tal:repeat="elem indicator/elements" tal:attributes="href page:@/search.do?query=${self/query}&amp;offset=${elem/position}" href="#"><b tal:content="elem/number" tal:omit-tag="not:elem/current">1</b></a>
         <a tal:condition="" href="#">2</a>
-        <a tal:attributes="href page:@/search.do?query=${self/query}&amp;offset=${indicator/lastPosition}" href="#">譛�蠕� &gt;|</a>
+        <a tal:attributes="href page:@/search.do?query=${self/query}&amp;offset=${indicator/lastPosition}" href="#">最後 &gt;|</a>
       </div>
       <div tal:define="results self/results" class="search-results">
         <ul tal:condition="results">
@@ -32,10 +33,10 @@
         </ul>
       </div>
       <div tal:define="indicator self/indicator" tal:condition="exists:indicator" class="search-indicator">
-        <a tal:attributes="href page:@/search.do?query=${self/query}" href="#">|&lt; 譛�蛻�</a>
+        <a tal:attributes="href page:@/search.do?query=${self/query}" href="#">|&lt; 最初</a>
         <a tal:repeat="elem indicator/elements" tal:attributes="href page:@/search.do?query=${self/query}&amp;offset=${elem/position}" href="#"><b tal:content="elem/number" tal:omit-tag="not:elem/current">1</b></a>
         <a tal:condition="" href="#">2</a>
-        <a tal:attributes="href page:@/search.do?query=${self/query}&amp;offset=${indicator/lastPosition}" href="#">譛�蠕� &gt;|</a>
+        <a tal:attributes="href page:@/search.do?query=${self/query}&amp;offset=${indicator/lastPosition}" href="#">最後 &gt;|</a>
       </div>
     </div>
     </div>

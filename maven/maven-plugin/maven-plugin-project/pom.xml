@@ -6,6 +6,7 @@
     <groupId>org.seasar.kvasir.maven</groupId>
     <artifactId>maven-project</artifactId>
     <version>3.0.0-SNAPSHOT</version>
+    <relativePath>../../maven-project/pom.xml</relativePath>
   </parent>
   <groupId>org.seasar.kvasir.maven.plugin</groupId>
   <artifactId>maven-plugin-project</artifactId>
@@ -34,7 +35,7 @@
     </pluginRepository>
   </pluginRepositories>
   <modules>
-    <module>maven-spike-plugin</module>
-    <module>maven-kvasir-plugin</module>
+    <module>../maven-spike-plugin</module>
+    <module>../maven-kvasir-plugin</module>
   </modules>
 </project>

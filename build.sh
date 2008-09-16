@@ -29,13 +29,13 @@ if [ $EXITCODE != 0 ]; then exit $EXITCODE; fi
 # popd
 # if [ $EXITCODE != 0 ]; then exit $EXITCODE; fi
 
-pushd plugin
+pushd plugin/plugin-project
 mvn $CMD_LINE_ARGS
 EXITCODE=$?
 popd
 if [ $EXITCODE != 0 ]; then exit $EXITCODE; fi
 
-pushd distribution
+pushd distribution/distribution-project
 mvn $CMD_LINE_ARGS
 EXITCODE=$?
 popd

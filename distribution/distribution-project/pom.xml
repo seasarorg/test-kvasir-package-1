@@ -6,7 +6,7 @@
     <groupId>org.seasar.kvasir</groupId>
     <artifactId>kvasir-project</artifactId>
     <version>3.0.0-SNAPSHOT</version>
-    <relativePath>../project/pom.xml</relativePath>
+    <relativePath>../../project/pom.xml</relativePath>
   </parent>
   <groupId>org.seasar.kvasir.distribution</groupId>
   <artifactId>distribution-project</artifactId>
@@ -28,7 +28,9 @@
             <commonLibraries>
               kvasir-common,aopalliance,commons-logging,javassist,ognl,s2-tiger,s2-framework,s2-extension,geronimo-jta_1.0.1B_spec,geronimo-ejb_2.1_spec,s2-pluggable,s2-classbuilder
             </commonLibraries>
-            <systemLibraries>kvasir-system,maven-embedder-dep</systemLibraries>
+            <systemLibraries>
+              kvasir-system,maven-embedder-dep
+            </systemLibraries>
             <pluginOuterLibraries></pluginOuterLibraries>
           </configuration>
         </plugin>
@@ -58,8 +60,8 @@
     </pluginRepository>
   </pluginRepositories>
   <modules>
-    <module>jetty-skeleton</module>
-    <module>kvasir-cms</module>
-    <module>kvasir-server</module>
+    <module>../jetty-skeleton</module>
+    <module>../kvasir-cms</module>
+    <module>../kvasir-server</module>
   </modules>
 </project>

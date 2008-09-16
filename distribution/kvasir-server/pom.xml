@@ -6,6 +6,7 @@
     <groupId>org.seasar.kvasir.distribution</groupId>
     <artifactId>distribution-project</artifactId>
     <version>3.0.0-SNAPSHOT</version>
+    <relativePath>../distribution-project/pom.xml</relativePath>
   </parent>
   <artifactId>kvasir-server</artifactId>
   <packaging>kvasir-distribution</packaging>
@@ -16,7 +17,9 @@
         <groupId>org.seasar.kvasir.maven.plugin</groupId>
         <artifactId>maven-kvasir-plugin</artifactId>
         <configuration>
-          <deploymentSourceDirectory>src/main/kvasir</deploymentSourceDirectory>
+          <deploymentSourceDirectory>
+            src/main/kvasir
+          </deploymentSourceDirectory>
           <deploymentDirectory>kvasir</deploymentDirectory>
           <homeDirectory>kvasir</homeDirectory>
           <baseLibraryDirectory>base/lib</baseLibraryDirectory>

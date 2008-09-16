@@ -6,7 +6,7 @@
     <groupId>org.seasar.kvasir</groupId>
     <artifactId>kvasir-project</artifactId>
     <version>3.0.0-SNAPSHOT</version>
-    <relativePath>../project/pom.xml</relativePath>
+    <relativePath>../../project/pom.xml</relativePath>
   </parent>
   <groupId>org.seasar.kvasir.plugin</groupId>
   <artifactId>plugin-project</artifactId>
@@ -28,7 +28,9 @@
             <commonLibraries>
               kvasir-common,aopalliance,commons-logging,log4j,javassist,ognl,s2-tiger,s2-framework,s2-extension,geronimo-jta_1.0.1B_spec,geronimo-ejb_2.1_spec,s2-pluggable,s2-classbuilder
             </commonLibraries>
-            <systemLibraries>kvasir-system,maven-embedder-dep</systemLibraries>
+            <systemLibraries>
+              kvasir-system,maven-embedder-dep
+            </systemLibraries>
             <pluginOuterLibraries></pluginOuterLibraries>
           </configuration>
         </plugin>
@@ -89,28 +91,28 @@
     </dependency>
   </dependencies>
   <modules>
-    <module>org.seasar.kvasir.base</module>
-    <module>org.seasar.kvasir.base.cache</module>
-    <module>org.seasar.kvasir.base.dao</module>
-    <module>org.seasar.kvasir.base.mime</module>
-    <module>org.seasar.kvasir.base.mail</module>
-    <module>org.seasar.kvasir.base.webapp</module>
-    <module>org.seasar.kvasir.base.webapp.multibyte</module>
-    <module>org.seasar.kvasir.page</module>
-    <module>org.seasar.kvasir.page.ability.content</module>
-    <module>org.seasar.kvasir.page.ability.template</module>
-    <module>org.seasar.kvasir.page.ability.table</module>
-    <module>org.seasar.kvasir.page.auth</module>
-    <module>org.seasar.kvasir.cms</module>
-    <module>net.skirnir.freyja</module>
-    <module>org.seasar.kvasir.page.search</module>
-    <module>org.seasar.kvasir.cms.java</module>
-    <module>org.seasar.kvasir.cms.zpt</module>
-    <module>org.seasar.kvasir.cms.pop</module>
-    <module>org.seasar.kvasir.cms.ymir</module>
-    <module>org.seasar.kvasir.cms.toolbox</module>
-    <module>org.seasar.kvasir.cms.manage</module>
-    <module>org.seasar.kvasir.cms.webdav</module>
-    <module>org.seasar.kvasir.cms.kdiary</module>
+    <module>../org.seasar.kvasir.base</module>
+    <module>../org.seasar.kvasir.base.cache</module>
+    <module>../org.seasar.kvasir.base.dao</module>
+    <module>../org.seasar.kvasir.base.mime</module>
+    <module>../org.seasar.kvasir.base.mail</module>
+    <module>../org.seasar.kvasir.base.webapp</module>
+    <module>../org.seasar.kvasir.base.webapp.multibyte</module>
+    <module>../org.seasar.kvasir.page</module>
+    <module>../org.seasar.kvasir.page.ability.content</module>
+    <module>../org.seasar.kvasir.page.ability.template</module>
+    <module>../org.seasar.kvasir.page.ability.table</module>
+    <module>../org.seasar.kvasir.page.auth</module>
+    <module>../org.seasar.kvasir.cms</module>
+    <module>../net.skirnir.freyja</module>
+    <module>../org.seasar.kvasir.page.search</module>
+    <module>../org.seasar.kvasir.cms.java</module>
+    <module>../org.seasar.kvasir.cms.zpt</module>
+    <module>../org.seasar.kvasir.cms.pop</module>
+    <module>../org.seasar.kvasir.cms.ymir</module>
+    <module>../org.seasar.kvasir.cms.toolbox</module>
+    <module>../org.seasar.kvasir.cms.manage</module>
+    <module>../org.seasar.kvasir.cms.webdav</module>
+    <module>../org.seasar.kvasir.cms.kdiary</module>
   </modules>
 </project>

@@ -6,6 +6,7 @@
     <groupId>org.seasar.kvasir.plugin</groupId>
     <artifactId>plugin-project</artifactId>
     <version>3.0.0-SNAPSHOT</version>
+    <relativePath>../plugin-project/pom.xml</relativePath>
   </parent>
   <groupId>org.seasar.kvasir.cms.java</groupId>
   <artifactId>org.seasar.kvasir.cms.java</artifactId>

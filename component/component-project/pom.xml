@@ -6,7 +6,7 @@
     <groupId>org.seasar.kvasir</groupId>
     <artifactId>kvasir-project</artifactId>
     <version>3.0.0-SNAPSHOT</version>
-    <relativePath>../project/pom.xml</relativePath>
+    <relativePath>../../project/pom.xml</relativePath>
   </parent>
   <artifactId>component-project</artifactId>
   <packaging>pom</packaging>
@@ -46,10 +46,10 @@
     </pluginRepository>
   </pluginRepositories>
   <modules>
-    <module>kvasir-base</module>
-    <module>kvasir-test</module>
-    <module>kvasir-common</module>
-    <module>kvasir-system</module>
-    <module>kvasir-webapp</module>
+    <module>../kvasir-base</module>
+    <module>../kvasir-test</module>
+    <module>../kvasir-common</module>
+    <module>../kvasir-system</module>
+    <module>../kvasir-webapp</module>
   </modules>
 </project>

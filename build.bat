@@ -47,14 +47,14 @@ REM if "%ERRORLEVEL%" == "0" goto pass4succeed
 REM exit /B %ERRORLEVEL%
 REM :pass4succeed
 
-pushd plugin
+pushd plugin\plugin-project
 call mvn %CMD_LINE_ARGS%
 popd
 if "%ERRORLEVEL%" == "0" goto pass5succeed
 exit /B %ERRORLEVEL%
 :pass5succeed
 
-pushd distribution
+pushd distribution\distribution-project
 call mvn %CMD_LINE_ARGS%
 popd
 if "%ERRORLEVEL%" == "0" goto pass6succeed

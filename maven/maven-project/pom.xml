@@ -2,6 +2,12 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.seasar.kvasir</groupId>
+    <artifactId>kvasir-project</artifactId>
+    <version>3.0.0-SNAPSHOT</version>
+    <relativePath>../../project/pom.xml</relativePath>
+  </parent>
   <groupId>org.seasar.kvasir.maven</groupId>
   <artifactId>maven-project</artifactId>
   <version>3.0.0-SNAPSHOT</version>
@@ -116,6 +122,6 @@
     </snapshotRepository>
   </distributionManagement>
   <modules>
-    <module>maven-plugin</module>
+    <module>../maven-plugin/maven-plugin-project</module>
   </modules>
 </project>

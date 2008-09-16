@@ -219,7 +219,7 @@
   </distributionManagement>
   <modules>
     <module>../util</module>
-    <module>../component</module>
-    <module>../maven</module>
+    <module>../component/component-project</module>
+    <module>../maven/maven-project</module>
   </modules>
 </project>

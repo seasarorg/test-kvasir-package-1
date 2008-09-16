@@ -6,6 +6,7 @@
     <groupId>org.seasar.kvasir.distribution</groupId>
     <artifactId>distribution-project</artifactId>
     <version>3.0.0-SNAPSHOT</version>
+    <relativePath>../distribution-project/pom.xml</relativePath>
   </parent>
   <artifactId>kvasir-cms</artifactId>
   <packaging>kvasir-distribution</packaging>
@@ -48,7 +49,8 @@
               <tasks>
                 <propertyfile
                   file="${project.build.directory}/webapp/WEB-INF/classes/build.number">
-                  <entry key="build.number" type="date" value="now" pattern="yyyyMMddHHmmss" />
+                  <entry key="build.number" type="date" value="now"
+                    pattern="yyyyMMddHHmmss" />
                 </propertyfile>
               </tasks>
             </configuration>

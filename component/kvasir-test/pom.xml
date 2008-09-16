@@ -6,6 +6,7 @@
     <groupId>org.seasar.kvasir</groupId>
     <artifactId>component-project</artifactId>
     <version>3.0.0-SNAPSHOT</version>
+    <relativePath>../component-project/pom.xml</relativePath>
   </parent>
   <artifactId>kvasir-test</artifactId>
   <packaging>jar</packaging>

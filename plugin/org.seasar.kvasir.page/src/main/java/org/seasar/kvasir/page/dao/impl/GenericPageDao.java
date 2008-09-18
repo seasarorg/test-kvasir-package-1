@@ -23,6 +23,8 @@ import org.seasar.cms.beantable.impl.BeantableDaoBase;
 import org.seasar.cms.database.SQLRuntimeException;
 import org.seasar.kvasir.base.dao.QueryHandler;
 import org.seasar.kvasir.base.dao.SQLUtils;
+import org.seasar.kvasir.base.log.KvasirLog;
+import org.seasar.kvasir.base.log.KvasirLogFactory;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PageNotFoundRuntimeException;
 import org.seasar.kvasir.page.PagePlugin;
@@ -77,6 +79,9 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
 
     protected PageConditionParser parser_;
 
+    private final KvasirLog log_ = KvasirLogFactory
+        .getLog(GenericPageDao.class);
+
     static {
         List<String> list = new ArrayList<String>();
         list.addAll(Arrays.asList(TableConstants.COLS_PAGE));
@@ -124,7 +129,7 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
         Connection con = null;
         try {
             con = getConnection();
-            QueryRunner run = new QueryRunner();
+            QueryRunner run = newQueryRunner();
             return (PageDto)run.query(con, getQuery("getObjectById"), id,
                 beantableHandler_);
         } catch (SQLException ex) {
@@ -132,6 +137,15 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
         } finally {
             DbUtils.closeQuietly(con);
         }
+    }
+
+
+    private QueryRunner newQueryRunner()
+    {
+        if (log_.isDebugEnabled()) {
+            return new DebugQueryRunner(log_);
+        }
+        return new QueryRunner();
     }
 
 
@@ -173,7 +187,7 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
         Connection con = null;
         try {
             con = getConnection();
-            QueryRunner run = new QueryRunner();
+            QueryRunner run = newQueryRunner();
             return (List<PageDto>)run.query(con, template, ids,
                 beantableListHandler_);
         } catch (SQLException ex) {
@@ -274,7 +288,7 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
         Connection con = null;
         try {
             con = getConnection();
-            QueryRunner run = new QueryRunner();
+            QueryRunner run = newQueryRunner();
             Number count = (Number)run.query(con, getQuery("childNameExists"),
                 new Object[] { heimId, pathname, name }, scalarHandler_);
             return (count.intValue() > 0);
@@ -293,7 +307,7 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
         try {
             con = getConnection();
 
-            QueryRunner run = new QueryRunner();
+            QueryRunner run = newQueryRunner();
             if (dto.getOrderNumber() == null) {
                 Number value = (Number)run.query(con,
                     getQuery("insert.getMaxOrderNumber"), new Object[] {
@@ -477,7 +491,7 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
         Connection con = null;
         try {
             con = getConnection();
-            QueryRunner run = new QueryRunner();
+            QueryRunner run = newQueryRunner();
             return (PageDto)run.query(con,
                 getQuery("getObjectByParentPathnameAndName"), new Object[] {
                     heimId, parentPathname, name }, beantableHandler_);
@@ -568,7 +582,7 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
         Connection con = null;
         try {
             con = getConnection();
-            QueryRunner run = new QueryRunner();
+            QueryRunner run = newQueryRunner();
 
             return (List<Object>)run.query(con, pair.getTemplate(), pair
                 .getParameters(), h);
@@ -602,7 +616,7 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
         Connection con = null;
         try {
             con = getConnection();
-            QueryRunner run = new QueryRunner();
+            QueryRunner run = newQueryRunner();
             List<Number> lockedIds = (List<Number>)run.query(con, template,
                 ids, scalarListHandler_);
 

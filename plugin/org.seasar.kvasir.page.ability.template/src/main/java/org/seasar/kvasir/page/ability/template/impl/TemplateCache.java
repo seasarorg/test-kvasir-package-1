@@ -1,11 +1,17 @@
 package org.seasar.kvasir.page.ability.template.impl;
 
+import org.seasar.framework.container.annotation.tiger.Binding;
+import org.seasar.framework.container.annotation.tiger.BindingType;
+import org.seasar.kvasir.base.cache.Cache;
+import org.seasar.kvasir.base.cache.CacheListener;
+import org.seasar.kvasir.base.cache.CachePlugin;
 import org.seasar.kvasir.base.cache.CacheStorage;
 import org.seasar.kvasir.base.cache.CachedEntry;
+import org.seasar.kvasir.base.cache.IndexedCache;
+import org.seasar.kvasir.base.cache.ObjectProvider;
+import org.seasar.kvasir.base.cache.RefreshingStrategy;
 import org.seasar.kvasir.base.cache.impl.AbstractCacheListener;
 import org.seasar.kvasir.base.cache.impl.CachedEntryImpl;
-import org.seasar.kvasir.base.cache.impl.IndexedCacheImpl;
-import org.seasar.kvasir.base.cache.impl.LRUMapCacheStorage;
 import org.seasar.kvasir.page.PageUtils;
 import org.seasar.kvasir.page.ability.template.Template;
 import org.seasar.kvasir.page.ability.template.TemplateAbilityPlugin;
@@ -14,18 +20,41 @@ import org.seasar.kvasir.util.io.Resource;
 import org.seasar.kvasir.util.io.ResourceUtils;
 
 
-public class TemplateCache extends
-    IndexedCacheImpl<Integer, TemplateKey, Template>
+public class TemplateCache
+    implements IndexedCache<Integer, TemplateKey, Template>
 {
+    private static final int LOADED_PROVIDER = 1;
+
+    private static final int LOADED_CACHEPLUGIN = 2;
+
+    private static final int LOADED_ALL = LOADED_PROVIDER | LOADED_CACHEPLUGIN;
+
+    private int loaded_;
+
     private TemplateAbilityPlugin plugin_;
 
     private TemplateProvider provider_;
 
-    private CacheStorage<Integer, TemplateDto> dtoStorage_ = new LRUMapCacheStorage<Integer, TemplateDto>();
+    private IndexedCache<Integer, TemplateKey, Template> cache_;
 
-    private CacheStorage<Integer, String[]> variantStorage_ = new LRUMapCacheStorage<Integer, String[]>();
+    private CacheStorage<Integer, TemplateDto> dtoStorage_;
+
+    private CacheStorage<Integer, String[]> variantStorage_;
+
+    private CachePlugin cachePlugin_;
 
 
+    public void setCachePlugin(CachePlugin cachePlugin)
+    {
+        cachePlugin_ = cachePlugin;
+
+        if ((loaded_ |= LOADED_CACHEPLUGIN) == LOADED_ALL) {
+            initialize();
+        }
+    }
+
+
+    @Binding(bindingType = BindingType.MUST)
     public void setPlugin(TemplateAbilityPlugin plugin)
     {
         plugin_ = plugin;
@@ -35,8 +64,19 @@ public class TemplateCache extends
     public void setProvider(TemplateProvider provider)
     {
         provider_ = provider;
-        setObjectProvider(provider_);
-        addListener(new AbstractCacheListener<TemplateKey, Template>() {
+
+        if ((loaded_ |= LOADED_PROVIDER) == LOADED_ALL) {
+            initialize();
+        }
+    }
+
+
+    void initialize()
+    {
+        cache_ = cachePlugin_.newIndexedCache(TemplateAbilityPlugin.ID,
+            Integer.class, TemplateKey.class, Template.class, false);
+        cache_.setObjectProvider(provider_);
+        cache_.addListener(new AbstractCacheListener<TemplateKey, Template>() {
             @Override
             public void notifyRegistered(
                 CachedEntry<TemplateKey, Template> entry)
@@ -63,13 +103,18 @@ public class TemplateCache extends
                 }
             }
         });
+        cachePlugin_.register(TemplateAbilityPlugin.ID, this);
+
+        dtoStorage_ = cachePlugin_.newCacheStorage(TemplateAbilityPlugin.ID,
+            Integer.class, TemplateDto.class);
+        variantStorage_ = cachePlugin_.newCacheStorage(
+            TemplateAbilityPlugin.ID, Integer.class, String[].class);
     }
 
 
-    @Override
     public void refresh()
     {
-        super.refresh();
+        cache_.refresh();
         dtoStorage_.clear();
         variantStorage_.clear();
     }
@@ -168,5 +213,126 @@ public class TemplateCache extends
     public boolean hasAnyTemplates(Integer pageId)
     {
         return (getDtoEntry(pageId).getCached() != null);
+    }
+
+
+    public void clear(Integer index)
+    {
+        cache_.clear(index);
+    }
+
+
+    public void addListener(CacheListener<TemplateKey, Template> listener)
+    {
+        cache_.addListener(listener);
+    }
+
+
+    public void clear()
+    {
+        cache_.clear();
+    }
+
+
+    public Template get(TemplateKey key)
+    {
+        return cache_.get(key);
+    }
+
+
+    public CacheStorage<TemplateKey, Template> getCacheStorage()
+    {
+        return cache_.getCacheStorage();
+    }
+
+
+    public CachedEntry<TemplateKey, Template> getEntry(TemplateKey key)
+    {
+        return cache_.getEntry(key);
+    }
+
+
+    public CachedEntry<TemplateKey, Template> getEntry(TemplateKey key,
+        boolean registerIfNotExists)
+    {
+        return cache_.getEntry(key, registerIfNotExists);
+    }
+
+
+    public ObjectProvider<TemplateKey, Template> getObjectProvider()
+    {
+        return cache_.getObjectProvider();
+    }
+
+
+    public RefreshingStrategy<TemplateKey, Template> getRefreshingStrategy()
+    {
+        return cache_.getRefreshingStrategy();
+    }
+
+
+    public void ping()
+    {
+        cache_.ping();
+    }
+
+
+    public void ping(TemplateKey key)
+    {
+        cache_.ping(key);
+    }
+
+
+    public void refresh(TemplateKey key)
+    {
+        cache_.refresh(key);
+    }
+
+
+    public void register(TemplateKey key, Template object)
+    {
+        cache_.register(key, object);
+    }
+
+
+    public void remove(TemplateKey key)
+    {
+        cache_.remove(key);
+    }
+
+
+    @Binding(bindingType = BindingType.NONE)
+    public Cache<TemplateKey, Template> setCacheStorage(
+        CacheStorage<TemplateKey, Template> cacheStorage)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+
+    @Binding(bindingType = BindingType.NONE)
+    public Cache<TemplateKey, Template> setObjectProvider(
+        ObjectProvider<TemplateKey, Template> objectProvider)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+
+    @Binding(bindingType = BindingType.NONE)
+    public Cache<TemplateKey, Template> setRefreshingStrategy(
+        RefreshingStrategy<TemplateKey, Template> refreshingStrategy)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+
+    public long getTotalSize()
+    {
+        return cache_.getTotalSize();
+    }
+
+
+    public long getUsedSize()
+    {
+        return cache_.getUsedSize();
     }
 }

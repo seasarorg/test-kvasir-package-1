@@ -11,6 +11,7 @@
   </runtime>
 
   <requires>
+    <import plugin="org.seasar.kvasir.base.cache" />
     <import plugin="org.seasar.kvasir.base.dao" />
     <import plugin="org.seasar.kvasir.page" />
   </requires>

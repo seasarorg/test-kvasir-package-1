@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.seasar.kvasir.base.cache.Cache;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.Processable;
 import org.seasar.kvasir.page.ProcessableRuntimeException;
-import org.seasar.kvasir.page.ability.AbstractCachedPageAbilityAlfr;
+import org.seasar.kvasir.page.ability.AbstractPageAbilityAlfr;
 import org.seasar.kvasir.page.ability.Attribute;
 import org.seasar.kvasir.page.ability.AttributeFilter;
 import org.seasar.kvasir.page.ability.PageAbility;
@@ -27,7 +26,7 @@ import org.seasar.kvasir.util.io.InputStreamFactory;
  *
  * @author YOKOTA Takehiko
  */
-public class TemplateAbilityAlfrImpl extends AbstractCachedPageAbilityAlfr
+public class TemplateAbilityAlfrImpl extends AbstractPageAbilityAlfr
     implements TemplateAbilityAlfr
 {
     private TemplateAbilityPlugin plugin_;
@@ -44,20 +43,6 @@ public class TemplateAbilityAlfrImpl extends AbstractCachedPageAbilityAlfr
     public void setCache(TemplateCache cache)
     {
         cache_ = cache;
-    }
-
-
-    @Override
-    protected Cache<?, ?> getCache()
-    {
-        return cache_;
-    }
-
-
-    @Override
-    protected String getCacheId()
-    {
-        return TemplateAbilityPlugin.ID + ".templateAbilityAlfr";
     }
 
 

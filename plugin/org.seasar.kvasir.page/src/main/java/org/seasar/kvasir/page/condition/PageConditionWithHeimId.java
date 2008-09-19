@@ -183,6 +183,13 @@ public class PageConditionWithHeimId extends PageCondition
 
 
     @Override
+    public PageCondition setOptions(Formula... option)
+    {
+        return pageCondition_.setOptions(option);
+    }
+
+
+    @Override
     public PageCondition setOrder(Order order)
     {
         return pageCondition_.setOrder(order);
@@ -190,7 +197,7 @@ public class PageConditionWithHeimId extends PageCondition
 
 
     @Override
-    public PageCondition setOrders(Order[] orders)
+    public PageCondition setOrders(Order... orders)
     {
         return pageCondition_.setOrders(orders);
     }

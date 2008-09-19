@@ -1,6 +1,7 @@
 package org.seasar.kvasir.page.condition;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -357,6 +358,7 @@ public class PageCondition
      * @param order 検索結果の並び順を表すOrderオブジェクト。nullを指定することもできます。
      * @return このオブジェクト自身。
      * @see #addOrder(Order)
+     * @see #setOrders(Order[])
      */
     public PageCondition setOrder(Order order)
     {
@@ -366,9 +368,7 @@ public class PageCondition
         if (order == null) {
             orderList_ = null;
         } else {
-            if (orderList_ == null) {
-                orderList_ = new ArrayList<Order>();
-            }
+            orderList_ = new ArrayList<Order>();
             orderList_.add(order);
         }
 
@@ -380,27 +380,26 @@ public class PageCondition
      * 検索結果の並び順を表すOrderオブジェクトの配列を設定します。
      * <p>現在の設定は洗い換えされます。
      * </p>
-     * <p>nullを指定した場合はデフォルトの並び順もクリアされ、
+     * <p>nullまたは空の配列を指定した場合はデフォルトの並び順もクリアされ、
      * 並び順が指定されていない状態で結果が返されるようになります。
      * </p>
      * 
      * @param orders 検索結果の並び順を表すOrderオブジェクトの配列。nullを指定することもできます。
      * @return このオブジェクト自身。
      * @see #setOrder(Order)
+     * @see #addOrder(Order)
      */
-    public PageCondition setOrders(Order[] orders)
+    public PageCondition setOrders(Order... orders)
     {
         if (freeze_) {
             throw new IllegalStateException("This object is freezed");
         }
-        if ((orders == null) || (orders.length == 0)) {
+        if (orders == null || orders.length == 0) {
             orderList_ = null;
         } else {
-            if (orderList_ == null) {
-                orderList_ = new ArrayList<Order>(orders.length);
-                for (int i = 0; i < orders.length; i++) {
-                    orderList_.add(orders[i]);
-                }
+            orderList_ = new ArrayList<Order>(orders.length);
+            for (int i = 0; i < orders.length; i++) {
+                orderList_.add(orders[i]);
             }
         }
 
@@ -417,7 +416,10 @@ public class PageCondition
      * </p>
      * 
      * @param order 検索結果の並び順を表すOrderオブジェクト。nullを指定することもできます。
+     * nullが指定された場合は何もしません。
      * @return このオブジェクト自身。
+     * @see #setOrder(Order)
+     * @see #setOrders(Order[])
      */
     public PageCondition addOrder(Order order)
     {
@@ -478,7 +480,7 @@ public class PageCondition
 
     /**
      * 詳細条件を設定します。
-     * <p>現在の設定に追加で設定されます。
+     * <p>現在の設定にAND条件として追加で設定されます。
      * </p>
      * <p>詳細条件を置き換えたい場合は{@link #setOptions(Formula[])}
      * または{@link #setOption(Formula)}を使用して下さい。
@@ -499,6 +501,33 @@ public class PageCondition
             optionList_ = new ArrayList<Formula>();
         }
         optionList_.add(option);
+
+        return this;
+    }
+
+
+    /**
+     * 詳細条件を複数設定します。
+     * <p>現在の設定は洗い換えされます。
+     * </p>
+     * <p>指定した複数の条件はAND条件とみなされます。
+     * </p>
+     * <p>詳細条件を追加したい場合は{@link #addOption(Formula)}を使用して下さい。
+     * </p>
+     * 
+     * @param option 詳細条件を表すFormulaオブジェクトの配列。nullを指定することもできます。
+     * @return このオブジェクト自身。
+     */
+    public PageCondition setOptions(Formula... option)
+    {
+        if (freeze_) {
+            throw new IllegalStateException("This object is freezed");
+        }
+        if (option == null) {
+            return this;
+        }
+        optionList_ = new ArrayList<Formula>();
+        optionList_.addAll(Arrays.asList(option));
 
         return this;
     }

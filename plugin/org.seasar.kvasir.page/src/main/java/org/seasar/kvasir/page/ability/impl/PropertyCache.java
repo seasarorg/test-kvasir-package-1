@@ -3,36 +3,68 @@ package org.seasar.kvasir.page.ability.impl;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.kvasir.base.cache.Cache;
+import org.seasar.kvasir.base.cache.CacheListener;
+import org.seasar.kvasir.base.cache.CachePlugin;
 import org.seasar.kvasir.base.cache.CacheStorage;
 import org.seasar.kvasir.base.cache.CachedEntry;
+import org.seasar.kvasir.base.cache.IndexedCache;
 import org.seasar.kvasir.base.cache.ObjectProvider;
+import org.seasar.kvasir.base.cache.RefreshingStrategy;
 import org.seasar.kvasir.base.cache.impl.CachedEntryImpl;
-import org.seasar.kvasir.base.cache.impl.IndexedCacheImpl;
-import org.seasar.kvasir.base.cache.impl.LRUMapCacheStorage;
+import org.seasar.kvasir.page.PagePlugin;
 import org.seasar.kvasir.util.collection.PropertyHandler;
 
 
-public class PropertyCache extends
-    IndexedCacheImpl<Integer, PropertyKey, PropertyHandler>
+public class PropertyCache
+    implements IndexedCache<Integer, PropertyKey, PropertyHandler>
 {
+    public static final String ID = PagePlugin.ID + ".property";
+
+    private static final int LOADED_PROVIDER = 1;
+
+    private static final int LOADED_CACHEPLUGIN = 2;
+
+    private static final int LOADED_ALL = LOADED_PROVIDER | LOADED_CACHEPLUGIN;
+
+    private int loaded_;
+
     private PropertyProvider provider_;
 
-    private CacheStorage<Integer, String[]> variantStorage_ = new LRUMapCacheStorage<Integer, String[]>();
+    private IndexedCache<Integer, PropertyKey, PropertyHandler> cache_;
+
+    private CacheStorage<Integer, String[]> variantStorage_;
+
+    private CachePlugin cachePlugin_;
 
 
-    @Override
-    @Binding(bindingType = BindingType.NONE)
-    public Cache<PropertyKey, PropertyHandler> setObjectProvider(
-        ObjectProvider<PropertyKey, PropertyHandler> objectProvider)
+    public void setCachePlugin(CachePlugin cachePlugin)
     {
-        return super.setObjectProvider(objectProvider);
+        cachePlugin_ = cachePlugin;
+
+        if ((loaded_ |= LOADED_CACHEPLUGIN) == LOADED_ALL) {
+            initialize();
+        }
     }
 
 
     public void setProvider(PropertyProvider provider)
     {
         provider_ = provider;
-        setObjectProvider(provider_);
+
+        if ((loaded_ |= LOADED_PROVIDER) == LOADED_ALL) {
+            initialize();
+        }
+    }
+
+
+    void initialize()
+    {
+        cache_ = cachePlugin_.newIndexedCache(ID, Integer.class,
+            PropertyKey.class, PropertyHandler.class, false);
+        cache_.setObjectProvider(provider_);
+        variantStorage_ = cachePlugin_.newCacheStorage(ID, Integer.class,
+            String[].class);
+        cachePlugin_.register(ID, this);
     }
 
 
@@ -99,5 +131,132 @@ public class PropertyCache extends
             variantStorage_.register(entry);
         }
         return entry.getCached();
+    }
+
+
+    public void clear(Integer index)
+    {
+        cache_.clear(index);
+    }
+
+
+    public void addListener(CacheListener<PropertyKey, PropertyHandler> listener)
+    {
+        cache_.addListener(listener);
+    }
+
+
+    public void clear()
+    {
+        cache_.clear();
+    }
+
+
+    public PropertyHandler get(PropertyKey key)
+    {
+        return cache_.get(key);
+    }
+
+
+    public CacheStorage<PropertyKey, PropertyHandler> getCacheStorage()
+    {
+        return cache_.getCacheStorage();
+    }
+
+
+    public CachedEntry<PropertyKey, PropertyHandler> getEntry(PropertyKey key)
+    {
+        return cache_.getEntry(key);
+    }
+
+
+    public CachedEntry<PropertyKey, PropertyHandler> getEntry(PropertyKey key,
+        boolean registerIfNotExists)
+    {
+        return cache_.getEntry(key, registerIfNotExists);
+    }
+
+
+    public ObjectProvider<PropertyKey, PropertyHandler> getObjectProvider()
+    {
+        return cache_.getObjectProvider();
+    }
+
+
+    public RefreshingStrategy<PropertyKey, PropertyHandler> getRefreshingStrategy()
+    {
+        return cache_.getRefreshingStrategy();
+    }
+
+
+    public void ping()
+    {
+        cache_.ping();
+    }
+
+
+    public void ping(PropertyKey key)
+    {
+        cache_.ping(key);
+    }
+
+
+    public void refresh()
+    {
+        cache_.refresh();
+    }
+
+
+    public void refresh(PropertyKey key)
+    {
+        cache_.refresh(key);
+    }
+
+
+    public void register(PropertyKey key, PropertyHandler object)
+    {
+        cache_.register(key, object);
+    }
+
+
+    public void remove(PropertyKey key)
+    {
+        cache_.remove(key);
+    }
+
+
+    @Binding(bindingType = BindingType.NONE)
+    public Cache<PropertyKey, PropertyHandler> setCacheStorage(
+        CacheStorage<PropertyKey, PropertyHandler> cacheStorage)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+
+    @Binding(bindingType = BindingType.NONE)
+    public Cache<PropertyKey, PropertyHandler> setObjectProvider(
+        ObjectProvider<PropertyKey, PropertyHandler> objectProvider)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+
+    @Binding(bindingType = BindingType.NONE)
+    public Cache<PropertyKey, PropertyHandler> setRefreshingStrategy(
+        RefreshingStrategy<PropertyKey, PropertyHandler> refreshingStrategy)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+
+    public long getTotalSize()
+    {
+        return cache_.getTotalSize();
+    }
+
+
+    public long getUsedSize()
+    {
+        return cache_.getUsedSize();
     }
 }

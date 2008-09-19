@@ -6,12 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import org.seasar.kvasir.base.cache.Cache;
 import org.seasar.kvasir.page.Page;
-import org.seasar.kvasir.page.PagePlugin;
 import org.seasar.kvasir.page.Processable;
 import org.seasar.kvasir.page.ProcessableRuntimeException;
-import org.seasar.kvasir.page.ability.AbstractCachedPageAbilityAlfr;
+import org.seasar.kvasir.page.ability.AbstractPageAbilityAlfr;
 import org.seasar.kvasir.page.ability.Attribute;
 import org.seasar.kvasir.page.ability.AttributeFilter;
 import org.seasar.kvasir.page.ability.PageAbility;
@@ -29,7 +27,7 @@ import org.seasar.kvasir.util.collection.PropertyHandler;
  *
  * @author YOKOTA Takehiko
  */
-public class PropertyAbilityAlfrImpl extends AbstractCachedPageAbilityAlfr
+public class PropertyAbilityAlfrImpl extends AbstractPageAbilityAlfr
     implements PropertyAbilityAlfr
 {
     private PropertyCache cache_;
@@ -41,20 +39,6 @@ public class PropertyAbilityAlfrImpl extends AbstractCachedPageAbilityAlfr
     }
 
 
-    @Override
-    protected Cache<?, ?> getCache()
-    {
-        return cache_;
-    }
-
-
-    @Override
-    protected String getCacheId()
-    {
-        return PagePlugin.ID + ".propertyAbilityAlfr";
-    }
-
-
     /*
      * AbstractPageAbilityAlfr
      */
@@ -62,9 +46,6 @@ public class PropertyAbilityAlfrImpl extends AbstractCachedPageAbilityAlfr
     @Override
     protected boolean doStart()
     {
-        if (!super.doStart()) {
-            return false;
-        }
         return true;
     }
 

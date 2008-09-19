@@ -9,8 +9,6 @@ import org.seasar.kvasir.base.cache.CacheStorage;
 import org.seasar.kvasir.base.cache.CachedEntry;
 import org.seasar.kvasir.base.cache.IndexedCache;
 import org.seasar.kvasir.base.cache.ManagedCache;
-import org.seasar.kvasir.base.cache.impl.CacheImpl;
-import org.seasar.kvasir.base.cache.impl.IndexedCacheImpl;
 import org.seasar.kvasir.page.DuplicatePageException;
 import org.seasar.kvasir.page.PageMold;
 import org.seasar.kvasir.page.PagePlugin;
@@ -30,6 +28,8 @@ import org.seasar.kvasir.page.dao.PageDto;
 public class PageCache
     implements ManagedCache
 {
+    public static final String ID = PagePlugin.ID + ".page";
+
     private static final int LOADED_PROVIDER = 1;
 
     private static final int LOADED_PATHPAIRPROVIDER = 2;
@@ -47,14 +47,14 @@ public class PageCache
 
     private PageProvider provider_;
 
+    private PathPairProvider pathPairProvider_;
+
     private CachePlugin cachePlugin_;
 
 
     public void setProvider(PageProvider provider)
     {
         provider_ = provider;
-        cache_ = new CacheImpl<PageKey, PageDto>();
-        cache_.setObjectProvider(provider_);
 
         if ((loaded_ |= LOADED_PROVIDER) == LOADED_ALL) {
             initialize();
@@ -64,8 +64,7 @@ public class PageCache
 
     public void setPathPairProvider(PathPairProvider pathPairProvider)
     {
-        pathPairCache_ = new IndexedCacheImpl<Integer, PathPairKey, String>();
-        pathPairCache_.setObjectProvider(pathPairProvider);
+        pathPairProvider_ = pathPairProvider;
 
         if ((loaded_ |= LOADED_PATHPAIRPROVIDER) == LOADED_ALL) {
             initialize();
@@ -85,11 +84,12 @@ public class PageCache
 
     void initialize()
     {
-        cache_.setRefreshingStrategy(cachePlugin_
-            .newRefreshingStrategyForVolatileProvider(cache_));
-        pathPairCache_.setRefreshingStrategy(cachePlugin_
-            .newRefreshingStrategyForVolatileProvider(pathPairCache_));
-        cachePlugin_.register(PagePlugin.ID + ".pageCache", this);
+        cache_ = cachePlugin_.newCache(ID, PageKey.class, PageDto.class, false);
+        cache_.setObjectProvider(provider_);
+        pathPairCache_ = cachePlugin_.newIndexedCache(ID, Integer.class,
+            PathPairKey.class, String.class, false);
+        pathPairCache_.setObjectProvider(pathPairProvider_);
+        cachePlugin_.register(ID, this);
     }
 
 

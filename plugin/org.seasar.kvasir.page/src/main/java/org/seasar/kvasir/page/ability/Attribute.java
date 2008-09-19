@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.seasar.kvasir.util.io.InputStreamFactory;
 import org.seasar.kvasir.util.collection.CaseInsensitiveMap;
+import org.seasar.kvasir.util.io.InputStreamFactory;
 
 
 /**

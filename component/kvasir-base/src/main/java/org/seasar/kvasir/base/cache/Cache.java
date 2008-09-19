@@ -1,5 +1,24 @@
 package org.seasar.kvasir.base.cache;
 
+/**
+ * オブジェクトをキャッシュする機構を表すインタフェースです。
+ * <p>このインタフェースを用いてキーに関連付けられたオブジェクトを取得することができます。
+ * その際オブジェクトは内部で適切にキャッシュされます。
+ * </p>
+ * <p>オブジェクトをキャッシュしている実体は{@link CacheStorage}です。
+ * オブジェクトがキャッシュにない場合はオブジェクトを生成して返しますが、
+ * オブジェクトの生成を司るのが{@link ObjectProvider}です。
+ * キャッシュのリフレッシュタイミングは{@link RefreshingStrategy}によって制御されます。
+ * </p>
+ * <p><b>同期化：</b>
+ * このインタフェースの実装クラスはスレッドセーフである必要があります。
+ * </p>
+ * 
+ * @see ObjectProvider
+ * @see RefreshingStrategy
+ * @see CacheStorage
+ * @author YOKOTA Takehiko
+ */
 public interface Cache<K, T>
     extends ManagedCache
 {

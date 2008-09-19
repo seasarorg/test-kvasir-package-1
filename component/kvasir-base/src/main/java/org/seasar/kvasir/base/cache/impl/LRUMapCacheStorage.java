@@ -1,28 +1,36 @@
 package org.seasar.kvasir.base.cache.impl;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
+import java.util.Map;
 
 import org.seasar.kvasir.base.cache.CachedEntry;
 
 
 public class LRUMapCacheStorage<K, T> extends AbstractCacheStorage<K, T>
 {
-    private LRUMap<K, CachedEntry<K, T>> map_;
+    private Map<K, CachedEntry<K, T>> map_;
 
     private int maxSize_;
 
 
     public LRUMapCacheStorage()
     {
-        this(100);
+        this(500);
     }
 
 
     public LRUMapCacheStorage(int maxSize)
     {
-        map_ = new LRUMap<K, CachedEntry<K, T>>(maxSize);
+        if (maxSize < 0) {
+            // ConcurrentHashMapはnullを指定できないので…。残念。
+            map_ = Collections
+                .synchronizedMap(new HashMap<K, CachedEntry<K, T>>());
+        } else {
+            map_ = Collections
+                .synchronizedMap(new LRUMap<K, CachedEntry<K, T>>(maxSize));
+        }
         maxSize_ = maxSize;
     }
 
@@ -56,44 +64,6 @@ public class LRUMapCacheStorage<K, T> extends AbstractCacheStorage<K, T>
     public void remove(K key)
     {
         map_.remove(key);
-    }
-
-
-    private static class LRUMap<K, V> extends LinkedHashMap<K, V>
-    {
-        private static final long serialVersionUID = -2303676717655195753L;
-
-        private static final int DEFAULT_INITIALCAPACITY = 16;
-
-        private static final float DEFAULT_LOADFACTOR = 0.75f;
-
-        private int maxSize_;
-
-
-        public LRUMap(int maxSize)
-        {
-            this(maxSize, DEFAULT_INITIALCAPACITY, DEFAULT_LOADFACTOR);
-        }
-
-
-        public LRUMap(int maxSize, int initialCapacity)
-        {
-            this(maxSize, initialCapacity, 0.75f);
-        }
-
-
-        public LRUMap(int maxSize, int initialCapacity, float loadFactor)
-        {
-            super(initialCapacity, loadFactor, true);
-            maxSize_ = maxSize;
-        }
-
-
-        @Override
-        protected boolean removeEldestEntry(Entry<K, V> eldest)
-        {
-            return size() > maxSize_;
-        }
     }
 
 

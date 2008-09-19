@@ -1,5 +1,6 @@
 package org.seasar.kvasir.base.cache.impl;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -18,7 +19,26 @@ public class IndexedCacheStorageImpl<I, K extends IndexedCacheKey<I>, T>
     @SuppressWarnings("unchecked")
     private CacheListener<K, T>[] listeners_ = new CacheListener[0];
 
-    private Map<I, CacheStorage<K, T>> storageMap_ = new HashMap<I, CacheStorage<K, T>>();
+    private Map<I, CacheStorage<K, T>> storageMap_;
+
+
+    public IndexedCacheStorageImpl()
+    {
+        this(500);
+    }
+
+
+    public IndexedCacheStorageImpl(int maxSize)
+    {
+        if (maxSize < 0) {
+            // ConcurrentHashMapはnullを指定できないので…。残念。
+            storageMap_ = Collections
+                .synchronizedMap(new HashMap<I, CacheStorage<K, T>>());
+        } else {
+            storageMap_ = Collections
+                .synchronizedMap(new LRUMap<I, CacheStorage<K, T>>(maxSize));
+        }
+    }
 
 
     public void clear()

@@ -4,15 +4,21 @@ import java.util.Iterator;
 
 
 /**
+ * オブジェクトをキャッシュする保存領域を表すインタフェースです。
+ * <p>このインタフェースを用いて、キーに関連付けてオブジェクトをキャッシュしたりオブジェクトを取り出したりすることができます。
+ * </p>
+ * <p>このインタフェースは通常{@link Cache}インタフェースとともに使用されます。
+ * </p>
  * <p><b>同期化：</b>
  * このインタフェースの実装クラスはスレッドセーフである必要があります。
  * </p>
  *
+ * @see Cache
  * @author YOKOTA Takehiko
  */
 public interface CacheStorage<K, T>
 {
-    int TOTALSIZE_UNLIMITED = 0;
+    int TOTALSIZE_UNLIMITED = -1;
 
 
     CachedEntry<K, T> get(K key);

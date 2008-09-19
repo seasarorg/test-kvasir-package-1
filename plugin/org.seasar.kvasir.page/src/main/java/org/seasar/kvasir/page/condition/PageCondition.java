@@ -18,6 +18,10 @@ import org.seasar.kvasir.page.type.User;
  * <p>このオブジェクトを複数スレッドで共有するには、条件を設定した後にfreeze()メソッドを呼び出して下さい。
  * なおfreeze()メソッドの呼び出し以降は複数スレッドで利用することができますが、検索条件の変更はできなくなります。
  * </p>
+ * <p>検索結果の並び順を指定するには{@link #setOrder(Order)}または{@link #addOrder(Order)}メソッドを
+ * 使います。これらのメソッドを呼び出さなかった場合はデフォルトの並び順としてPageのorderNumberフィールドの値の昇順に並べられます。
+ * パフォーマンス向上等のためにデフォルトの並び順を指定したくない場合は<code>setOrder(null)</code>として下さい。
+ * </p>
  * <p><b>同期化：</b>
  * このクラスは{@link PageCondition#freeze()}
  * を呼び出した後はスレッドセーフです。
@@ -77,7 +81,7 @@ public class PageCondition
 
     private int length_ = LENGTH_ALL;
 
-    private List<Order> orderList_ = null;
+    private List<Order> orderList_;
 
     private List<Formula> optionList_ = null;
 
@@ -107,6 +111,8 @@ public class PageCondition
      */
     public PageCondition()
     {
+        orderList_ = new ArrayList<Order>();
+        orderList_.add(new Order(FIELD_ORDERNUMBER));
     }
 
 
@@ -171,7 +177,7 @@ public class PageCondition
     /**
      * 検索結果の並び順を表すOrderオブジェクトの配列を返します。
      * 
-     * @return 検索結果の並び順を表すOrderオブジェクトの配列。並び順が未指定の場合は空の配列を返します。
+     * @return 検索結果の並び順を表すOrderオブジェクトの配列。nullを返すことはありません。
      */
     public Order[] getOrders()
     {
@@ -340,12 +346,17 @@ public class PageCondition
      * 検索結果の並び順に関する条件を設定します。
      * <p>現在の設定は洗い換えされます。
      * </p>
+     * <p>nullでない値を指定した場合は検索結果がその並び順で並べられて返されるようになります。
+     * nullを指定した場合はデフォルトの並び順もクリアされ、
+     * 並び順が指定されていない状態で結果が返されるようになります。
+     * </p>
      * <p>並び順に関する条件を複数指定したい場合は{@link #setOrders(Order[])}
      * または{@link #addOrder(Order)}を使用して下さい。
      * </p>
      * 
      * @param order 検索結果の並び順を表すOrderオブジェクト。nullを指定することもできます。
      * @return このオブジェクト自身。
+     * @see #addOrder(Order)
      */
     public PageCondition setOrder(Order order)
     {
@@ -369,9 +380,13 @@ public class PageCondition
      * 検索結果の並び順を表すOrderオブジェクトの配列を設定します。
      * <p>現在の設定は洗い換えされます。
      * </p>
+     * <p>nullを指定した場合はデフォルトの並び順もクリアされ、
+     * 並び順が指定されていない状態で結果が返されるようになります。
+     * </p>
      * 
      * @param orders 検索結果の並び順を表すOrderオブジェクトの配列。nullを指定することもできます。
      * @return このオブジェクト自身。
+     * @see #setOrder(Order)
      */
     public PageCondition setOrders(Order[] orders)
     {

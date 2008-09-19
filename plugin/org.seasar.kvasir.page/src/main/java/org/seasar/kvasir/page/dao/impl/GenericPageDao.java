@@ -556,10 +556,6 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
             orders = null;
         } else {
             orders = cond.getOrders();
-            if (orders.length == 0) {
-                orders = new org.seasar.kvasir.page.condition.Order[] { new org.seasar.kvasir.page.condition.Order(
-                    PageCondition.FIELD_ORDERNUMBER) };
-            }
         }
 
         ParsedPageCondition parsed = parser_.parse(this, columns, cond

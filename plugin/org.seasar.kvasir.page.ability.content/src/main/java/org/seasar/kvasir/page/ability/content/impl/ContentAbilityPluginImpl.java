@@ -16,7 +16,7 @@ import java.util.Set;
 import org.seasar.kvasir.base.KvasirUtils;
 import org.seasar.kvasir.base.plugin.AbstractPlugin;
 import org.seasar.kvasir.base.plugin.SettingsEvent;
-import org.seasar.kvasir.base.plugin.impl.AbstractSettingsListener;
+import org.seasar.kvasir.base.plugin.impl.SettingsListenerAdapter;
 import org.seasar.kvasir.page.PagePlugin;
 import org.seasar.kvasir.page.PageUtils;
 import org.seasar.kvasir.page.ability.content.ContentAbilityAlfr;
@@ -159,7 +159,7 @@ public class ContentAbilityPluginImpl extends
         contentAbilityAlfr_ = pagePlugin_
             .getPageAbilityAlfr(ContentAbilityAlfr.class);
 
-        addSettingsListener(new AbstractSettingsListener<ContentAbilityPluginSettings>() {
+        addSettingsListener(new SettingsListenerAdapter<ContentAbilityPluginSettings>() {
             @Override
             public void notifyUpdated(
                 SettingsEvent<ContentAbilityPluginSettings> event)

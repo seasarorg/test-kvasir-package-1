@@ -21,7 +21,7 @@ public class ContentAbilityIT extends
 {
     private PageAlfr pageAlfr_;
 
-
+    @Override
     protected String getTargetPluginId()
     {
         return ContentAbilityPlugin.ID;

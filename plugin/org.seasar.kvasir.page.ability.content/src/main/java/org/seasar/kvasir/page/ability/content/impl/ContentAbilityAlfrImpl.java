@@ -6,11 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import org.seasar.kvasir.base.cache.Cache;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.Processable;
 import org.seasar.kvasir.page.ProcessableRuntimeException;
-import org.seasar.kvasir.page.ability.AbstractCachedPageAbilityAlfr;
+import org.seasar.kvasir.page.ability.AbstractPageAbilityAlfr;
 import org.seasar.kvasir.page.ability.Attribute;
 import org.seasar.kvasir.page.ability.AttributeFilter;
 import org.seasar.kvasir.page.ability.PageAbility;
@@ -32,7 +31,7 @@ import org.seasar.kvasir.util.io.InputStreamFactory;
  *
  * @author YOKOTA Takehiko
  */
-public class ContentAbilityAlfrImpl extends AbstractCachedPageAbilityAlfr
+public class ContentAbilityAlfrImpl extends AbstractPageAbilityAlfr
     implements ContentAbilityAlfr
 {
     private ContentAbilityPlugin plugin_;
@@ -49,20 +48,6 @@ public class ContentAbilityAlfrImpl extends AbstractCachedPageAbilityAlfr
     public void setCache(ContentCache cache)
     {
         cache_ = cache;
-    }
-
-
-    @Override
-    protected Cache<?, ?> getCache()
-    {
-        return cache_;
-    }
-
-
-    @Override
-    protected String getCacheId()
-    {
-        return ContentAbilityPlugin.ID + ".contentAbilityAlfr";
     }
 
 

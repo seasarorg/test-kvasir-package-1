@@ -1,0 +1,1 @@
+max-age.description=Cache entry's maximum age in clustering mode. 0 means that checking change every time.

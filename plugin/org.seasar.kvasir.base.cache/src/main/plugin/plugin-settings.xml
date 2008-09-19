@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cache-plugin-settings>
+  <cache>
+    <max-age>20</max-age>
+    <max-size>500</max-size>
+  </cache>
 </cache-plugin-settings>

@@ -18,7 +18,7 @@ import org.seasar.kvasir.page.auth.AuthPlugin;
 import org.seasar.kvasir.page.search.ParseException;
 import org.seasar.kvasir.page.search.SearchPlugin;
 import org.seasar.kvasir.page.search.SearchQuery;
-import org.seasar.kvasir.page.search.SearchRequest;
+import org.seasar.kvasir.page.search.SearchContext;
 import org.seasar.kvasir.page.search.SearchResult;
 import org.seasar.kvasir.page.search.SearchSystem;
 import org.seasar.kvasir.page.type.Directory;
@@ -35,9 +35,7 @@ public class SearchPage
 {
     private static final String ATTR_DEFAULTSEARCHSYSTEM = "searchSystem.default";
 
-    private static final String ATTR_SEARCHREQUEST = "searchSystem.request";
-
-    private static final int QUERY_MAXLENGTH = 50;
+    private static final String ATTR_SEARCHCONTEXT = "searchSystem.context";
 
     private static final int QUERY_LENGTH = 10;
 
@@ -93,35 +91,42 @@ public class SearchPage
             reset_ = true;
         }
 
-        if (query_.length() == 0) {
-            session.removeAttribute(ATTR_SEARCHREQUEST);
-
-            total_ = 0;
-            results_ = new SearchResultDto[0];
-        } else {
-            SearchRequest searchRequest = (SearchRequest)session
-                .getAttribute(ATTR_SEARCHREQUEST);
-            if (reset_ || searchRequest == null) {
-                searchRequest = system.newSearchRequest();
-                session.setAttribute(ATTR_SEARCHREQUEST, searchRequest);
+        total_ = 0;
+        results_ = new SearchResultDto[0];
+        do {
+            if (query_.length() == 0) {
+                session.removeAttribute(ATTR_SEARCHCONTEXT);
+                break;
             }
 
-            SearchQuery searchQuery = createSearchQuery();
+            SearchQuery query = createSearchQuery();
+
+            SearchContext context = (SearchContext)session
+                .getAttribute(ATTR_SEARCHCONTEXT);
+            if (context != null) {
+                if (!query.equals(context.getQuery())) {
+                    context = null;
+                }
+            }
+            if (reset_ || context == null) {
+                context = system.newContext();
+                try {
+                    context.setQuery(query);
+                } catch (ParseException ex) {
+                    break;
+                }
+                session.setAttribute(ATTR_SEARCHCONTEXT, context);
+            }
 
             Locale locale = pageRequest_.getLocale();
-            try {
-                total_ = searchRequest.getResultsCount(searchQuery);
-                SearchResult[] results = searchRequest.search(searchQuery,
-                    offset_, QUERY_LENGTH);
-                results_ = new SearchResultDto[results.length];
-                for (int i = 0; i < results.length; i++) {
-                    results_[i] = new SearchResultDto(results[i], locale);
-                }
-            } catch (ParseException ex) {
-                total_ = 0;
-                results_ = new SearchResultDto[0];
+            SearchResult[] results = system.search(context, offset_,
+                QUERY_LENGTH);
+            results_ = new SearchResultDto[results.length];
+            total_ = system.getResultsCount(context);
+            for (int i = 0; i < results.length; i++) {
+                results_[i] = new SearchResultDto(results[i], locale);
             }
-        }
+        } while (false);
 
         if (total_ > QUERY_LENGTH) {
             indicator_ = new SearchResultIndicatorDto(total_, QUERY_LENGTH,
@@ -149,7 +154,6 @@ public class SearchPage
         int heimId = pageRequest_.getRootPage().getHeimId();
 
         searchQuery.setQueryString(query_);
-        searchQuery.setMaxLength(QUERY_MAXLENGTH);
         searchQuery.setLocale(pageRequest_.getLocale());
         searchQuery.setUser(authPlugin_.getCurrentActor());
         searchQuery.setHeimId(heimId);

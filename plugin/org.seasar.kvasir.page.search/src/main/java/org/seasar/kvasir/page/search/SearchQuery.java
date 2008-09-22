@@ -1,12 +1,12 @@
 package org.seasar.kvasir.page.search;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import org.seasar.kvasir.base.util.ArrayUtils;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.ability.Privilege;
 import org.seasar.kvasir.page.type.User;
@@ -18,7 +18,7 @@ import org.seasar.kvasir.page.type.User;
  * SearchQueryオブジェクトを生成するには通常コンストラクタを用います。
  * 生成した後に、
  * 各setterメソッドを用いて検索クエリオブジェクトに検索条件を設定していきます。
- * 検索条件を設定し終えたら{@link SearchRequest#search(SearchQuery)}
+ * 検索条件を設定し終えたら{@link SearchContext#search(SearchQuery)}
  * メソッドにクエリオブジェクトを渡して検索を行ないます。
  * </p>
  * <p><b>同期化：</b>
@@ -66,8 +66,14 @@ public class SearchQuery
     /** ページタイプを保持するSetです。 */
     private Set<String> pageTypeSet_ = new HashSet<String>();
 
-    /** 検索範囲に含めるページのリストです。 */
-    private List<Page> topPages_ = new ArrayList<Page>();
+    /** 検索範囲に含めるページの配列です。 */
+    private Page[] topPages_ = new Page[0];
+
+    private Integer[] topHeimIds_ = new Integer[0];
+
+    private String[] topPathnames_ = new String[0];
+
+    private String[] topPathnameWithSlashes_ = new String[0];
 
     /** 検索対象のロケールです。 */
     private Locale locale_;
@@ -133,12 +139,12 @@ public class SearchQuery
                 return false;
             }
         }
-        size = query.topPages_.size();
-        if (size != topPages_.size()) {
+        size = query.topPages_.length;
+        if (size != topPages_.length) {
             return false;
         }
         for (int i = 0; i < size; i++) {
-            if (!query.topPages_.get(i).equals(topPages_.get(i))) {
+            if (!query.topPages_[i].equals(topPages_[i])) {
                 return false;
             }
         }
@@ -169,8 +175,8 @@ public class SearchQuery
                 includeConcealed_).append(", user=").append(user_).append(
                 ", privilege=").append(privilege_).append(", heim=").append(
                 heimId_).append(", pageTypeSet=").append(pageTypeSet_).append(
-                ", topPages=").append(topPages_).append(", locale=").append(
-                locale_).toString();
+                ", topPages=").append(Arrays.asList(topPages_)).append(
+                ", locale=").append(locale_).toString();
     }
 
 
@@ -219,35 +225,6 @@ public class SearchQuery
     {
         checkFreezed();
         queryString_ = queryString;
-        return this;
-    }
-
-
-    /**
-     * 検索結果の最大数を返します。
-     *
-     * @return 検索結果の最大数。
-     */
-    public int getMaxLength()
-    {
-        return maxLength_;
-    }
-
-
-    /**
-     * 検索結果の最大数を返します。
-     * <p>返される検索結果の個数を制限したい場合に、
-     * このメソッドで上限を指定します。</p>
-     * <p>検索結果が大量であることが予想される場合にはこの値を設定すべきです。
-     * </p>
-     * <p>デフォルトでは上限はありません。</p>
-     *
-     * @param maxCount 検索結果の最大数。
-     */
-    public SearchQuery setMaxLength(int maxCount)
-    {
-        checkFreezed();
-        maxLength_ = maxCount;
         return this;
     }
 
@@ -452,7 +429,7 @@ public class SearchQuery
      */
     public Page[] getTopPages()
     {
-        return (Page[])topPages_.toArray(new Page[0]);
+        return topPages_;
     }
 
 
@@ -463,7 +440,10 @@ public class SearchQuery
     public SearchQuery clearTopPages()
     {
         checkFreezed();
-        topPages_.clear();
+        topPages_ = new Page[0];
+        topHeimIds_ = new Integer[0];
+        topPathnames_ = new String[0];
+        topPathnameWithSlashes_ = new String[0];
         return this;
     }
 
@@ -487,7 +467,13 @@ public class SearchQuery
     public SearchQuery addTopPage(Page topPage)
     {
         checkFreezed();
-        topPages_.add(topPage);
+        topPages_ = ArrayUtils.add(topPages_, topPage);
+        String pathname = topPage.getPathname();
+        topHeimIds_ = ArrayUtils.add(topHeimIds_, topPage.getHeimId());
+        topPathnames_ = ArrayUtils.add(topPathnames_, pathname);
+        topPathnameWithSlashes_ = ArrayUtils.add(topPathnameWithSlashes_,
+            pathname + "/");
+
         return this;
     }
 
@@ -511,5 +497,20 @@ public class SearchQuery
         if (freezed_) {
             throw new IllegalStateException("Can't set to freezed object");
         }
+    }
+
+
+    public boolean containsInTopPages(Page page)
+    {
+        int heimId = page.getHeimId();
+        String pathname = page.getPathname();
+        for (int i = 0; i < topPages_.length; i++) {
+            if (heimId == topHeimIds_[i]
+                && (pathname.equals(topPathnames_[i]) || pathname
+                    .startsWith(topPathnameWithSlashes_[i]))) {
+                return true;
+            }
+        }
+        return false;
     }
 }

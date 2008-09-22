@@ -2,19 +2,25 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
   "http://www.seasar.org/dtd/components24.dtd">
 <components>
-  <component name="plugin" class="org.seasar.kvasir.page.search.impl.SearchPluginImpl" />
-  <component name="defaultSearchSystem" class="org.seasar.kvasir.page.search.lucene.impl.LuceneSearchSystem">
+  <component name="plugin"
+    class="org.seasar.kvasir.page.search.impl.SearchPluginImpl" />
+  <component name="defaultSearchSystem"
+    class="org.seasar.kvasir.page.search.lucene.impl.LuceneSearchSystem">
     <property name="queryStringParser">
-      <component class="org.seasar.kvasir.page.search.lucene.impl.LuceneSimpleQueryStringParser" instance="prototype">
-        <property name="searchSystem"><component>defaultSearchSystem</component></property>
+      <component
+        class="org.seasar.kvasir.page.search.lucene.impl.LuceneSimpleQueryStringParser"
+        instance="prototype">
+        <property name="searchSystem">
+          <component>defaultSearchSystem</component>
+        </property>
       </component>
     </property>
-    <property name="searchResultFactory">
-      <component class="org.seasar.kvasir.page.search.lucene.impl.LuceneSearchResultFactory" instance="prototype" />
-    </property>
     <property name="documentCreator">
-      <component class="org.seasar.kvasir.page.search.lucene.impl.DocumentCreatorImpl" instance="prototype" />
+      <component
+        class="org.seasar.kvasir.page.search.lucene.impl.DocumentCreatorImpl"
+        instance="prototype" />
     </property>
   </component>
-  <component name="indexUpdaterPageListener" class="org.seasar.kvasir.page.search.impl.IndexUpdaterPageListener" />
+  <component name="indexUpdaterPageListener"
+    class="org.seasar.kvasir.page.search.impl.IndexUpdaterPageListener" />
 </components>

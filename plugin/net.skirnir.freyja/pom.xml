@@ -18,7 +18,9 @@
         <groupId>org.seasar.kvasir.maven.plugin</groupId>
         <artifactId>maven-kvasir-plugin</artifactId>
         <configuration>
-          <pluginOuterLibraries>freyja,commons-beanutils,janino</pluginOuterLibraries>
+          <pluginOuterLibraries>
+            freyja,commons-beanutils,janino
+          </pluginOuterLibraries>
         </configuration>
       </plugin>
     </plugins>

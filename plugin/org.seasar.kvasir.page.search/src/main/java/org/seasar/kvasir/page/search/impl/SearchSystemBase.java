@@ -75,15 +75,16 @@ public abstract class SearchSystemBase
         Set<Page> pageSet = new HashSet<Page>();
 
         PositionRecorder recorder = context.getPositionRecorder();
-        int rawPosition = recorder.getRawPosition(offset);
-        for (int i = 0; i < rawPosition && handler.hasNext(); i++) {
+        int rawOffset = recorder.getRawPosition(offset);
+        for (int i = 0; i < rawOffset && handler.hasNext(); i++) {
             handler.next();
         }
         if (!handler.hasNext()) {
             return new SearchResult[0];
         }
         int end = offset + length;
-        for (int raw = 0, cooked = offset; cooked < end && handler.hasNext(); raw++) {
+        for (int raw = rawOffset, cooked = offset; cooked < end
+            && handler.hasNext(); raw++) {
             SearchResult result = handler.next();
             boolean visible = isVisible(context, result, pageSet);
             if (visible) {
@@ -137,11 +138,6 @@ public abstract class SearchSystemBase
         }
 
         if (!query.containsInTopPages(page)) {
-            return false;
-        }
-
-        if (query.getHeimId() != null
-            && query.getHeimId().intValue() != page.getHeimId()) {
             return false;
         }
 

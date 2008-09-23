@@ -228,10 +228,17 @@ public class LuceneSearchSystem extends SearchSystemBase
         SearchResultHandler handler, int offset, int length)
         throws IOException
     {
+        // 最大数の補正を行なう。
+        // getRawPosition(raw最大数)はraw最大数に今分かっている最大のcookedとrawの差を
+        // 足した数を返す。これからraw最大数を差し引いた分は実際には検索結果として表示されないはず
+        // なので、最大数から引く。
         LuceneSearchContext luceneContext = ((LuceneSearchContext)context);
-        if (luceneContext.getResultCount() == LuceneSearchContext.UNKNOWN) {
-            luceneContext.setResultCount(handler.getLength());
-        }
+        int resultLength = handler.getLength();
+        luceneContext
+            .setResultCount(resultLength
+                - (luceneContext.getPositionRecorder().getRawPosition(
+                    resultLength) - resultLength));
+
         return super.createSearchResults(context, handler, offset, length);
     }
 

@@ -502,15 +502,20 @@ public class SearchQuery
 
     public boolean containsInTopPages(Page page)
     {
-        int heimId = page.getHeimId();
-        String pathname = page.getPathname();
-        for (int i = 0; i < topPages_.length; i++) {
-            if (heimId == topHeimIds_[i]
-                && (pathname.equals(topPathnames_[i]) || pathname
-                    .startsWith(topPathnameWithSlashes_[i]))) {
-                return true;
+        if (topPages_.length > 0) {
+            int heimId = page.getHeimId();
+            String pathname = page.getPathname();
+            for (int i = 0; i < topPages_.length; i++) {
+                if (heimId == topHeimIds_[i]
+                    && (pathname.equals(topPathnames_[i]) || pathname
+                        .startsWith(topPathnameWithSlashes_[i]))) {
+                    return true;
+                }
             }
+
+            return false;
+        } else {
+            return heimId_ == null || heimId_.intValue() == page.getHeimId();
         }
-        return false;
     }
 }

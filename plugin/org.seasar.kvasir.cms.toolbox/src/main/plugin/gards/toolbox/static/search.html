@@ -9,7 +9,6 @@
     <div class="main-content org.seasar.kvasir.cms.toolbox.searchPop">
       <div class="search-form">
         <form tal:attributes="action page:@/search.do" method="get" action="">
-          <input type="hidden" name="reset" value="false" />
           <input tal:attributes="value self/query" type="text" name="query" size="32" value="" />
           <input tal:attributes="value my/plugin/%pop.searchPop.label.submit" type="submit" value="Go!" />
         </form>
@@ -18,10 +17,10 @@
         <p tal:content="self/lineDescription">DESCRIPTION</p>
       </div>
       <div tal:define="indicator self/indicator" tal:condition="exists:indicator" class="search-indicator">
-        <a tal:attributes="href page:@/search.do?query=${self/query}" href="#">|&lt; 最初</a>
-        <a tal:repeat="elem indicator/elements" tal:attributes="href page:@/search.do?query=${self/query}&amp;offset=${elem/position}" href="#"><b tal:content="elem/number" tal:omit-tag="not:elem/current">1</b></a>
+        <a tal:attributes="href page:@/search.do?reset=false&amp;query=${self/query}" href="#">|&lt; 最初</a>
+        <a tal:repeat="elem indicator/elements" tal:attributes="href page:@/search.do?reset=false&amp;query=${self/query}&amp;offset=${elem/position}" href="#"><b tal:content="elem/number" tal:omit-tag="not:elem/current">1</b></a>
         <a tal:condition="" href="#">2</a>
-        <a tal:attributes="href page:@/search.do?query=${self/query}&amp;offset=${indicator/lastPosition}" href="#">最後 &gt;|</a>
+        <a tal:attributes="href page:@/search.do?reset=false&amp;query=${self/query}&amp;offset=${indicator/lastPosition}" href="#">最後 &gt;|</a>
       </div>
       <div tal:define="results self/results" class="search-results">
         <ul tal:condition="results">
@@ -33,10 +32,10 @@
         </ul>
       </div>
       <div tal:define="indicator self/indicator" tal:condition="exists:indicator" class="search-indicator">
-        <a tal:attributes="href page:@/search.do?query=${self/query}" href="#">|&lt; 最初</a>
-        <a tal:repeat="elem indicator/elements" tal:attributes="href page:@/search.do?query=${self/query}&amp;offset=${elem/position}" href="#"><b tal:content="elem/number" tal:omit-tag="not:elem/current">1</b></a>
+        <a tal:attributes="href page:@/search.do?reset=false&amp;query=${self/query}" href="#">|&lt; 最初</a>
+        <a tal:repeat="elem indicator/elements" tal:attributes="href page:@/search.do?reset=false&amp;query=${self/query}&amp;offset=${elem/position}" href="#"><b tal:content="elem/number" tal:omit-tag="not:elem/current">1</b></a>
         <a tal:condition="" href="#">2</a>
-        <a tal:attributes="href page:@/search.do?query=${self/query}&amp;offset=${indicator/lastPosition}" href="#">最後 &gt;|</a>
+        <a tal:attributes="href page:@/search.do?reset=false&amp;query=${self/query}&amp;offset=${indicator/lastPosition}" href="#">最後 &gt;|</a>
       </div>
     </div>
     </div>

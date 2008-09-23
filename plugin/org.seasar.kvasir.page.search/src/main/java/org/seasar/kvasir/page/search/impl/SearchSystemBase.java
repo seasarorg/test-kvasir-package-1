@@ -51,6 +51,12 @@ public abstract class SearchSystemBase
     }
 
 
+    public SearchResult[] search(SearchContext context)
+    {
+        return search(context, SearchQuery.OFFSET_FIRST, SearchQuery.LENGTH_ALL);
+    }
+
+
     /*
      * protected scope methods
      */
@@ -69,33 +75,21 @@ public abstract class SearchSystemBase
         Set<Page> pageSet = new HashSet<Page>();
 
         PositionRecorder recorder = context.getPositionRecorder();
-        int actual = recorder.getActualPosition(offset);
-        if (actual == PositionRecorder.UNKNOWN) {
-            for (int i = recorder.getCurrentVirtualPosition(); i < offset
-                && handler.hasNext();) {
-                boolean visible = isVisible(context, handler.next(), pageSet);
-                recorder.record(visible);
-                if (visible) {
-                    i++;
-                }
-            }
-        } else {
-            recorder.rewind();
-            for (int i = 0; i < actual && handler.hasNext(); i++) {
-                handler.next();
-                recorder.skip();
-            }
+        int rawPosition = recorder.getRawPosition(offset);
+        for (int i = 0; i < rawPosition && handler.hasNext(); i++) {
+            handler.next();
         }
         if (!handler.hasNext()) {
             return new SearchResult[0];
         }
-        for (int i = 0; i < length && handler.hasNext();) {
+        int end = offset + length;
+        for (int raw = 0, cooked = offset; cooked < end && handler.hasNext(); raw++) {
             SearchResult result = handler.next();
             boolean visible = isVisible(context, result, pageSet);
-            recorder.record(visible);
             if (visible) {
                 list.add(result);
-                i++;
+                recorder.record(cooked, raw);
+                cooked++;
             }
         }
 

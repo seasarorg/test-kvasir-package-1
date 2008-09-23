@@ -79,8 +79,6 @@ public class SearchContextImpl
     {
         if (recorder_ == null) {
             recorder_ = new PositionRecorderImpl();
-        } else {
-            recorder_.rewind();
         }
         return recorder_;
     }

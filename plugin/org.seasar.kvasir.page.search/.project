@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-    <name>org.seasar.kvasir.page.search</name>
+	<name>org.seasar.kvasir.page.search</name>
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
 		<buildCommand>
 			<name>org.maven.ide.eclipse.maven2Builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.seasar.kvasir.plust.kvasirBuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
@@ -19,5 +24,6 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.maven.ide.eclipse.maven2Nature</nature>
+		<nature>org.seasar.kvasir.plust.kvasirNature</nature>
 	</natures>
 </projectDescription>

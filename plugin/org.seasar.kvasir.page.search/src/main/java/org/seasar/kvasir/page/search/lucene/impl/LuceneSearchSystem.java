@@ -19,7 +19,6 @@ import org.seasar.kvasir.page.PageAlfr;
 import org.seasar.kvasir.page.PathId;
 import org.seasar.kvasir.page.ability.PropertyAbility;
 import org.seasar.kvasir.page.search.SearchContext;
-import org.seasar.kvasir.page.search.SearchQuery;
 import org.seasar.kvasir.page.search.SearchResult;
 import org.seasar.kvasir.page.search.SearchResultHandler;
 import org.seasar.kvasir.page.search.impl.SearchSystemBase;
@@ -203,12 +202,6 @@ public class LuceneSearchSystem extends SearchSystemBase
     public SearchContext newContext()
     {
         return new LuceneSearchContext(getQueryStringParser());
-    }
-
-
-    public SearchResult[] search(SearchContext context)
-    {
-        return search(context, SearchQuery.OFFSET_FIRST, SearchQuery.LENGTH_ALL);
     }
 
 

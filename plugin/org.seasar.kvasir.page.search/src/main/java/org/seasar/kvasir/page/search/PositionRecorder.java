@@ -2,20 +2,8 @@ package org.seasar.kvasir.page.search;
 
 public interface PositionRecorder
 {
-    int UNKNOWN = -1;
+    int getRawPosition(int cookedPositon);
 
 
-    int getActualPosition(int virtualPositon);
-
-
-    void record(boolean available);
-
-
-    void skip();
-
-
-    void rewind();
-
-
-    int getCurrentVirtualPosition();
+    void record(int cookedPosition, int rawPosition);
 }

@@ -17,6 +17,18 @@ import net.skirnir.xom.annotation.Parent;
 import net.skirnir.xom.annotation.Required;
 
 
+/**
+ * プラグインのクラスローダにロードさせるライブラリを指定するためのタグに対応するクラスです。
+ * <p>指定されたライブラリに含まれるクラスやリソースはプラグイン内から参照できるようになります。
+ * </p>
+ * <p>クラスやリソースをプラグイン外にも公開したい場合は、子要素として{@link Export}要素を設定
+ * することで公開するクラスやリソースを指定することができます。
+ * デフォルトでは外部には何も公開されません。
+ * </p>
+ * 
+ * @author yokota
+ *
+ */
 public class Library
 {
     public static final String[] PATTERNS_ALL = new String[] { Export.NAME_ALL };
@@ -73,6 +85,18 @@ public class Library
     }
 
 
+    /**
+     * フィルタ処理を行なう際のリソースの文字エンコーディングを返します。
+     * <p>このライブラリに対応するリソースに対してフィルタ処理を行なう際には
+     * リソースをテキストとして読み込み、フィルタ処理を行なった後再びリソースとして書き出します。
+     * このプロパティはその際の読み込み・書き出し用文字エンコーディングを返します。
+     * </p>
+     * <p>デフォルトの文字エンコーディングはUTF-8です。
+     * </p>
+     *   
+     * @return 文字エンコーディング。
+     * @see #isFilter()
+     */
     public String getEncoding()
     {
         return (encoding_ == null ? "UTF-8" : encoding_);
@@ -87,6 +111,20 @@ public class Library
     }
 
 
+    /**
+     * nameプロパティで表されるディレクトリを展開するかどうかを返します。
+     * <p>このプロパティがtrueである場合は、nameプロパティで表されるディレクトリ
+     * 以下のJARファイル全てがこのライブラリに含まれると解釈されます
+     * （ディレクトリ自体は含まれないようになります）。
+     * falseである場合は、nameプロパティが指す対象自体がこのライブラリに含まれると
+     * 解釈されます。
+     * </p>
+     * <p>ディレクトリの展開は再帰的には行なわれません。
+     * すなわちディレクトリ直下のJARだけがライブラリに含まれると解釈されます。
+     * </p>
+     * 
+     * @return ディレクトリを展開するかどうか。
+     */
     public boolean isExpand()
     {
         return expand_;
@@ -101,6 +139,11 @@ public class Library
     }
 
 
+    /**
+     * プラグインの外部に公開するエントリを表す{@link Export}の配列を返します。
+     * 
+     * @return {@link Export}の配列。nullが返されることはありません。
+     */
     public Export[] getExports()
     {
         return exportList_.toArray(new Export[0]);
@@ -121,6 +164,24 @@ public class Library
     }
 
 
+    /**
+     * このライブラリにフィルタ処理を行なうかどうかを返します。
+     * <p>このプロパティがtrueである場合、nameプロパティに対応するリソースに
+     * フィルタ処理が施されます。
+     * nameプロパティに対応するリソースがディレクトリである場合は
+     * ディレクトリに含まれる全てのリソース（再帰的に全て）にフィルタ処理が施されます。
+     * </p>
+     * <p>ここでのフィルタ処理とは、リソース中の「<code>${xxx}</code>」のような指定を
+     * plugin.xproperties中のxxxプロパティの値で置き換えることを表します。
+     * </p>
+     * <p>このプロパティがfalseである場合はフィルタ処理は施されません。
+     * </p>
+     * <p>デフォルトの状態ではフィルタ処理は行なわれません。
+     * </p>
+     * 
+     * @return フィルタ処理を行なうかどうか。
+     * @see #getEncoding()
+     */
     public boolean isFilter()
     {
         return filter_;
@@ -135,6 +196,14 @@ public class Library
     }
 
 
+    /**
+     * ライブラリの名前を返します。
+     * <p>名前はplugin.xmlの置いてあるディレクトリ相対のパスとして表されます。
+     * ディレクトリを返すこともあります。
+     * </p>
+     * 
+     * @return ライブラリの名前。
+     */
     public String getName()
     {
         return name_;
@@ -150,6 +219,15 @@ public class Library
     }
 
 
+    /**
+     * このライブラリに対応するクラスパス要素を表すURLの配列を返します。
+     * 基本的にはnameプロパティに対応するJARファイルまたはディレクトリが返されますが、
+     * nameがディレクトリを指していてかつexpandプロパティの値がtrueである場合は
+     * ディレクトリに含まれる全てのJARファイルが返されます。
+     * 
+     * @return URLの配列。nullが返されることはありません。
+     * @see #isExpand()
+     */
     public URL[] getURLsForURLClassLoader()
     {
         if (name_ != null) {
@@ -186,12 +264,30 @@ public class Library
     }
 
 
+    /**
+     * ライブラリに含まれるクラスのうちプラグインの外部に公開されるクラスを表すパターンを返します。
+     * <p>このメソッドが返すパターンに名前がマッチするクラスはプラグインの外部に公開されます。
+     * </p>
+     * <p>リソースは対象外です。
+     * </p>
+     * 
+     * @return クラス名のパターンの配列。nullが返されることはありません。
+     */
     public String[] getExportClassPatterns()
     {
         return getExportPatterns(false);
     }
 
 
+    /**
+     * ライブラリに含まれるリソースのうちプラグインの外部に公開されるリソースを表すパターンを返します。
+     * <p>このメソッドが返すパターンに名前がマッチするリソースはプラグインの外部に公開されます。
+     * </p>
+     * <p>クラスは対象外です。
+     * </p>
+     * 
+     * @return リソース名のパターンの配列。nullが返されることはありません。
+     */
     public String[] getExportResourcePatterns()
     {
         return getExportPatterns(true);

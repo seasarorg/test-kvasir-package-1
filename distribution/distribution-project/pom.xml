@@ -26,7 +26,7 @@
             </baseLibraries>
             <testLibraries>kvasir-test,servlet-api</testLibraries>
             <commonLibraries>
-              kvasir-common,aopalliance,commons-logging,javassist,ognl,s2-tiger,s2-framework,s2-extension,geronimo-jta_1.0.1B_spec,geronimo-ejb_2.1_spec,s2-pluggable,s2-classbuilder
+              kvasir-common,aopalliance,commons-logging,javassist,ognl,s2-tiger,s2-framework,s2-extension,geronimo-jta_1.1_spec,geronimo-ejb_3.0_spec,s2-pluggable,s2-classbuilder
             </commonLibraries>
             <systemLibraries>
               kvasir-system,maven-embedder-dep

@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<project>
+<?xml version="1.0"?><project>
   <parent>
     <artifactId>plugin-project</artifactId>
     <groupId>org.seasar.kvasir.plugin</groupId>
@@ -32,9 +31,7 @@
         <artifactId>maven-kvasir-plugin</artifactId>
         <configuration>
           <additionalBaseLibraries></additionalBaseLibraries>
-          <pluginOuterLibraries>
-            ozacc-mail,mail,activation
-          </pluginOuterLibraries>
+          <pluginOuterLibraries>ozacc-mail,mail,activation</pluginOuterLibraries>
         </configuration>
       </plugin>
     </plugins>

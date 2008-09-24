@@ -13,17 +13,17 @@
     <library name="lib/commons-dbutils-1.1.jar">
       <export name="**" />
     </library>
-    <library name="lib/s2-dao-1.0.40.jar">
+    <library name="lib/s2-dao-1.0.47.jar">
       <export name="**" />
       <export name="**/*.properties" resource="true" />
     </library>
-    <library name="lib/s2-dao-tiger-1.0.40.jar">
+    <library name="lib/s2-dao-tiger-1.0.47.jar">
       <export name="**" />
     </library>
-    <library name="lib/database-0.0.2.jar">
+    <library name="lib/database-0.0.4.jar">
       <export name="**" />
     </library>
-    <library name="lib/beantable-0.0.2.jar">
+    <library name="lib/beantable-0.0.4.jar">
       <export name="**" />
     </library>
     <library name="lib" expand="true" />

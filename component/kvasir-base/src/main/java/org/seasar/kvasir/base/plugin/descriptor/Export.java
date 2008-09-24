@@ -6,8 +6,20 @@ import net.skirnir.xom.annotation.Parent;
 import net.skirnir.xom.annotation.Required;
 
 
+/**
+ * ライブラリに含まれるエントリのうちプラグイン外部に公開するものを指定するためのタグに対応するクラスです。
+ * <p>デフォルトでは、nameプロパティで示される名前パターンにマッチするクラスが外部に公開されます。
+ * リソースを公開したい場合は{@link #setResource(boolean)}でtrueを設定して下さい。
+ * </p>
+ * 
+ * @author yokota
+ *
+ */
 public class Export
 {
+    /**
+     * 「全て」を表す名前パターンです。
+     */
     public static final String NAME_ALL = "**";
 
     private Library parent_;
@@ -46,6 +58,14 @@ public class Export
     }
 
 
+    /**
+     * プラグインの外部に公開するエントリの名前パターンを返します。
+     * <p>ライブラリに含まれるエントリのうちこのパターンにマッチするものが
+     * プラグインの外部に公開されます。
+     * </p>
+     * 
+     * @return Ant形式のパターン。
+     */
     public String getName()
     {
         return name_;
@@ -60,6 +80,15 @@ public class Export
     }
 
 
+    /**
+     * 公開する対象がリソースかどうかを返します。
+     * <p>trueを返す場合、ライブラリに含まれるエントリのうち
+     * {@link #getName()}で得られるパターンにマッチするリソースが
+     * プラグインの外部に公開されます。
+     * falseを返す場合は名前パターンにマッチするクラスがプラグインの外部に公開されます。
+     * 
+     * @return リソースかどうか。
+     */
     public boolean isResource()
     {
         return resource_;
@@ -72,5 +101,4 @@ public class Export
     {
         resource_ = resource;
     }
-
 }

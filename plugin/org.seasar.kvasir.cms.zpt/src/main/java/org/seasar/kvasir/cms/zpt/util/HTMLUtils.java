@@ -7,12 +7,17 @@ import net.skirnir.freyja.Element;
 import net.skirnir.freyja.IllegalSyntaxException;
 import net.skirnir.freyja.TagElement;
 import net.skirnir.freyja.TemplateParser;
+import net.skirnir.freyja.impl.TemplateParserImpl;
 
 
 public class HTMLUtils extends org.seasar.kvasir.util.html.HTMLUtils
 {
-    private static final TemplateParser PARSER = new TemplateParser(
-        new String[0], new String[] { "id" });
+    private static final TemplateParser PARSER;
+
+    static {
+        PARSER = new TemplateParserImpl();
+        PARSER.setPatternStrings(new String[0], new String[] { "id" });
+    }
 
 
     protected HTMLUtils()

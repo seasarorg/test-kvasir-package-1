@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<project>
+<?xml version="1.0"?><project>
   <parent>
     <artifactId>plugin-project</artifactId>
     <groupId>org.seasar.kvasir.plugin</groupId>
@@ -18,9 +17,7 @@
         <groupId>org.seasar.kvasir.maven.plugin</groupId>
         <artifactId>maven-kvasir-plugin</artifactId>
         <configuration>
-          <additionalBaseLibraries>
-            kvasir-webapp
-          </additionalBaseLibraries>
+          <additionalBaseLibraries>kvasir-webapp</additionalBaseLibraries>
           <pluginOuterLibraries></pluginOuterLibraries>
         </configuration>
       </plugin>

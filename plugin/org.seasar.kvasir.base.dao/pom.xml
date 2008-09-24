@@ -56,12 +56,37 @@
     <dependency>
       <groupId>org.seasar.cms.beantable</groupId>
       <artifactId>beantable</artifactId>
-      <version>0.0.2</version>
+      <version>0.0.4</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.seasar.dao</groupId>
+          <artifactId>s2-dao-tiger</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.seasar.dao</groupId>
+          <artifactId>s2-dao</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.h2</groupId>
+      <groupId>org.seasar.dao</groupId>
+      <artifactId>s2-dao-tiger</artifactId>
+      <version>1.0.47</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.seasar.container</groupId>
+          <artifactId>s2-extension</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.seasar.container</groupId>
+          <artifactId>s2-tiger</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.0</version>
+      <version>1.0.78</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.kvasir.base</groupId>

@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<project>
+<?xml version="1.0"?><project>
   <parent>
     <artifactId>plugin-project</artifactId>
     <groupId>org.seasar.kvasir.plugin</groupId>
@@ -17,9 +16,7 @@
         <groupId>org.seasar.kvasir.maven.plugin</groupId>
         <artifactId>maven-kvasir-plugin</artifactId>
         <configuration>
-          <additionalBaseLibraries>
-            kvasir-webapp
-          </additionalBaseLibraries>
+          <additionalBaseLibraries>kvasir-webapp</additionalBaseLibraries>
           <pluginOuterLibraries></pluginOuterLibraries>
         </configuration>
       </plugin>
@@ -186,12 +183,12 @@
     <dependency>
       <groupId>net.skirnir.freyja</groupId>
       <artifactId>net.skirnir.freyja</artifactId>
-      <version>1.0.7</version>
+      <version>1.0.11-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>net.skirnir.freyja</groupId>
       <artifactId>net.skirnir.freyja</artifactId>
-      <version>1.0.7</version>
+      <version>1.0.11-SNAPSHOT</version>
       <type>zip</type>
       <scope>runtime</scope>
     </dependency>

@@ -48,6 +48,7 @@ import net.skirnir.freyja.TemplateContext;
 import net.skirnir.freyja.TemplateEvaluator;
 import net.skirnir.freyja.TemplateSet;
 import net.skirnir.freyja.VariableResolver;
+import net.skirnir.freyja.impl.TemplateEvaluatorImpl;
 import net.skirnir.freyja.webapp.ServletSpecified;
 import net.skirnir.freyja.webapp.VariableResolverFactory;
 import net.skirnir.freyja.zpt.MetalTagEvaluator;
@@ -131,7 +132,7 @@ public class ZptPageProcessor
             expEvaluator_ = defaultEvaluator.getExpressionEvaluator();
         }
 
-        evaluator_ = new TemplateEvaluator(tagEvaluator_, expEvaluator_);
+        evaluator_ = new TemplateEvaluatorImpl(tagEvaluator_, expEvaluator_);
 
         if (vrf_ == null) {
             vrf_ = new KvasirVariableResolverFactory().setKvasir(kvasir_)
@@ -164,7 +165,7 @@ public class ZptPageProcessor
         for (int i = 0; i < pathResolvers_.length; i++) {
             expEvaluator.addPathResolver(pathResolvers_[i]);
         }
-        return new TemplateEvaluator(new MetalTagEvaluator(), expEvaluator);
+        return new TemplateEvaluatorImpl(new MetalTagEvaluator(), expEvaluator);
     }
 
 

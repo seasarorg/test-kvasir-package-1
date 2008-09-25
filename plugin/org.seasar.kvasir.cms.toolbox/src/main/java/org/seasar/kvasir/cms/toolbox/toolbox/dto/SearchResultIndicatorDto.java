@@ -1,5 +1,11 @@
 package org.seasar.kvasir.cms.toolbox.toolbox.dto;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * <p><b>同期化：</b>
@@ -10,28 +16,63 @@ package org.seasar.kvasir.cms.toolbox.toolbox.dto;
  */
 public class SearchResultIndicatorDto
 {
-    private int         total_;
-    private int         unit_;
-    private int         count_;
-    private int         lastPosition_;
-    private Element[]   elements_;
+    public static final int DISPLAYPAGERANGE_ALL = -1;
+
+    private int entriesCount_;
+
+    private int unit_;
+
+    private int pagesCount_;
+
+    private int lastEntryPosition_;
+
+    private Element[] elements_;
 
 
-    public SearchResultIndicatorDto(int total, int unit, int currentPosition)
+    public SearchResultIndicatorDto(int entriesCount, int unit,
+        int currentEntryPosition, int displayPageRange)
     {
-        total_ = total;
+        entriesCount_ = entriesCount;
         unit_ = unit;
 
-        count_ = (total + unit - 1) / unit;
-        lastPosition_ = (count_ == 0) ? 0
-            : (count_ - 1) * unit;
-        elements_ = new Element[count_];
-        for (int i = 0, number = 1; i < count_; i++, number++) {
-            int firstPosition = i * unit;
-            elements_[i] = new Element(number, firstPosition,
-                (currentPosition >= firstPosition
-                && currentPosition < firstPosition + unit));
+        pagesCount_ = (entriesCount + unit - 1) / unit;
+        lastEntryPosition_ = (pagesCount_ == 0) ? 0 : (pagesCount_ - 1) * unit;
+
+        if (displayPageRange <= 0) {
+            displayPageRange = pagesCount_;
         }
+
+        int lastPagePositionForFirstPageRange = min(displayPageRange,
+            pagesCount_);
+        int firstPagePositionForLastPageRange = max(pagesCount_
+            - displayPageRange, lastPagePositionForFirstPageRange);
+
+        int currentPagePosition = currentEntryPosition / unit;
+        int firstPagePositionForCurrentPageRange = max(currentPagePosition
+            - displayPageRange + 1, lastPagePositionForFirstPageRange);
+        int lastPagePositionForCurrentPageRange = min(currentPagePosition
+            + displayPageRange, firstPagePositionForLastPageRange);
+
+        List<Element> list = new ArrayList<Element>();
+        for (int pageIdx = 0; pageIdx < lastPagePositionForFirstPageRange; pageIdx++) {
+            list.add(new Element(pageIdx + 1, pageIdx * unit,
+                pageIdx == currentPagePosition));
+        }
+        if (lastPagePositionForFirstPageRange < firstPagePositionForCurrentPageRange) {
+            list.add(null);
+        }
+        for (int pageIdx = firstPagePositionForCurrentPageRange; pageIdx < lastPagePositionForCurrentPageRange; pageIdx++) {
+            list.add(new Element(pageIdx + 1, pageIdx * unit,
+                pageIdx == currentPagePosition));
+        }
+        if (lastPagePositionForCurrentPageRange < firstPagePositionForLastPageRange) {
+            list.add(null);
+        }
+        for (int pageIdx = firstPagePositionForLastPageRange; pageIdx < pagesCount_; pageIdx++) {
+            list.add(new Element(pageIdx + 1, pageIdx * unit,
+                pageIdx == currentPagePosition));
+        }
+        elements_ = list.toArray(new Element[0]);
     }
 
 
@@ -39,9 +80,9 @@ public class SearchResultIndicatorDto
      * public scope methods
      */
 
-    public int getTotal()
+    public int getEntriesCount()
     {
-        return total_;
+        return entriesCount_;
     }
 
 
@@ -51,9 +92,9 @@ public class SearchResultIndicatorDto
     }
 
 
-    public int getLastPosition()
+    public int getLastEntryPosition()
     {
-        return lastPosition_;
+        return lastEntryPosition_;
     }
 
 
@@ -69,26 +110,32 @@ public class SearchResultIndicatorDto
 
     public static class Element
     {
-        private int         number_;
-        private int         position_;
-        private boolean     current_;
+        private int index_;
 
-        public Element(int number, int position, boolean current)
+        private int offset_;
+
+        private boolean current_;
+
+
+        public Element(int index, int offset, boolean current)
         {
-            number_ = number;
-            position_ = position;
+            index_ = index;
+            offset_ = offset;
             current_ = current;
         }
 
-        public int getNumber()
+
+        public int getIndex()
         {
-            return number_;
+            return index_;
         }
 
-        public int getPosition()
+
+        public int getOffset()
         {
-            return position_;
+            return offset_;
         }
+
 
         public boolean isCurrent()
         {

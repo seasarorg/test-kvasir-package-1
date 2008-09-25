@@ -39,6 +39,8 @@ public class SearchPage
 
     private static final int QUERY_LENGTH = 10;
 
+    private static final int INIDCATOR_DISPLAY_RANGE = 4;
+
     /*
      * for framework
      */
@@ -130,7 +132,7 @@ public class SearchPage
 
         if (total_ > QUERY_LENGTH) {
             indicator_ = new SearchResultIndicatorDto(total_, QUERY_LENGTH,
-                offset_);
+                offset_, INIDCATOR_DISPLAY_RANGE);
         }
 
         return "/search.html";

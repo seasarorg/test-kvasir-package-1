@@ -16,11 +16,14 @@
       <div class="search-description">
         <p tal:content="self/lineDescription">DESCRIPTION</p>
       </div>
-      <div tal:define="indicator self/indicator" tal:condition="exists:indicator" class="search-indicator">
+      <div tal:define="indicator self/indicator; global indicatorElement element" tal:condition="exists:indicator" class="search-indicator">
         <a tal:attributes="href page:@/search.do?reset=false&amp;query=${self/query}" href="#">|&lt; 最初</a>
-        <a tal:repeat="elem indicator/elements" tal:attributes="href page:@/search.do?reset=false&amp;query=${self/query}&amp;offset=${elem/position}" href="#"><b tal:content="elem/number" tal:omit-tag="not:elem/current">1</b></a>
-        <a tal:condition="" href="#">2</a>
-        <a tal:attributes="href page:@/search.do?reset=false&amp;query=${self/query}&amp;offset=${indicator/lastPosition}" href="#">最後 &gt;|</a>
+        <span tal:repeat="elem indicator/elements">
+          <a tal:condition="elem" tal:attributes="href page:@/search.do?reset=false&amp;query=${self/query}&amp;offset=${elem/offset}" href="#"><b tal:content="elem/index" tal:omit-tag="not:elem/current">1</b></a>
+          <span tal:condition="not:elem">...</span>
+          <a tal:condition="" href="#">2</a>
+        </span>
+        <a tal:attributes="href page:@/search.do?reset=false&amp;query=${self/query}&amp;offset=${indicator/lastEntryPosition}" href="#">最後 &gt;|</a>
       </div>
       <div tal:define="results self/results" class="search-results">
         <ul tal:condition="results">
@@ -31,12 +34,7 @@
           </li>
         </ul>
       </div>
-      <div tal:define="indicator self/indicator" tal:condition="exists:indicator" class="search-indicator">
-        <a tal:attributes="href page:@/search.do?reset=false&amp;query=${self/query}" href="#">|&lt; 最初</a>
-        <a tal:repeat="elem indicator/elements" tal:attributes="href page:@/search.do?reset=false&amp;query=${self/query}&amp;offset=${elem/position}" href="#"><b tal:content="elem/number" tal:omit-tag="not:elem/current">1</b></a>
-        <a tal:condition="" href="#">2</a>
-        <a tal:attributes="href page:@/search.do?reset=false&amp;query=${self/query}&amp;offset=${indicator/lastPosition}" href="#">最後 &gt;|</a>
-      </div>
+      <div tal:replace="structure indicatorElement"></div>
     </div>
     </div>
   </body>

@@ -101,6 +101,16 @@ class LuceneSearchResultHandler
     }
 
 
+    public void skip(int count)
+        throws IOException
+    {
+        idx_ += count;
+        if (idx_ > getLength()) {
+            idx_ = getLength();
+        }
+    }
+
+
     public void close()
     {
     }

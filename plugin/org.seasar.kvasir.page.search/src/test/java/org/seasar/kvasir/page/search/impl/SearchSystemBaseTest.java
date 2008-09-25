@@ -159,6 +159,13 @@ public class SearchSystemBaseTest extends TestCase
             {
                 return list_.get(idx_++);
             }
+
+
+            public void skip(int count)
+                throws IOException
+            {
+                idx_ += count;
+            }
         };
     }
 }

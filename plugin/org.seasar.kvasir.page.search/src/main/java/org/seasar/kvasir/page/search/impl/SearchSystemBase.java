@@ -76,9 +76,11 @@ public abstract class SearchSystemBase
 
         PositionRecorder recorder = context.getPositionRecorder();
         int rawOffset = recorder.getRawPosition(offset);
-        for (int i = 0; i < rawOffset && handler.hasNext(); i++) {
-            handler.next();
+        if (log_.isDebugEnabled()) {
+            log_.debug("offset is " + offset + ", and rawOffset is "
+                + rawOffset);
         }
+        handler.skip(rawOffset);
         if (!handler.hasNext()) {
             return new SearchResult[0];
         }
@@ -90,6 +92,10 @@ public abstract class SearchSystemBase
             if (visible) {
                 list.add(result);
                 recorder.record(cooked, raw);
+                if (log_.isDebugEnabled()) {
+                    log_.debug("recorder.record(cooked=" + cooked + ", raw="
+                        + raw + ")");
+                }
                 cooked++;
             }
         }

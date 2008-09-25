@@ -31,7 +31,7 @@ public interface SearchResultHandler
 
 
     /**
-     * 検索システムから返された検索結果から1つ結果を取り出して
+     * 検索システムから返された検索結果から1つエントリを取り出して
      * SearchResultオブジェクトを生成して返します。
      * <p>結果を全て取り出してしまった後にこのメソッドを呼び出すと
      * nullを返します。</p>
@@ -39,6 +39,21 @@ public interface SearchResultHandler
      * @return SearchResultオブジェクト。
      */
     SearchResult next()
+        throws IOException;
+
+
+    /**
+     * 検索システムから返された検索結果からエントリを指定された個数分スキップします。
+     * <p>SearchResultオブジェクトを使用しない場合は{@link #next()}メソッドよりも
+     * このメソッドを使った方が高速です。
+     * </p>
+     * <p>結果を全て取り出してしまった後にこのメソッドを呼び出すと
+     * nullを返します。</p>
+     * @param count スキップする個数。
+     * 
+     * @return SearchResultオブジェクト。
+     */
+    void skip(int count)
         throws IOException;
 
 

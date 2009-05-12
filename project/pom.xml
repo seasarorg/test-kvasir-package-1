@@ -6,7 +6,7 @@
   <artifactId>kvasir-project</artifactId>
   <packaging>pom</packaging>
   <name>Kvasir/Sora Project</name>
-  <version>3.0.0-SNAPSHOT</version>
+  <version>3.0.0</version>
   <description>Kvasir/Sora project</description>
   <url>http://kvasir.sandbox.seasar.org/</url>
   <issueManagement>

@@ -20,16 +20,12 @@ import net.skirnir.freyja.zpt.webapp.PageTypePrefixHandler;
  */
 public class KvasirPageTypePrefixHandler extends PageTypePrefixHandler
 {
-    private PageAlfr pageAlfr_;
-
-
     /*
      * public scope methods
      */
 
     public KvasirPageTypePrefixHandler setPageAlfr(PageAlfr pageAlfr)
     {
-        pageAlfr_ = pageAlfr;
         return this;
     }
 

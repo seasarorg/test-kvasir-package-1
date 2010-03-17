@@ -614,51 +614,51 @@ public class IntegrationTestMojo extends AbstractMojo
 
         for (Iterator itr = this.classpathElements.iterator(); itr.hasNext();) {
             String element = (String)itr.next();
-//            if (element.indexOf("junit") >= 0) {
-                classpathElements.add(element);
-//            }
+            //            if (element.indexOf("junit") >= 0) {
+            classpathElements.add(element);
+            //            }
         }
-//        for (Iterator i = pluginArtifacts.iterator(); i.hasNext();) {
-//            Artifact artifact = (Artifact)i.next();
-//            classpathElements.add(artifact.getFile().getAbsolutePath());
-//            getLog().debug("ADD TO CLASSPATH(1): " + artifact.getFile());
-//        }
-//
-//        classpathElements.add(testClassesDirectory.getPath());
-//        getLog().info("ADD TO CLASSPATH(2): " + testClassesDirectory);
-//
-//        String actualBaseLibraries = KvasirPluginUtils.concatLibrariesString(
-//            baseLibraries, additionalBaseLibraries);
-//        getLog()
-//            .info("Add base libraries to classpath: " + actualBaseLibraries);
-//        Artifact[] artifacts;
-//        try {
-//            artifacts = ArtifactUtils.getMatchedArtifacts(getLog(), project,
-//                ArtifactUtils.parseLibraries(actualBaseLibraries));
-//        } catch (org.seasar.kvasir.maven.plugin.ArtifactNotFoundException ex) {
-//            throw new MojoExecutionException(
-//                "Can't find artifacts for baseLibraries", ex);
-//        }
-//        for (int i = 0; i < artifacts.length; i++) {
-//            classpathElements.add(artifacts[i].getFile().getAbsolutePath());
-//            getLog().debug("ADD TO CLASSPATH(3): " + artifacts[i].getFile());
-//        }
-//
-//        String actualTestLibraries = KvasirPluginUtils.concatLibrariesString(
-//            testLibraries, additionalTestLibraries);
-//        getLog()
-//            .info("Add test libraries to classpath: " + actualTestLibraries);
-//        try {
-//            artifacts = ArtifactUtils.getMatchedArtifacts(getLog(), project,
-//                ArtifactUtils.parseLibraries(actualTestLibraries));
-//        } catch (org.seasar.kvasir.maven.plugin.ArtifactNotFoundException ex) {
-//            throw new MojoExecutionException(
-//                "Can't find artifacts for testLibraries", ex);
-//        }
-//        for (int i = 0; i < artifacts.length; i++) {
-//            classpathElements.add(artifacts[i].getFile().getAbsolutePath());
-//            getLog().debug("ADD TO CLASSPATH(4): " + artifacts[i].getFile());
-//        }
+        //        for (Iterator i = pluginArtifacts.iterator(); i.hasNext();) {
+        //            Artifact artifact = (Artifact)i.next();
+        //            classpathElements.add(artifact.getFile().getAbsolutePath());
+        //            getLog().debug("ADD TO CLASSPATH(1): " + artifact.getFile());
+        //        }
+        //
+        //        classpathElements.add(testClassesDirectory.getPath());
+        //        getLog().info("ADD TO CLASSPATH(2): " + testClassesDirectory);
+        //
+        //        String actualBaseLibraries = KvasirPluginUtils.concatLibrariesString(
+        //            baseLibraries, additionalBaseLibraries);
+        //        getLog()
+        //            .info("Add base libraries to classpath: " + actualBaseLibraries);
+        //        Artifact[] artifacts;
+        //        try {
+        //            artifacts = ArtifactUtils.getMatchedArtifacts(getLog(), project,
+        //                ArtifactUtils.parseLibraries(actualBaseLibraries));
+        //        } catch (org.seasar.kvasir.maven.plugin.ArtifactNotFoundException ex) {
+        //            throw new MojoExecutionException(
+        //                "Can't find artifacts for baseLibraries", ex);
+        //        }
+        //        for (int i = 0; i < artifacts.length; i++) {
+        //            classpathElements.add(artifacts[i].getFile().getAbsolutePath());
+        //            getLog().debug("ADD TO CLASSPATH(3): " + artifacts[i].getFile());
+        //        }
+        //
+        //        String actualTestLibraries = KvasirPluginUtils.concatLibrariesString(
+        //            testLibraries, additionalTestLibraries);
+        //        getLog()
+        //            .info("Add test libraries to classpath: " + actualTestLibraries);
+        //        try {
+        //            artifacts = ArtifactUtils.getMatchedArtifacts(getLog(), project,
+        //                ArtifactUtils.parseLibraries(actualTestLibraries));
+        //        } catch (org.seasar.kvasir.maven.plugin.ArtifactNotFoundException ex) {
+        //            throw new MojoExecutionException(
+        //                "Can't find artifacts for testLibraries", ex);
+        //        }
+        //        for (int i = 0; i < artifacts.length; i++) {
+        //            classpathElements.add(artifacts[i].getFile().getAbsolutePath());
+        //            getLog().debug("ADD TO CLASSPATH(4): " + artifacts[i].getFile());
+        //        }
 
         this.classpathElements = classpathElements;
     }

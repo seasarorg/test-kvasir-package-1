@@ -13,7 +13,6 @@ import org.seasar.kvasir.util.io.Resource;
  *
  * @author YOKOTA Takehiko
  */
-@SuppressWarnings("unchecked")
 public class ContentPathResolver extends AbstractPageResourcePathResolver
 {
     protected Resource getResourceObject(Page page)

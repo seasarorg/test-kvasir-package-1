@@ -34,14 +34,11 @@ import org.seasar.kvasir.util.io.InputStreamFactory;
 public class ContentAbilityAlfrImpl extends AbstractPageAbilityAlfr
     implements ContentAbilityAlfr
 {
-    private ContentAbilityPlugin plugin_;
-
     private ContentCache cache_;
 
 
     public void setPlugin(ContentAbilityPlugin plugin)
     {
-        plugin_ = plugin;
     }
 
 
@@ -59,7 +56,6 @@ public class ContentAbilityAlfrImpl extends AbstractPageAbilityAlfr
 
     protected void doStop()
     {
-        plugin_ = null;
         cache_ = null;
     }
 

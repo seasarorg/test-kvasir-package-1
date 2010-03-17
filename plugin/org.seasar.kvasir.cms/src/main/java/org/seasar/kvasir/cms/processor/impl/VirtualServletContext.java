@@ -95,7 +95,6 @@ public class VirtualServletContext extends ServletContextWrapper
     }
 
 
-    @SuppressWarnings("unchecked")
     public synchronized Enumeration getAttributeNames()
     {
         return Collections.enumeration(attr_.keySet());
@@ -278,7 +277,6 @@ public class VirtualServletContext extends ServletContextWrapper
     }
 
 
-    @SuppressWarnings("unchecked")
     public synchronized void setAttribute(String arg0, Object arg1)
     {
         attr_.put(arg0.intern(), arg1);

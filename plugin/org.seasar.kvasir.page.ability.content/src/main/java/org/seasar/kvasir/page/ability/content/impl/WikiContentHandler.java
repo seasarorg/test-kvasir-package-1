@@ -2,7 +2,6 @@ package org.seasar.kvasir.page.ability.content.impl;
 
 import java.io.InputStream;
 
-import org.seasar.kvasir.base.Kvasir;
 import org.seasar.kvasir.base.Lifecycle;
 import org.seasar.kvasir.page.ability.content.ContentHandler;
 import org.seasar.kvasir.page.ability.content.extension.ContentHandlerElement;
@@ -36,8 +35,6 @@ public class WikiContentHandler
     public static final String ENCODING_DEFAULT = "UTF-8";
 
     private ContentHandlerElement element_;
-
-    private Kvasir kvasir_;
 
     private WikiEngine engine_;
 
@@ -121,7 +118,6 @@ public class WikiContentHandler
     public void stop()
     {
         element_ = null;
-        kvasir_ = null;
 
         engine_ = null;
     }
@@ -134,11 +130,5 @@ public class WikiContentHandler
     public void setElement(ContentHandlerElement element)
     {
         element_ = element;
-    }
-
-
-    public void setKvasir(Kvasir kvasir)
-    {
-        kvasir_ = kvasir;
     }
 }

@@ -61,10 +61,10 @@ public class TableEvaluator
 
         // カラム数が異なる場合はバッファをフラッシュする。
 
-        Integer fieldsCount
-            = (Integer)context.getAttribute("table.fieldsCount");
+        Integer fieldsCount = (Integer)context
+            .getAttribute("table.fieldsCount");
         if (fieldsCount != null
-        && fieldsCount.intValue() != fieldStrings.length) {
+            && fieldsCount.intValue() != fieldStrings.length) {
             terminate(context);
             first = true;
         }
@@ -83,8 +83,8 @@ public class TableEvaluator
             tbodyList = new ArrayList();
             tfootList = new ArrayList();
 
-            context.setAttribute("table.fieldsCount",
-                new Integer(fieldStrings.length));
+            context.setAttribute("table.fieldsCount", new Integer(
+                fieldStrings.length));
             context.setAttribute("table.formats", formats);
             context.setAttribute("table.theadList", theadList);
             context.setAttribute("table.tbodyList", tbodyList);
@@ -221,7 +221,7 @@ public class TableEvaluator
                 int rowspan = 1;
                 int row = i + 1;
                 while (row < fieldArray.length
-                && fieldArray[row][j].content.equals("~")) {
+                    && fieldArray[row][j].content.equals("~")) {
                     rowspan++;
                     row++;
                 }
@@ -232,8 +232,8 @@ public class TableEvaluator
                 }
 
                 if (field.align == null && field.bgcolor == null
-                && field.color == null && field.size == null
-                && field.width == null) {
+                    && field.color == null && field.size == null
+                    && field.width == null) {
                     writer.print(">");
                 } else {
                     writer.print(" style=\"");
@@ -283,24 +283,32 @@ public class TableEvaluator
 
     private static class Field
     {
-        private static final String     LEFT        = "LEFT:";
-        private static final String     CENTER      = "CENTER:";
-        private static final String     RIGHT       = "RIGHT:";
-        private static final String     BGCOLOR     = "BGCOLOR(";
-        private static final String     COLOR       = "COLOR(";
-        private static final String     SIZE        = "SIZE(";
-        private static final String     TAIL        = "):";
+        private static final String LEFT = "LEFT:";
 
-        public String       align;
-        public String       bgcolor;
-        public String       color;
-        public String       size;
-        public String       width;
-        public String       content;
+        private static final String CENTER = "CENTER:";
 
-        public Field()
-        {
-        }
+        private static final String RIGHT = "RIGHT:";
+
+        private static final String BGCOLOR = "BGCOLOR(";
+
+        private static final String COLOR = "COLOR(";
+
+        private static final String SIZE = "SIZE(";
+
+        private static final String TAIL = "):";
+
+        public String align;
+
+        public String bgcolor;
+
+        public String color;
+
+        public String size;
+
+        public String width;
+
+        public String content;
+
 
         public Field(String str, Field defaultField)
         {
@@ -365,8 +373,8 @@ public class TableEvaluator
                     int idx2 = str.indexOf(TAIL, idx);
                     if (idx2 >= idx) {
                         try {
-                            size = Integer.parseInt(
-                                str.substring(idx, idx2)) + "px";
+                            size = Integer.parseInt(str.substring(idx, idx2))
+                                + "px";
                             pre = idx2 + TAIL.length();
                             continue;
                         } catch (NumberFormatException ex) {

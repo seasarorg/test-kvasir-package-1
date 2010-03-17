@@ -4,8 +4,6 @@ public class CollisionDetectedRuntimeException extends RuntimeException
 {
     private static final long serialVersionUID = 1L;
 
-    private int id_;
-
 
     public CollisionDetectedRuntimeException()
     {
@@ -14,7 +12,6 @@ public class CollisionDetectedRuntimeException extends RuntimeException
 
     public CollisionDetectedRuntimeException(int id)
     {
-        id_ = id;
     }
 
 

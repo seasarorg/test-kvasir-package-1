@@ -24,16 +24,12 @@ import org.seasar.kvasir.base.Globals;
 import org.seasar.kvasir.base.Identifier;
 import org.seasar.kvasir.base.Kvasir;
 import org.seasar.kvasir.base.Version;
-import org.seasar.kvasir.base.container.ComponentContainer;
 import org.seasar.kvasir.base.container.ComponentContainerFactory;
-import org.seasar.kvasir.base.container.ComponentNotFoundRuntimeException;
 import org.seasar.kvasir.base.descriptor.AbstractElement;
 import org.seasar.kvasir.base.descriptor.AbstractGenericElement;
 import org.seasar.kvasir.base.descriptor.ExtensionElement;
 import org.seasar.kvasir.base.descriptor.Property;
 import org.seasar.kvasir.base.mock.MockKvasir;
-import org.seasar.kvasir.base.mock.container.MockComponentContainer;
-import org.seasar.kvasir.base.mock.plugin.MockPlugin;
 import org.seasar.kvasir.base.plugin.AbstractPlugin;
 import org.seasar.kvasir.base.plugin.Plugin;
 import org.seasar.kvasir.base.plugin.PluginAlfrSettings;
@@ -47,7 +43,6 @@ import org.seasar.kvasir.base.plugin.descriptor.Patch;
 import org.seasar.kvasir.base.plugin.descriptor.PluginDescriptor;
 import org.seasar.kvasir.base.plugin.descriptor.Requires;
 import org.seasar.kvasir.base.plugin.descriptor.Runtime;
-import org.seasar.kvasir.base.plugin.descriptor.impl.PluginDescriptorImpl;
 import org.seasar.kvasir.base.plugin.impl.PluginImpl;
 import org.seasar.kvasir.base.plugin.impl.PluginProperties;
 import org.seasar.kvasir.base.util.XOMUtils;
@@ -64,8 +59,6 @@ import org.seasar.kvasir.util.io.IOUtils;
 import org.seasar.kvasir.util.io.Resource;
 import org.seasar.kvasir.util.io.ResourceUtils;
 import org.seasar.kvasir.util.io.impl.JavaResource;
-
-import net.skirnir.xom.Element;
 
 
 /**
@@ -447,110 +440,6 @@ public class PluginAlfrImplTest extends TestCase
         Iterator<ExtensionElement> iterator = actual.iterator();
         assertEquals("2", iterator.next().getId());
         assertEquals("1", iterator.next().getId());
-    }
-
-
-    private ExtensionElement[] gatherExtensionElements(
-        Class<? extends ExtensionElement> elementClass,
-        final Class<?> component1Class, final Class<?> component2Class,
-        Element[] elements)
-    {
-        final Plugin<?> plugin = new MockPlugin<Object>() {
-            public String getId()
-            {
-                return "plugin.id";
-            }
-
-
-            public ClassLoader getInnerClassLoader()
-            {
-                return getClass().getClassLoader();
-            }
-
-
-            public ComponentContainer getComponentContainer()
-            {
-                return new MockComponentContainer() {
-                    @Override
-                    public Class<?> getComponentClass(Object key)
-                    {
-                        if ("component1".equals(key)) {
-                            return component1Class;
-                        } else if ("component2".equals(key)) {
-                            return component2Class;
-                        } else {
-                            return null;
-                        }
-                    }
-
-
-                    @Override
-                    public Object getComponent(Object key)
-                    {
-                        if ("component1".equals(key)) {
-                            try {
-                                return component1Class.newInstance();
-                            } catch (InstantiationException ex) {
-                                throw new RuntimeException(ex);
-                            } catch (IllegalAccessException ex) {
-                                throw new RuntimeException(ex);
-                            }
-                        } else if ("component2".equals(key)) {
-                            try {
-                                return component2Class.newInstance();
-                            } catch (InstantiationException ex) {
-                                throw new RuntimeException(ex);
-                            } catch (IllegalAccessException ex) {
-                                throw new RuntimeException(ex);
-                            }
-                        } else {
-                            throw new ComponentNotFoundRuntimeException();
-                        }
-                    }
-
-
-                    @Override
-                    public boolean hasComponent(Object key)
-                    {
-                        return (getComponentClass(key) != null);
-                    }
-                };
-            }
-        };
-
-        Extension parent = new Extension() {
-            public String getPoint()
-            {
-                return "plugin.id.point";
-            }
-
-
-            public PluginDescriptor getParent()
-            {
-                return new PluginDescriptorImpl() {
-                    public String getId()
-                    {
-                        return "plugin.id";
-                    }
-
-
-                    public Plugin<?> getPlugin()
-                    {
-                        return plugin;
-                    };
-                };
-            };
-        };
-        ElementPair[] elementPairs = new ElementPair[elements.length];
-        for (int i = 0; i < elementPairs.length; i++) {
-            elementPairs[i] = new ElementPair(elements[i], parent);
-        }
-
-        ExtensionPoint extensionPoint = new ExtensionPoint("point",
-            elementClass);
-        extensionPoint.setParent(parent.getParent());
-        return target_.gatherExtensionElements(extensionPoint, Arrays
-            .asList(elementPairs));
     }
 
 

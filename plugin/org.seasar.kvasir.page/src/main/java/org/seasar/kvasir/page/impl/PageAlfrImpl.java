@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 
 import org.seasar.kvasir.base.Lifecycle;
-import org.seasar.kvasir.base.log.KvasirLog;
-import org.seasar.kvasir.base.log.KvasirLogFactory;
 import org.seasar.kvasir.page.CreatedPageEvent;
 import org.seasar.kvasir.page.DeletedPageEvent;
 import org.seasar.kvasir.page.DuplicatePageException;
@@ -46,8 +44,6 @@ public class PageAlfrImpl
     private boolean started_ = false;
 
     private PageCache cache_;
-
-    private final KvasirLog log_ = KvasirLogFactory.getLog(getClass());
 
 
     public void setPlugin(PagePlugin plugin)

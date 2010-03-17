@@ -29,8 +29,6 @@ public class ContentCache
 
     private int loaded_;
 
-    private ContentAbilityPlugin plugin_;
-
     private ContentProvider provider_;
 
     private CacheStorage<Integer, String[]> variantStorage_;
@@ -54,7 +52,6 @@ public class ContentCache
     @Binding(bindingType = BindingType.MUST)
     public void setPlugin(ContentAbilityPlugin plugin)
     {
-        plugin_ = plugin;
     }
 
 

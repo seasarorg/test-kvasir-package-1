@@ -14,8 +14,6 @@ public class PageProcessorChainFactory
     extends
     AbstractGardSpecificChainFactory<ServletConfig, PageProcessorElement, PageProcessor, PageProcessorChain>
 {
-    private ServletConfig config_;
-
 
     public PageProcessorChainFactory(PageProcessorElement[] elements,
         Class<PageProcessor> processorClass, ServletConfig config,

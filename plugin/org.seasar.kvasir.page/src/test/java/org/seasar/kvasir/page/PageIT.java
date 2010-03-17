@@ -21,8 +21,6 @@ import org.seasar.kvasir.page.type.UserMold;
  */
 public class PageIT extends PagePluginITCase
 {
-    private PagePlugin plugin_;
-
     private PageAlfr pageAlfr_;
 
     private Page target_;

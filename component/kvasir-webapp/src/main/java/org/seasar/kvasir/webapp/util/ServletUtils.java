@@ -358,7 +358,6 @@ public class ServletUtils
      * @return レスポンスボディ。
      * @see #grabAsString(HttpServletRequest, HttpServletResponse, String)
      */
-    @SuppressWarnings("unchecked")
     public static String getResponseText(String urlString,
         HttpServletRequest request, HttpServletResponse response)
     {

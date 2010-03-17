@@ -73,7 +73,7 @@ public class KvasirNoteLocalizer
     Plugin<?> findPlugin(TemplateContext context, VariableResolver varResolver)
     {
         Object plugin = varResolver.getVariable(context, VARNAME_PLUGIN);
-        if (plugin instanceof Plugin) {
+        if (plugin instanceof Plugin<?>) {
             return (Plugin<?>)plugin;
         }
 

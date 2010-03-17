@@ -11,7 +11,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +30,6 @@ import org.seasar.kvasir.base.Kvasir;
 import org.seasar.kvasir.cms.CmsPlugin;
 import org.seasar.kvasir.cms.PageRequest;
 import org.seasar.kvasir.cms.RequestSnapshot;
-import org.seasar.kvasir.cms.extension.PageFilterElement;
 import org.seasar.kvasir.cms.filter.PageFilter;
 import org.seasar.kvasir.cms.filter.PageFilterChain;
 import org.seasar.kvasir.cms.processor.LocalPathResolver;
@@ -60,8 +58,6 @@ public class YmirPageFilter
 
     private CmsPlugin cmsPlugin_;
 
-    private PageFilterElement element_;
-
     private PageAlfr pageAlfr_;
 
     private ApplicationManager applicationManager_;
@@ -70,15 +66,12 @@ public class YmirPageFilter
 
     private FilterConfig config_;
 
-    private ServletContext servletContext_;
-
     private Map<Integer, Bag> pairMap_ = new HashMap<Integer, Bag>();
 
 
     public void init(FilterConfig config)
     {
         config_ = config;
-        servletContext_ = config.getServletContext();
         ymir_ = plugin_.getYmir();
         pageAlfr_ = pagePlugin_.getPageAlfr();
     }
@@ -240,7 +233,6 @@ public class YmirPageFilter
     public void destroy()
     {
         config_ = null;
-        servletContext_ = null;
         ymir_ = null;
         pageAlfr_ = null;
     }
@@ -313,12 +305,6 @@ public class YmirPageFilter
     public void setCmsPlugin(CmsPlugin cmsPlugin)
     {
         cmsPlugin_ = cmsPlugin;
-    }
-
-
-    public void setElement(PageFilterElement element)
-    {
-        element_ = element;
     }
 
 

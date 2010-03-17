@@ -25,7 +25,6 @@ import org.seasar.kvasir.util.io.Resource;
  *
  * @author YOKOTA Takehiko
  */
-@SuppressWarnings("unchecked")
 public class PluginResourcePathResolver extends AbstractResourcePathResolver
 {
     public static final String PARAM_LOCALPATHRESOLVER_DIRECTORYPATH = "local-path-resolver.directory-path";

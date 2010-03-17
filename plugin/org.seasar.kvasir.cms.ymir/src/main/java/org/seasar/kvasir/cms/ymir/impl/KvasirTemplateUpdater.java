@@ -8,14 +8,12 @@ import java.util.Properties;
 
 import org.seasar.cms.ymir.Application;
 import org.seasar.cms.ymir.Request;
-import org.seasar.cms.ymir.RequestProcessor;
 import org.seasar.cms.ymir.Response;
 import org.seasar.cms.ymir.Updater;
 import org.seasar.cms.ymir.extension.creator.ClassDescBag;
 import org.seasar.cms.ymir.extension.creator.PathMetaData;
 import org.seasar.cms.ymir.extension.creator.SourceCreator;
 import org.seasar.cms.ymir.impl.DefaultRequestProcessor;
-import org.seasar.framework.container.ComponentNotFoundRuntimeException;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.kvasir.base.annotation.ForPreparingMode;
@@ -33,25 +31,11 @@ public class KvasirTemplateUpdater
 
     public static final String TEMPLATE_SUFFIX = ".zpt";
 
-    private DefaultRequestProcessor defaultRequestProcessor_;
-
     private SourceCreator sourceCreator_;
 
     private Map<String, ExternalTemplate> resourceMap_;
 
     private KvasirUpdateClassesAction action_;
-
-
-    @Binding(bindingType = BindingType.MUST)
-    public void setRequestProcessor(RequestProcessor requestProcessor)
-    {
-        if (requestProcessor instanceof DefaultRequestProcessor) {
-            defaultRequestProcessor_ = (DefaultRequestProcessor)requestProcessor;
-        } else {
-            throw new ComponentNotFoundRuntimeException(
-                "DefaultRequestProcessor");
-        }
-    }
 
 
     @Binding(bindingType = BindingType.MUST)

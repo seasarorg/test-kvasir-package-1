@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.kvasir.base.Asgard;
 import org.seasar.kvasir.base.Kvasir;
-import org.seasar.kvasir.base.log.KvasirLog;
-import org.seasar.kvasir.base.log.KvasirLogFactory;
 import org.seasar.kvasir.base.plugin.Plugin;
 import org.seasar.kvasir.base.plugin.PluginAlfr;
 import org.seasar.kvasir.util.PropertyUtils;
@@ -36,8 +34,6 @@ public class KvasirServlet extends HttpServlet
     private static final long serialVersionUID = 6491022652135462692L;
 
     private ServletConfig config_;
-
-    private final KvasirLog log_ = KvasirLogFactory.getLog(getClass());
 
 
     @Override

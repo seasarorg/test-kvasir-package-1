@@ -11,16 +11,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestFailure;
-import junit.framework.TestResult;
 import junit.framework.TestSuite;
-import junit.runner.BaseTestRunner;
 
 import org.seasar.kvasir.base.Asgard;
 import org.seasar.kvasir.base.Kvasir;
@@ -34,7 +30,6 @@ import org.seasar.kvasir.util.io.FileUtils;
 import org.seasar.kvasir.util.io.Resource;
 import org.seasar.kvasir.util.io.ResourceUtils;
 import org.seasar.kvasir.util.io.impl.JavaResource;
-
 
 /**
  * Kvasir/Soraを起動した状態でプラグインのテストを行なうための抽象クラスです。
@@ -55,8 +50,7 @@ import org.seasar.kvasir.util.io.impl.JavaResource;
  * @author YOKOTA Takehiko
  */
 abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
-    TestCase
-{
+        TestCase {
     private static final String JAR_SUFFIX = ".jar!/";
 
     private static final String KVASIR_XPROPERTIES = "kvasir.xproperties";
@@ -71,11 +65,11 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
      * FIXME pom.xmlをMaven Embedderで読み込んで、当該タグの情報を読んで利用するようにしよう。
      */
     private static final String[] BASE_LIBRARIES = new String[] {
-        "org.apache.xerces.jaxp.SAXParserFactoryImpl", // 「SAXParserFactoryImpl見つからない問題」に対処するため。
-        "org.seasar.kvasir.base.Asgard", // kvasir-base
-        "org.seasar.kvasir.util.ClassUtils", // kvasir-util
-        "net.skirnir.xom.XOMapper", // xom
-        "net.skirnir.xom.annotation.Bean", // xom-tiger
+            "org.apache.xerces.jaxp.SAXParserFactoryImpl", // 「SAXParserFactoryImpl見つからない問題」に対処するため。
+            "org.seasar.kvasir.base.Asgard", // kvasir-base
+            "org.seasar.kvasir.util.ClassUtils", // kvasir-util
+            "net.skirnir.xom.XOMapper", // xom
+            "net.skirnir.xom.annotation.Bean", // xom-tiger
     };
 
     /**
@@ -88,16 +82,14 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
      * FIXME pom.xmlをMaven Embedderで読み込んで、当該タグの情報を読んで利用するようにしよう。
      */
     private static final String[] TEST_LIBRARIES = new String[] {
-        "org.seasar.kvasir.test.KvasirPluginTestCase", // kvasir-test
-        "javax.servlet.Servlet", // servlet-api
-        "org.seasar.kvasir.webapp.Globals", // kvasir-webapp
+            "org.seasar.kvasir.test.KvasirPluginTestCase", // kvasir-test
+            "javax.servlet.Servlet", // servlet-api
+            "org.seasar.kvasir.webapp.Globals", // kvasir-webapp
     };
 
     private static String pluginId_;
 
     private static ProjectMetaData metaData_;
-
-    private static Class<? extends TestCase> originalKvasirPluginTestCaseClass_;
 
     private static Class<? extends TestCase> actualTestClass_;
 
@@ -107,47 +99,43 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
 
     private ComponentContainer container_;
 
-
     /*
      * abstract methods
      */
 
     abstract protected String getTargetPluginId();
 
-
     /*
      * static methods
      */
 
     public static Test createTestSuite(
-        final Class<? extends KvasirPluginTestCase<?>> clazz)
-        throws Exception
-    {
+            final Class<? extends KvasirPluginTestCase<?>> clazz)
+            throws Exception {
         metaData_ = new ProjectMetaData(clazz);
 
         ClassLoader cl = createClassLoader(BASE_LIBRARIES, TEST_LIBRARIES,
-            new JUnitFilteredClassLoader(KvasirPluginTestCase.class
-                .getClassLoader(), KvasirPluginTestCase.class.getClassLoader()
-                .getParent()));
+                new JUnitFilteredClassLoader(KvasirPluginTestCase.class
+                        .getClassLoader(), KvasirPluginTestCase.class
+                        .getClassLoader().getParent()));
 
         String pluginId = clazz.newInstance().getTargetPluginId();
         boolean shouldPrepareTestHome = (!metaData_.isRunningFromMaven2() && !metaData_
-            .isKvasirEclipsePluginProject());
+                .isKvasirEclipsePluginProject());
 
-        return (Test)cl.loadClass(KvasirPluginTestCase.class.getName())
-            .getMethod(
-                "createTestSuite0",
-                new Class[] { Class.class, Class.class, String.class,
-                    Boolean.TYPE }).invoke(
-                null,
-                new Object[] { KvasirPluginTestCase.class, clazz, pluginId,
-                    Boolean.valueOf(shouldPrepareTestHome) });
+        return (Test) cl.loadClass(KvasirPluginTestCase.class.getName())
+                .getMethod(
+                        "createTestSuite0",
+                        new Class[] { Class.class, Class.class, String.class,
+                                Boolean.TYPE }).invoke(
+                        null,
+                        new Object[] { KvasirPluginTestCase.class, clazz,
+                                pluginId,
+                                Boolean.valueOf(shouldPrepareTestHome) });
     }
 
-
     static ClassLoader createClassLoader(String[] baseJarLandmarks,
-        String[] testJarLandmarks, ClassLoader parent)
-    {
+            String[] testJarLandmarks, ClassLoader parent) {
         List<URL> urlList = new ArrayList<URL>();
         for (int i = 0; i < baseJarLandmarks.length; i++) {
             URL url = findBelongingJarOrDirectoryURL(baseJarLandmarks[i]);
@@ -164,9 +152,7 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
         return new URLClassLoader(urlList.toArray(new URL[0]), parent);
     }
 
-
-    static URL findBelongingJarOrDirectoryURL(String className)
-    {
+    static URL findBelongingJarOrDirectoryURL(String className) {
         ClassLoader cl = KvasirPluginTestCase.class.getClassLoader();
         String resourceName = className.replace('.', '/').concat(".class");
         URL resource = cl.getResource(resourceName);
@@ -176,84 +162,73 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
             if (idx >= 0) {
                 try {
                     return new URL(externalForm.substring(0, idx
-                        + JAR_SUFFIX.length()));
+                            + JAR_SUFFIX.length()));
                 } catch (MalformedURLException ex) {
                     System.err.println("[ERROR] Can't create URL from: "
-                        + externalForm);
+                            + externalForm);
                     return null;
                 }
             } else if (externalForm.endsWith(resourceName)) {
                 try {
                     return new URL(externalForm.substring(0, externalForm
-                        .length()
-                        - resourceName.length()));
+                            .length()
+                            - resourceName.length()));
                 } catch (MalformedURLException ex) {
                     throw new RuntimeException(
-                        "[ERROR] Can't create URL from: " + externalForm, ex);
+                            "[ERROR] Can't create URL from: " + externalForm,
+                            ex);
 
                 }
             } else {
                 throw new RuntimeException("[ERROR] Unsupported Jar URL: "
-                    + externalForm);
+                        + externalForm);
             }
         }
         return null;
     }
 
-
     public static Test createTestSuite0(
-        final Class<? extends KvasirPluginTestCase<?>> originalKvasirPluginTestClass,
-        final Class<? extends TestCase> clazz, final String pluginId,
-        final boolean shouldPrepareTestHome)
+            final Class<? extends KvasirPluginTestCase<?>> originalKvasirPluginTestClass,
+            final Class<? extends TestCase> clazz, final String pluginId,
+            final boolean shouldPrepareTestHome)
 
-        throws Exception
-    {
+    throws Exception {
         pluginId_ = pluginId;
         metaData_ = new ProjectMetaData(clazz);
 
         final TestSuite suite = new TestSuite(clazz);
         TestSetup wrapper = new TestSetup(suite) {
             @Override
-            public void setUp()
-                throws Exception
-            {
+            public void setUp() throws Exception {
                 try {
                     onceSetUp(originalKvasirPluginTestClass, clazz,
-                        shouldPrepareTestHome);
+                            shouldPrepareTestHome);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     suite.addTest(error(ex.getMessage()));
                 }
             }
 
-
             @Override
-            public void tearDown()
-                throws Exception
-            {
+            public void tearDown() throws Exception {
                 onceTearDown();
             }
         };
         return wrapper;
     }
 
-
-    protected static Test error(final String message)
-    {
+    protected static Test error(final String message) {
         return new TestCase("error") {
-            protected void runTest()
-            {
+            protected void runTest() {
                 fail(message);
             }
         };
     }
 
-
     protected static void onceSetUp(
-        Class<? extends KvasirPluginTestCase<?>> originalKvasirPluginTestClass,
-        Class<? extends TestCase> clazz, boolean shouldPrepareTestHome)
-        throws Exception
-    {
+            Class<? extends KvasirPluginTestCase<?>> originalKvasirPluginTestClass,
+            Class<? extends TestCase> clazz, boolean shouldPrepareTestHome)
+            throws Exception {
         if (shouldPrepareTestHome) {
             prepareTestHome();
         }
@@ -261,99 +236,93 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
         prepareS2ContainerDicon();
 
         PropertyHandler prop = new MapProperties();
-        prop
-            .setProperty(PROP_SYSTEM_HOME_DIR, FileUtils
+        prop.setProperty(PROP_SYSTEM_HOME_DIR, FileUtils
                 .toAbstractPath(getTestHomeDirectory().toFile()
-                    .getCanonicalPath()));
+                        .getCanonicalPath()));
         prop.setProperty(PROP_SYSTEM_DEVELOPEDPLUGINID, pluginId_);
         prop.setProperty(PROP_SYSTEM_DEVELOPEDPLUGIN_PROJECT_DIR, metaData_
-            .getProjectDirectory().toFile().getCanonicalPath());
+                .getProjectDirectory().toFile().getCanonicalPath());
 
         Resource outerLibrariesPropResource = metaData_.getClassesDirectory()
-            .getParentResource().getChildResource("outerLibraries.properties");
+                .getParentResource().getChildResource(
+                        "outerLibraries.properties");
         if (!outerLibrariesPropResource.exists()) {
             // 古い+PLUSTで構築したプロジェクトではここを通る。互換性のためこうしている。
             System.out
-                .println("[WARN] outerLibraries.properties does not exist: "
-                    + outerLibrariesPropResource);
+                    .println("[WARN] outerLibraries.properties does not exist: "
+                            + outerLibrariesPropResource);
         } else {
             prop.setProperty(PROP_SYSTEM_DEVELOPEDPLUGIN_HOME_DIR, metaData_
-                .getProjectDirectory().getChildResource("src/main/plugin")
-                .toFile().getCanonicalPath());
+                    .getProjectDirectory().getChildResource("src/main/plugin")
+                    .toFile().getCanonicalPath());
 
             MapProperties outerLibrariesProp = new MapProperties();
             outerLibrariesProp
-                .load(outerLibrariesPropResource.getInputStream());
+                    .load(outerLibrariesPropResource.getInputStream());
             String outerLibraries = outerLibrariesProp
-                .getProperty("outerLibraries");
+                    .getProperty("outerLibraries");
             if (outerLibraries != null) {
                 prop.setProperty(PROP_SYSTEM_DEVELOPEDPLUGIN_ADDITIONALJARS,
-                    outerLibraries);
+                        outerLibraries);
             }
         }
 
         Resource classesDirectory = metaData_.getClassesDirectory();
         if (classesDirectory != null) {
             prop.setProperty(PROP_SYSTEM_DEVELOPEDPLUGIN_CLASSES_DIR,
-                classesDirectory.toFile().getCanonicalPath());
+                    classesDirectory.toFile().getCanonicalPath());
         }
         clazz.getMethod("preEstablish", new Class[0]).invoke(
-            clazz.newInstance(), new Object[0]);
+                clazz.newInstance(), new Object[0]);
         Asgard.establish(KVASIR_XPROPERTIES, null, prop, Asgard.class
-            .getClassLoader());
+                .getClassLoader());
 
         Plugin<?> plugin = Asgard.getKvasir().getPluginAlfr().getPlugin(
-            pluginId_);
+                pluginId_);
         if (plugin == null) {
             String message = "[ERROR] Plugin instance does not exist: pluginId="
-                + pluginId_;
+                    + pluginId_;
             System.err.println(message);
             throw new NullPointerException(message);
         }
         ClassLoader cl = new OverriddenURLClassLoader(
-            new URL[] { getTestClassesDirectory().getURL() }, plugin
-                .getInnerClassLoader());
+                new URL[] { getTestClassesDirectory().getURL() }, plugin
+                        .getInnerClassLoader());
         if ("true".equals(System.getProperty("debug"))) {
             System.out.println("[DEBUG] ClassLoader=" + cl);
         }
 
         originalKvasirPluginTestClass.getMethod("setActualTestClass",
-            new Class[] { Class.class }).invoke(null,
-            new Object[] { cl.loadClass(clazz.getName()) });
+                new Class[] { Class.class }).invoke(null,
+                new Object[] { cl.loadClass(clazz.getName()) });
     }
 
-
-    static void prepareS2ContainerDicon()
-    {
+    static void prepareS2ContainerDicon() {
         Resource s2containerResource = metaData_.getTestHomeDirectory()
-            .getChildResource("common/classes/s2container.dicon");
+                .getChildResource("common/classes/s2container.dicon");
         if (!s2containerResource.exists()) {
             ResourceUtils.copy(new JavaResource("s2container.dicon",
-                KvasirPluginTestCase.class.getClassLoader()),
-                s2containerResource);
+                    KvasirPluginTestCase.class.getClassLoader()),
+                    s2containerResource);
         }
     }
 
-
-    public static void setActualTestClass(Class<? extends TestCase> testClass)
-    {
+    public static void setActualTestClass(Class<? extends TestCase> testClass) {
         actualTestClass_ = testClass;
     }
 
-
-    static void prepareTestHome()
-    {
+    static void prepareTestHome() {
         Resource actualDirectory = metaData_.getTestHomeDirectory();
         Resource mavenTestHomeSourceDirectory = metaData_
-            .getMavenTestHomeSourceDirectory();
+                .getMavenTestHomeSourceDirectory();
         Resource mavenTestHomeDirectory = metaData_.getMavenTestHomeDirectory();
 
         if (!actualDirectory.equals(mavenTestHomeDirectory)) {
             if (mavenTestHomeSourceDirectory.exists()
-                && !mavenTestHomeDirectory.exists()) {
+                    && !mavenTestHomeDirectory.exists()) {
                 // まだMaven2が実行されていない。
                 throw new IllegalStateException(
-                    "Run 'mvn pre-integration-test' first");
+                        "Run 'mvn pre-integration-test' first");
             }
 
             // Maven2のテストホームをコピーしておく。
@@ -362,37 +331,25 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
         }
     }
 
-
-    public void preEstablish()
-    {
+    public void preEstablish() {
     }
 
-
-    protected static void onceTearDown()
-        throws Exception
-    {
+    protected static void onceTearDown() throws Exception {
         Asgard.ragnarok(5);
     }
 
-
-    @SuppressWarnings("unchecked")
     @Override
-    public void runBare()
-        throws Throwable
-    {
+    public void runBare() throws Throwable {
         TestCase testCase = actualTestClass_.newInstance();
         testCase.setName(getName());
         actualTestClass_.getMethod("runBare0", new Class[0]).invoke(testCase,
-            new Object[0]);
+                new Object[0]);
     }
 
-
     @SuppressWarnings("unchecked")
-    public void runBare0()
-        throws Throwable
-    {
+    public void runBare0() throws Throwable {
         kvasir_ = Asgard.getKvasir();
-        plugin_ = (P)kvasir_.getPluginAlfr().getPlugin(getTargetPluginId());
+        plugin_ = (P) kvasir_.getPluginAlfr().getPlugin(getTargetPluginId());
         container_ = plugin_.getComponentContainer();
 
         kvasir_.beginSession();
@@ -403,49 +360,37 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
         }
     }
 
-
-    public void testStart()
-        throws Throwable
-    {
+    public void testStart() throws Throwable {
         KvasirLogFactory factory = KvasirLogFactory.getFactory();
         assertEquals(0, factory.getFatalCount() + factory.getErrorCount()
-            + factory.getWarnCount());
-        assertFalse("Plugin (" + getTargetPluginId()
-            + ") is disabled. See log file: "
-            + getTestHomeDirectory().getChildResource("rtwork/all-log.txt"),
-            plugin_.isDisabled());
+                + factory.getWarnCount());
+        assertFalse(
+                "Plugin ("
+                        + getTargetPluginId()
+                        + ") is disabled. See log file: "
+                        + getTestHomeDirectory().getChildResource(
+                                "rtwork/all-log.txt"), plugin_.isDisabled());
     }
 
-
-    protected Kvasir getKvasir()
-    {
+    protected Kvasir getKvasir() {
         return kvasir_;
     }
 
-
-    protected P getPlugin()
-    {
+    protected P getPlugin() {
         return plugin_;
     }
 
-
-    protected ComponentContainer getComponentContainer()
-    {
+    protected ComponentContainer getComponentContainer() {
         return container_;
     }
 
-
-    protected Object getComponent(Object key)
-    {
+    protected Object getComponent(Object key) {
         return container_.getComponent(key);
     }
 
-
-    protected <T> T getComponent(Class<? extends T> key)
-    {
+    protected <T> T getComponent(Class<? extends T> key) {
         return container_.getComponent(key);
     }
-
 
     //    public final void testDelegate()
     //        throws Exception
@@ -562,23 +507,17 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
      *
      * @return プロジェクトのトップディレクトリを表すResourceオブジェクト。
      */
-    protected static Resource getProjectDirectory()
-    {
+    protected static Resource getProjectDirectory() {
         return metaData_.getProjectDirectory();
     }
 
-
-    protected static Resource getTestHomeSourceDirectory()
-    {
+    protected static Resource getTestHomeSourceDirectory() {
         return metaData_.getTestHomeSourceDirectory();
     }
 
-
-    protected static Resource getTestClassesDirectory()
-    {
+    protected static Resource getTestClassesDirectory() {
         return metaData_.getTestClassesDirectory();
     }
-
 
     /**
      * テストのためのホームディレクトリを返します。
@@ -588,52 +527,7 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
      *
      * @return テストのためのホームディレクトリを表すResourceオブジェクト。
      */
-    protected static Resource getTestHomeDirectory()
-    {
+    protected static Resource getTestHomeDirectory() {
         return metaData_.getTestHomeDirectory();
-    }
-
-
-    /*
-     * private scope methods
-     */
-
-    @SuppressWarnings("unchecked")
-    private void printResult(TestResult result)
-    {
-        printDefects(result.errors(), result.errorCount(), "error");
-        printDefects(result.failures(), result.failureCount(), "failure");
-        if (result.wasSuccessful()) {
-            System.out.println();
-            System.out.print("OK");
-            System.out.println(" (" + result.runCount() + " test"
-                + (result.runCount() == 1 ? "" : "s") + ")");
-        } else {
-            System.out.println();
-            System.out.println("FAILURES!!!");
-            System.out.println("Tests run: " + result.runCount()
-                + ", Failures: " + result.failureCount() + ", Errors: "
-                + result.errorCount());
-        }
-        System.out.println();
-    }
-
-
-    private void printDefects(Enumeration<TestFailure> enm, int count,
-        String type)
-    {
-        if (count == 0) {
-            return;
-        } else if (count == 1) {
-            System.out.println("There was " + count + " " + type + ":");
-        } else {
-            System.out.println("There were " + count + " " + type + "s:");
-        }
-        for (int i = 1; enm.hasMoreElements(); i++) {
-            TestFailure failure = enm.nextElement();
-            System.out.println(i + ") " + failure.failedTest());
-            System.out
-                .println(BaseTestRunner.getFilteredTrace(failure.trace()));
-        }
     }
 }

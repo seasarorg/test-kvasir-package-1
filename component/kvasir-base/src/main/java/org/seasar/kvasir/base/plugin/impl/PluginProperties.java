@@ -22,8 +22,6 @@ import org.seasar.kvasir.util.io.IORuntimeException;
 public class PluginProperties
     implements PropertyHandler, I18NPropertyReader
 {
-    private String id_;
-
     private I18NProperties customProp_;
 
     private I18NPropertyHandler prop_;
@@ -32,7 +30,6 @@ public class PluginProperties
     public PluginProperties(String id, I18NProperties customProp,
         I18NPropertyHandler prop)
     {
-        id_ = id;
         customProp_ = customProp;
         prop_ = prop;
     }

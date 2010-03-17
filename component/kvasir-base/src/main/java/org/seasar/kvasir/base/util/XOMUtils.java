@@ -63,7 +63,6 @@ public class XOMUtils
     }
 
 
-    @SuppressWarnings("unchecked")
     public static <T> T toBean(Reader reader, Class<T> beanClass)
         throws ValidationException, IllegalSyntaxException, IOException
     {
@@ -71,7 +70,6 @@ public class XOMUtils
     }
 
 
-    @SuppressWarnings("unchecked")
     public static <T> T toBean(Reader reader, Class<? super T> beanClass, T bean)
         throws ValidationException, IllegalSyntaxException, IOException
     {

@@ -137,22 +137,4 @@ public class PageDifferenceImpl
         }
         return deltaByVariantMap.get(variant);
     }
-
-
-    /*
-     * private scope methods
-     */
-
-    private void addMapToDelta(Map<String, Entry> map, String id, Delta delta)
-    {
-        if (delta == null) {
-            return;
-        }
-        Entry entry = map.get(id);
-        if (entry == null) {
-            entry = new Entry();
-            map.put(id, entry);
-        }
-        entry.addDelta(delta);
-    }
 }

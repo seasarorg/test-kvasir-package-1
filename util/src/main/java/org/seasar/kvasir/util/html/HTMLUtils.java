@@ -23,10 +23,6 @@ public class HTMLUtils
 
     private static final int PREFETCH_BUFSIZE = 1024;
 
-    private static final String PREFIX_META = "<meta ";
-
-    private static final String PATTERN_HTTPEQUIV = " http-equiv=";
-
     private static final Pattern[] META_PATTERNS = new Pattern[] {
         Pattern
             .compile(

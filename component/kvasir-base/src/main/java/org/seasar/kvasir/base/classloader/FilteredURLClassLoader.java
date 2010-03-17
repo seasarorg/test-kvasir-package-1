@@ -120,8 +120,6 @@ public class FilteredURLClassLoader extends ClassLoader
 
     public static class FilteredURL
     {
-        private static final String CLASS_SUFFIX = ".class";
-
         private URL url_;
 
         private FilteredClassLoader classLoaderForCheck_;
@@ -168,7 +166,8 @@ public class FilteredURLClassLoader extends ClassLoader
                 sb.append(classLoaderForCheck_.getClassPatternStrings()[i]);
             }
             sb.append("), (");
-            for (int i = 0; i < classLoaderForCheck_.getResourcePatternStrings().length; i++) {
+            for (int i = 0; i < classLoaderForCheck_
+                .getResourcePatternStrings().length; i++) {
                 if (i > 0) {
                     sb.append(", ");
                 }

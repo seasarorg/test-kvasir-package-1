@@ -11,8 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.kvasir.base.log.KvasirLog;
-import org.seasar.kvasir.base.log.KvasirLogFactory;
 import org.seasar.kvasir.base.mime.MimeMappings;
 import org.seasar.kvasir.base.mime.MimePlugin;
 import org.seasar.kvasir.base.webapp.Content;
@@ -42,8 +40,6 @@ public class StaticContentProcessor
 
     private Map<String, Content> contentByPathMap_ = Collections
         .synchronizedMap(new HashMap<String, Content>());
-
-    private KvasirLog log_ = KvasirLogFactory.getLog(getClass());
 
 
     public void setPlugin(WebappPlugin plugin)

@@ -31,6 +31,14 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
+import net.skirnir.xom.Attribute;
+import net.skirnir.xom.Element;
+import net.skirnir.xom.IllegalSyntaxException;
+import net.skirnir.xom.ValidationException;
+import net.skirnir.xom.XOMapper;
+import net.skirnir.xom.XOMapperFactory;
+import net.skirnir.xom.annotation.impl.AnnotationBeanAccessorFactory;
+
 import org.seasar.framework.util.ArrayUtil;
 import org.seasar.kvasir.base.Globals;
 import org.seasar.kvasir.base.Identifier;
@@ -89,16 +97,6 @@ import org.seasar.kvasir.util.io.ResourceUtils;
 import org.seasar.kvasir.util.io.impl.FileResource;
 import org.seasar.kvasir.util.io.impl.OverriddenResource;
 
-import net.skirnir.xom.Attribute;
-import net.skirnir.xom.Element;
-import net.skirnir.xom.IllegalSyntaxException;
-import net.skirnir.xom.ValidationException;
-import net.skirnir.xom.XMLParser;
-import net.skirnir.xom.XMLParserFactory;
-import net.skirnir.xom.XOMapper;
-import net.skirnir.xom.XOMapperFactory;
-import net.skirnir.xom.annotation.impl.AnnotationBeanAccessorFactory;
-
 
 /**
  * <p><b>同期化：</b>
@@ -117,8 +115,6 @@ public class PluginAlfrImpl
     static final String SETTINGS_FILE_NAME = "plugin-alfr-settings.xml";
 
     private Kvasir kvasir_;
-
-    private XMLParser parser_ = XMLParserFactory.newInstance();
 
     private boolean started_ = false;
 
@@ -268,7 +264,6 @@ public class PluginAlfrImpl
     }
 
 
-    @SuppressWarnings("unchecked")
     public <T> T[] getExtensionElements(Class<T> elementClass, String pluginId,
         boolean ascending)
     {

@@ -17,8 +17,6 @@ public class NaviPop extends GenericPop
 {
     public static final String ID = KdiaryPlugin.ID + ".naviPop";
 
-    private static final String KEYPREFIX_LABEL = "pop.naviPop.label.";
-
     private AuthPlugin authPlugin_;
 
 

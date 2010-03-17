@@ -57,11 +57,7 @@ public class KvasirVariableResolver extends VariableResolverImpl
 
     private PageRequest pageRequest_;
 
-    private String gardRootPathname_;
-
     private Page rootPage_;
-
-    private Page gardRootPage_;
 
     private boolean myGenerated_;
 

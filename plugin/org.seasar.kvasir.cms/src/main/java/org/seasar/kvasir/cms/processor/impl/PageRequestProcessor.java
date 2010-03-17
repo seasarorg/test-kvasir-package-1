@@ -15,8 +15,6 @@ import org.seasar.kvasir.cms.extension.PageProcessorElement;
 import org.seasar.kvasir.cms.processor.PageProcessor;
 import org.seasar.kvasir.cms.processor.PageProcessorChain;
 import org.seasar.kvasir.cms.processor.PageProcessorLifecycleListener;
-import org.seasar.kvasir.page.PageAlfr;
-import org.seasar.kvasir.page.PagePlugin;
 import org.seasar.kvasir.webapp.processor.RequestProcessor;
 import org.seasar.kvasir.webapp.processor.RequestProcessorChain;
 
@@ -33,10 +31,6 @@ public class PageRequestProcessor
 {
     private CmsPlugin plugin_;
 
-    private PagePlugin pagePlugin_;
-
-    private PageAlfr pageAlfr_;
-
     private PageProcessorLifecycleListener[] lifecycleListeners_;
 
     private PageProcessorChainFactory processorChainFactory_;
@@ -50,8 +44,6 @@ public class PageRequestProcessor
 
     public void init(ServletConfig config)
     {
-        pageAlfr_ = pagePlugin_.getPageAlfr();
-
         prepareForPageProcessors(config);
 
         lifecycleListeners_ = plugin_.getExtensionComponents(
@@ -85,9 +77,7 @@ public class PageRequestProcessor
 
         lifecycleListeners_ = null;
 
-        pageAlfr_ = null;
         plugin_ = null;
-        pagePlugin_ = null;
     }
 
 
@@ -112,11 +102,5 @@ public class PageRequestProcessor
     public void setPlugin(CmsPlugin plugin)
     {
         plugin_ = plugin;
-    }
-
-
-    public void setPagePlugin(PagePlugin pagePlugin)
-    {
-        pagePlugin_ = pagePlugin;
     }
 }

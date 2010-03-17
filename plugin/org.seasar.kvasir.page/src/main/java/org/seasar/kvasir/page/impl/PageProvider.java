@@ -7,8 +7,6 @@ import org.seasar.framework.container.annotation.tiger.Aspect;
 import org.seasar.kvasir.base.cache.CachedEntry;
 import org.seasar.kvasir.base.cache.ObjectProvider;
 import org.seasar.kvasir.base.cache.impl.CachedEntryImpl;
-import org.seasar.kvasir.base.log.KvasirLog;
-import org.seasar.kvasir.base.log.KvasirLogFactory;
 import org.seasar.kvasir.page.DuplicatePageException;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PageMold;
@@ -24,8 +22,6 @@ public class PageProvider
     implements ObjectProvider<PageKey, PageDto>
 {
     private PageDao dao_;
-
-    private KvasirLog log_ = KvasirLogFactory.getLog(getClass());
 
 
     public void setDao(PageDao dao)

@@ -5,6 +5,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import net.skirnir.rst.converter.HTMLConverter;
+import net.skirnir.rst.element.Document;
+import net.skirnir.rst.parser.RstParser;
+
 import org.seasar.kvasir.base.Lifecycle;
 import org.seasar.kvasir.base.log.KvasirLog;
 import org.seasar.kvasir.base.log.KvasirLogFactory;
@@ -12,10 +16,6 @@ import org.seasar.kvasir.page.ability.content.ContentHandler;
 import org.seasar.kvasir.page.ability.content.extension.ContentHandlerElement;
 import org.seasar.kvasir.util.el.VariableResolver;
 import org.seasar.kvasir.util.io.IORuntimeException;
-
-import net.skirnir.rst.converter.HTMLConverter;
-import net.skirnir.rst.element.Document;
-import net.skirnir.rst.parser.RstParser;
 
 
 /**
@@ -30,8 +30,6 @@ public class RstContentHandler
 {
     public static final String ENCODING_DEFAULT = "UTF-8";
 
-    private ContentHandlerElement element_;
-
     private RstParser parser_ = new RstParser();
 
     private HTMLConverter converter_ = new HTMLConverter();
@@ -41,7 +39,6 @@ public class RstContentHandler
 
     public void setElement(ContentHandlerElement element)
     {
-        element_ = element;
     }
 
 

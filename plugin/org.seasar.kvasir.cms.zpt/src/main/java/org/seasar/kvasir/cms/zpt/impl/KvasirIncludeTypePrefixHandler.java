@@ -22,8 +22,6 @@ import net.skirnir.freyja.zpt.webapp.ServletTalesExpressionEvaluator;
  */
 public class KvasirIncludeTypePrefixHandler extends IncludeTypePrefixHandler
 {
-    private PageAlfr pageAlfr_;
-
     private ServletTalesExpressionEvaluator evaluator_;
 
 
@@ -33,7 +31,6 @@ public class KvasirIncludeTypePrefixHandler extends IncludeTypePrefixHandler
 
     public KvasirIncludeTypePrefixHandler setPageAlfr(PageAlfr pageAlfr)
     {
-        pageAlfr_ = pageAlfr;
         return this;
     }
 

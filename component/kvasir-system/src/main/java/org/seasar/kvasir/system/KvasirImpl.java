@@ -592,7 +592,6 @@ public class KvasirImpl
      }
      */
 
-    @SuppressWarnings("unchecked")
     public synchronized <T> T getStructuredProperty(String name,
         Class<T> structureClass)
     {

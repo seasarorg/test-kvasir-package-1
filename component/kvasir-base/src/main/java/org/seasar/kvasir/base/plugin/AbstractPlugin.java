@@ -2,7 +2,6 @@ package org.seasar.kvasir.base.plugin;
 
 import java.util.Locale;
 
-import org.seasar.kvasir.base.Identifier;
 import org.seasar.kvasir.base.Kvasir;
 import org.seasar.kvasir.base.Lifecycle;
 import org.seasar.kvasir.base.Version;
@@ -30,8 +29,6 @@ abstract public class AbstractPlugin<S>
     private Kvasir kvasir_;
 
     private PluginAlfr pluginAlfr_;
-
-    private Identifier directoryIdentifier_;
 
     private PluginDescriptor descriptor_;
 

@@ -163,7 +163,6 @@ public class PluginUpdaterImpl
     }
 
 
-    @SuppressWarnings("unchecked")
     public void installPlugin(final String pluginId, final String version,
         final boolean excludeSnapshot)
     {

@@ -20,6 +20,7 @@ public class IndexedCacheImpl<I, K extends IndexedCacheKey<I>, T> extends
     }
 
 
+    @SuppressWarnings("unchecked")
     @Override
     public Cache<K, T> setCacheStorage(CacheStorage<K, T> cacheStorage)
     {

@@ -14,7 +14,6 @@ import org.seasar.kvasir.page.ability.PageAbility;
 import org.seasar.kvasir.page.ability.template.Template;
 import org.seasar.kvasir.page.ability.template.TemplateAbility;
 import org.seasar.kvasir.page.ability.template.TemplateAbilityAlfr;
-import org.seasar.kvasir.page.ability.template.TemplateAbilityPlugin;
 import org.seasar.kvasir.util.io.IOUtils;
 import org.seasar.kvasir.util.io.InputStreamFactory;
 
@@ -29,15 +28,7 @@ import org.seasar.kvasir.util.io.InputStreamFactory;
 public class TemplateAbilityAlfrImpl extends AbstractPageAbilityAlfr
     implements TemplateAbilityAlfr
 {
-    private TemplateAbilityPlugin plugin_;
-
     private TemplateCache cache_;
-
-
-    public void setPlugin(TemplateAbilityPlugin plugin)
-    {
-        plugin_ = plugin;
-    }
 
 
     public void setCache(TemplateCache cache)
@@ -59,7 +50,6 @@ public class TemplateAbilityAlfrImpl extends AbstractPageAbilityAlfr
     protected void doStop()
     {
         cache_ = null;
-        plugin_ = null;
     }
 
 

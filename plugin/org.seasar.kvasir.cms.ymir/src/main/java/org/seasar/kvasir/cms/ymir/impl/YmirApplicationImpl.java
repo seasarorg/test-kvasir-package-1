@@ -20,11 +20,7 @@ import org.seasar.kvasir.util.io.Resource;
 public class YmirApplicationImpl extends AbstractApplication
     implements YmirApplication
 {
-    private static final String BASEDIRECTORY = "applications";
-
     private Plugin<?> plugin_;
-
-    private String gardId_;
 
     private String gardShortId_;
 
@@ -44,7 +40,6 @@ public class YmirApplicationImpl extends AbstractApplication
     {
         super(id, null, null);
         plugin_ = plugin;
-        gardId_ = gardId;
         gardShortId_ = getShortId(gardId);
         webappRoot_ = webappRoot;
         underDevelopment_ = underDevelopment;

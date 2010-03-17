@@ -12,16 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.sql.DataSource;
-
 import org.seasar.cms.beantable.Beantable;
 import org.seasar.cms.database.identity.Identity;
 import org.seasar.cms.database.identity.IdentitySelector;
+import org.seasar.kvasir.base.EmptySettings;
 import org.seasar.kvasir.base.dao.DaoPlugin;
 import org.seasar.kvasir.base.dao.extension.DatabaseSystemElement;
 import org.seasar.kvasir.base.dao.extension.PersistentBeanElement;
 import org.seasar.kvasir.base.plugin.AbstractPlugin;
-import org.seasar.kvasir.base.EmptySettings;
 import org.seasar.kvasir.base.plugin.PluginUtils;
 
 
@@ -35,8 +33,6 @@ import org.seasar.kvasir.base.plugin.PluginUtils;
 public class DaoPluginImpl extends AbstractPlugin<EmptySettings>
     implements DaoPlugin
 {
-    private DataSource ds_;
-
     private Map<String, DatabaseSystemElement> elementByProductIdMap_;
 
     private Identity identity_;
@@ -177,7 +173,6 @@ public class DaoPluginImpl extends AbstractPlugin<EmptySettings>
     protected void doStop()
     {
         identity_ = null;
-        ds_ = null;
 
         if (elementByProductIdMap_ != null) {
             Set<String> driverClassSet = new HashSet<String>();
@@ -206,13 +201,7 @@ public class DaoPluginImpl extends AbstractPlugin<EmptySettings>
         elementByProductIdMap_ = null;
     }
 
-
     /*
      * for framework
      */
-
-    public void setDataSource(DataSource ds)
-    {
-        ds_ = ds;
-    }
 }

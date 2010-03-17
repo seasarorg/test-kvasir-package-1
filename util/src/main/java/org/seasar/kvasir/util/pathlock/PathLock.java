@@ -62,8 +62,9 @@ import java.util.TreeMap;
  */
 public class PathLock
 {
-    private SortedMap           lockMap_ = new TreeMap();
-    private volatile int        exclusiveCount_ = 0;
+    private SortedMap lockMap_ = new TreeMap();
+
+    private volatile int exclusiveCount_ = 0;
 
 
     /**
@@ -98,8 +99,8 @@ public class PathLock
     public Object processWithSharedLock(String pathStr,
         boolean withDescendants, ProcessWithLock process)
     {
-        return processWithSharedLock(
-            new String[]{ pathStr }, withDescendants, process);
+        return processWithSharedLock(new String[] { pathStr }, withDescendants,
+            process);
     }
 
 
@@ -119,8 +120,8 @@ public class PathLock
     public Object processWithExclusiveLock(String pathStr,
         boolean withDescendants, ProcessWithLock process)
     {
-        return processWithExclusiveLock(
-            new String[]{ pathStr }, withDescendants, process);
+        return processWithExclusiveLock(new String[] { pathStr },
+            withDescendants, process);
     }
 
 
@@ -196,7 +197,7 @@ public class PathLock
      */
     public Lock sharedLock(String pathStr, boolean withDescendants)
     {
-        return sharedLock(new String[]{ pathStr }, withDescendants);
+        return sharedLock(new String[] { pathStr }, withDescendants);
     }
 
 
@@ -212,7 +213,7 @@ public class PathLock
      */
     public Lock exclusiveLock(String pathStr, boolean withDescendants)
     {
-        return exclusiveLock(new String[]{ pathStr }, withDescendants);
+        return exclusiveLock(new String[] { pathStr }, withDescendants);
     }
 
 
@@ -363,7 +364,7 @@ public class PathLock
                     // 既に自分がロックしている。
                     if (pair.isWithDescendants() || !withDescendants) {
                         if (!pair.isExclusive() && !exclusive
-                        || pair.isExclusive()) {
+                            || pair.isExclusive()) {
                             // 自分がSHAREDを持っていて再度SHAREDを取りに来た
                             // 場合と自分がEXCLUSIVEを持っている場合は子孫パス
                             // や祖先パスを調べなくともロックできるのは
@@ -378,8 +379,8 @@ public class PathLock
                 if (withDescendants) {
                     // pathの子孫パスがロックされている場合はロックできない。
                     Map descendants = path.getDescendants();
-                    for (Iterator itr = descendants.values().iterator();
-                    itr.hasNext(); ) {
+                    for (Iterator itr = descendants.values().iterator(); itr
+                        .hasNext();) {
                         if (checkIfLocked((State)itr.next(), exclusive)) {
                             canLock = Boolean.FALSE;
                         }
@@ -391,11 +392,10 @@ public class PathLock
                 // pathの先祖パスをwithDescendantsでロックされている場合は
                 // ロックできない。
 
-                String [] ascendants = path.getAncestors();
+                String[] ascendants = path.getAncestors();
                 for (int i = 0; i < ascendants.length; i++) {
                     State st = (State)lockMap_.get(ascendants[i]);
-                    if (checkIfLocked(st, exclusive)
-                    && st.isWithDescendants()) {
+                    if (checkIfLocked(st, exclusive) && st.isWithDescendants()) {
                         canLock = Boolean.FALSE;
                     }
                 }
@@ -482,8 +482,7 @@ public class PathLock
     /*
      * このメソッドは単体テスト用のメソッドです。
      */
-    private boolean lockForTest(String path, boolean exclusive,
-        boolean withDescendants)
+    boolean lockForTest(String path, boolean exclusive, boolean withDescendants)
     {
         return lock(new Path(path), exclusive, withDescendants);
     }
@@ -492,7 +491,7 @@ public class PathLock
     /*
      * このメソッドは単体テスト用のメソッドです。
      */
-    private void lockForTest(Thread thread, String path, boolean exclusive,
+    void lockForTest(Thread thread, String path, boolean exclusive,
         boolean withDescendants)
     {
         State state = new State();
@@ -506,7 +505,7 @@ public class PathLock
     /*
      * このメソッドは単体テスト用のメソッドです。
      */
-    private void unlockForTest(Thread thread, String[] pathStrs)
+    void unlockForTest(Thread thread, String[] pathStrs)
     {
         for (int i = pathStrs.length - 1; i >= 0; i--) {
             Object pathStr = pathStrs[i];
@@ -532,7 +531,7 @@ public class PathLock
     /*
      * このメソッドは単体テスト用のメソッドです。
      */
-    private int getLockCountForTest(String path)
+    int getLockCountForTest(String path)
     {
         State state = (State)lockMap_.get(path);
         if (state != null) {
@@ -555,10 +554,14 @@ public class PathLock
     private class Path
         implements Comparable
     {
-        private String          path_;
-        private String          fromPath_;
-        private String          toPath_;
-        private String[]        ancestors_;
+        private String path_;
+
+        private String fromPath_;
+
+        private String toPath_;
+
+        private String[] ancestors_;
+
 
         public Path(String path)
         {
@@ -585,10 +588,12 @@ public class PathLock
             ancestors_ = (String[])list.toArray(new String[0]);
         }
 
+
         public String toString()
         {
             return path_;
         }
+
 
         public int compareTo(Object o)
         {
@@ -596,15 +601,18 @@ public class PathLock
             return path_.compareTo(p.getPath());
         }
 
+
         public String getPath()
         {
             return path_;
         }
 
+
         public String[] getAncestors()
         {
             return ancestors_;
         }
+
 
         public SortedMap getDescendants()
         {
@@ -612,17 +620,20 @@ public class PathLock
         }
     }
 
-
     private static class State
     {
-        private Map     pairMap_ = new HashMap();
-        private boolean     exclusive_;
-        private boolean     withDescendants_;
+        private Map pairMap_ = new HashMap();
+
+        private boolean exclusive_;
+
+        private boolean withDescendants_;
+
 
         public Pair getPair()
         {
             return (Pair)pairMap_.get(Thread.currentThread());
         }
+
 
         public void setPair(Pair pair)
         {
@@ -637,20 +648,24 @@ public class PathLock
             pairMap_.remove(Thread.currentThread());
         }
 
+
         public boolean isExclusive()
         {
-            return exclusive_; 
+            return exclusive_;
         }
+
 
         public boolean isWithDescendants()
         {
             return withDescendants_;
         }
 
+
         public int size()
         {
             return pairMap_.size();
         }
+
 
         /*
          * このメソッドは単体テスト用のメソッドです。
@@ -659,6 +674,7 @@ public class PathLock
         {
             return (Pair)pairMap_.get(thread);
         }
+
 
         /*
          * このメソッドは単体テスト用のメソッドです。
@@ -670,6 +686,7 @@ public class PathLock
             withDescendants_ = pair.isWithDescendants();
         }
 
+
         /*
          * このメソッドは単体テスト用のメソッドです。
          */
@@ -679,12 +696,14 @@ public class PathLock
         }
     }
 
-
     private class Pair
     {
-        private boolean     exclusive_;
-        private boolean     withDescendants_;
-        private int         count_;
+        private boolean exclusive_;
+
+        private boolean withDescendants_;
+
+        private int count_;
+
 
         public Pair(boolean exclusive, boolean withDescendants)
         {
@@ -693,10 +712,12 @@ public class PathLock
             count_ = 0;
         }
 
+
         public boolean isExclusive()
         {
             return exclusive_;
         }
+
 
         public void setExclusive(boolean exclusive)
         {
@@ -710,20 +731,24 @@ public class PathLock
             exclusive_ = exclusive;
         }
 
+
         public boolean isWithDescendants()
         {
             return withDescendants_;
         }
+
 
         public void setWithDescendants(boolean withDescendants)
         {
             withDescendants_ = withDescendants;
         }
 
+
         public int getCount()
         {
             return count_;
         }
+
 
         public void increment()
         {
@@ -732,6 +757,7 @@ public class PathLock
             }
             count_++;
         }
+
 
         public boolean decrement()
         {

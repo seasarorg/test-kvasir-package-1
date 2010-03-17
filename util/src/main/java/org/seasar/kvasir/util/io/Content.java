@@ -29,11 +29,7 @@ public class Content
 {
     private static final int BUF_SIZE = 4096;
 
-    private static final String MEDIATYPE_XML = "text/xml";
-
     private static final String DEFAULT_CHARSET = "ISO-8859-1";
-
-    private static final String MEDIATYPE_HTML = "text/html";
 
     private String mediaType_;
 

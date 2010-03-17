@@ -25,7 +25,6 @@ import org.seasar.kvasir.page.ability.PropertyAbility;
 import org.seasar.kvasir.page.ability.content.Content;
 import org.seasar.kvasir.page.ability.content.ContentAbility;
 import org.seasar.kvasir.page.ability.content.ContentMold;
-import org.seasar.kvasir.page.auth.AuthPlugin;
 import org.seasar.kvasir.util.PropertyUtils;
 import org.seasar.kvasir.util.html.HTMLUtils;
 
@@ -67,11 +66,7 @@ public class ContentPop extends GenericPop
 
     public static final String PROP_PATHNAME = "pathname";
 
-    private static final String SP = System.getProperty("line.separator");
-
     public static final String ERROR_INVALIDVALUE = "pop.contentPop.error.invalidValue";
-
-    private AuthPlugin authPlugin_;
 
 
     @Override

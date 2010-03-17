@@ -41,8 +41,6 @@ public abstract class DirContextBase<T>
 
     private Hashtable<?, ?> env_ = null;
 
-    private String basePath_ = null;
-
     private String cwd_ = "/";
 
     protected KvasirLog log_ = KvasirLogFactory.getLog(getClass());

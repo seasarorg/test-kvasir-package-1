@@ -21,7 +21,6 @@ import org.seasar.kvasir.util.io.Resource;
  *
  * @author YOKOTA Takehiko
  */
-@SuppressWarnings("unchecked")
 public class TemplatePathResolver extends AbstractPageResourcePathResolver
 {
     private PageAlfr pageAlfr_;

@@ -6,10 +6,6 @@ import org.seasar.kvasir.base.descriptor.annotation.Component;
 
 public class ElementClassMetaData
 {
-    private Class<?> elementClass_;
-
-    private ClassLoader classLoader_;
-
     private BindingType binding_ = BindingType.NONE;
 
     private Class<?> isa_;
@@ -19,15 +15,6 @@ public class ElementClassMetaData
 
     ElementClassMetaData(Class<?> elementClass, ClassLoader classLoader)
     {
-        elementClass_ = elementClass;
-        if (classLoader != null) {
-            classLoader_ = classLoader;
-        } else if (elementClass != null) {
-            classLoader_ = elementClass.getClassLoader();
-        } else {
-            classLoader_ = null;
-        }
-
         prepare(elementClass);
     }
 

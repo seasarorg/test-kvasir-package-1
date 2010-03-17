@@ -75,8 +75,6 @@ abstract public class PageBase
 
     private CommonDto common_;
 
-    private HttpServletRequest request_;
-
     private HttpServletRequest httpRequest_;
 
     private HttpServletResponse httpResponse_;

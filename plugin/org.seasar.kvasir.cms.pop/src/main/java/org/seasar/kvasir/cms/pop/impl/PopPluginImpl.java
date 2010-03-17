@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.kvasir.base.EmptySettings;
-import org.seasar.kvasir.base.log.KvasirLog;
-import org.seasar.kvasir.base.log.KvasirLogFactory;
 import org.seasar.kvasir.base.plugin.AbstractPlugin;
 import org.seasar.kvasir.cms.CmsPlugin;
 import org.seasar.kvasir.cms.PageRequest;
@@ -62,8 +60,6 @@ public class PopPluginImpl extends AbstractPlugin<EmptySettings>
     private Map<Integer, SortedMap<PopKey, Pop>> popMap_;
 
     private Resource defaultPopImageResource_;
-
-    private KvasirLog log_ = KvasirLogFactory.getLog(getClass());
 
 
     /*

@@ -40,7 +40,6 @@ import org.seasar.kvasir.page.ability.PageAbility;
 import org.seasar.kvasir.page.ability.table.TableAbility;
 import org.seasar.kvasir.page.ability.table.TableAbilityAlfr;
 import org.seasar.kvasir.page.ability.table.TableAbilityPlugin;
-import org.seasar.kvasir.page.extension.PageAbilityAlfrElement;
 import org.seasar.kvasir.util.io.IORuntimeException;
 import org.seasar.kvasir.util.io.IOUtils;
 import org.seasar.kvasir.util.io.InputStreamFactory;
@@ -62,8 +61,6 @@ public class TableAbilityAlfrImpl extends AbstractPageAbilityAlfr
     implements TableAbilityAlfr
 {
     private static final int COUNT_THRESHOLD = 500;
-
-    private PageAbilityAlfrElement element_;
 
     private TableAbilityPlugin plugin_;
 
@@ -116,7 +113,6 @@ public class TableAbilityAlfrImpl extends AbstractPageAbilityAlfr
 
     protected void doStop()
     {
-        element_ = null;
         plugin_ = null;
         ds_ = null;
         daoPlugin_ = null;
@@ -526,12 +522,6 @@ public class TableAbilityAlfrImpl extends AbstractPageAbilityAlfr
     /*
      * for framework
      */
-
-    public void setElement(PageAbilityAlfrElement element)
-    {
-        element_ = element;
-    }
-
 
     public void setPlugin(TableAbilityPlugin plugin)
     {

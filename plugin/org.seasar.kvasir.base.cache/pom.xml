@@ -1,13 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<?xml version="1.0"?><project>
   <parent>
-    <groupId>org.seasar.kvasir.plugin</groupId>
     <artifactId>plugin-project</artifactId>
+    <groupId>org.seasar.kvasir.plugin</groupId>
     <version>3.0.0-SNAPSHOT</version>
     <relativePath>../plugin-project/pom.xml</relativePath>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>org.seasar.kvasir.base.cache</groupId>
   <artifactId>org.seasar.kvasir.base.cache</artifactId>
   <packaging>kvasir-plugin</packaging>

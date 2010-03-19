@@ -4,6 +4,8 @@ db.url=jdbc:${db.productId}:${db.database}${db.url.queryString}
 # For non-H2 database
 # db.url=jdbc:${db.productId}://${db.host}/${db.database}${db.url.queryString}
 db.productId=h2
+# For MySQL
+# db.productId=mysql
 db.host=localhost
 db.database=${plugin.configuration.dir}/h2/h2
 db.url.queryString=

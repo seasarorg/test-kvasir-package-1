@@ -14,7 +14,7 @@ initialize.createTable= \
         modifydate          TIMESTAMP NOT NULL, \
         latest              BOOLEAN NOT NULL, \
         version             INTEGER DEFAULT 1 NOT NULL, \
-        mediatype           VARCHAR(255) NOT NULL \
+        mediatype           VARCHAR(255) NOT NULL, \
         encoding            VARCHAR(255) NOT NULL, \
         UNIQUE              (pageid, variant, revisionnumber) \
     )

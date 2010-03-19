@@ -16,7 +16,7 @@ insert.getId=\
 initialize.createPageIdSequence=
 initialize.createPage= \
     CREATE TABLE page ( \
-        id                  INTEGER NOT NULL AUTO INCREMENT, \
+        id                  INTEGER NOT NULL AUTO_INCREMENT, \
         type                VARCHAR(255) NOT NULL, \
         heimid              INTEGER NOT NULL, \
         lordid              INTEGER NOT NULL, \

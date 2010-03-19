@@ -20,7 +20,7 @@
     <library name="lib/s2-dao-tiger-1.0.47.jar">
       <export name="**" />
     </library>
-    <library name="lib/database-0.0.4.jar">
+    <library name="lib/database-0.0.5-SNAPSHOT.jar">
       <export name="**" />
     </library>
     <library name="lib/beantable-0.0.4.jar">
@@ -40,12 +40,10 @@
   <extension point="org.seasar.kvasir.base.dao.databaseSystems">
     <database-system id="h2" name="%database-system.h2"
       driver-class="org.h2.Driver" validation-query="CALL 1" />
-    <!--
-      <database-system id="mysql"
+    <database-system id="mysql"
       name="%database-system.mysql"
       driver-class="com.mysql.jdbc.Driver"
       validation-query="SELECT 1" />
-    -->
   </extension>
 
   <extension-point id="databaseSystems"

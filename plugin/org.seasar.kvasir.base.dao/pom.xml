@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -19,7 +18,7 @@
         <artifactId>maven-kvasir-plugin</artifactId>
         <configuration>
           <pluginOuterLibraries>
-            commons-dbutils,beantable,s2-dao,s2-dao-tiger,database,h2
+            commons-dbutils,beantable,s2-dao,s2-dao-tiger,database,h2,mysql-connector-java
           </pluginOuterLibraries>
         </configuration>
       </plugin>
@@ -66,7 +65,16 @@
           <groupId>org.seasar.dao</groupId>
           <artifactId>s2-dao</artifactId>
         </exclusion>
+        <exclusion>
+      <groupId>org.seasar.cms.database</groupId>
+          <artifactId>database</artifactId>
+        </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.seasar.cms.database</groupId>
+      <artifactId>database</artifactId>
+      <version>0.0.5-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.dao</groupId>
@@ -86,7 +94,12 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.0.78</version>
+      <version>1.2.124</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.6</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.kvasir.base</groupId>

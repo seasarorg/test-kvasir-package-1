@@ -115,7 +115,7 @@ function submitConfigurationForm(event) {
 }
 
 function expandTextBox(event) {
-    var field = findFirstChild(this.parentNode);
+    var field = findTextBox(this.parentNode);
     var newField;
     if (this.value == '+') {
         newField = document.createElement('textarea');
@@ -134,6 +134,20 @@ function expandTextBox(event) {
     newField.name = field.name;
     field.parentNode.insertBefore(newField, field);
     field.parentNode.removeChild(field);
+}
+
+function findTextBox(element) {
+    var children = element.childNodes;
+    var length = children.length;
+    for (var i = 0; i < length; i++) {
+        var item = children.item(i);
+        if (item.nodeType == 1
+            && (item.nodeName == 'TEXTAREA'
+            || item.nodeName == 'INPUT' && item.type == 'text')) {
+            return item;
+        }
+    }
+    return null;
 }
 
 function deleteProperty(event) {

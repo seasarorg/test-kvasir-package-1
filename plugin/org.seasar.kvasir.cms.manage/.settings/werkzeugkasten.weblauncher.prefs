@@ -1,0 +1,5 @@
+#Fri Mar 19 10:00:32 JST 2010
+baseDir=/org.seasar.kvasir.cms.manage/build/webapp
+contextName=/org.seasar.kvasir.cms.manage
+eclipse.preferences.version=1
+webType=Tomcat6

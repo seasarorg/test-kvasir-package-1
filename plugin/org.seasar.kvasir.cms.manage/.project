@@ -26,5 +26,6 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.seasar.kvasir.plust.kvasirNature</nature>
 		<nature>com.sysdeo.eclipse.tomcat.tomcatnature</nature>
+		<nature>werkzeugkasten.weblauncher.nature</nature>
 	</natures>
 </projectDescription>

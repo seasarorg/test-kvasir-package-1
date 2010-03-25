@@ -181,7 +181,19 @@ public class Asgard
 
         // Kvasirインスタンスを設定する。
 
-        kvasir_ = (Kvasir)container.getComponent(Kvasir.class);
+        ClassLoader old = Thread.currentThread().getContextClassLoader();
+        try {
+            // KvasirインスタンスにDIされるコンポーネントにcommons-loggingを使うクラスがあると、
+            // 環境によっては（ex. Eclipse上のテスト環境）common/libのではない
+            // commons-logging.jarを見つけてしまってcommons-loggingに「複数使うな」と
+            // 怒られてしまうことがあるため、こうしている。
+            Thread.currentThread().setContextClassLoader(systemCl);
+
+            kvasir_ = (Kvasir)container.getComponent(Kvasir.class);
+        } finally {
+            Thread.currentThread().setContextClassLoader(old);
+        }
+
         if (!kvasir_.start(prop, container, commonCl, systemCl)) {
             established_ = Boolean.FALSE;
             return false;

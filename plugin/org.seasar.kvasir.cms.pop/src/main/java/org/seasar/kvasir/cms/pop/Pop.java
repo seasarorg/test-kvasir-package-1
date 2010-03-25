@@ -38,8 +38,9 @@ public interface Pop
 
     /**
      * このPOPインスタンスの識別子を返します。
-     * <p>通常このメソッドが返すのは、POP種別の識別子とインスタンスIDを「<code>:</code>」で
-     * 連結した文字列です。
+     * <p>通常このメソッドが返すのは、POP種別の識別子とインスタンスIDを「<code>-</code>」で
+     * 連結した文字列
+     *  （例：<code>org.seasar.kvasir.cms.toolbox.loginPop-1</code>）です。
      * </p>
      *
      * @return このPOPインスタンスの識別子。
@@ -51,6 +52,10 @@ public interface Pop
 
     /**
      * このPOPの種別の識別子を返します。
+     * <p>POPの種別の識別子とは、
+     * POPを提供するプラグインのIDとPOPのプラグイン内のIDを「<code>.</code>」で連結したもの
+     * （例：<code>org.seasar.kvasir.cms.toolbox.loginPop</code>）です。
+     * </p>
      *
      * @return このPOPの種別の識別子。
      * @see #getId()

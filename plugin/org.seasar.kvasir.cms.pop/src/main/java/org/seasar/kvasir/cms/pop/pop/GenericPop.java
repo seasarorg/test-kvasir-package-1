@@ -39,6 +39,7 @@ import org.seasar.kvasir.util.io.ResourceNotFoundException;
  * </p>
  *
  * @author YOKOTA Takehiko
+ * @see Pop
  */
 public class GenericPop
     implements Pop
@@ -98,7 +99,7 @@ public class GenericPop
      * POPをレンダリングします。
      * <p>サブクラスでレンダリング処理を変更する場合は、
      * <p>プレビューモードでも適切に動作するよう、通常はこのメソッドの代わりに
-     * {@link #render(PopContext, String[], Map)
+     * {@link #render(PopContext, String[], Map)}
      * をオーバライドするようにして下さい。
      * </p>
      *

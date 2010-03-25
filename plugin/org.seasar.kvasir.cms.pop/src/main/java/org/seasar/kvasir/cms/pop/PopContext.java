@@ -14,6 +14,11 @@ import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.util.el.VariableResolver;
 
 
+/**
+ * POPをレンダリングするためのコンテキスト情報を表すインタフェースです。
+ * 
+ * @author yokota
+ */
 public interface PopContext
     extends VariableResolver
 {

@@ -52,7 +52,6 @@ import org.seasar.kvasir.system.container.descriptor.Component;
 import org.seasar.kvasir.system.container.descriptor.Components;
 import org.seasar.kvasir.system.plugin.PluginAlfrImpl.ClassLoaderPair;
 import org.seasar.kvasir.test.ProjectMetaData;
-import org.seasar.kvasir.util.ClassUtils;
 import org.seasar.kvasir.util.collection.I18NProperties;
 import org.seasar.kvasir.util.collection.I18NPropertyHandler;
 import org.seasar.kvasir.util.io.IOUtils;
@@ -779,9 +778,8 @@ public class PluginAlfrImplTest extends TestCase
         assertEquals("name", cs[0].getName());
         assertEquals("patch1-1.0.1", cs[1].getClassName());
         assertEquals("patch2-1.0.0", cs[2].getClassName());
-        ClassLoader cl = new URLClassLoader(new URL[] { ClassUtils
-            .getURLForURLClassLoader(actual.getChildResource("classes")
-                .getURL()) });
+        ClassLoader cl = new URLClassLoader(new URL[] { actual
+            .getChildResource("classes").getURL() });
         assertNotNull(cl.getResource("resource.txt"));
         assertNotNull(cl.getResource("resource-patch2-1.0.0.txt"));
     }
@@ -826,9 +824,8 @@ public class PluginAlfrImplTest extends TestCase
         assertEquals("name", cs[0].getName());
         assertEquals("hoge1-1.0.0", cs[1].getClassName());
         assertEquals("fuga1-1.0.0", cs[2].getClassName());
-        ClassLoader cl = new URLClassLoader(new URL[] { ClassUtils
-            .getURLForURLClassLoader(actual.getChildResource("classes")
-                .getURL()) });
+        ClassLoader cl = new URLClassLoader(new URL[] { actual
+            .getChildResource("classes").getURL() });
         assertNotNull(cl.getResource("resource.txt"));
         assertNotNull(cl.getResource("resource-fuga1-1.0.0.txt"));
     }
@@ -877,9 +874,8 @@ public class PluginAlfrImplTest extends TestCase
         assertEquals("patch1-1.0.0", cs[2].getClassName());
         assertEquals("fuga1-1.0.0", cs[3].getClassName());
         assertEquals("patch2-1.0.0", cs[4].getClassName());
-        ClassLoader cl = new URLClassLoader(new URL[] { ClassUtils
-            .getURLForURLClassLoader(actual.getChildResource("classes")
-                .getURL()) });
+        ClassLoader cl = new URLClassLoader(new URL[] { actual
+            .getChildResource("classes").getURL() });
         assertNotNull(cl.getResource("resource.txt"));
         assertNotNull(cl.getResource("resource-fuga1-1.0.0.txt"));
         assertNotNull(cl.getResource("resource-patch1-1.0.0.txt"));
@@ -926,6 +922,10 @@ public class PluginAlfrImplTest extends TestCase
     {
         assertTrue(target_.isPluginLibrary(new URL(
             "jar:file:/C:/build/test-home/plugins/target/plugin.id.jar!/"),
+            "plugin.id"));
+
+        assertTrue(target_.isPluginLibrary(new URL(
+            "file:/C:/build/test-home/plugins/target/plugin.id.jar"),
             "plugin.id"));
     }
 

@@ -109,8 +109,9 @@ import org.seasar.kvasir.util.io.impl.OverriddenResource;
 public class PluginAlfrImpl
     implements PluginAlfr
 {
-
     private static final String JAR_URL_SUFFIX = ".jar!/";
+
+    private static final String JAR_FILE_SUFFIX = ".jar";
 
     static final String SETTINGS_FILE_NAME = "plugin-alfr-settings.xml";
 
@@ -1904,9 +1905,7 @@ public class PluginAlfrImpl
                             log_.debug("Replace '" + urls[j] + "' into '"
                                 + developedPluginClassesDirectory_ + "'");
                         }
-                        urls[j] = ClassUtils
-                            .getURLForURLClassLoader(developedPluginClassesDirectory_
-                                .getURL());
+                        urls[j] = developedPluginClassesDirectory_.getURL();
                         replaced = true;
                     }
 
@@ -1952,9 +1951,7 @@ public class PluginAlfrImpl
         if (shouldReplacePluginLibrary && !replaced) {
             // Jarがない場合でもclassesをクラスローダに追加するようにする。
             // （+PLUSTを使った開発ではこういうことがあり得る。）
-            URL classesURL = ClassUtils
-                .getURLForURLClassLoader(developedPluginClassesDirectory_
-                    .getURL());
+            URL classesURL = developedPluginClassesDirectory_.getURL();
             furlMap.put(classesURL, new FilteredURLClassLoader.FilteredURL(
                 classesURL, Library.PATTERNS_ALL, Library.PATTERNS_ALL));
             if (log_.isDebugEnabled()) {
@@ -2008,15 +2005,24 @@ public class PluginAlfrImpl
     boolean isPluginLibrary(URL url, String pluginId)
     {
         String urlString = url.toExternalForm();
-        if (!urlString.endsWith(JAR_URL_SUFFIX)) {
+        if (urlString.endsWith(JAR_URL_SUFFIX)) {
+            int slash = urlString.lastIndexOf('/', urlString.length()
+                - JAR_URL_SUFFIX.length());
+            if (slash < 0) {
+                return false;
+            }
+            return urlString.substring(slash + 1).equals(
+                pluginId + JAR_URL_SUFFIX);
+        } else if (urlString.toLowerCase().endsWith(".jar")) {
+            int slash = urlString.lastIndexOf('/');
+            if (slash < 0) {
+                return false;
+            }
+            return urlString.substring(slash + 1).equals(
+                pluginId + JAR_FILE_SUFFIX);
+        } else {
             return false;
         }
-        int slash = urlString.lastIndexOf('/', urlString.length()
-            - JAR_URL_SUFFIX.length());
-        if (slash < 0) {
-            return false;
-        }
-        return urlString.substring(slash + 1).equals(pluginId + JAR_URL_SUFFIX);
     }
 
 

@@ -8,7 +8,6 @@ import java.lang.ref.SoftReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -93,23 +92,35 @@ public class ClassUtils
     }
 
 
+    /**
+     * リソースのURLをURLClassLoaderに指定する形に変換します。
+     * 
+     * @param url URL。
+     * nullを指定することもできます。
+     * @return 変換後のURL。
+     * @deprecated 以前のバージョンではJarのURLを「"jar:"+URL+"!/"」形式に変換していましたが、
+     * http://d.hatena.ne.jp/skirnir/20100325 のような問題があるため変換を
+     * しないようにしました。その結果このメソッドは不要となりました。
+     */
     public static URL getURLForURLClassLoader(URL url)
     {
-        if (url == null) {
-            return null;
-        }
-        if (url.getPath().toLowerCase().endsWith(".jar")) {
-            try {
-                return new URL("jar:" + url.toExternalForm() + "!/");
-            } catch (MalformedURLException ex) {
-                return null;
-            }
-        } else {
-            return url;
-        }
+        return url;
     }
 
 
+    /**
+     * ファイルリソースLをURLClassLoaderに指定する形に変換します。
+     * <p>ファイルが存在しない場合はnullを返します。
+     * </p>
+     * <p><strong>注意：</strong>以前のバージョンではJarのURLを「"jar:"+URL+"!/"」形式に変換していましたが、
+     * http://d.hatena.ne.jp/skirnir/20100325 のような問題があるため変換を
+     * しないようにしました。
+     * </p>
+     * 
+     * @param file ファイルリソース。
+     * nullを指定することもできます。
+     * @return 変換後のURL。
+     */
     public static URL getURLForURLClassLoader(File file)
     {
         if (file == null) {
@@ -118,21 +129,10 @@ public class ClassUtils
         if (!file.exists()) {
             return null;
         }
-        URL url;
         try {
-            url = file.getCanonicalFile().toURI().toURL();
+            return file.getCanonicalFile().toURI().toURL();
         } catch (IOException ex) {
             return null;
-        }
-        if (!file.isDirectory()
-            && file.getName().toLowerCase().endsWith(".jar")) {
-            try {
-                return new URL("jar:" + url.toExternalForm() + "!/");
-            } catch (MalformedURLException ex) {
-                return null;
-            }
-        } else {
-            return url;
         }
     }
 

@@ -401,6 +401,26 @@ public class PopUtils
     }
 
 
+    /**
+     * ペインをレンダリングします。
+     * <p>ペインをレンダリングした結果として、ペインが持っているPOPをレンダリングした{@link RenderedPop}の配列を返します。
+     * テンプレートでは、例えばRenderedPopをpopという名前で変数定義しておき、以下のようなHTMLを記述することで
+     * POPを表示することができます。
+     * </p>
+     * <pre>
+     * &lt;div tal:attributes="id pop/id; class string:pop ${pop/popId}"&gt;
+     *   &lt;h2 class="title" tal:content="structure pop/title"&gt;POP Title&lt;/h2&gt;
+     *   &lt;div class="body" tal:content="structure pop/body"&gt;POP Body&lt;/div&gt;
+     * &lt;/div&gt;
+     * </pre>
+     * 
+     * @param request requestオブジェクト。
+     * @param response responseオブジェクト。
+     * @param pageRequest PageRequestオブジェクト。
+     * @param paneId ペインのID。
+     * @return RenderedPopの配列。
+     * nullが返されることはありません。
+     */
     public static RenderedPop[] renderPane(HttpServletRequest request,
         HttpServletResponse response, PageRequest pageRequest, String paneId)
     {
@@ -454,6 +474,26 @@ public class PopUtils
     }
 
 
+    /**
+     * 一時的な属性をセッションに保存します。
+     * <p>popFullIdで指定されたPOPのために、指定された名前で一時的な属性をセッションに保存します。
+     * </p>
+     * <p>セッションが存在しない場合は作成されます。
+     * </p>
+     * <p>このメソッドで保存された属性は、{@link PopContext}が持つ{@link PopContext#VARNAME_TRANSIENT}
+     * オブジェクトから値を取り出すと自動的に削除されます。
+     * 例えば<code>PopUtils.settransientAttribute("message", "エラー")</code>
+     * としておいてテンプレートに
+     * <pre>
+     *   &lt;p tal:content="transient/message"&gt;MESSAGE&lt;/p&gt;
+     * </pre>
+     * と書いておくと、最初は「エラー」と表示されますが、もう一度テンプレートをレンダリングした場合は表示されません。
+     * </p>
+     * 
+     * @param popFullId POPのフルID。
+     * @param name 属性名。
+     * @param value 属性値。
+     */
     public static void setTransientAttribute(String popFullId, String name,
         Object value)
     {

@@ -4,11 +4,13 @@ import org.seasar.kvasir.cms.pop.util.PopUtils;
 
 
 /**
+ * POPをレンダリングした結果を表すクラスです。
  * <p><b>同期化：</b>
  * このクラスはスレッドセーフではありません。
  * </p>
  *
  * @author YOKOTA Takehiko
+ * @see Pop
  */
 public class RenderedPop
 {
@@ -95,6 +97,11 @@ public class RenderedPop
     }
 
 
+    /**
+     * POPのHTML形式の題名を設定します。
+     *
+     * @param title 題名。
+     */
     public void setTitle(String title)
     {
         title_ = title;
@@ -112,6 +119,11 @@ public class RenderedPop
     }
 
 
+    /**
+     * POPのHTML形式の本文を設定します。
+     *
+     * @param body 本文。
+     */
     public void setBody(String body)
     {
         body_ = body;

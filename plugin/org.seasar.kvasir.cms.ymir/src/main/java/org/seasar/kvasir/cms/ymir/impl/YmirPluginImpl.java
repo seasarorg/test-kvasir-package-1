@@ -96,10 +96,20 @@ public class YmirPluginImpl extends AbstractPlugin<EmptySettings>
             String gardId = elements[i].getGardId();
             Plugin<?> plugin = elements[i].getPlugin();
             DelegatingApplication application = elements[i].getApplication();
-            application.setApplication(new YmirApplicationImpl(elements[i]
-                .getFullId(), plugin, gardId, plugin.getHomeDirectory()
-                .getChildResource(elements[i].getRootPath()), elements[i]
-                .getLandmark(), plugin.isUnderDevelopment()));
+
+            ClassLoader oldCl = Thread.currentThread().getContextClassLoader();
+            try {
+                Thread.currentThread().setContextClassLoader(
+                    elements[i].getPlugin().getInnerClassLoader());
+
+                application.setApplication(new YmirApplicationImpl(elements[i]
+                    .getFullId(), plugin, gardId, plugin.getHomeDirectory()
+                    .getChildResource(elements[i].getRootPath()), elements[i]
+                    .getLandmark(), plugin.isUnderDevelopment()));
+            } finally {
+                Thread.currentThread().setContextClassLoader(oldCl);
+            }
+
             applicationManager_.addApplication(application);
             applicationByIdMap.put(application.getId(), application);
             applicationMap_.put(gardId, application);

@@ -1,6 +1,8 @@
 package org.seasar.kvasir.cms.pop.creator;
 
 import org.seasar.framework.container.ComponentCustomizer;
+import org.seasar.framework.container.annotation.tiger.Binding;
+import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.framework.container.assembler.AutoBindingDefFactory;
 import org.seasar.framework.container.creator.ComponentCreatorImpl;
 import org.seasar.framework.container.deployer.InstanceDefFactory;
@@ -25,6 +27,7 @@ public class PopCreator extends ComponentCreatorImpl
     }
 
 
+    @Binding(bindingType = BindingType.MAY)
     public void setPopCustomizer(ComponentCustomizer customizer)
     {
         setCustomizer(customizer);

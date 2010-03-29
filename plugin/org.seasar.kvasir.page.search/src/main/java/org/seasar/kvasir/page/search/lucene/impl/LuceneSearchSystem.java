@@ -18,6 +18,7 @@ import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PageAlfr;
 import org.seasar.kvasir.page.PathId;
 import org.seasar.kvasir.page.ability.PropertyAbility;
+import org.seasar.kvasir.page.search.QueryStringParser;
 import org.seasar.kvasir.page.search.SearchContext;
 import org.seasar.kvasir.page.search.SearchResult;
 import org.seasar.kvasir.page.search.SearchResultHandler;
@@ -446,6 +447,17 @@ public class LuceneSearchSystem extends SearchSystemBase
     public void setDocumentCreator(DocumentCreator documentCreator)
     {
         documentCreator_ = documentCreator;
+    }
+
+
+    @Override
+    public void setQueryStringParser(QueryStringParser queryStringParser)
+    {
+        super.setQueryStringParser(queryStringParser);
+        // 美しくないが仕方ない…。（cf. LuceneQueryStringParser#setSearcySystem()）
+        if (queryStringParser instanceof LuceneQueryStringParser) {
+            ((LuceneQueryStringParser)queryStringParser).setSearchSystem(this);
+        }
     }
 
 

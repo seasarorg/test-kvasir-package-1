@@ -18,6 +18,24 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.skirnir.freyja.Element;
+import net.skirnir.freyja.ExpressionEvaluator;
+import net.skirnir.freyja.FreyjaRuntimeException;
+import net.skirnir.freyja.TagEvaluator;
+import net.skirnir.freyja.TemplateContext;
+import net.skirnir.freyja.TemplateEvaluator;
+import net.skirnir.freyja.TemplateSet;
+import net.skirnir.freyja.VariableResolver;
+import net.skirnir.freyja.impl.TemplateEvaluatorImpl;
+import net.skirnir.freyja.webapp.ServletSpecified;
+import net.skirnir.freyja.webapp.VariableResolverFactory;
+import net.skirnir.freyja.zpt.MetalTagEvaluator;
+import net.skirnir.freyja.zpt.tales.PathResolver;
+import net.skirnir.freyja.zpt.tales.TalesExpressionEvaluator;
+import net.skirnir.freyja.zpt.webapp.ServletTalesExpressionEvaluator;
+
+import org.seasar.framework.container.annotation.tiger.Binding;
+import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.kvasir.base.Kvasir;
 import org.seasar.kvasir.base.annotation.ForPreparingMode;
 import org.seasar.kvasir.base.container.ComponentContainer;
@@ -39,22 +57,6 @@ import org.seasar.kvasir.page.ability.template.TemplateAbility;
 import org.seasar.kvasir.webapp.servlet.ServletConfigImpl;
 import org.seasar.kvasir.webapp.servlet.ThreadLocalServletContext;
 import org.seasar.kvasir.webapp.util.ServletUtils;
-
-import net.skirnir.freyja.Element;
-import net.skirnir.freyja.ExpressionEvaluator;
-import net.skirnir.freyja.FreyjaRuntimeException;
-import net.skirnir.freyja.TagEvaluator;
-import net.skirnir.freyja.TemplateContext;
-import net.skirnir.freyja.TemplateEvaluator;
-import net.skirnir.freyja.TemplateSet;
-import net.skirnir.freyja.VariableResolver;
-import net.skirnir.freyja.impl.TemplateEvaluatorImpl;
-import net.skirnir.freyja.webapp.ServletSpecified;
-import net.skirnir.freyja.webapp.VariableResolverFactory;
-import net.skirnir.freyja.zpt.MetalTagEvaluator;
-import net.skirnir.freyja.zpt.tales.PathResolver;
-import net.skirnir.freyja.zpt.tales.TalesExpressionEvaluator;
-import net.skirnir.freyja.zpt.webapp.ServletTalesExpressionEvaluator;
 
 
 /**
@@ -361,12 +363,14 @@ public class ZptPageProcessor
      * for framework
      */
 
+    @Binding(bindingType = BindingType.MAY)
     public void setTagEvaluator(TagEvaluator tagEvaluator)
     {
         tagEvaluator_ = tagEvaluator;
     }
 
 
+    @Binding(bindingType = BindingType.MAY)
     public void setExpressionEvaluator(ExpressionEvaluator expEvaluator)
     {
         expEvaluator_ = expEvaluator;
@@ -379,6 +383,7 @@ public class ZptPageProcessor
     }
 
 
+    @Binding(bindingType = BindingType.MAY)
     public void setVariableResolverFactory(VariableResolverFactory vrf)
     {
         vrf_ = vrf;

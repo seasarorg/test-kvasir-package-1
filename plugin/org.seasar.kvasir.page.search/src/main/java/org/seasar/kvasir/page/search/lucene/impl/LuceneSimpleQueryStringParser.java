@@ -4,6 +4,8 @@ import java.util.StringTokenizer;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
+import org.seasar.framework.container.annotation.tiger.Binding;
+import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.kvasir.page.search.ParseException;
 import org.seasar.kvasir.page.search.QueryStringParser;
 import org.seasar.kvasir.page.search.lucene.DocumentCreator;
@@ -54,6 +56,10 @@ public class LuceneSimpleQueryStringParser
      * for framework
      */
 
+    // LuceneSearcySystem→LuceneSimpleQueryStringParser→LuceneSearchSystemという
+    // バインディングが行なわれるとBindingTypeShouldDefがWarningを出してしまうので
+    // それを抑制するためにこうしている。（このプロパティは明示的にsetするようにする）
+    @Binding(bindingType = BindingType.NONE)
     public void setSearchSystem(LuceneSearchSystem system)
     {
         system_ = system;

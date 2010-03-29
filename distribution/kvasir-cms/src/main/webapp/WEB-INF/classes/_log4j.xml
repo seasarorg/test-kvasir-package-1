@@ -38,6 +38,9 @@
       <param name="ConversionPattern" value="%d %5p %t [%c{1}] - %m %n" />
     </layout>
   </appender>
+  <logger name="org.seasar.framework.aop.proxy.AopProxy" additivity="false">
+    <appender-ref ref="FILE_SYSTEM" />
+  </logger>
   <logger name="org.seasar.kvasir.base">
     <appender-ref ref="FILE_SYSTEM" />
   </logger>

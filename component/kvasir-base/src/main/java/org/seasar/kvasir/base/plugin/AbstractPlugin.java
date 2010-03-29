@@ -26,6 +26,12 @@ import org.seasar.kvasir.util.io.Resource;
 abstract public class AbstractPlugin<S>
     implements Plugin<S>
 {
+    public static final String descriptor_BINDING = "bindingType=none";
+
+    public static final String componentContainer_BINDING = "bindingType=none";
+
+    public static final String projectDirectory_BINDING = "bindingType=none";
+
     private Kvasir kvasir_;
 
     private PluginAlfr pluginAlfr_;

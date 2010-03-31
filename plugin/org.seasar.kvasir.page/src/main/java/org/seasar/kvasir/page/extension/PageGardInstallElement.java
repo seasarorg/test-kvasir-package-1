@@ -1,13 +1,14 @@
 package org.seasar.kvasir.page.extension;
 
+import net.skirnir.xom.annotation.Attribute;
+import net.skirnir.xom.annotation.Bean;
+import net.skirnir.xom.annotation.Default;
+import net.skirnir.xom.annotation.Required;
+
 import org.seasar.kvasir.base.descriptor.AbstractElement;
 import org.seasar.kvasir.base.descriptor.annotation.BindingType;
 import org.seasar.kvasir.base.descriptor.annotation.Component;
 import org.seasar.kvasir.page.gard.PageGardInstall;
-
-import net.skirnir.xom.annotation.Attribute;
-import net.skirnir.xom.annotation.Bean;
-import net.skirnir.xom.annotation.Required;
 
 
 /**
@@ -18,9 +19,9 @@ import net.skirnir.xom.annotation.Required;
 public class PageGardInstallElement extends AbstractElement
     implements PageGardInstall
 {
-    private String  gardId_;
+    private String gardId_;
 
-    private String  pathname_;
+    private String pathname_;
 
     private boolean reset_ = false;
 
@@ -59,6 +60,7 @@ public class PageGardInstallElement extends AbstractElement
 
 
     @Attribute
+    @Default("false")
     public void setReset(boolean reset)
     {
         reset_ = reset;

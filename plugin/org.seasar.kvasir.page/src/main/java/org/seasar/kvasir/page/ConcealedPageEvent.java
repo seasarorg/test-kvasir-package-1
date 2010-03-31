@@ -1,7 +1,7 @@
 package org.seasar.kvasir.page;
 
-
 /**
+ * Pageが非表示状態になった場合に発生するPageEventです。
  * <p><b>同期化：</b>
  * このクラスはスレッドセーフではありません。
  * </p>
@@ -10,7 +10,7 @@ package org.seasar.kvasir.page;
  */
 public class ConcealedPageEvent extends PageEvent
 {
-    private Page        page_;
+    private Page page_;
 
 
     public ConcealedPageEvent(Page page)
@@ -21,6 +21,11 @@ public class ConcealedPageEvent extends PageEvent
     }
 
 
+    /**
+     * 非表示になったPageを返します。
+     * 
+     * @return 非表示になったPage。
+     */
     public Page getPage()
     {
         return page_;

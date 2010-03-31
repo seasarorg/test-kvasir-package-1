@@ -327,7 +327,7 @@ public class PageAlfrImpl
         }).booleanValue()) {
             // リスナに通知する。
             plugin_.notifyPageListeners(new DeletedPageEvent(page.getId(), page
-                .getPathname()));
+                .getHeimId(), page.getPathname()));
             return true;
         } else {
             return false;

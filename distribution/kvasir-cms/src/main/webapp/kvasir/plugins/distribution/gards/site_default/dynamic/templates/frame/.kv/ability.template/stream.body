@@ -9,8 +9,10 @@
     <link tal:attributes="href page:/css/style.css" rel="stylesheet" href="css/style.css" type="text/css" media="all" />
     <link tal:repeat="css java:org.seasar.kvasir.base.webapp.util.PresentationUtils.getCssPathnames()" tal:attributes="href page:${css}" rel="stylesheet" href="css/style.css" type="text/css" media="all" />
     <script tal:repeat="javascript java:org.seasar.kvasir.base.webapp.util.PresentationUtils.getJavascriptPathnames()" tal:attributes="src page:${javascript}" type="text/javascript"></script>
+    <div metal:define-slot="frame.head.footer" tal:condition=""></div>
   </head>
   <body metal:define-slot="frame.body">
+    <a name="_top"></a>
     <div class="header">
       <div id="pane.left-header" class="pane left">
         <div tal:repeat='pop java:org.seasar.kvasir.cms.pop.util.PopUtils.renderPane(request, response, pageRequest, "left-header")' tal:attributes="id pop/id; class string:pop ${pop/popId}">

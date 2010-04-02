@@ -442,15 +442,60 @@ public class PopUtils
     }
 
 
+    /**
+     * POPをレンダリングします。
+     * <p>POPのキーとしてはPOPのIDか、フルIDを指定することができます
+     * （IDの末尾に「Pop」とついている場合は省略可能です）。
+     * また、IDにインスタンスIDを「<code>-</code>」で結合することでインスタンスIDを指定することができます。
+     * 指定がない場合は{@link INSTANCE_DEFAULT}が使われます。
+     * </p>
+     * 
+     * @param containerPage レンダリング対象のPOPを本文に持つページ。
+     * nullを指定することもできます。
+     * @param request requestオブジェクト。
+     * @param response responseオブジェクト。
+     * @param pageRequest PageRequestオブジェクト。
+     * @param key POPを表すキー。
+     * @return RenderedPop。
+     * POPが見つからない場合はnullを返します。
+     */
     public static RenderedPop renderPop(Page containerPage,
         HttpServletRequest request, HttpServletResponse response,
         PageRequest pageRequest, Object key)
     {
+        int instanceId = INSTANCEID_DEFAULT;
+        if (key instanceof String) {
+            String id = (String)key;
+            int delim = id.lastIndexOf(Pop.INSTANCE_DELIMITERCHAR);
+            if (delim >= 0) {
+                try {
+                    instanceId = Integer.parseInt(id.substring(delim + 1));
+                    key = id.substring(0, delim);
+                } catch (NumberFormatException ignore) {
+                }
+            }
+        }
         return renderPop(containerPage, request, response, pageRequest, key,
-            INSTANCEID_DEFAULT);
+            instanceId);
     }
 
 
+    /**
+     * POPをレンダリングします。
+     * <p>このメソッドは<code>renderPop(containerPage, request, response, pageRequest, key, instanceId, new String[0})</code>
+     * と同じです。
+     * </p>
+     * 
+     * @param containerPage レンダリング対象のPOPを本文に持つページ。
+     * nullを指定することもできます。
+     * @param request requestオブジェクト。
+     * @param response responseオブジェクト。
+     * @param pageRequest PageRequestオブジェクト。
+     * @param key POPを表すキー。
+     * @param instanceId POPのインスタンスID。
+     * @return RenderedPop。
+     * POPが見つからない場合はnullを返します。
+     */
     public static RenderedPop renderPop(Page containerPage,
         HttpServletRequest request, HttpServletResponse response,
         PageRequest pageRequest, Object key, int instanceId)
@@ -460,6 +505,27 @@ public class PopUtils
     }
 
 
+    /**
+     * POPをレンダリングします。
+     * <p>レンダリングした結果として{@link RenderedPop}を返します。
+     * </p>
+     * <p>レンダリングするPOPの種類はキーによって指定されます。
+     * キーとしてはPOPのIDか、フルIDを指定することができます
+     * （IDの末尾に「Pop」とついている場合は省略可能です）。
+     * </p>
+     *
+     * @param containerPage レンダリング対象のPOPを本文に持つページ。
+     * nullを指定することもできます。
+     * @param request requestオブジェクト。
+     * @param response responseオブジェクト。
+     * @param pageRequest PageRequestオブジェクト。
+     * @param key POPを表すキー。
+     * @param instanceId POPのインスタンスID。
+     * @param args POPをレンダリングする際の引数。
+     * nullを指定してはいけません。
+     * @return RenderedPop。
+     * POPが見つからない場合はnullを返します。
+     */
     public static RenderedPop renderPop(Page containerPage,
         HttpServletRequest request, HttpServletResponse response,
         PageRequest pageRequest, Object key, int instanceId, String[] args)

@@ -244,7 +244,7 @@ public class PopPluginImpl extends AbstractPlugin<EmptySettings>
                 new PopKey(popId, Integer.MAX_VALUE)).keySet().toArray(
                 new PopKey[0]);
             if (popKeys.length == 0) {
-                instanceId = Pop.INSTANCEID_DEFAULT;
+                instanceId = Pop.INSTANCEID_DEFAULT + 1;
             } else {
                 instanceId = popKeys[popKeys.length - 1].getInstanceId() + 1;
             }

@@ -129,7 +129,7 @@ public interface PopPlugin
 
     /**
      * 指定されたIDに対応するPopインスタンスを返します。
-     * <p>IDとしては、POP ID、POP IDにインスタンスIDを「<code>:</code>」で結合したもの、
+     * <p>IDとしては、POP ID、POP IDにインスタンスIDを「<code>-</code>」で結合したもの、
      * のいずれかを指定することができます。
      * </p>
      * <p>対応するPopインスタンスが存在しない場合は、

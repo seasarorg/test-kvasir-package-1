@@ -6,6 +6,7 @@ import org.seasar.kvasir.util.el.VariableResolver;
 
 
 /**
+ * 生のコンテントを操作するためのインタフェースです。
  * <p><b>同期化：</b>
  * このインタフェースの実装クラスはスレッドセーフである必要があります。
  * </p>
@@ -61,8 +62,29 @@ public interface ContentHandler
         VariableResolver resolver);
 
 
+    /**
+     * 指定されたコンパイル結果をHTML文字列に変換して返します。
+     * 
+     * @param compiled コンパイル結果。
+     * nullを指定してはいけません。
+     * このContentHandlerの内部表現にコンパイルした結果を指定するようにして下さい。
+     * @param resolver コンテント中のパラメータを置換するための
+     * VariableResolver。nullを指定することもできます。
+     * @return コンテントをHTML文字列に変換した結果。
+     */
     String toHTML(Object compiled, VariableResolver resolver);
 
 
+    /**
+     * 指定された入力ストリームをこのContentHandlerの内部表現にコンパイルします。
+     * 
+     * @param in 入力ストリーム。
+     * nullを指定してはいけません。
+     * @param encoding 文字エンコーディング。
+     * nullを指定してはいけません。
+     * @param type コンテントのメディアタイプ。
+     * nullを指定した場合はこのContentHandlerのタイプが使用されます。
+     * @return コンパイル結果。
+     */
     Object compile(InputStream in, String encoding, String type);
 }

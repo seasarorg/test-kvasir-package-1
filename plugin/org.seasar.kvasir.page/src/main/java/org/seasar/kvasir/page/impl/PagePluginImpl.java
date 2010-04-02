@@ -168,15 +168,15 @@ public class PagePluginImpl extends AbstractPlugin<EmptySettings>
     }
 
 
-    public Plugin<?> getPlugin(String gardId)
+    public Plugin<?> getPlugin(String gardFullId)
     {
-        return pluginMap_.get(gardId);
+        return pluginMap_.get(gardFullId);
     }
 
 
-    public PageGard getPageGard(String gardId)
+    public PageGard getPageGard(String gardFullId)
     {
-        return pageGardMap_.get(gardId);
+        return pageGardMap_.get(gardFullId);
     }
 
 
@@ -199,17 +199,17 @@ public class PagePluginImpl extends AbstractPlugin<EmptySettings>
     }
 
 
-    public Page install(Page parent, String name, String gardId)
+    public Page install(Page parent, String name, String gardFullId)
         throws DuplicatePageException
     {
-        return installer_.install(parent, name, gardId);
+        return installer_.install(parent, name, gardFullId);
     }
 
 
-    public boolean install(Page page, String gardId)
+    public boolean install(Page page, String gardFullId)
         throws DuplicatePageException
     {
-        return installer_.install(page, gardId);
+        return installer_.install(page, gardFullId);
     }
 
 

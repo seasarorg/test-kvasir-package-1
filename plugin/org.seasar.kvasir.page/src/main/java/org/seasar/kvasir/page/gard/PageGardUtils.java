@@ -66,6 +66,15 @@ public class PageGardUtils
     }
 
 
+    /**
+     * 指定されたHeimに指定されたGardがインストール済みかどうかを返します。
+     * <p>このメソッドで判定可能なのはシングルトンなGardだけです。
+     * </p>
+     * 
+     * @param pageGardId GardのフルID。
+     * @param heimId HeimのID。
+     * @return 指定されたGardがインストール済みか。
+     */
     public static boolean isInstalled(String pageGardId, int heimId)
     {
         return isInstalled(pageGardId, PageUtils.getPageAlfr().getRootPage(
@@ -73,6 +82,18 @@ public class PageGardUtils
     }
 
 
+    /**
+     * 指定されたPageに指定されたGardがインストール済みかを返します。
+     * <p>指定されたPage自身に対してGardがインストール済みかを返します。
+     * PageがどのGard配下なのかを調べたい場合は{@link Page#getNearestGardRoot()}
+     * などでまずGardのルートを見つけてからそれをこのメソッドに指定して下さい。
+     * </p>
+     * 
+     * @param pageGardId GardのフルID。
+     * @param page Page。
+     * nullを指定することもできます。
+     * @return 指定されたGardがインストール済みか。
+     */
     public static boolean isInstalled(String pageGardId, Page page)
     {
         if (page == null) {

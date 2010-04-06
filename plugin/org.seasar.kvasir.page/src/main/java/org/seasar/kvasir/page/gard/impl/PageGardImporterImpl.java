@@ -84,7 +84,8 @@ public class PageGardImporterImpl
         Resource[] resources = dir.listResources();
         if (resources != null) {
             for (int i = 0; i < resources.length; i++) {
-                if (resources[i].getName().equals(".kv")) {
+                String n = resources[i].getName();
+                if (shouldIgnoreFileName(n) || n.equals(".kv")) {
                     continue;
                 }
                 createPages(page, resources[i].getName(), resources[i], null);
@@ -92,6 +93,16 @@ public class PageGardImporterImpl
         }
 
         return page;
+    }
+
+
+    boolean shouldIgnoreFileName(String name)
+    {
+        if (name == null || name.equals(".svn") || name.equals("_svn")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -143,11 +154,11 @@ public class PageGardImporterImpl
         Resource[] resources = dir.listResources();
         if (resources != null) {
             for (int i = 0; i < resources.length; i++) {
-                if (resources[i].getName().equals(".kv")) {
+                String n = resources[i].getName();
+                if (shouldIgnoreFileName(n) || n.equals(".kv")) {
                     continue;
                 }
-                imports(page.getChild(resources[i].getName()), resources[i],
-                    true);
+                imports(page.getChild(n), resources[i], true);
             }
         }
     }

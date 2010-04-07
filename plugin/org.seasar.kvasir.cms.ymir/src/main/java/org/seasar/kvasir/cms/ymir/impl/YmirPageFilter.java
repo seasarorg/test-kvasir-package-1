@@ -146,8 +146,8 @@ public class YmirPageFilter
                 proceed = true;
             }
         } catch (Throwable t) {
-            ymir_.processResponse(vContext, httpRequest, httpResponse, request,
-                ymir_.processException(request, t));
+            ymir_.processResponse(vContext, vHttpRequest, httpResponse,
+                request, ymir_.processException(request, t));
         } finally {
             threadContext.setComponent(PageRequest.class, oldPageRequest);
             applicationManager_.setContextApplication(oldApplication);

@@ -1,4 +1,4 @@
-<?xml version="1.0"?><project>
+<?xml version="1.0" encoding="UTF-8"?><project>
   <parent>
     <artifactId>plugin-project</artifactId>
     <groupId>org.seasar.kvasir.plugin</groupId>
@@ -183,12 +183,12 @@
     <dependency>
       <groupId>net.skirnir.freyja</groupId>
       <artifactId>net.skirnir.freyja</artifactId>
-      <version>1.0.11-SNAPSHOT</version>
+      <version>1.0.17-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>net.skirnir.freyja</groupId>
       <artifactId>net.skirnir.freyja</artifactId>
-      <version>1.0.11-SNAPSHOT</version>
+      <version>1.0.17-SNAPSHOT</version>
       <type>zip</type>
       <scope>runtime</scope>
     </dependency>

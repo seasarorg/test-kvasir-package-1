@@ -1,4 +1,4 @@
-<?xml version="1.0"?><project>
+<?xml version="1.0" encoding="UTF-8"?><project>
   <parent>
     <artifactId>plugin-project</artifactId>
     <groupId>org.seasar.kvasir.plugin</groupId>

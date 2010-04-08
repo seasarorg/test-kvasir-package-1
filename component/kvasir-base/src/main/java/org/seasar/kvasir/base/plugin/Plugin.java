@@ -39,18 +39,46 @@ public interface Plugin<S>
     String COMPONENT_PLUGIN = "plugin";
 
 
+    /**
+     * プラグインのIDを返します。
+     * 
+     * @return ID。
+     */
     String getId();
 
 
+    /**
+     * プラグインのバージョンを返します。
+     * 
+     * @return バージョン。
+     */
     Version getVersion();
 
 
+    /**
+     * プラグインが無効かどうかを返します。
+     * 
+     * @return プラグインが無効かどうか。
+     */
     boolean isDisabled();
 
 
+    /**
+     * プラグインが開発モードかどうかを返します。
+     * 
+     * @return 開発モードかどうか。
+     */
     boolean isUnderDevelopment();
 
 
+    /**
+     * プラグインが開発モードかどうかを設定します。
+     * <p>このメソッドはフレームワークから呼び出されます。
+     * アプリケーションからは呼び出さないで下さい。
+     * </p>
+     * 
+     * @param underDevelopment プラグインが開発モードかどうか。
+     */
     void setUnderDevelopment(boolean underDevelopment);
 
 
@@ -106,21 +134,76 @@ public interface Plugin<S>
     PluginDescriptor getDescriptor();
 
 
+    /**
+     * このプラグインが持つコンポーネントコンテナを返します。
+     * <p>プラグインは必ずコンポーネントコンテナを持ちます。
+     * </p>
+     * 
+     * @return コンポーネントコンテナ。
+     */
     ComponentContainer getComponentContainer();
 
 
+    /**
+     * 内部用のクラスローダを返します。
+     * <p>このプラグインが提供するクラスと依存プラグインが公開しているクラスを参照するための
+     * クラスローダを返します。
+     * </p>
+     * 
+     * @return 内部用のクラスローダ。
+     */
     ClassLoader getInnerClassLoader();
 
 
+    /**
+     * 外部向けのクラスローダを返します。
+     * <p>このプラグインが外部に公開しているクラスを参照するためのクラスローダを返します。
+     * </p>
+     * 
+     * @return 外部向けのクラスローダ。
+     */
     ClassLoader getOuterClassLoader();
 
 
+    /**
+     * 指定された名前に対応するプロパティの値を返します。
+     * <p>値が存在しない場合はnullを返します。
+     * </p>
+     * <p>通常プロパティは<code>plugin_XX.properties</code>ファイルから取得されます。
+     * </p>
+     * 
+     * @param name 名前。
+     * @return 値。
+     */
     String getProperty(String name);
 
 
+    /**
+     * 指定された名前に対応するプロパティの値のうち、
+     * 指定されたバリアントの値を返します。
+     * <p>値が存在しない場合はnullを返します。
+     * </p>
+     * <p>通常プロパティは<code>plugin_[variant].properties</code>ファイルから取得されます。
+     * </p>
+     * @param name 名前。
+     * @param variant バリアント。
+     * @return 値。
+     */
     String getProperty(String name, String variant);
 
 
+    /**
+     * 指定された名前に対応するプロパティの値のうち、
+     * 指定されたロケールに関するものを返します。
+     * <p>値が存在しない場合はnullを返します。
+     * </p>
+     * <p>通常プロパティは<code>plugin_XX.properties</code>ファイルから取得されます。
+     * </p>
+     * 
+     * @param name 名前。
+     * @param locale ロケール。
+     * @return 値。
+     */
     String getProperty(String name, Locale locale);
 
 

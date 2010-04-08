@@ -80,12 +80,33 @@ public class LocaleUtils
     }
 
 
+    /**
+     * 指定されたロケールに関するサフィックスを、範囲の狭い順に並べて返します。
+     * <p>このメソッドは<code>getSuffixes(locale, false)</code>と同じです。
+     * </p>
+     *  
+     * @param locale ロケール。nullを渡すと空の配列が返されます。
+     * @return サフィックスの配列。nullが返されることはありません。
+     * @see #getSuffixes(Locale, boolean)
+     */
     public static String[] getSuffixes(Locale locale)
     {
         return getSuffixes(locale, false);
     }
 
 
+    /**
+     * 指定されたロケールに関するサフィックスを、範囲の狭い順に並べて返します。
+     * <p>例えば<code>ja_JP</code>というロケールに対しては
+     * <code>{ "ja_JP", "ja", "" }</code>という文字列の配列を返します。
+     * （<code>includeDefault</code>がfalseの場合は最後の空文字列は返しません。）
+     * </p>
+     *  
+     * @param locale ロケール。nullを渡すと空の配列が返されます。
+     * @param includeDefault デフォルトのサフィックス（空文字列）を結果に含めるかどうか。
+     * @return サフィックスの配列。nullが返されることはありません。
+     * @see #getSuffixes(Locale)
+     */
     public static String[] getSuffixes(Locale locale, boolean includeDefault)
     {
         if (locale == null) {

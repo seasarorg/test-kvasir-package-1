@@ -2,20 +2,16 @@ package org.seasar.kvasir.cms.util;
 
 import static org.seasar.kvasir.cms.util.ServletUtils.getOriginalContextPath;
 
-import java.text.ParseException;
-import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.seasar.kvasir.base.Asgard;
 import org.seasar.kvasir.cms.CmsPlugin;
+import org.seasar.kvasir.cms.TemporaryContent;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PageUtils;
-import org.seasar.kvasir.page.Processable;
-import org.seasar.kvasir.page.ProcessableRuntimeException;
 import org.seasar.kvasir.page.ability.Privilege;
 import org.seasar.kvasir.page.ability.PropertyAbility;
 import org.seasar.kvasir.page.ability.content.Content;
@@ -144,10 +140,11 @@ public class PresentationUtils extends
      * @param response レスポンスオブジェクト。
      * @param filter 本文中の簡易記法を展開するかどうか。
      * @return 本文をレンダリングしたHTML。
-     * @see CmsPlugin#ATTR_SITEPREVIEWMODE
-     * @see CmsPlugin#PROP_TEMPORARYCONTENT_BODYSTRING
-     * @see CmsPlugin#PROP_TEMPORARYCONTENT_CREATEDATE
-     * @see CmsPlugin#PROP_TEMPORARYCONTENT_MEDIATYPE
+     * @see CmsPlugin#enterInSitePreviewMode(HttpServletRequest)
+     * @see CmsPlugin#leaveSitePreviewMode(HttpServletRequest)
+     * @see CmsPlugin#getTemporaryContent(Page, String)
+     * @see CmsPlugin#setTemporaryContent(Page, String, org.seasar.kvasir.cms.TemporaryContent)
+     * @see CmsPlugin#removeTemporaryContent(Page, String)
      */
     public static String getHTMLBodyString(Page page, Locale locale,
         HttpServletRequest request, HttpServletResponse response, boolean filter)
@@ -156,67 +153,31 @@ public class PresentationUtils extends
             return null;
         }
 
+        CmsPlugin plugin = Asgard.getKvasir().getPluginAlfr().getPlugin(
+            CmsPlugin.class);
+
         String body = "";
         ContentAbility contentAbility = page.getAbility(ContentAbility.class);
-        HttpSession session = request.getSession(false);
-        if (session == null
-            || session.getAttribute(CmsPlugin.ATTR_SITEPREVIEWMODE) == null) {
-            // 通常モード。
-            Content content = contentAbility.getLatestContent(locale);
-            if (content != null) {
-                body = content.getBodyHTMLString(null);
-            }
-        } else {
+        if (plugin.isInSitePreviewMode(request)) {
             // サイトプレビューモード。
-            final PropertyAbility prop = page.getAbility(PropertyAbility.class);
             for (String variant : LocaleUtils.getSuffixes(locale, true)) {
                 Content content = contentAbility.getLatestContent(variant);
-                String temporaryContentBodyString = prop.getProperty(
-                    CmsPlugin.PROP_TEMPORARYCONTENT_BODYSTRING, variant);
-                Date temporaryContentCreateDate;
-                try {
-                    temporaryContentCreateDate = PageUtils
-                        .parseDate(prop
-                            .getProperty(
-                                CmsPlugin.PROP_TEMPORARYCONTENT_CREATEDATE,
-                                variant));
-                } catch (ParseException ignore) {
-                    temporaryContentCreateDate = null;
-                }
-                String temporaryContentMediaType = prop.getProperty(
-                    CmsPlugin.PROP_TEMPORARYCONTENT_MEDIATYPE, variant);
-                if (temporaryContentBodyString != null
-                    && temporaryContentCreateDate != null
-                    && temporaryContentMediaType != null) {
+                TemporaryContent temporaryContent = plugin.getTemporaryContent(
+                    page, variant);
+                if (temporaryContent != null) {
                     // 一時的なコンテントボディがある場合は、現在のコンテントボディよりも
                     // 新しい場合だけ使用する。
                     if (content == null
                         || !content.getModifyDate().after(
-                            temporaryContentCreateDate)) {
-                        body = ContentUtils.getBodyHTMLString(
-                            temporaryContentMediaType,
-                            temporaryContentBodyString, null);
+                            temporaryContent.getCreateDate())) {
+                        body = ContentUtils.getBodyHTMLString(temporaryContent
+                            .getMediaType(), temporaryContent.getBodyString(),
+                            null);
                         break;
                     } else {
-                        // 現在のコンテントボディの方が新しいので一時的なコンテントは破棄する。
-                        final String v = variant;
-                        page.runWithLocking(new Processable<Object>() {
-                            public Object process()
-                                throws ProcessableRuntimeException
-                            {
-                                prop.removeProperty(
-                                    CmsPlugin.PROP_TEMPORARYCONTENT_BODYSTRING,
-                                    v);
-                                prop.removeProperty(
-                                    CmsPlugin.PROP_TEMPORARYCONTENT_CREATEDATE,
-                                    v);
-                                prop.removeProperty(
-                                    CmsPlugin.PROP_TEMPORARYCONTENT_MEDIATYPE,
-                                    v);
-                                return null;
-                            }
-                        });
                         body = content.getBodyHTMLString(null);
+                        // 現在のコンテントボディの方が新しいので一時的なコンテントは破棄する。
+                        plugin.removeTemporaryContent(page, variant);
                         break;
                     }
                 } else {
@@ -227,6 +188,12 @@ public class PresentationUtils extends
                         break;
                     }
                 }
+            }
+        } else {
+            // 通常モード。
+            Content content = contentAbility.getLatestContent(locale);
+            if (content != null) {
+                body = content.getBodyHTMLString(null);
             }
         }
 

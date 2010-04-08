@@ -1,5 +1,6 @@
 package org.seasar.kvasir.cms.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -18,17 +19,23 @@ import org.seasar.kvasir.base.webapp.WebappPlugin;
 import org.seasar.kvasir.base.webapp.impl.ResourceContent;
 import org.seasar.kvasir.cms.CmsPlugin;
 import org.seasar.kvasir.cms.RequestSnapshot;
+import org.seasar.kvasir.cms.TemporaryContent;
 import org.seasar.kvasir.cms.extension.PageFilterPhaseElement;
 import org.seasar.kvasir.cms.extension.PageProcessorPhaseElement;
 import org.seasar.kvasir.cms.setting.CmsPluginSettings;
 import org.seasar.kvasir.cms.setting.HeimElement;
 import org.seasar.kvasir.cms.util.PresentationUtils;
 import org.seasar.kvasir.page.DuplicatePageException;
+import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PageAlfr;
 import org.seasar.kvasir.page.PagePlugin;
 import org.seasar.kvasir.page.PathId;
+import org.seasar.kvasir.page.ability.PropertyAbility;
+import org.seasar.kvasir.page.ability.content.Content;
+import org.seasar.kvasir.page.ability.content.ContentAbility;
 import org.seasar.kvasir.page.type.PageType;
 import org.seasar.kvasir.page.type.User;
+import org.seasar.kvasir.util.SerializationUtils;
 import org.seasar.kvasir.webapp.util.ServletUtils;
 
 
@@ -352,6 +359,18 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
     }
 
 
+    public boolean isInSitePreviewMode(HttpServletRequest request)
+    {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return false;
+        }
+        synchronized (session.getId().intern()) {
+            return session.getAttribute(ATTR_SITEPREVIEWMODE) != null;
+        }
+    }
+
+
     public void leaveSitePreviewMode(HttpServletRequest request)
     {
         HttpSession session = request.getSession(false);
@@ -361,5 +380,69 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
         synchronized (session.getId().intern()) {
             session.removeAttribute(ATTR_SITEPREVIEWMODE);
         }
+    }
+
+
+    public TemporaryContent getTemporaryContent(Page page, String variant)
+    {
+        if (page == null) {
+            return null;
+        }
+
+        PropertyAbility prop = page.getAbility(PropertyAbility.class);
+        ClassLoader oldCl = Thread.currentThread().getContextClassLoader();
+        try {
+            Thread.currentThread().setContextClassLoader(getInnerClassLoader());
+            return (TemporaryContent)SerializationUtils.deserialize(prop
+                .getProperty(PROP_TEMPORARYCONTENT, variant));
+        } catch (Throwable t) {
+            log_.warn("Cannot deserialize temporary content: page="
+                + page.toString() + ", variant=" + variant, t);
+            return null;
+        } finally {
+            Thread.currentThread().setContextClassLoader(oldCl);
+        }
+    }
+
+
+    public void setTemporaryContent(Page page, String variant,
+        TemporaryContent temporaryContent)
+    {
+        if (page == null) {
+            return;
+        }
+
+        if (temporaryContent == null) {
+            removeTemporaryContent(page, variant);
+            return;
+        }
+
+        if (temporaryContent.getMediaType() == null) {
+            Content content = page.getAbility(ContentAbility.class)
+                .getLatestContent(variant);
+            temporaryContent.setMediaType(content != null ? content
+                .getMediaType() : "text/plain");
+        }
+        if (temporaryContent.getBodyString() == null) {
+            temporaryContent.setBodyString("");
+        }
+        if (temporaryContent.getCreateDate() == null) {
+            temporaryContent.setCreateDate(new Date());
+        }
+
+        page.getAbility(PropertyAbility.class).setProperty(
+            PROP_TEMPORARYCONTENT, variant,
+            SerializationUtils.serialize(temporaryContent));
+    }
+
+
+    public void removeTemporaryContent(Page page, String variant)
+    {
+        if (page == null) {
+            return;
+        }
+
+        page.getAbility(PropertyAbility.class).removeProperty(
+            PROP_TEMPORARYCONTENT, variant);
     }
 }

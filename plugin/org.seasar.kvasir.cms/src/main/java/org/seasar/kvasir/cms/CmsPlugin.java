@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.kvasir.base.plugin.Plugin;
 import org.seasar.kvasir.cms.setting.CmsPluginSettings;
+import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PathId;
 import org.seasar.kvasir.page.type.User;
 
@@ -70,21 +71,9 @@ public interface CmsPlugin
     String ATTR_EXCEPTION = ID + ".exception";
 
     /**
-     * 一時保存された本文をプロパティとして格納するためのキーです。
+     * 一時保存されたコンテンツをプロパティとして格納するためのキーです。
      */
-    String PROP_TEMPORARYCONTENT_BODYSTRING = ID
-        + ".temporaryContent.bodyString";
-
-    /**
-     * 一時保存された本文のメディアタイプをプロパティとして格納するためのキーです。
-     */
-    String PROP_TEMPORARYCONTENT_MEDIATYPE = ID + ".temporaryContent.mediaType";
-
-    /**
-     * 一時保存された本文の作成日時（yyyy-MM-dd HH:mm:ss形式）をプロパティとして格納するためのキーです。
-     */
-    String PROP_TEMPORARYCONTENT_CREATEDATE = ID
-        + ".temporaryContent.createDate";
+    String PROP_TEMPORARYCONTENT = ID + ".temporaryContent";
 
 
     void login(HttpServletRequest request, User user);
@@ -174,11 +163,52 @@ public interface CmsPlugin
 
 
     /**
-     * 現在のセッションにおいて際とプレビューモードを終了します。
+     * 現在のセッションにおいてサイトプレビューモードか開始されているかどうかを返します。
+     * 
+     * @param request リクエスト。
+     * nullを指定してはいけません。
+     * @see CmsPlugin#ATTR_SITEPREVIEWMODE
+     */
+    boolean isInSitePreviewMode(HttpServletRequest request);
+
+
+    /**
+     * 現在のセッションにおいてサイトプレビューモードを終了します。
      * 
      * @param request リクエスト。
      * nullを指定してはいけません。
      * @see CmsPlugin#ATTR_SITEPREVIEWMODE
      */
     void leaveSitePreviewMode(HttpServletRequest request);
+
+
+    /**
+     * 指定されたページについて、指定されたバリアントの一時的なコンテントを返します。
+     * 
+     * @param page ページ。nullを指定した場合はnullが返されます。
+     * @param variant バリアント。nullを指定してはいけません。
+     * @return 一時的なコンテント。一時的なコンテントが存在しない場合はnullを返します。
+     */
+    TemporaryContent getTemporaryContent(Page page, String variant);
+
+
+    /**
+     * 指定されたページについて、指定されたバリアントの一時的なコンテントを設定します。
+     * 
+     * @param page ページ。nullを指定した場合は何もしません。
+     * @param variant バリアント。nullを指定してはいけません。
+     * @param temporaryContent 一時的なコンテント。
+     * nullを指定すると{@link #removeTemporaryContent(Page, String)}を呼び出したのと同じになります。
+     */
+    void setTemporaryContent(Page page, String variant,
+        TemporaryContent temporaryContent);
+
+
+    /**
+     * 指定されたページについて、指定されたバリアントの一時的なコンテントを削除します。
+     * 
+     * @param page ページ。nullを指定した場合は何もしません。
+     * @param variant バリアント。nullを指定してはいけません。
+     */
+    void removeTemporaryContent(Page page, String variant);
 }

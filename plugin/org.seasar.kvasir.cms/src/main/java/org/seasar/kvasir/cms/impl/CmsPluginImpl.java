@@ -33,6 +33,7 @@ import org.seasar.kvasir.webapp.util.ServletUtils;
 
 
 /**
+ * {@link CmsPlugin}の実装クラスです。
  * <p><b>同期化：</b>
  * このクラスはスレッドセーフです。
  * </p>
@@ -337,5 +338,28 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
     public String getSite(int heimId)
     {
         return siteByHeimIdMap_.get(heimId);
+    }
+
+
+    public boolean enterInSitePreviewMode(HttpServletRequest request)
+    {
+        HttpSession session = request.getSession();
+        synchronized (session.getId().intern()) {
+            boolean oldStatus = session.getAttribute(ATTR_SITEPREVIEWMODE) != null;
+            session.setAttribute(ATTR_SITEPREVIEWMODE, Boolean.TRUE);
+            return oldStatus;
+        }
+    }
+
+
+    public void leaveSitePreviewMode(HttpServletRequest request)
+    {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return;
+        }
+        synchronized (session.getId().intern()) {
+            session.removeAttribute(ATTR_SITEPREVIEWMODE);
+        }
     }
 }

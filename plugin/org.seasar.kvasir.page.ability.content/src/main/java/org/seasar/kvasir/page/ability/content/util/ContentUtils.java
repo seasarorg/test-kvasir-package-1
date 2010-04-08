@@ -23,6 +23,17 @@ public class ContentUtils
     }
 
 
+    /**
+     * 指定されたメディアタイプと本文からHTML形式の本文を生成します。
+     * 
+     * @param mediaType メディアタイプ。
+     * nullを指定してはいけません。
+     * @param rawBody 本文。
+     * nullを指定してはいけません。
+     * @param resolver 本文に埋め込まれているプレースホルダを評価するための
+     * VariableResolver。nullを指定することもできます。
+     * @return HTML形式の本文。
+     */
     public static String getBodyHTMLString(String mediaType, String rawBody,
         VariableResolver resolver)
     {
@@ -35,6 +46,19 @@ public class ContentUtils
     }
 
 
+    /**
+     * 指定されたメディアタイプと本文からHTML形式の本文を生成します。
+     * 
+     * @param mediaType メディアタイプ。
+     * nullを指定してはいけません。
+     * @param in 本文を表すInputStream。
+     * nullを指定してはいけません。
+     * @param encoding 本文のエンコーディング。
+     * nullを指定してはいけません。
+     * @param resolver 本文に埋め込まれているプレースホルダを評価するための
+     * VariableResolver。nullを指定することもできます。
+     * @return HTML形式の本文。
+     */
     public static String getBodyHTMLString(String mediaType, InputStream in,
         String encoding, VariableResolver resolver)
     {

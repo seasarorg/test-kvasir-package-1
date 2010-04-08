@@ -482,6 +482,19 @@ public class PageUtils
     }
 
 
+    /**
+     * 指定された「yyyy-MM-dd HH:mm:ss」形式の文字列をDateオブジェクトに変換します。
+     * <p>文字列が「yyyy-MM-dd HH:mm:ss」形式でない場合や、
+     * 例えば「2010-03-50 00:00:00」のような実際に存在しない日付の場合は
+     * ParseExceptionがスローされます。
+     * </p>
+     * <p>文字列の前後の空白は自動的に除去されます。</p>
+     * 
+     * @param dateString 「yyyy-MM-dd HH:mm:ss」形式の文字列。
+     * 空文字列を指定した場合やnullを指定した場合はnullが返されます。
+     * @return Dateオブジェクト。
+     * @throws ParseException 形式が不正だった場合。実際に存在しない日付の場合。
+     */
     public static Date parseDate(String dateString)
         throws ParseException
     {

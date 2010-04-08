@@ -7,10 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.kvasir.cms.pop.PopContext;
 import org.seasar.kvasir.page.Page;
-import org.seasar.kvasir.page.ability.content.Content;
-import org.seasar.kvasir.page.ability.content.ContentAbility;
 
 
+/**
+ * 画面表示に関するユーティリティメソッドを提供するクラスです。
+ * 
+ * @author skirnir
+ */
 public class PresentationUtils extends
     org.seasar.kvasir.cms.util.PresentationUtils
 {
@@ -19,47 +22,90 @@ public class PresentationUtils extends
     }
 
 
-    public static String getHTMLBodyString(Page page, PopContext context)
+    /**
+     * POPのレンダリング処理において、指定されたページの本文をレンダリングしたHTMLを返します。
+     * 
+     * @param page ページ。nullを指定した場合nullが返されます。
+     * @param context POPをレンダリングする処理のコンテキスト。
+     * nullを指定してはいけません。
+     * @param filter 本文中の簡易記法を展開するかどうか。
+     * @return 本文をレンダリングしたHTML。
+     */
+    public static String getHTMLBodyString(Page page, PopContext context,
+        boolean filter)
     {
         return getHTMLBodyString(page, context.getLocale(), context
-            .getRequest(), context.getResponse());
+            .getRequest(), context.getResponse(), filter);
     }
 
 
+    /**
+     * 指定されたページの本文をレンダリングしたHTMLを返します。
+     * 
+     * @param page ページ。nullを指定した場合nullが返されます。
+     * @param locale 表示ロケール。nullを指定した場合、ロケールなしとみなされます。
+     * @param request リクエストオブジェクト。
+     * @param response レスポンスオブジェクト。
+     * @param filter 本文中の簡易記法を展開するかどうか。
+     * @return 本文をレンダリングしたHTML。
+     */
     public static String getHTMLBodyString(Page page, Locale locale,
-        HttpServletRequest request, HttpServletResponse response)
+        HttpServletRequest request, HttpServletResponse response, boolean filter)
     {
-        if (page == null) {
-            return null;
+        String body = org.seasar.kvasir.cms.util.PresentationUtils
+            .getHTMLBodyString(page, locale, request, response, false);
+        if (filter) {
+            body = filter(body, request, response, page);
         }
-        Content content = page.getAbility(ContentAbility.class)
-            .getLatestContent(locale);
-        if (content != null) {
-            return filter(content.getBodyHTMLString(null), request, response,
-                page);
-        } else {
-            return "";
-        }
+        return body;
     }
 
 
+    /**
+     * POPのレンダリング処理において、指定されたページのプレビュー用の本文をレンダリングしたHTMLを返します。
+     * 
+     * @param page ページ。
+     * @param mediaType プレビュー用の本文のメディアタイプ。
+     * nullを指定してはいけません。
+     * @param previewBody プレビュー用の本文。nullを指定した場合nullが返されます。
+     * @param context POPをレンダリングする処理のコンテキスト。
+     * nullを指定してはいけません。
+     * @param filter 本文中の簡易記法を展開するかどうか。
+     * @return 本文をレンダリングしたHTML。
+     */
     public static String getHTMLBodyString(Page page, String mediaType,
-        String previewBody, PopContext context)
+        String previewBody, PopContext context, boolean filter)
     {
         return getHTMLBodyString(page, mediaType, previewBody, context
-            .getRequest(), context.getResponse());
+            .getRequest(), context.getResponse(), filter);
     }
 
 
+    /**
+     * 指定されたページのプレビュー用の本文をレンダリングしたHTMLを返します。
+     * 
+     * @param page ページ。
+     * @param mediaType プレビュー用の本文のメディアタイプ。
+     * nullを指定してはいけません。
+     * @param previewBody プレビュー用の本文。nullを指定した場合nullが返されます。
+     * @param request リクエストオブジェクト。
+     * @param response レスポンスオブジェクト。
+     * @param filter 本文中の簡易記法を展開するかどうか。
+     * @return 本文をレンダリングしたHTML。
+     */
     public static String getHTMLBodyString(Page page, String mediaType,
         String previewBody, HttpServletRequest request,
-        HttpServletResponse response)
+        HttpServletResponse response, boolean filter)
     {
         if (previewBody == null) {
             return null;
         }
-        return filter(ContentUtils.getBodyHTMLString(mediaType, previewBody,
-            null), request, response, page);
+        String body = ContentUtils.getBodyHTMLString(mediaType, previewBody,
+            null);
+        if (filter) {
+            body = filter(body, request, response, page);
+        }
+        return body;
     }
 
 

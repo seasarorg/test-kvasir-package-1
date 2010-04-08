@@ -208,18 +208,14 @@ public class ContentPop extends GenericPop
                 if (context.isInPreviewMode()) {
                     contentBody = PresentationUtils.getHTMLBodyString(page,
                         getProperty(popScope, PROP_CONTENT_MEDIA_TYPE),
-                        getProperty(popScope, PROP_CONTENT_BODY), context);
+                        getProperty(popScope, PROP_CONTENT_BODY), context,
+                        false);
                 } else {
                     // ページがコンパイル済みボディを持っている場合にそれがレンダリングに
                     // 利用されるよう、プレビューモードとは違うやり方でコンテンツを
                     // レンダリングしている。
-                    Content content = page.getAbility(ContentAbility.class)
-                        .getLatestContent(locale);
-                    if (content != null) {
-                        contentBody = content.getBodyHTMLString(null);
-                    } else {
-                        contentBody = "";
-                    }
+                    contentBody = PresentationUtils.getHTMLBodyString(page,
+                        context, false);
                 }
                 if (contentBody.length() > 0) {
                     popScope.put(PROP_SHOW_CONTENT, Boolean.TRUE);
@@ -345,7 +341,7 @@ public class ContentPop extends GenericPop
             try {
                 PresentationUtils.getHTMLBodyString(getPage(context, bag
                     .getProperty(PROP_PATHNAME)), contentMediaType,
-                    contentBody, context);
+                    contentBody, context, false);
             } catch (Throwable t) {
                 result.addEntry(new ValidationResult.Entry(PROP_CONTENT_BODY,
                     ERROR_ASIS, t.toString()));

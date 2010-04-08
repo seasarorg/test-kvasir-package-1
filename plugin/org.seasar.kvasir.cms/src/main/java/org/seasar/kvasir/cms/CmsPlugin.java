@@ -10,6 +10,7 @@ import org.seasar.kvasir.page.type.User;
 
 
 /**
+ * 基本的なCMS機能を提供するプラグインです。
  * <p><b>同期化：</b>
  * このインタフェースの実装クラスはスレッドセーフである必要があります。
  * </p>
@@ -56,9 +57,34 @@ public interface CmsPlugin
     String ATTR_RESPONSECONTENTTYPE = ID + ".responseContentType";
 
     /**
+     * サイトプレビューモードであるかどうかを
+     * sessionオブジェクトにバインドするためのキーです。
+     * このキーでsessionオブジェクトに何らかの値がバインドされている場合、
+     * サイトプレビューモードと判定されます。
+     */
+    String ATTR_SITEPREVIEWMODE = ID + ".sitePreviewMode";
+
+    /**
      * Exception発生時にExceptionオブジェクトを格納するためのキーです。
      */
     String ATTR_EXCEPTION = ID + ".exception";
+
+    /**
+     * 一時保存された本文をプロパティとして格納するためのキーです。
+     */
+    String PROP_TEMPORARYCONTENT_BODYSTRING = ID
+        + ".temporaryContent.bodyString";
+
+    /**
+     * 一時保存された本文のメディアタイプをプロパティとして格納するためのキーです。
+     */
+    String PROP_TEMPORARYCONTENT_MEDIATYPE = ID + ".temporaryContent.mediaType";
+
+    /**
+     * 一時保存された本文の作成日時（yyyy-MM-dd HH:mm:ss形式）をプロパティとして格納するためのキーです。
+     */
+    String PROP_TEMPORARYCONTENT_CREATEDATE = ID
+        + ".temporaryContent.createDate";
 
 
     void login(HttpServletRequest request, User user);
@@ -134,4 +160,25 @@ public interface CmsPlugin
      * @return サイトのURL。
      */
     String getSite(int heimId);
+
+
+    /**
+     * 現在のセッションにおいてサイトプレビューモードを開始します。
+     * 
+     * @param request リクエスト。
+     * nullを指定してはいけません。
+     * @return 元々サイトプレビューモードだったかどうか。
+     * @see CmsPlugin#ATTR_SITEPREVIEWMODE
+     */
+    boolean enterInSitePreviewMode(HttpServletRequest request);
+
+
+    /**
+     * 現在のセッションにおいて際とプレビューモードを終了します。
+     * 
+     * @param request リクエスト。
+     * nullを指定してはいけません。
+     * @see CmsPlugin#ATTR_SITEPREVIEWMODE
+     */
+    void leaveSitePreviewMode(HttpServletRequest request);
 }

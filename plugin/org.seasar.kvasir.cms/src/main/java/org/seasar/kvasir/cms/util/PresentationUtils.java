@@ -2,22 +2,29 @@ package org.seasar.kvasir.cms.util;
 
 import static org.seasar.kvasir.cms.util.ServletUtils.getOriginalContextPath;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.seasar.kvasir.base.Asgard;
 import org.seasar.kvasir.cms.CmsPlugin;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PageUtils;
+import org.seasar.kvasir.page.Processable;
+import org.seasar.kvasir.page.ProcessableRuntimeException;
 import org.seasar.kvasir.page.ability.Privilege;
 import org.seasar.kvasir.page.ability.PropertyAbility;
 import org.seasar.kvasir.page.ability.content.Content;
 import org.seasar.kvasir.page.ability.content.ContentAbility;
+import org.seasar.kvasir.page.ability.content.util.ContentUtils;
 import org.seasar.kvasir.page.auth.AuthPlugin;
 import org.seasar.kvasir.page.condition.PageCondition;
 import org.seasar.kvasir.page.type.User;
+import org.seasar.kvasir.util.LocaleUtils;
 import org.seasar.kvasir.util.html.HTMLUtils;
 
 
@@ -124,20 +131,109 @@ public class PresentationUtils extends
     }
 
 
+    /**
+     * 指定されたページの本文をレンダリングしたHTMLを返します。
+     * <p>現在のセッションがサイトプレビューモードでかつ
+     * ページがプレビュー用の本文を持っている場合はプレビュー用の本文をレンダリングしたHTMLを返します。
+     * ただしプレビュー用の本文が最新の本文よりも古い場合はプレビュー用の本文は使用されず破棄されます。
+     * </p>
+     * 
+     * @param page ページ。nullを指定した場合nullが返されます。
+     * @param locale 表示ロケール。nullを指定した場合、ロケールなしとみなされます。
+     * @param request リクエストオブジェクト。
+     * @param response レスポンスオブジェクト。
+     * @param filter 本文中の簡易記法を展開するかどうか。
+     * @return 本文をレンダリングしたHTML。
+     * @see CmsPlugin#ATTR_SITEPREVIEWMODE
+     * @see CmsPlugin#PROP_TEMPORARYCONTENT_BODYSTRING
+     * @see CmsPlugin#PROP_TEMPORARYCONTENT_CREATEDATE
+     * @see CmsPlugin#PROP_TEMPORARYCONTENT_MEDIATYPE
+     */
     public static String getHTMLBodyString(Page page, Locale locale,
-        HttpServletRequest request, HttpServletResponse response)
+        HttpServletRequest request, HttpServletResponse response, boolean filter)
     {
         if (page == null) {
             return null;
         }
-        Content content = page.getAbility(ContentAbility.class)
-            .getLatestContent(locale);
-        if (content != null) {
-            return filter(content.getBodyHTMLString(null), request, response,
-                page);
+
+        String body = "";
+        ContentAbility contentAbility = page.getAbility(ContentAbility.class);
+        HttpSession session = request.getSession(false);
+        if (session == null
+            || session.getAttribute(CmsPlugin.ATTR_SITEPREVIEWMODE) == null) {
+            // 通常モード。
+            Content content = contentAbility.getLatestContent(locale);
+            if (content != null) {
+                body = content.getBodyHTMLString(null);
+            }
         } else {
-            return "";
+            // サイトプレビューモード。
+            final PropertyAbility prop = page.getAbility(PropertyAbility.class);
+            for (String variant : LocaleUtils.getSuffixes(locale, true)) {
+                Content content = contentAbility.getLatestContent(variant);
+                String temporaryContentBodyString = prop.getProperty(
+                    CmsPlugin.PROP_TEMPORARYCONTENT_BODYSTRING, variant);
+                Date temporaryContentCreateDate;
+                try {
+                    temporaryContentCreateDate = PageUtils
+                        .parseDate(prop
+                            .getProperty(
+                                CmsPlugin.PROP_TEMPORARYCONTENT_CREATEDATE,
+                                variant));
+                } catch (ParseException ignore) {
+                    temporaryContentCreateDate = null;
+                }
+                String temporaryContentMediaType = prop.getProperty(
+                    CmsPlugin.PROP_TEMPORARYCONTENT_MEDIATYPE, variant);
+                if (temporaryContentBodyString != null
+                    && temporaryContentCreateDate != null
+                    && temporaryContentMediaType != null) {
+                    // 一時的なコンテントボディがある場合は、現在のコンテントボディよりも
+                    // 新しい場合だけ使用する。
+                    if (content == null
+                        || !content.getModifyDate().after(
+                            temporaryContentCreateDate)) {
+                        body = ContentUtils.getBodyHTMLString(
+                            temporaryContentMediaType,
+                            temporaryContentBodyString, null);
+                        break;
+                    } else {
+                        // 現在のコンテントボディの方が新しいので一時的なコンテントは破棄する。
+                        final String v = variant;
+                        page.runWithLocking(new Processable<Object>() {
+                            public Object process()
+                                throws ProcessableRuntimeException
+                            {
+                                prop.removeProperty(
+                                    CmsPlugin.PROP_TEMPORARYCONTENT_BODYSTRING,
+                                    v);
+                                prop.removeProperty(
+                                    CmsPlugin.PROP_TEMPORARYCONTENT_CREATEDATE,
+                                    v);
+                                prop.removeProperty(
+                                    CmsPlugin.PROP_TEMPORARYCONTENT_MEDIATYPE,
+                                    v);
+                                return null;
+                            }
+                        });
+                        body = content.getBodyHTMLString(null);
+                        break;
+                    }
+                } else {
+                    // 一時的なコンテントボディがない場合は、コンテントボディがあれば
+                    // それを使用する。
+                    if (content != null) {
+                        body = content.getBodyHTMLString(null);
+                        break;
+                    }
+                }
+            }
         }
+
+        if (filter) {
+            body = filter(body, request, response, page);
+        }
+        return body;
     }
 
 

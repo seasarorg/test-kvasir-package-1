@@ -1,6 +1,7 @@
 package org.seasar.kvasir.util;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.StringTokenizer;
@@ -117,5 +118,47 @@ public class StringUtils
         }
         sb.append(str.substring(pre));
         return sb.toString();
+    }
+
+
+    /**
+     * 指定されたバイト列を16進文字列に変換します。
+     * 
+     * @param bytes バイト列。nullを指定した場合はnullが返されます。
+     * @return 16進文字列。
+     */
+    public static String toHexString(byte[] bytes)
+    {
+        if (bytes == null) {
+            return null;
+        }
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < bytes.length; i++) {
+            String hex = Integer.toHexString((int)bytes[i]);
+            if (hex.length() == 1) {
+                hex = "0" + hex;
+            }
+            sb.append(hex.substring(hex.length() - 2));
+        }
+        return sb.toString();
+    }
+
+
+    /**
+     * 指定された16進文字列をバイト列に変換します。
+     * 
+     * @param hexString 16進文字列。nullを指定した場合はnullが返されます。
+     * @return バイト列。
+     */
+    public static byte[] toBytes(String hexString)
+    {
+        if (hexString == null) {
+            return null;
+        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        for (int i = 0; i < hexString.length(); i += 2) {
+            baos.write(Integer.parseInt(hexString.substring(i, i + 2), 16));
+        }
+        return baos.toByteArray();
     }
 }

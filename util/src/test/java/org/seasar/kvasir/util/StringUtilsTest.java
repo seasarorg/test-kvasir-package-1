@@ -44,4 +44,24 @@ public class StringUtilsTest extends TestCase
         assertEquals("正しく置換されること", "abcde", StringUtils.replace(
             "abcfromdefrom", "from", ""));
     }
+
+
+    public void test_toHexString()
+        throws Exception
+    {
+        assertEquals("ff0111", StringUtils.toHexString(new byte[] { (byte)-1,
+            (byte)1, (byte)17 }));
+    }
+
+
+    public void test_toBytes()
+        throws Exception
+    {
+        byte[] actual = StringUtils.toBytes("ff0111");
+
+        int idx = 0;
+        assertEquals((byte)-1, actual[idx++]);
+        assertEquals((byte)1, actual[idx++]);
+        assertEquals((byte)17, actual[idx++]);
+    }
 }

@@ -129,31 +129,28 @@ public class YmirPageFilter
             httpRequest.getParameterMap(), fileParameterMap,
             attributeContainer, pageRequest.getLocale());
         try {
-            Response response = ymir_.processRequest(request);
+            try {
+                Response response = ymir_.processRequest(request);
 
-            String contentType = response.getContentType();
-            if (contentType != null) {
-                httpRequest.setAttribute(ATTR_RESPONSECONTENTTYPE, contentType);
+                String contentType = response.getContentType();
+                if (contentType != null) {
+                    httpRequest.setAttribute(ATTR_RESPONSECONTENTTYPE,
+                        contentType);
+                }
+
+                httpRequest.setAttribute(ATTR_VARIABLERESOLVER,
+                    new YmirVariableResolver(request, httpRequest, application
+                        .getS2Container()));
+
+                responseFilter = ymir_.processResponse(vContext, vHttpRequest,
+                    httpResponse, request, response);
+                if (responseFilter != null) {
+                    proceed = true;
+                }
+            } catch (Throwable t) {
+                ymir_.processResponse(vContext, vHttpRequest, httpResponse,
+                    request, ymir_.processException(request, t));
             }
-
-            httpRequest.setAttribute(ATTR_VARIABLERESOLVER,
-                new YmirVariableResolver(request, httpRequest, application
-                    .getS2Container()));
-
-            responseFilter = ymir_.processResponse(vContext, vHttpRequest,
-                httpResponse, request, response);
-            if (responseFilter != null) {
-                proceed = true;
-            }
-        } catch (Throwable t) {
-            ymir_.processResponse(vContext, vHttpRequest, httpResponse,
-                request, ymir_.processException(request, t));
-        } finally {
-            threadContext.setComponent(PageRequest.class, oldPageRequest);
-            applicationManager_.setContextApplication(oldApplication);
-            cmsPlugin_.leave(snapshot);
-        }
-        try {
             if (proceed) {
                 chain.doFilter(httpRequest,
                     (responseFilter != null ? responseFilter : httpResponse),
@@ -163,6 +160,10 @@ public class YmirPageFilter
                 }
             }
         } finally {
+            threadContext.setComponent(PageRequest.class, oldPageRequest);
+            applicationManager_.setContextApplication(oldApplication);
+            cmsPlugin_.leave(snapshot);
+
             if (dispatcher == Dispatcher.INCLUDE) {
                 httpRequest.setAttribute(ATTR_RESPONSECONTENTTYPE,
                     responseContentType);

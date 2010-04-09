@@ -8,6 +8,7 @@ import org.seasar.kvasir.page.type.User;
 
 
 /**
+ * ページを管理するためのインタフェースです。
  * <p><b>同期化：</b>
  * このインタフェースの実装クラスはスレッドセーフである必要があります。
  * </p>
@@ -36,9 +37,41 @@ public interface PageAlfr
     <P extends Page> P getPage(Class<P> clazz, int id);
 
 
+    /**
+     * 指定されたHeimに属するページで指定されたパス名のものを返します。
+     * <p>存在しない場合はnullを返します。
+     * </p>
+     * <p>パス名は絶対パスで指定して下さい。また末尾に余計な「/」などをつけないようにして下さい。
+     * ルートページを指定する場合は空文字列を指定して下さい。
+     * </p>
+     * 
+     * @param heimId HeimのID。
+     * @param pathname パス名。
+     * nullを指定してはいけません。
+     * @return ページ。
+     * @see PathId#HEIM_MIDGARD
+     * @see PathId#HEIM_ALFHEIM
+     */
     Page getPage(int heimId, String pathname);
 
 
+    /**
+     * 指定されたHeimに属するページで指定されたパス名のものを返します。
+     * <p>存在しない場合はnullを返します。
+     * また、指定されたパス名のページが指定されたクラスにキャストできない場合もnullを返します。
+     * </p>
+     * <p>パス名は絶対パスで指定して下さい。また末尾に余計な「/」などをつけないようにして下さい。
+     * ルートページを指定する場合は空文字列を指定して下さい。
+     * </p>
+     *
+     * @param clazz 取得するページのクラス。
+     * @param heimId HeimのID。
+     * @param pathname パス名。
+     * nullを指定してはいけません。
+     * @return ページ。
+     * @see PathId#HEIM_MIDGARD
+     * @see PathId#HEIM_ALFHEIM
+     */
     <P extends Page> P getPage(Class<P> clazz, int heimId, String pathname);
 
 

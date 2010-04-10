@@ -15,12 +15,24 @@ public interface Globals
 
     String KVASIR_HOME_PATH = "/kvasir";
 
+    /**
+     * RequestFilterの呼び出しフェーズを定義するプロパティのキーです。
+     */
     String PROP_REQUESTFILTER_PHASES = "requestFilter.phases";
 
+    /**
+     * RequestFilterのデフォルトの呼び出しフェーズを指定するプロパティのキーです。
+     */
     String PROP_REQUESTFILTER_PHASE_DEFAULT = "requestFilter.phase.default";
 
+    /**
+     * RequestProcessorの呼び出しフェーズを定義するプロパティのキーです。
+     */
     String PROP_REQUESTPROCESSOR_PHASES = "requestProcessor.phases";
 
+    /**
+     * RequestProcessorのデフォルトの呼び出しフェーズを指定するプロパティのキーです。
+     */
     String PROP_REQUESTPROCESSOR_PHASE_DEFAULT = "requestProcessor.phase.default";
 
     String PROP_WEBAPP_BASEURL = "webapp.baseURL";

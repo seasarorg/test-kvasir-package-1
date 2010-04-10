@@ -25,6 +25,7 @@
     <request-processor id="pageRequestProcessor" method="*" />
   </extension>
 
+  <!-- PAGE FILTER PHASES -->
   <extension point="org.seasar.kvasir.cms.pageFilterPhases">
     <phase id="initialization" after="_first" />
     <phase id="authentication" after="initialization" />
@@ -33,6 +34,7 @@
     <phase id="else" after="filtering" />
   </extension>
 
+  <!-- PAGE PROCESSOR PHASES -->
   <extension point="org.seasar.kvasir.cms.pageProcessorPhases">
     <phase id="initialization" after="_first" />
     <phase id="controller" after="initialization" />

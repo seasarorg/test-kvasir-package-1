@@ -23,6 +23,7 @@ import org.seasar.kvasir.webapp.processor.RequestProcessorChain;
 
 
 /**
+ * Kvasir/SoraへのHTTP経由のリクエストを受け付けるサーブレットです。
  * <p><b>同期化：</b>
  * このクラスはスレッドセーフです。
  * </p>

@@ -8,7 +8,9 @@
     class="org.seasar.kvasir.page.search.lucene.impl.LuceneSearchSystem">
     <property name="queryStringParser">
       <component
-        class="org.seasar.kvasir.page.search.lucene.impl.LuceneSimpleQueryStringParser" />
+        class="org.seasar.kvasir.page.search.lucene.impl.LuceneSimpleQueryStringParser">
+        <property name="searchSystem">defaultSearchSystem</property>
+      </component>
     </property>
     <property name="documentCreator">
       <component

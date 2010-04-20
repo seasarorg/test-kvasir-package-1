@@ -516,6 +516,16 @@ public class PageUtils
     }
 
 
+    /**
+     * 指定されたDateオブジェクトをPage標準の日付文字列に変換します。
+     * <p>変換結果の日付文字列は「yyyy-MM-dd HH:mm:ss」形式の文字列です。
+     * </p>
+     * 
+     * @param date Dateオブジェクト。
+     * nullが渡された場合はnullを返します。
+     * @return 日付文字列。
+     * @see Page#DATEFORMAT
+     */
     public static String formatDate(Date date)
     {
         if (date == null) {

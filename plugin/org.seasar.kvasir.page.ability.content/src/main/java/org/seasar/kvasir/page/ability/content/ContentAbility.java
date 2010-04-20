@@ -8,6 +8,14 @@ import org.seasar.kvasir.page.ability.PageAbility;
 
 /**
  * ページのコンテンツを扱うためのAbilityを表すインタフェースです。
+ * <p>ページにはバリアント毎にコンテントを持たせることができます。
+ * またそれぞれのコンテントは1から始まるリビジョン番号によって履歴管理されています。
+ * </p>
+ * <p>コンテントのリビジョン番号はバリアント毎に割り振られていますので、
+ * 同一のリビジョン番号であっても内容が同期しているとは限らないことに注意して下さい。
+ * 例えば最新の日本語のコンテントのリビジョン番号が10で英語のコンテントが存在しないケースで
+ * 英語のコンテントを追加すると、英語のコンテントのリビジョン番号は1になります。
+ * </p>
  * <p><b>同期化：</b>
  * このインタフェースの実装クラスはスレッドセーフである必要があります。
  * </p>
@@ -35,6 +43,7 @@ public interface ContentAbility
      * @param variant バリアント。
      * nullを指定してはいけません。
      * @return 最も古いリビジョン番号。
+     * コンテントが存在しない場合は0が返されます。
      */
     int getEarliestRevisionNumber(String variant);
 
@@ -45,6 +54,7 @@ public interface ContentAbility
      * @param variant バリアント。
      * nullを指定してはいけません。
      * @return 最も新しいリビジョン番号。
+     * コンテントが存在しない場合は0が返されます。
      */
     int getLatestRevisionNumber(String variant);
 

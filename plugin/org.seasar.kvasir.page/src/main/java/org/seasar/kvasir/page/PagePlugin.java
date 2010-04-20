@@ -9,6 +9,7 @@ import org.seasar.kvasir.util.io.Resource;
 
 
 /**
+ * org.seasar.kvasir.pageプラグインのエントリポイントを表わすインタフェースです。
  * <p><b>同期化：</b>
  * このインタフェースの実装クラスはスレッドセーフである必要があります。
  * </p>
@@ -23,18 +24,59 @@ public interface PagePlugin
     String ID_PATH = ID.replace('.', '/');
 
 
+    /**
+     * ページを管理するための{@lik PageAlfr}オブジェクトを返します。
+     * 
+     * @return PageAlfrオブジェクト。
+     */
     PageAlfr getPageAlfr();
 
 
+    /**
+     * 指定されたキーに対応する{@link PageType}オブジェクトを返します。
+     * <p>キーとしては{@link Page}インタフェースのサブインタフェースと
+     * ページタイプのID文字列と{@link PageType}の実装クラスを指定することができます。
+     * </p>
+     * <p>キーに対応するPageTypeオブジェクトが存在しない場合は「page」ページタイプに対応する
+     * PageTypeオブジェクトを返します。
+     * </p>
+     * 
+     * @param key キー。
+     * @return PageTypeオブジェクト。
+     */
     PageType getPageType(Object key);
 
 
+    /**
+     * 指定されたキーに対応する{@link PageType}オブジェクトを返します。
+     * <p>キーとしては{@link PageType}の実装クラスを指定することができます。
+     * </p>
+     * <p>キーに対応するPageTypeオブジェクトが存在しない場合はnullを返します。
+     * </p>
+     * 
+     * @param key キー。
+     * @return PageTypeオブジェクト。
+     */
     <T extends PageType> T getPageType(Class<T> key);
 
 
+    /**
+     * 登録されているすべての{@link PageType}を返します。
+     * <p>nullが返されることはありません。
+     * </p>
+     * 
+     * @return PageTypeの配列。
+     */
     PageType[] getPageTypes();
 
 
+    /**
+     * 登録されているすべての{@link PageListener}を返します。
+     * <p>nullが返されることはありません。
+     * </p>
+     * 
+     * @return PageListenerの配列。
+     */
     PageListener[] getPageListeners();
 
 

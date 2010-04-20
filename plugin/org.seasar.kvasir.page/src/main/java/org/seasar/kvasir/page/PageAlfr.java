@@ -25,15 +25,50 @@ public interface PageAlfr
     String DIR_TEMPLATES = File.separator + "templates";
 
 
+    /**
+     * 指定されたキーに対応する{@link PageType}オブジェクトを返します。
+     * <p>このメソッドは{@link PagePlugin#getPageType(Object)}と同じです。
+     * </p>
+     * 
+     * @param key キー。
+     * @return PageTypeオブジェクト。
+     */
     PageType getPageType(Object key);
 
 
+    /**
+     * 指定されたキーに対応する{@link PageType}オブジェクトを返します。
+     * <p>このメソッドは{@link PagePlugin#getPageType(Class)}と同じです。
+     * </p>
+     * 
+     * @param key キー。
+     * @return PageTypeオブジェクト。
+     */
     <T extends PageType> T getPageType(Class<T> key);
 
 
+    /**
+     * 指定されたIDを持つPageオブジェクトを返します。
+     * <p>指定されたIDを持つPageが見つからない場合はnullを返します。
+     * </p>
+     * 
+     * @param id ID。nullを指定してはいけません。
+     * @return Pageオブジェクト。
+     */
     Page getPage(int id);
 
 
+    /**
+     * 指定されたIDを持つPageオブジェクトを返します。
+     * <p>指定されたIDを持つPageが見つからない場合はnullを返します。
+     * </p>
+     * <p>Pageが存在した場合でも、指定されたクラスのインスタンスでない場合はnullを返します。
+     * </p>
+     * 
+     * @param id ID。nullを指定してはいけません。
+     * @param clazz Pageクラス。
+     * @return Pageオブジェクト。
+     */
     <P extends Page> P getPage(Class<P> clazz, int id);
 
 

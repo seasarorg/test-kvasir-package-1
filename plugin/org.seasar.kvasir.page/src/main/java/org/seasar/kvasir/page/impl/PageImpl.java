@@ -113,6 +113,16 @@ public class PageImpl
     }
 
 
+    public boolean isTypeOf(String type)
+    {
+        if (type == null) {
+            return false;
+        } else {
+            return type.equals(getType());
+        }
+    }
+
+
     public void setType(String type)
     {
         PageDto dto = newDto();

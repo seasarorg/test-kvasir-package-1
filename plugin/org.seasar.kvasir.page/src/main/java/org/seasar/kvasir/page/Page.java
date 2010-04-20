@@ -185,6 +185,17 @@ public interface Page
 
 
     /**
+     * このページが指定されたページタイプかどうかを返します。
+     * <p>nullを指定した場合はfalseが返されます。
+     * </p>
+     * 
+     * @param type タイプ。
+     * @return 指定されたページタイプかどうか。
+     */
+    boolean isTypeOf(String type);
+
+
+    /**
      * このページのタイプを設定します。
      * <p>シリアライズされたPage情報などからPageオブジェクトを復元する場合など、
      * 特殊な用途でのみ利用されます。

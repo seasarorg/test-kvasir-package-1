@@ -32,9 +32,27 @@ public interface PropertyAbility
     String PROP_SUBTYPE = "subType";
 
 
+    /**
+     * 指定された名前のプロパティの値を返します。
+     * <p>このメソッドは<code>getProperty(name, Page.VARIANT_DEFAULT)</code>
+     * と同じです。
+     * </p>
+     * 
+     * @param name プロパティ名。
+     * @return 値。
+     * プロパティの値が存在しない場合はnullが返されます。
+     */
     String getProperty(String name);
 
 
+    /**
+     * 指定された名前のプロパティの値のうち指定されたロケールに対応するものを返します。
+     * 
+     * @param name プロパティ名。
+     * @param locale ロケール。nullを指定してはいけません。
+     * @return 値。
+     * プロパティの値が存在しない場合はnullが返されます。
+     */
     String getProperty(String name, Locale locale);
 
 
@@ -47,6 +65,14 @@ public interface PropertyAbility
     boolean containsPropertyName(String name, Locale locale);
 
 
+    /**
+     * 指定された名前のプロパティの値のうち指定されたバリアントに対応するものを返します。
+     * 
+     * @param name プロパティ名。
+     * @param locale バリアント。nullを指定してはいけません。
+     * @return 値。
+     * プロパティの値が存在しない場合はnullが返されます。
+     */
     String getProperty(String name, String variant);
 
 

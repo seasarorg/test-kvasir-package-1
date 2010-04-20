@@ -247,6 +247,12 @@ public class PageWrapper
     }
 
 
+    public boolean isTypeOf(String type)
+    {
+        return page_.isTypeOf(type);
+    }
+
+
     public void setType(String type)
     {
         page_.setType(type);

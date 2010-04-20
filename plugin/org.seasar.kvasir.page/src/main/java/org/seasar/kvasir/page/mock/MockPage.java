@@ -153,6 +153,16 @@ public class MockPage
     }
 
 
+    public boolean isTypeOf(String type)
+    {
+        if (type == null) {
+            return false;
+        } else {
+            return type.equals(type_);
+        }
+    }
+
+
     public void setType(String type)
     {
         type_ = type;

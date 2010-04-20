@@ -9,6 +9,7 @@ import org.seasar.kvasir.util.io.Resource;
 
 
 /**
+ * {@link PageType}の実装クラスを作成するためのベースとして利用可能な抽象クラスです。
  * <p><b>同期化：</b>
  * このクラスのサブクラスはスレッドセーフである必要があります。
  * </p>

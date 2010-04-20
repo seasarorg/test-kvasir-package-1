@@ -51,9 +51,9 @@ public interface PageType
 
 
     /**
-     * この種別を表す{@link PageType}のサブインタフェースを返します。
+     * この種別を表す{@link Page}インタフェースのサブインタフェースを返します。
      * 
-     * @return PageTypeのサブインタフェース。
+     * @return Pageインタフェースのサブインタフェース。
      */
     Class<? extends Page> getInterface();
 

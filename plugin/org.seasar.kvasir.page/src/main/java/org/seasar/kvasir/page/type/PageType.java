@@ -2,6 +2,7 @@ package org.seasar.kvasir.page.type;
 
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PageMold;
+import org.seasar.kvasir.page.condition.PageCondition;
 import org.seasar.kvasir.util.io.Resource;
 
 
@@ -81,9 +82,14 @@ public interface PageType
 
 
     /**
-     * Pageのフィールド名をプロパティ名に変換します。
+     * 種別固有のフィールド名をプロパティ名に変換します。
      * <p>種別固有のフィールドはプロパティとして永続化されます。
-     * このメソッドは、フィールドを永続化するためのプロパティ名を返します。
+     * そのため種別固有のフィールドが{@link PageCondition}で指定された場合、
+     * プロパティに変換する必要があります。
+     * このメソッドは{@link PageCondition}のために種別固有のフィールド名をプロパティに変換します。
+     * </p>
+     * <p><strong>実装上の注意：</strong>
+     * 検索条件に指定することのないフィールドについてはこのメソッドでプロパティ名を返す必要はありません。
      * </p>
      * 
      * @param field フィールド名。
@@ -95,7 +101,11 @@ public interface PageType
 
 
     /**
-     * 指定されたフィールドが数値かどうかを返します。
+     * 種別固有のフィールドが数値かどうかを返します。
+     * <p><strong>実装上の注意：</strong>
+     * {@link #convertFieldToPropertyName(String)}が非nullを返すような
+     * フィールドについてはこのメソッドで数値かどうかを返すようにしておく必要があります。
+     * </p>
      * 
      * @param field フィールド名。
      * nullを指定してはいけません。

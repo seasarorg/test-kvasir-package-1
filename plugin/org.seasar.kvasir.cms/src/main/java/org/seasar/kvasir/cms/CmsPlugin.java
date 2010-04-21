@@ -183,32 +183,32 @@ public interface CmsPlugin
 
 
     /**
-     * 指定されたページについて、指定されたバリアントの一時的なコンテントを返します。
+     * 指定されたページについて、指定されたバリアントのコンテントの下書きを返します。
      * 
      * @param page ページ。nullを指定した場合はnullが返されます。
      * @param variant バリアント。nullを指定してはいけません。
-     * @return 一時的なコンテント。一時的なコンテントが存在しない場合はnullを返します。
+     * @return コンテントの下書き。コンテントの下書きが存在しない場合はnullを返します。
      */
-    TemporaryContent getTemporaryContent(Page page, String variant);
+    DraftContent getContentDraft(Page page, String variant);
 
 
     /**
-     * 指定されたページについて、指定されたバリアントの一時的なコンテントを設定します。
+     * 指定されたページについて、指定されたバリアントのコンテントの下書きを設定します。
      * 
      * @param page ページ。nullを指定した場合は何もしません。
      * @param variant バリアント。nullを指定してはいけません。
-     * @param temporaryContent 一時的なコンテント。
-     * nullを指定すると{@link #removeTemporaryContent(Page, String)}を呼び出したのと同じになります。
+     * @param temporaryContent コンテントの下書き。
+     * nullを指定すると{@link #removeContentDraft(Page, String)}を呼び出したのと同じになります。
      */
-    void setTemporaryContent(Page page, String variant,
-        TemporaryContent temporaryContent);
+    void setContentDraft(Page page, String variant,
+        DraftContent temporaryContent);
 
 
     /**
-     * 指定されたページについて、指定されたバリアントの一時的なコンテントを削除します。
+     * 指定されたページについて、指定されたバリアントのコンテントの下書きを削除します。
      * 
      * @param page ページ。nullを指定した場合は何もしません。
      * @param variant バリアント。nullを指定してはいけません。
      */
-    void removeTemporaryContent(Page page, String variant);
+    void removeContentDraft(Page page, String variant);
 }

@@ -7,15 +7,15 @@ import org.seasar.kvasir.cms.util.PresentationUtils;
 
 
 /**
- * Pageの一時的なコンテントを表すクラスです。
+ * Pageのコンテントの下書きを表すクラスです。
  * 
  * @author yokota
- * @see CmsPlugin#getTemporaryContent(org.seasar.kvasir.page.Page, String)
- * @see CmsPlugin#setTemporaryContent(org.seasar.kvasir.page.Page, String, TemporaryContent)
- * @see CmsPlugin#removeTemporaryContent(org.seasar.kvasir.page.Page, String)
+ * @see CmsPlugin#getContentDraft(org.seasar.kvasir.page.Page, String)
+ * @see CmsPlugin#setContentDraft(org.seasar.kvasir.page.Page, String, DraftContent)
+ * @see CmsPlugin#removeContentDraft(org.seasar.kvasir.page.Page, String)
  * @see PresentationUtils#getHTMLBodyString(org.seasar.kvasir.page.Page, java.util.Locale, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, boolean)
  */
-public class TemporaryContent
+public class DraftContent
     implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -30,7 +30,7 @@ public class TemporaryContent
     /**
      * このクラスのオブジェクトを構築します。
      */
-    public TemporaryContent()
+    public DraftContent()
     {
     }
 
@@ -42,7 +42,7 @@ public class TemporaryContent
      * 
      * @param bodyString 本文。
      */
-    public TemporaryContent(String bodyString)
+    public DraftContent(String bodyString)
     {
         bodyString_ = bodyString;
     }
@@ -54,7 +54,7 @@ public class TemporaryContent
      * @param mediaType メディアタイプ。
      * @param bodyString 本文。
      */
-    public TemporaryContent(String mediaType, String bodyString)
+    public DraftContent(String mediaType, String bodyString)
     {
         mediaType_ = mediaType;
         bodyString_ = bodyString;

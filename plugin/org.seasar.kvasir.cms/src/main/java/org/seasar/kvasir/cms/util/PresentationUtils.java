@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.kvasir.base.Asgard;
 import org.seasar.kvasir.cms.CmsPlugin;
-import org.seasar.kvasir.cms.TemporaryContent;
+import org.seasar.kvasir.cms.DraftContent;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PageUtils;
 import org.seasar.kvasir.page.ability.Privilege;
@@ -142,9 +142,9 @@ public class PresentationUtils extends
      * @return 本文をレンダリングしたHTML。
      * @see CmsPlugin#enterInSitePreviewMode(HttpServletRequest)
      * @see CmsPlugin#leaveSitePreviewMode(HttpServletRequest)
-     * @see CmsPlugin#getTemporaryContent(Page, String)
-     * @see CmsPlugin#setTemporaryContent(Page, String, org.seasar.kvasir.cms.TemporaryContent)
-     * @see CmsPlugin#removeTemporaryContent(Page, String)
+     * @see CmsPlugin#getContentDraft(Page, String)
+     * @see CmsPlugin#setContentDraft(Page, String, org.seasar.kvasir.cms.DraftContent)
+     * @see CmsPlugin#removeContentDraft(Page, String)
      */
     public static String getHTMLBodyString(Page page, Locale locale,
         HttpServletRequest request, HttpServletResponse response, boolean filter)
@@ -162,7 +162,7 @@ public class PresentationUtils extends
             // サイトプレビューモード。
             for (String variant : LocaleUtils.getSuffixes(locale, true)) {
                 Content content = contentAbility.getLatestContent(variant);
-                TemporaryContent temporaryContent = plugin.getTemporaryContent(
+                DraftContent temporaryContent = plugin.getContentDraft(
                     page, variant);
                 if (temporaryContent != null) {
                     // 一時的なコンテントボディがある場合は、現在のコンテントボディよりも
@@ -177,7 +177,7 @@ public class PresentationUtils extends
                     } else {
                         body = content.getBodyHTMLString(null);
                         // 現在のコンテントボディの方が新しいので一時的なコンテントは破棄する。
-                        plugin.removeTemporaryContent(page, variant);
+                        plugin.removeContentDraft(page, variant);
                         break;
                     }
                 } else {

@@ -19,7 +19,7 @@ import org.seasar.kvasir.base.webapp.WebappPlugin;
 import org.seasar.kvasir.base.webapp.impl.ResourceContent;
 import org.seasar.kvasir.cms.CmsPlugin;
 import org.seasar.kvasir.cms.RequestSnapshot;
-import org.seasar.kvasir.cms.TemporaryContent;
+import org.seasar.kvasir.cms.DraftContent;
 import org.seasar.kvasir.cms.extension.PageFilterPhaseElement;
 import org.seasar.kvasir.cms.extension.PageProcessorPhaseElement;
 import org.seasar.kvasir.cms.setting.CmsPluginSettings;
@@ -383,7 +383,7 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
     }
 
 
-    public TemporaryContent getTemporaryContent(Page page, String variant)
+    public DraftContent getContentDraft(Page page, String variant)
     {
         if (page == null) {
             return null;
@@ -393,7 +393,7 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
         ClassLoader oldCl = Thread.currentThread().getContextClassLoader();
         try {
             Thread.currentThread().setContextClassLoader(getInnerClassLoader());
-            return (TemporaryContent)SerializationUtils.deserialize(prop
+            return (DraftContent)SerializationUtils.deserialize(prop
                 .getProperty(PROP_TEMPORARYCONTENT, variant));
         } catch (Throwable t) {
             log_.warn("Cannot deserialize temporary content: page="
@@ -405,15 +405,15 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
     }
 
 
-    public void setTemporaryContent(Page page, String variant,
-        TemporaryContent temporaryContent)
+    public void setContentDraft(Page page, String variant,
+        DraftContent temporaryContent)
     {
         if (page == null) {
             return;
         }
 
         if (temporaryContent == null) {
-            removeTemporaryContent(page, variant);
+            removeContentDraft(page, variant);
             return;
         }
 
@@ -436,7 +436,7 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
     }
 
 
-    public void removeTemporaryContent(Page page, String variant)
+    public void removeContentDraft(Page page, String variant)
     {
         if (page == null) {
             return;

@@ -71,9 +71,9 @@ public interface CmsPlugin
     String ATTR_EXCEPTION = ID + ".exception";
 
     /**
-     * 一時保存されたコンテンツをプロパティとして格納するためのキーです。
+     * コンテントの下書きをプロパティとして格納するためのキーです。
      */
-    String PROP_TEMPORARYCONTENT = ID + ".temporaryContent";
+    String PROP_CONTENTDRAFT = ID + ".contentDraft";
 
 
     void login(HttpServletRequest request, User user);
@@ -197,11 +197,10 @@ public interface CmsPlugin
      * 
      * @param page ページ。nullを指定した場合は何もしません。
      * @param variant バリアント。nullを指定してはいけません。
-     * @param temporaryContent コンテントの下書き。
+     * @param draft コンテントの下書き。
      * nullを指定すると{@link #removeContentDraft(Page, String)}を呼び出したのと同じになります。
      */
-    void setContentDraft(Page page, String variant,
-        ContentDraft temporaryContent);
+    void setContentDraft(Page page, String variant, ContentDraft draft);
 
 
     /**

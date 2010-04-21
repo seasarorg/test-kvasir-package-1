@@ -394,9 +394,9 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
         try {
             Thread.currentThread().setContextClassLoader(getInnerClassLoader());
             return (ContentDraft)SerializationUtils.deserialize(prop
-                .getProperty(PROP_TEMPORARYCONTENT, variant));
+                .getProperty(PROP_CONTENTDRAFT, variant));
         } catch (Throwable t) {
-            log_.warn("Cannot deserialize temporary content: page="
+            log_.warn("Cannot deserialize content draft: page="
                 + page.toString() + ", variant=" + variant, t);
             return null;
         } finally {
@@ -405,34 +405,33 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
     }
 
 
-    public void setContentDraft(Page page, String variant,
-        ContentDraft temporaryContent)
+    public void setContentDraft(Page page, String variant, ContentDraft draft)
     {
         if (page == null) {
             return;
         }
 
-        if (temporaryContent == null) {
+        if (draft == null) {
             removeContentDraft(page, variant);
             return;
         }
 
-        if (temporaryContent.getMediaType() == null) {
+        if (draft.getMediaType() == null) {
             Content content = page.getAbility(ContentAbility.class)
                 .getLatestContent(variant);
-            temporaryContent.setMediaType(content != null ? content
-                .getMediaType() : "text/plain");
+            draft.setMediaType(content != null ? content.getMediaType()
+                : "text/plain");
         }
-        if (temporaryContent.getBodyString() == null) {
-            temporaryContent.setBodyString("");
+        if (draft.getBodyString() == null) {
+            draft.setBodyString("");
         }
-        if (temporaryContent.getCreateDate() == null) {
-            temporaryContent.setCreateDate(new Date());
+        if (draft.getCreateDate() == null) {
+            draft.setCreateDate(new Date());
         }
 
-        page.getAbility(PropertyAbility.class).setProperty(
-            PROP_TEMPORARYCONTENT, variant,
-            SerializationUtils.serialize(temporaryContent));
+        page.getAbility(PropertyAbility.class)
+            .setProperty(PROP_CONTENTDRAFT, variant,
+                SerializationUtils.serialize(draft));
     }
 
 
@@ -443,6 +442,6 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
         }
 
         page.getAbility(PropertyAbility.class).removeProperty(
-            PROP_TEMPORARYCONTENT, variant);
+            PROP_CONTENTDRAFT, variant);
     }
 }

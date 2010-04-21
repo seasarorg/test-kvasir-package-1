@@ -130,8 +130,8 @@ public class PresentationUtils extends
     /**
      * 指定されたページの本文をレンダリングしたHTMLを返します。
      * <p>現在のセッションがサイトプレビューモードでかつ
-     * ページがプレビュー用の本文を持っている場合はプレビュー用の本文をレンダリングしたHTMLを返します。
-     * ただしプレビュー用の本文が最新の本文よりも古い場合はプレビュー用の本文は使用されず破棄されます。
+     * ページが本文の下書きを持っている場合はプレビュー用の本文をレンダリングしたHTMLを返します。
+     * ただし本文の下書きが最新の本文よりも古い場合は本文の下書きは使用されず破棄されます。
      * </p>
      * 
      * @param page ページ。nullを指定した場合nullが返されます。
@@ -162,27 +162,23 @@ public class PresentationUtils extends
             // サイトプレビューモード。
             for (String variant : LocaleUtils.getSuffixes(locale, true)) {
                 Content content = contentAbility.getLatestContent(variant);
-                ContentDraft temporaryContent = plugin.getContentDraft(
-                    page, variant);
-                if (temporaryContent != null) {
-                    // 一時的なコンテントボディがある場合は、現在のコンテントボディよりも
-                    // 新しい場合だけ使用する。
+                ContentDraft draft = plugin.getContentDraft(page, variant);
+                if (draft != null) {
+                    // 下書きがある場合は、現在のコンテントボディよりも新しい場合だけ使用する。
                     if (content == null
-                        || !content.getModifyDate().after(
-                            temporaryContent.getCreateDate())) {
-                        body = ContentUtils.getBodyHTMLString(temporaryContent
-                            .getMediaType(), temporaryContent.getBodyString(),
-                            null);
+                        || !content.getModifyDate()
+                            .after(draft.getCreateDate())) {
+                        body = ContentUtils.getBodyHTMLString(draft
+                            .getMediaType(), draft.getBodyString(), null);
                         break;
                     } else {
                         body = content.getBodyHTMLString(null);
-                        // 現在のコンテントボディの方が新しいので一時的なコンテントは破棄する。
+                        // 現在のコンテントボディの方が新しいので下書きは破棄する。
                         plugin.removeContentDraft(page, variant);
                         break;
                     }
                 } else {
-                    // 一時的なコンテントボディがない場合は、コンテントボディがあれば
-                    // それを使用する。
+                    // 下書きがない場合は、コンテントボディがあればそれを使用する。
                     if (content != null) {
                         body = content.getBodyHTMLString(null);
                         break;

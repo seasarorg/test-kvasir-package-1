@@ -189,7 +189,7 @@ public interface CmsPlugin
      * @param variant バリアント。nullを指定してはいけません。
      * @return コンテントの下書き。コンテントの下書きが存在しない場合はnullを返します。
      */
-    DraftContent getContentDraft(Page page, String variant);
+    ContentDraft getContentDraft(Page page, String variant);
 
 
     /**
@@ -201,7 +201,7 @@ public interface CmsPlugin
      * nullを指定すると{@link #removeContentDraft(Page, String)}を呼び出したのと同じになります。
      */
     void setContentDraft(Page page, String variant,
-        DraftContent temporaryContent);
+        ContentDraft temporaryContent);
 
 
     /**

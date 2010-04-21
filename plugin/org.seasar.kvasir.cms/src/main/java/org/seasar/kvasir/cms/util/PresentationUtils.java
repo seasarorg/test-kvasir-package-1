@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.kvasir.base.Asgard;
 import org.seasar.kvasir.cms.CmsPlugin;
-import org.seasar.kvasir.cms.DraftContent;
+import org.seasar.kvasir.cms.ContentDraft;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PageUtils;
 import org.seasar.kvasir.page.ability.Privilege;
@@ -143,7 +143,7 @@ public class PresentationUtils extends
      * @see CmsPlugin#enterInSitePreviewMode(HttpServletRequest)
      * @see CmsPlugin#leaveSitePreviewMode(HttpServletRequest)
      * @see CmsPlugin#getContentDraft(Page, String)
-     * @see CmsPlugin#setContentDraft(Page, String, org.seasar.kvasir.cms.DraftContent)
+     * @see CmsPlugin#setContentDraft(Page, String, org.seasar.kvasir.cms.ContentDraft)
      * @see CmsPlugin#removeContentDraft(Page, String)
      */
     public static String getHTMLBodyString(Page page, Locale locale,
@@ -162,7 +162,7 @@ public class PresentationUtils extends
             // サイトプレビューモード。
             for (String variant : LocaleUtils.getSuffixes(locale, true)) {
                 Content content = contentAbility.getLatestContent(variant);
-                DraftContent temporaryContent = plugin.getContentDraft(
+                ContentDraft temporaryContent = plugin.getContentDraft(
                     page, variant);
                 if (temporaryContent != null) {
                     // 一時的なコンテントボディがある場合は、現在のコンテントボディよりも

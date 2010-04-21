@@ -11,11 +11,11 @@ import org.seasar.kvasir.cms.util.PresentationUtils;
  * 
  * @author yokota
  * @see CmsPlugin#getContentDraft(org.seasar.kvasir.page.Page, String)
- * @see CmsPlugin#setContentDraft(org.seasar.kvasir.page.Page, String, DraftContent)
+ * @see CmsPlugin#setContentDraft(org.seasar.kvasir.page.Page, String, ContentDraft)
  * @see CmsPlugin#removeContentDraft(org.seasar.kvasir.page.Page, String)
  * @see PresentationUtils#getHTMLBodyString(org.seasar.kvasir.page.Page, java.util.Locale, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, boolean)
  */
-public class DraftContent
+public class ContentDraft
     implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -30,7 +30,7 @@ public class DraftContent
     /**
      * このクラスのオブジェクトを構築します。
      */
-    public DraftContent()
+    public ContentDraft()
     {
     }
 
@@ -42,7 +42,7 @@ public class DraftContent
      * 
      * @param bodyString 本文。
      */
-    public DraftContent(String bodyString)
+    public ContentDraft(String bodyString)
     {
         bodyString_ = bodyString;
     }
@@ -54,7 +54,7 @@ public class DraftContent
      * @param mediaType メディアタイプ。
      * @param bodyString 本文。
      */
-    public DraftContent(String mediaType, String bodyString)
+    public ContentDraft(String mediaType, String bodyString)
     {
         mediaType_ = mediaType;
         bodyString_ = bodyString;

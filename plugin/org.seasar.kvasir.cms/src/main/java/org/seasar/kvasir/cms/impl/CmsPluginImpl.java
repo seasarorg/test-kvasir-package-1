@@ -19,7 +19,7 @@ import org.seasar.kvasir.base.webapp.WebappPlugin;
 import org.seasar.kvasir.base.webapp.impl.ResourceContent;
 import org.seasar.kvasir.cms.CmsPlugin;
 import org.seasar.kvasir.cms.RequestSnapshot;
-import org.seasar.kvasir.cms.DraftContent;
+import org.seasar.kvasir.cms.ContentDraft;
 import org.seasar.kvasir.cms.extension.PageFilterPhaseElement;
 import org.seasar.kvasir.cms.extension.PageProcessorPhaseElement;
 import org.seasar.kvasir.cms.setting.CmsPluginSettings;
@@ -383,7 +383,7 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
     }
 
 
-    public DraftContent getContentDraft(Page page, String variant)
+    public ContentDraft getContentDraft(Page page, String variant)
     {
         if (page == null) {
             return null;
@@ -393,7 +393,7 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
         ClassLoader oldCl = Thread.currentThread().getContextClassLoader();
         try {
             Thread.currentThread().setContextClassLoader(getInnerClassLoader());
-            return (DraftContent)SerializationUtils.deserialize(prop
+            return (ContentDraft)SerializationUtils.deserialize(prop
                 .getProperty(PROP_TEMPORARYCONTENT, variant));
         } catch (Throwable t) {
             log_.warn("Cannot deserialize temporary content: page="
@@ -406,7 +406,7 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
 
 
     public void setContentDraft(Page page, String variant,
-        DraftContent temporaryContent)
+        ContentDraft temporaryContent)
     {
         if (page == null) {
             return;

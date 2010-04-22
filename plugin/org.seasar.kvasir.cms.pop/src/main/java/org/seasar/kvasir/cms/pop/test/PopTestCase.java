@@ -76,11 +76,11 @@ abstract public class PopTestCase<P extends Pop> extends PageTestCase
             throw new RuntimeException("Can't find plugin.xml");
         }
 
-        MockPluginDescriptor descriptor = XOMUtils.toBean(xmlResource
-            .getInputStream(), PluginDescriptor.class,
-            new MockPluginDescriptor(pluginDirectory, metaData
-                .getTestHomeDirectory().getChildResource(
-                    Globals.CONFIGURATION_DIR + "/" + getPluginId())));
+        MockPluginDescriptor descriptor = (MockPluginDescriptor)XOMUtils
+            .toBean(xmlResource.getInputStream(), PluginDescriptor.class,
+                new MockPluginDescriptor(pluginDirectory, metaData
+                    .getTestHomeDirectory().getChildResource(
+                        Globals.CONFIGURATION_DIR + "/" + getPluginId())));
         new MockPlugin<EmptySettings>(getPluginId(), metaData
             .getProjectDirectory(), descriptor);
         Extension[] extensions = descriptor.getExtensions();

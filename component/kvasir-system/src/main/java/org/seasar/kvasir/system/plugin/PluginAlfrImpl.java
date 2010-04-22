@@ -1440,6 +1440,7 @@ public class PluginAlfrImpl
     }
 
 
+    @SuppressWarnings("unchecked")
     @ForPreparingMode
     ExtensionElement[] gatherExtensionElements(ExtensionPoint extensionPoint,
         List<ElementPair> elementPairList)
@@ -1531,8 +1532,8 @@ public class PluginAlfrImpl
                 }
             }
             try {
-                extensionElement = (ExtensionElement)mapper.toBean(pair
-                    .getElement(), elementClass, extensionElement);
+                extensionElement = mapper.toBean(pair.getElement(),
+                    (Class<ExtensionElement>)elementClass, extensionElement);
             } catch (ValidationException ex) {
                 throw new IllegalArgumentException(
                     "Invalid extension element specified: point=" + pointId

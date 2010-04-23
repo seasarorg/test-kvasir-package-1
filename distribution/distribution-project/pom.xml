@@ -22,7 +22,7 @@
           <extensions>true</extensions>
           <configuration>
             <baseLibraries>
-              kvasir-util,kvasir-base,xom,xom-tiger
+              kvasir-util,kvasir-base,xom
             </baseLibraries>
             <testLibraries>kvasir-test,servlet-api</testLibraries>
             <commonLibraries>

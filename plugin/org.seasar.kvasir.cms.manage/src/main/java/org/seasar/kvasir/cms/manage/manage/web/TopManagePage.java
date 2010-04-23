@@ -5,13 +5,14 @@ import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.skirnir.freyja.render.html.OptionTag;
+
 import org.seasar.kvasir.cms.setting.CmsPluginSettings;
 import org.seasar.kvasir.cms.setting.HeimElement;
 import org.seasar.kvasir.cms.util.CmsUtils;
 import org.seasar.kvasir.cms.util.ServletUtils;
 import org.seasar.kvasir.page.PathId;
-
-import net.skirnir.freyja.render.html.OptionTag;
+import org.seasar.kvasir.page.ability.PropertyAbility;
 
 
 public class TopManagePage extends PageBase
@@ -46,11 +47,17 @@ public class TopManagePage extends PageBase
             HeimElement[] heims = settings.getHeims();
             for (int i = 0; i < heims.length; i++) {
                 int id = heims[i].getId();
-                String site = getCmsPlugin().getSite(id);
-                if (site == null) {
-                    site = getResource("app.label.top-manage.site.unmapped");
+                String label = getCmsPlugin().getSite(id);
+                if (label == null) {
+                    label = getPageAlfr().getRootPage(id).getAbility(
+                        PropertyAbility.class).getProperty(
+                        PropertyAbility.PROP_LABEL, getLocale());
+                    if (label == null) {
+                        label = getResource("app.label.top-manage.site.unmapped")
+                            + ":" + id;
+                    }
                 }
-                siteMap.put(id, newOptionTag(id, site));
+                siteMap.put(id, newOptionTag(id, label));
             }
             if (!siteMap.containsKey(Integer.valueOf(PathId.HEIM_MIDGARD))) {
                 String domainURL = ServletUtils.getDomainURL(httpRequest_);

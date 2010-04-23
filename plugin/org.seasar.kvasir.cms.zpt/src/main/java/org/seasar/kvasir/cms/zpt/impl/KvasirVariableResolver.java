@@ -15,6 +15,7 @@ import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PageAlfr;
 import org.seasar.kvasir.page.PagePlugin;
 import org.seasar.kvasir.page.PathId;
+import org.seasar.kvasir.webapp.Dispatcher;
 
 import net.skirnir.freyja.TemplateContext;
 import net.skirnir.freyja.VariableResolver;
@@ -276,8 +277,8 @@ public class KvasirVariableResolver extends VariableResolverImpl
                     }
                 }
                 if (my == null) {
-                    my = new PageDispatchImpl(pageAlfr_, pagePlugin_, CmsUtils
-                        .getHeimId(), path);
+                    my = new PageDispatchImpl(pageAlfr_, pagePlugin_,
+                        Dispatcher.REQUEST, CmsUtils.getHeimId(), path);
                     my
                         .setGardRootPage(my.getNearestPage()
                             .getNearestGardRoot());

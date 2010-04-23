@@ -33,7 +33,7 @@ public class ActorBindingPageFilter
 
     private AuthPlugin authPlugin_;
 
-    private CmsPlugin webappPlugin_;
+    private CmsPlugin cmsPlugin_;
 
     private PageAlfr pageAlfr_;
 
@@ -48,7 +48,7 @@ public class ActorBindingPageFilter
     {
         pagePlugin_ = null;
         authPlugin_ = null;
-        webappPlugin_ = null;
+        cmsPlugin_ = null;
 
         pageAlfr_ = null;
     }
@@ -59,7 +59,7 @@ public class ActorBindingPageFilter
         PageRequest pageRequest, PageFilterChain chain)
         throws ServletException, IOException
     {
-        User user = webappPlugin_.getUser(request);
+        User user = cmsPlugin_.getUser(request);
         if (user == null) {
             user = (User)pageAlfr_.getPage(User.class, Page.ID_ANONYMOUS_USER);
         }
@@ -88,8 +88,8 @@ public class ActorBindingPageFilter
     }
 
 
-    public void setWebappPlugin(CmsPlugin webappPlugin)
+    public void setCmsPlugin(CmsPlugin webappPlugin)
     {
-        webappPlugin_ = webappPlugin;
+        cmsPlugin_ = webappPlugin;
     }
 }

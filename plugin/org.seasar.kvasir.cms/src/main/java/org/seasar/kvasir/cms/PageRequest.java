@@ -61,6 +61,9 @@ public interface PageRequest
     PageDispatch getThat();
 
 
+    PageDispatch setThat(PageDispatch that);
+
+
     /**
      * サイトルートページを返します。
      * <p>ユーティリティメソッドです。</p>

@@ -138,8 +138,8 @@ public class PageRequestFilter
         }
 
         // PageRequestを準備する。
-        PageDispatch my = new PageDispatchImpl(pageAlfr_, pagePlugin_, heimId,
-            path);
+        PageDispatch my = new PageDispatchImpl(pageAlfr_, pagePlugin_,
+            dispatcher, heimId, path);
         if (dispatcher == Dispatcher.REQUEST) {
             String contextPath = ServletUtils.getRequestContextPath(request);
 

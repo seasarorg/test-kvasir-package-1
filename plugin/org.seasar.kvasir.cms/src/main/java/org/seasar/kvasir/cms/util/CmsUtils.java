@@ -11,6 +11,7 @@ import org.seasar.kvasir.cms.impl.PageDispatchImpl;
 import org.seasar.kvasir.cms.impl.PageRequestImpl;
 import org.seasar.kvasir.page.PagePlugin;
 import org.seasar.kvasir.page.PathId;
+import org.seasar.kvasir.webapp.Dispatcher;
 import org.seasar.kvasir.webapp.util.LocaleUtils;
 
 
@@ -22,20 +23,20 @@ public class CmsUtils
 
 
     public static PageDispatch newPageDispatch(HttpServletRequest request,
-        String path)
+        Dispatcher dispatcher, String path)
     {
         PluginAlfr pluginAlfr = Asgard.getKvasir().getPluginAlfr();
         PagePlugin pagePlugin = pluginAlfr.getPlugin(PagePlugin.class);
         CmsPlugin cmsPlugin = pluginAlfr.getPlugin(CmsPlugin.class);
         return new PageDispatchImpl(pagePlugin.getPageAlfr(), pagePlugin,
-            cmsPlugin.determineHeimId(request), path);
+            dispatcher, cmsPlugin.determineHeimId(request), path);
     }
 
 
     public static PageRequest newPageRequest(HttpServletRequest request,
-        String path)
+        Dispatcher dispatcher, String path)
     {
-        PageDispatch my = newPageDispatch(request, path);
+        PageDispatch my = newPageDispatch(request, dispatcher, path);
         return newPageRequest(request, my, my);
     }
 

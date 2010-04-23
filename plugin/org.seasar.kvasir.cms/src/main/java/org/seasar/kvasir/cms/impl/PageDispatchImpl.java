@@ -5,6 +5,7 @@ import org.seasar.kvasir.cms.PageDispatch;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PageAlfr;
 import org.seasar.kvasir.page.PagePlugin;
+import org.seasar.kvasir.webapp.Dispatcher;
 
 
 /**
@@ -18,6 +19,8 @@ public class PageDispatchImpl
     implements PageDispatch
 {
     private PagePlugin pagePlugin_;
+
+    private Dispatcher dispatcher_;
 
     private String pathname_;
 
@@ -43,7 +46,7 @@ public class PageDispatchImpl
      */
 
     public PageDispatchImpl(PageAlfr pageAlfr, PagePlugin pagePlugin,
-        int heimId, String pathname)
+        Dispatcher dispatcher, int heimId, String pathname)
     {
         Page page = pageAlfr.getPage(heimId, pathname);
         Page nearestPage;
@@ -54,6 +57,7 @@ public class PageDispatchImpl
         }
 
         pagePlugin_ = pagePlugin;
+        dispatcher_ = dispatcher;
         pathname_ = pathname;
         page_ = page;
         nearestPage_ = nearestPage;
@@ -65,6 +69,12 @@ public class PageDispatchImpl
     /*
      * PageDispatch
      */
+
+    public Dispatcher getDispatcher()
+    {
+        return dispatcher_;
+    }
+
 
     public String getPathname()
     {
@@ -121,8 +131,8 @@ public class PageDispatchImpl
     public void setGardRootPage(Page gardRootPage)
     {
         gardRootPage_ = gardRootPage;
-        localPathname_ = pathname_.substring(gardRootPage
-            .getPathname().length());
+        localPathname_ = pathname_.substring(gardRootPage.getPathname()
+            .length());
         gardId_ = gardRootPage.getGardId();
         plugin_ = pagePlugin_.getPlugin(gardId_);
     }

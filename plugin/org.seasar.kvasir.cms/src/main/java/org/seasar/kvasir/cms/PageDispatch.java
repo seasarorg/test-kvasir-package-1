@@ -2,6 +2,7 @@ package org.seasar.kvasir.cms;
 
 import org.seasar.kvasir.base.plugin.Plugin;
 import org.seasar.kvasir.page.Page;
+import org.seasar.kvasir.webapp.Dispatcher;
 
 
 /**
@@ -14,6 +15,14 @@ import org.seasar.kvasir.page.Page;
  */
 public interface PageDispatch
 {
+    /**
+     * 処理中のディスパッチャを返します。
+     * 
+     * @return ディスパッチャ。
+     */
+    Dispatcher getDispatcher();
+
+
     /**
      * 処理対象のパスを返します。
      *

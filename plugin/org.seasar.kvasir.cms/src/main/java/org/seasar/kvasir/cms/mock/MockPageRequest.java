@@ -74,6 +74,14 @@ public class MockPageRequest
     }
 
 
+    public PageDispatch setThat(PageDispatch that)
+    {
+        PageDispatch preThat = that_;
+        that_ = that;
+        return preThat;
+    }
+
+
     public Page getRootPage()
     {
         return rootPage_;

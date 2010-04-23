@@ -3,11 +3,14 @@ package org.seasar.kvasir.cms.mock;
 import org.seasar.kvasir.base.plugin.Plugin;
 import org.seasar.kvasir.cms.PageDispatch;
 import org.seasar.kvasir.page.Page;
+import org.seasar.kvasir.webapp.Dispatcher;
 
 
 public class MockPageDispatch
     implements PageDispatch
 {
+    private Dispatcher dispatcher_;
+
     private String gardId_;
 
     private String[] gardIds_;
@@ -25,6 +28,18 @@ public class MockPageDispatch
     private String pathname_;
 
     private Plugin<?> plugin_;
+
+
+    public Dispatcher getDispatcher()
+    {
+        return dispatcher_;
+    }
+
+
+    public void setDispatcher(Dispatcher dispatcher)
+    {
+        dispatcher_ = dispatcher;
+    }
 
 
     public String getGardId()

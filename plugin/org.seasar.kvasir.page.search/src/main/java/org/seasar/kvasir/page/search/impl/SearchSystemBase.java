@@ -19,6 +19,7 @@ import org.seasar.kvasir.page.search.QueryStringParser;
 import org.seasar.kvasir.page.search.SearchContext;
 import org.seasar.kvasir.page.search.SearchQuery;
 import org.seasar.kvasir.page.search.SearchResult;
+import org.seasar.kvasir.page.search.SearchResultFilter;
 import org.seasar.kvasir.page.search.SearchResultHandler;
 import org.seasar.kvasir.page.search.SearchSystem;
 import org.seasar.kvasir.page.search.extension.SearchSystemElement;
@@ -144,6 +145,11 @@ public abstract class SearchSystemBase
         }
 
         if (!query.containsInTopPages(page)) {
+            return false;
+        }
+
+        SearchResultFilter searchResultFilter = query.getSearchResultFilter();
+        if (searchResultFilter != null && !searchResultFilter.isVisible(result)) {
             return false;
         }
 

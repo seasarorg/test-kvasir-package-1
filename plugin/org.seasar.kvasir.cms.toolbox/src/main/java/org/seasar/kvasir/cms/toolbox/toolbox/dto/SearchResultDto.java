@@ -9,18 +9,27 @@ import org.seasar.kvasir.cms.util.PresentationUtils;
 
 
 /**
- * <p><b>同期化：</b>
- * このクラスはスレッドセーフです。
- * </p>
- *
+ * 検索結果を画面に表示するためのクラスです。
+ * 
  * @author YOKOTA Takehiko
  */
 public class SearchResultDto
 {
     private SearchResult searchResult_;
+
     private String iconURL_;
+
     private String size_;
+
     private String modifyDate_;
+
+    private String title_;
+
+    private String url_;
+
+    private float score_;
+
+    private String summary_;
 
 
     public SearchResultDto(SearchResult searchResult, Locale locale)
@@ -31,6 +40,16 @@ public class SearchResultDto
         size_ = ((searchResult.getSize() + 500) / 1000) + "k";
         DateFormat df = DateFormat.getDateInstance(DateFormat.FULL, locale);
         modifyDate_ = df.format(page.getModifyDate());
+        title_ = searchResult.getTitle();
+        url_ = searchResult.getURL();
+        score_ = searchResult.getScore();
+        summary_ = searchResult.getSummary();
+    }
+
+
+    public Page getPage()
+    {
+        return searchResult_.getPage();
     }
 
 
@@ -40,27 +59,57 @@ public class SearchResultDto
     }
 
 
+    public void setIconURL(String iconURL)
+    {
+        iconURL_ = iconURL;
+    }
+
+
     public String getTitle()
     {
-        return searchResult_.getTitle();
+        return title_;
+    }
+
+
+    public void setTitle(String title)
+    {
+        title_ = title;
     }
 
 
     public String getURL()
     {
-        return searchResult_.getURL();
+        return url_;
+    }
+
+
+    public void setURL(String url)
+    {
+        url_ = url;
     }
 
 
     public float getScore()
     {
-        return searchResult_.getScore();
+        return score_;
+    }
+
+
+    public void setScore(float score)
+    {
+        score_ = score;
     }
 
 
     public String getSummary()
     {
-        return searchResult_.getSummary();
+        return summary_;
+    }
+
+
+    public void setSummary(String summary)
+    {
+        summary_ = summary;
     }
 
 
@@ -70,8 +119,20 @@ public class SearchResultDto
     }
 
 
+    public void setSize(String size)
+    {
+        size_ = size;
+    }
+
+
     public String getModifyDate()
     {
         return modifyDate_;
+    }
+
+
+    public void setModifyDate(String modifyDate)
+    {
+        modifyDate_ = modifyDate;
     }
 }

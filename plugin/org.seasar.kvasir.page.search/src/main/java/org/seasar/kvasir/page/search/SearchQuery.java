@@ -17,16 +17,12 @@ import org.seasar.kvasir.page.type.User;
  * <p>このクラスは検索のためのクエリを表します。
  * SearchQueryオブジェクトを生成するには通常コンストラクタを用います。
  * 生成した後に、
- * 各setterメソッドを用いて検索クエリオブジェクトに検索条件を設定していきます。
- * 検索条件を設定し終えたら{@link SearchContext#search(SearchQuery)}
- * メソッドにクエリオブジェクトを渡して検索を行ないます。
+ * 各setterメソッドを用いて検索クエリオブジェクトに検索条件を設定して下さい。
  * </p>
  * <p><b>同期化：</b>
  * このクラスは{@link #freeze()}を呼び出すまではスレッドセーフではありません。
  * {@link #freeze()}を呼び出した後はスレッドセーフです。
  * </p>
- *
- * @author YOKOTA Takehiko
  *
  * @author YOKOTA Takehiko
  */
@@ -57,12 +53,6 @@ public class SearchQuery
     /** HeimのIDです。 */
     private Integer heimId_;
 
-    /**
-     * 生の検索結果からSearchResult
-     * オブジェクトを生成するSearchResultFactoryのためのオプションです。
-     */
-    private String searchResultFactoryOption_ = "";
-
     /** ページタイプを保持するSetです。 */
     private Set<String> pageTypeSet_ = new HashSet<String>();
 
@@ -77,6 +67,9 @@ public class SearchQuery
 
     /** 検索対象のロケールです。 */
     private Locale locale_;
+
+    /** 検索結果を取捨選択するためのフィルタです。  */
+    private SearchResultFilter searchResultFilter_;
 
     private boolean freezed_ = false;
 
@@ -123,10 +116,6 @@ public class SearchQuery
             return false;
         }
         if (!equals(query.heimId_, heimId_)) {
-            return false;
-        }
-        if (!equals(query.searchResultFactoryOption_,
-            searchResultFactoryOption_)) {
             return false;
         }
         int size = query.pageTypeSet_.size();
@@ -295,36 +284,6 @@ public class SearchQuery
 
 
     /**
-     * SearchResultFactory用のオプションを返します。
-     *
-     * @return SearchResultFactory用のオプション。
-     */
-    public String getSearchResultFactoryOption()
-    {
-        return searchResultFactoryOption_;
-    }
-
-
-    /**
-     * SearchResultFactory用のオプションを設定します。
-     * <p>SearchResultFactory用のオプションは生の検索結果からSearchResult
-     * オブジェクトを生成するSearchResultFactory用ののためのオプション指定です。
-     * SearchResultFactory
-     * 用のオプションとして何を指定できるかは検索システム毎に異なります。
-     * </p>
-     *
-     * @param searchResultFactoryOption SearchResultFactory用のオプション。
-     */
-    public SearchQuery setSearchResultFactoryOption(
-        String searchResultFactoryOption)
-    {
-        checkFreezed();
-        searchResultFactoryOption_ = searchResultFactoryOption;
-        return this;
-    }
-
-
-    /**
      * アクセス権限を返します。
      *
      * @return アクセス権限。
@@ -488,6 +447,21 @@ public class SearchQuery
     {
         checkFreezed();
         locale_ = locale;
+        return this;
+    }
+
+
+    public SearchResultFilter getSearchResultFilter()
+    {
+        return searchResultFilter_;
+    }
+
+
+    public SearchQuery setSearchResultFilter(
+        SearchResultFilter searchResultFilter)
+    {
+        checkFreezed();
+        searchResultFilter_ = searchResultFilter;
         return this;
     }
 

@@ -26,6 +26,12 @@ import org.seasar.kvasir.page.type.User;
 import org.seasar.kvasir.util.PropertyUtils;
 
 
+/**
+ * {@link PageCondition}からSQLを構築するために{@link PageCondition}を解析するクラスです。
+ * 
+ * @author skirnir
+ * @see PageCondition
+ */
 public class PageConditionParser
 {
     private final Set<String> reservedSet_;
@@ -41,6 +47,14 @@ public class PageConditionParser
     private Identity identity_;
 
 
+    /**
+     * このクラスのオブジェクトを構築します。
+     * 
+     * @param identity 使用しているデータベースを表わすIdentityオブジェクト。
+     * nullを指定してはけません。
+     * @param plugin PagePluginオブジェクト。
+     * nullを指定してはけません。
+     */
     public PageConditionParser(Identity identity, PagePlugin plugin)
     {
         Set<String> set = new HashSet<String>();
@@ -77,13 +91,41 @@ public class PageConditionParser
     }
 
 
+    /**
+     * PageConditionが持つ各情報を解析して、
+     * SQL SELECT文を構築するための元となる{@link ParsedPageCondition}オブジェクトを作成します。
+     * 
+     * @param qh SQLを構築するためのQueryHandlerオブジェクト。
+     * nullを指定してはいけません。
+     * @param columns 取得するカラム名の配列。
+     * nullを指定してはいけません。
+     * @param type 取得するページのタイプ。
+     * nullを指定することができます。
+     * @param includeConcealed 不可視状態のページを取得するかどうか。
+     * @param onlyListed  一覧表示に含めるページだけを取得するかどうか。
+     * @param currentDate 可視状態を判定する基準となる日時。
+     * nullを指定すると現在日時について判定されます。
+     * @param heimId HeimのID。
+     * @param user アクセスユーザ。この引数がnullでprivilegeもnullの場合、
+     * 権限によらずページを取得するようなSQLが構築されます。
+     * この引数が非nullの場合、指定したユーザについて指定した権限でアクセス可能なページだけを
+     * 取得するようなSQLが構築されます。
+     * @param privilege 権限。
+     * userとともに使用されます。userが非nullの時はこの引数はnullであってはいけません。
+     * userがnullの時はこの引数はnullである必要があります。
+     * @param option オプション。nullを指定することもできます。
+     * @param orders 取得の際の並び順。nullや空の配列を指定すると並び順は不定となります。
+     * @return 構築した{@link ParsedPageCondition}オブジェクト。
+     * nullが返されることはありません。
+     * @throws IllegalArgumentException 引数が不正であった場合。
+     */
     public ParsedPageCondition parse(QueryHandler qh, String[] columns,
         String type, boolean includeConcealed, boolean onlyListed,
         Date currentDate, int heimId, User user, Privilege privilege,
         Formula option, Order[] orders)
         throws IllegalArgumentException
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         List<Object> list = new ArrayList<Object>();
         List<String> columnList = new ArrayList<String>(Arrays.asList(columns));
         Set<String> groupBySet = new LinkedHashSet<String>(
@@ -327,9 +369,9 @@ public class PageConditionParser
         }
 
         boolean orderSpecified = (orders != null && orders.length > 0);
-        StringBuffer orderBySb = null;
+        StringBuilder orderBySb = null;
         if (orderSpecified) {
-            orderBySb = new StringBuffer();
+            orderBySb = new StringBuilder();
             for (int i = 0; i < orders.length; i++) {
                 if (i > 0) {
                     orderBySb.append(",");
@@ -418,7 +460,8 @@ public class PageConditionParser
      * private scope methods
      */
 
-    private String convert(StringBuffer sb, Set<String> columnSet, String symbol)
+    private String convert(StringBuilder sb, Set<String> columnSet,
+        String symbol)
     {
         String lsymbol = symbol.toLowerCase();
         if (reservedSet_.contains(lsymbol)) {

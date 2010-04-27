@@ -13,9 +13,6 @@ import org.seasar.kvasir.page.type.User;
 
 /**
  * Heim内のページを表すインタフェースです。
- * <p><b>同期化：</b>
- * このインタフェースの実装クラスはスレッドセーフである必要があります。
- * </p>
  *
  * @author YOKOTA Takehiko
  * @see PageAlfr

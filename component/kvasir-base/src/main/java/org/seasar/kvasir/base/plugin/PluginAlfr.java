@@ -3,6 +3,7 @@ package org.seasar.kvasir.base.plugin;
 import org.seasar.kvasir.base.Lifecycle;
 import org.seasar.kvasir.base.annotation.ForPreparingMode;
 import org.seasar.kvasir.base.descriptor.ExtensionElement;
+import org.seasar.kvasir.base.descriptor.annotation.Component;
 import org.seasar.kvasir.base.plugin.descriptor.ExtensionPoint;
 import org.seasar.kvasir.base.plugin.descriptor.PluginDescriptor;
 
@@ -84,9 +85,38 @@ public interface PluginAlfr
     Object[] getExtensionComponents(String point, boolean ascending);
 
 
+    /**
+     * 指定されたプラグインが持つ拡張ポイントにプラグインされた拡張に対応するコンポーネントの配列を返します。
+     * <p>このメソッドは<code>getExtensionComponents(componentClass, pluginId, true)</code>
+     * と同じです。
+     * </p>
+     * 
+     * @param <T> コンポーネントの型。
+     * @param componentClass コンポーネントの型を表わすClassオブジェクト。
+     * @param pluginId プラグインID。
+     * @return コンポーネントの配列。
+     * nullが返されることはありません。
+     */
     <T> T[] getExtensionComponents(Class<T> componentClass, String pluginId);
 
 
+    /**
+     * 指定されたプラグインが持つ拡張ポイントにプラグインされた拡張に対応するコンポーネントの配列を返します。
+     * <p>プラグインが複数の拡張ポイントを持つ場合はcomponentClassから拡張ポイントが決定されます。
+     * componentClassとしては拡張を表わすExtensionElementクラス、その祖先クラス、実装インタフェース、
+     * 拡張を表わすExtensionElementに付与された{@link Component}アノテーションのisaプロパティ
+     * で指定されたコンポーネントクラス、その祖先クラス、実装インタフェースを指定することができます。
+     * なおcomponentClassから拡張ポイントが特定できなかった場合は使用される拡張ポイントは不定となるため、
+     * 拡張ポイントを特定できるようなるべく具体的なクラスを指定するようにして下さい。
+     * </p>
+     * 
+     * @param <T> コンポーネントの型。
+     * @param componentClass コンポーネントの型を表わすClassオブジェクト。
+     * @param pluginId プラグインID。
+     * @param ascending コンポーネントを昇順で返すかどうか。falseの場合降順で返されます。
+     * @return コンポーネントの配列。
+     * nullが返されることはありません。
+     */
     <T> T[] getExtensionComponents(Class<T> componentClass, String pluginId,
         boolean ascending);
 

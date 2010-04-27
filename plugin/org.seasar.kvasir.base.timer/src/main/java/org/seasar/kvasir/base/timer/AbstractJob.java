@@ -1,4 +1,4 @@
-import org.seasar.kvasir.base.timer.Job;
+package org.seasar.kvasir.base.timer;
 import org.seasar.kvasir.base.timer.extension.JobElement;
 
 

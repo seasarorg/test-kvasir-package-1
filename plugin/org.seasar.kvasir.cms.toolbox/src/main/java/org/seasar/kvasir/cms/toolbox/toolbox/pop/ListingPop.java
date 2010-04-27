@@ -1,6 +1,11 @@
 package org.seasar.kvasir.cms.toolbox.toolbox.pop;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -16,6 +21,7 @@ import org.seasar.kvasir.page.ability.PropertyAbility;
 import org.seasar.kvasir.page.ability.content.Content;
 import org.seasar.kvasir.page.ability.content.ContentAbility;
 import org.seasar.kvasir.page.auth.AuthPlugin;
+import org.seasar.kvasir.page.condition.Formula;
 import org.seasar.kvasir.page.condition.Order;
 import org.seasar.kvasir.page.condition.PageCondition;
 import org.seasar.kvasir.page.type.User;
@@ -26,6 +32,7 @@ import org.seasar.kvasir.util.html.HTMLUtils;
 
 
 /**
+ * 一覧表示のためのPOPクラスです。
  * <p><b>同期化：</b>
  * このクラスはスレッドセーフです。
  * </p>
@@ -42,6 +49,8 @@ public class ListingPop extends GenericPop
 
     public static final String PROP_DISPLAYONLYVIEWABLE = "displayOnlyViewable";
 
+    public static final String PROP_DISPLAYONLYLISTED = "displayOnlyListed";
+
     public static final String PROP_SORTKEY = "sortKey";
 
     public static final String PROP_ASCENDING = "ascending";
@@ -50,6 +59,8 @@ public class ListingPop extends GenericPop
 
     public static final String PROP_CONTINUINGLABEL = "continuingLabel";
 
+    public static final String PROP_OPTION = "option";
+
     public static final String BASEDIRECTORY_CURRENT = ".";
 
     public static final int NUMBEROFENTRIES_ALL = PageCondition.LENGTH_ALL;
@@ -57,6 +68,8 @@ public class ListingPop extends GenericPop
     public static final int NUMBEROFENTRIES_DEFAULT = 10;
 
     public static final int SUMMARYLENGTH_DEFAULT = 128;
+
+    private static final String SORTKEY_RANDOM = "random";
 
     private AuthPlugin authPlugin_;
 
@@ -71,59 +84,117 @@ public class ListingPop extends GenericPop
     protected RenderedPop render(PopContext context, String[] args,
         Map<String, Object> popScope)
     {
-        Page thatPage = context.getThatPage();
+        String error = null;
+        do {
+            Page thatPage = context.getThatPage();
+            Locale locale = context.getLocale();
 
-        Page baseDirectory = null;
-        String baseDirectoryPath = getProperty(popScope, PROP_BASEDIRECTORY);
-        if (baseDirectoryPath.equals(BASEDIRECTORY_CURRENT)) {
-            if (thatPage != null) {
-                if (thatPage.isNode()) {
-                    baseDirectory = thatPage;
-                } else {
-                    baseDirectory = thatPage.getParent();
+            int heimId = thatPage.getHeimId();
+            Page baseDirectory = null;
+            String baseDirectoryPath = getProperty(popScope, PROP_BASEDIRECTORY);
+            int colon = baseDirectoryPath.indexOf(':');
+            if (colon >= 0) {
+                try {
+                    heimId = Integer.parseInt(baseDirectoryPath.substring(0,
+                        colon));
+                } catch (NumberFormatException ex) {
+                    error = MessageFormat.format(getPlugin().getProperty(
+                        "pop.listingPop.error.baseDirectoryPath", locale),
+                        baseDirectoryPath);
+                    break;
+                }
+                baseDirectoryPath = baseDirectoryPath.substring(colon + 1);
+            }
+            if (baseDirectoryPath.equals(BASEDIRECTORY_CURRENT)) {
+                if (thatPage != null) {
+                    if (thatPage.isNode()) {
+                        baseDirectoryPath = thatPage.getPathname();
+                    } else {
+                        baseDirectoryPath = thatPage.getParentPathname();
+                    }
                 }
             }
-        } else {
-            if (thatPage != null) {
-                baseDirectory = getPageAlfr().getPage(thatPage.getHeimId(),
-                    baseDirectoryPath);
+            baseDirectory = getPageAlfr().getPage(heimId, baseDirectoryPath);
+
+            int summaryLength = PropertyUtils.valueOf(getProperty(popScope,
+                PROP_SUMMARYLENGTH), SUMMARYLENGTH_DEFAULT);
+            String continuingLabel = getProperty(popScope, PROP_CONTINUINGLABEL);
+            boolean displayOnlyViewable = PropertyUtils.valueOf(getProperty(
+                popScope, PROP_DISPLAYONLYVIEWABLE), false);
+            boolean displayOnlyListed = PropertyUtils.valueOf(getProperty(
+                popScope, PROP_DISPLAYONLYLISTED), true);
+
+            Page[] pages;
+            if (baseDirectory != null) {
+                String sortKey = getProperty(popScope, PROP_SORTKEY);
+                boolean ascending = PropertyUtils.valueOf(getProperty(popScope,
+                    PROP_ASCENDING), true);
+                int numberOfItems = PropertyUtils.valueOf(getProperty(popScope,
+                    PROP_NUMBEROFENTRIES), NUMBEROFENTRIES_DEFAULT);
+
+                Formula option = null;
+                String optionString = getProperty(popScope, PROP_SORTKEY);
+                if (optionString != null && optionString.length() > 0) {
+                    option = new Formula(optionString);
+                }
+
+                User actor = authPlugin_.getCurrentActor();
+                PageCondition cond = createCondition(actor, numberOfItems,
+                    displayOnlyViewable, displayOnlyListed, sortKey, ascending,
+                    option);
+                pages = baseDirectory.getChildren(cond);
+                if (SORTKEY_RANDOM.equals(sortKey)) {
+                    randomize(pages, numberOfItems);
+                }
+            } else {
+                pages = new Page[0];
             }
+
+            ListingEntry[] entries = new ListingEntry[pages.length];
+            for (int i = 0; i < pages.length; i++) {
+                entries[i] = new ListingEntry(pages[i], locale, summaryLength,
+                    continuingLabel);
+            }
+            popScope.put("entries", entries);
+        } while (false);
+
+        if (error != null) {
+            popScope.put("error", error);
         }
 
-        Locale locale = context.getLocale();
-        int summaryLength = PropertyUtils.valueOf(getProperty(popScope,
-            PROP_SUMMARYLENGTH), SUMMARYLENGTH_DEFAULT);
-        String continuingLabel = getProperty(popScope, PROP_CONTINUINGLABEL);
-        boolean displayOnlyViewable = PropertyUtils.valueOf(getProperty(
-            popScope, PROP_DISPLAYONLYVIEWABLE), false);
-
-        Page[] pages;
-        if (baseDirectory != null) {
-            String sortKey = getProperty(popScope, PROP_SORTKEY);
-            boolean ascending = PropertyUtils.valueOf(getProperty(popScope,
-                PROP_ASCENDING), true);
-            int numberOfItems = PropertyUtils.valueOf(getProperty(popScope,
-                PROP_NUMBEROFENTRIES), NUMBEROFENTRIES_DEFAULT);
-
-            User actor = authPlugin_.getCurrentActor();
-            pages = baseDirectory.getChildren(new PageCondition().setType(
-                Page.TYPE).setIncludeConcealed(actor.isAdministrator())
-                .setOnlyListed(true).setUser(actor).setPrivilege(
-                    displayOnlyViewable ? Privilege.ACCESS_VIEW
-                        : Privilege.ACCESS_PEEK).setOrder(
-                    new Order(sortKey, ascending)).setLength(numberOfItems));
-        } else {
-            pages = new Page[0];
-        }
-
-        ListingEntry[] entries = new ListingEntry[pages.length];
-        for (int i = 0; i < pages.length; i++) {
-            entries[i] = new ListingEntry(pages[i], locale, summaryLength,
-                continuingLabel);
-        }
-
-        popScope.put("entries", entries);
         return super.render(context, args, popScope);
+    }
+
+
+    Page[] randomize(Page[] pages, int length)
+    {
+        List<Page> randomized = new ArrayList<Page>();
+        LinkedList<Page> list = new LinkedList<Page>(Arrays.asList(pages));
+        if (length < 0 || length > pages.length) {
+            length = pages.length;
+        }
+        for (int i = 0; i < length; i++) {
+            randomized.add(list.remove((int)(Math.random() * list.size())));
+        }
+        return randomized.toArray(new Page[0]);
+    }
+
+
+    protected PageCondition createCondition(User actor, int numberOfItems,
+        boolean displayOnlyViewable, boolean displayOnlyListed, String sortKey,
+        boolean ascending, Formula option)
+    {
+        PageCondition cond = new PageCondition().setIncludeConcealed(
+            actor.isAdministrator()).setOnlyListed(displayOnlyListed).setUser(
+            actor).setOption(new Formula(Page.FIELD_NODE + "=false"))
+            .setPrivilege(
+                displayOnlyViewable ? Privilege.ACCESS_VIEW
+                    : Privilege.ACCESS_PEEK).addOption(option);
+        if (!SORTKEY_RANDOM.equals(sortKey)) {
+            cond.setOrder(new Order(sortKey, ascending)).setLength(
+                numberOfItems);
+        }
+        return cond;
     }
 
 

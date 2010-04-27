@@ -77,12 +77,15 @@
         human-readable="false" default="10" />
       <form-unit kind="property" id="displayOnlyViewable"
         human-readable="false" type="boolean" />
+      <form-unit kind="property" id="displayOnlyListed"
+        human-readable="false" type="boolean" default="true" />
       <form-unit kind="group" id="group.sorting" />
       <form-unit kind="property" id="sortKey" human-readable="false"
         type="select" default="createDate">
         <option>createDate</option>
         <option>modifyDate</option>
         <option>orderNumber</option>
+        <option>random</option>
       </form-unit>
       <form-unit kind="property" id="ascending" human-readable="false"
         type="boolean" default="true" />
@@ -91,6 +94,8 @@
         human-readable="false" default="128" />
       <form-unit kind="property" id="continuingLabel" />
       <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="option"
+        human-readable="false" />
       <form-unit kind="property" id="body" />
     </pop>
     <pop id="loginPop" body-resource-path="pops/loginPop/login.html">

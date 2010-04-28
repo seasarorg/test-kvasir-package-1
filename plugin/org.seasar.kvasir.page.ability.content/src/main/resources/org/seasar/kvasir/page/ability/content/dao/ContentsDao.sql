@@ -3,10 +3,10 @@
 #
 initialize=createContentsIdSequence,createTable
 initialize.createContentsIdSequence= \
-    CREATE SEQUENCE contents_id_seq
+    CREATE SEQUENCE _SEQ_contents_id
 initialize.createTable= \
     CREATE TABLE contents ( \
-        id                  INTEGER DEFAULT NEXTVAL('contents_id_seq') NOT NULL PRIMARY KEY, \
+        id                  INTEGER DEFAULT NEXTVAL('_SEQ_contents_id') NOT NULL PRIMARY KEY, \
         pageid              INTEGER NOT NULL, \
         variant             VARCHAR(255) NOT NULL, \
         revisionnumber      INTEGER NOT NULL, \

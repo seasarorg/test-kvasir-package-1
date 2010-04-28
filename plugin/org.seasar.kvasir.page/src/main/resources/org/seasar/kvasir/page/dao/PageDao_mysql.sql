@@ -7,9 +7,6 @@ getPageList.offset.all=\
 getPageList.offset.length=\
     SELECT ?? FROM ?? ?? LIMIT :offset,:length
 
-insert.getId=\
-    SELECT LAST_INSERT_ID()
-
 #
 # FOR INITIALIZATION
 #

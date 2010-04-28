@@ -38,9 +38,6 @@ childNameExists=\
 insert.getMaxOrderNumber=\
     SELECT COALESCE(MAX(ordernumber), 0) FROM page WHERE heimid=? AND parentpathname=?
 
-insert.getId=\
-    SELECT CURRVAL('page_id_seq')
-
 updateById.where=\
     id=?
 
@@ -86,10 +83,10 @@ initialize=createPageIdSequence,createPage, \
 initialize.specific.pre=
 initialize.specific.post=
 initialize.createPageIdSequence= \
-    CREATE SEQUENCE page_id_seq
+    CREATE SEQUENCE _SEQ_page_id
 initialize.createPage= \
     CREATE TABLE page ( \
-        id                  INTEGER DEFAULT NEXTVAL('page_id_seq') NOT NULL PRIMARY KEY, \
+        id                  INTEGER DEFAULT NEXTVAL('_SEQ_page_id') NOT NULL PRIMARY KEY, \
         type                VARCHAR(255) NOT NULL, \
         heimid              INTEGER NOT NULL, \
         lordid              INTEGER NOT NULL, \
@@ -254,6 +251,6 @@ initialize.insertDummyPage= \
         0, 0, 0, 0, 1 \
     )
 initialize.setPageIdSequence= \
-    SELECT SETVAL('page_id_seq', 1000)
+    SELECT SETVAL('_SEQ_page_id', 1000)
 initialize.deleteDummyPage= \
     DELETE FROM page WHERE id=1000

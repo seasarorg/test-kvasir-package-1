@@ -8,9 +8,6 @@ getPageList.offset.all=\
 getPageList.offset.length=\
     SELECT ?? FROM ?? ?? LIMIT :offset, :length
 
-insert.getId=\
-    CALL IDENTITY()
-
 #
 # FOR INITIALIZATION
 #

@@ -1,0 +1,1 @@
+thread-pool-size.description=処理を実行するためのスレッドプールの大きさです。（変更した設定はKvasir/Soraを再起動するまで反映されません。）

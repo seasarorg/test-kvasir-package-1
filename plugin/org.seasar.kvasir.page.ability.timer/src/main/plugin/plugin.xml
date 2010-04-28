@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://kvasir.sandbox.seasar.org/plugin/3.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://kvasir.sandbox.seasar.org/plugin/3.0.0 http://kvasir.sandbox.seasar.org/support/plugin-3_0_0.xsd"
+  id="org.seasar.kvasir.page.ability.timer" name="%plugin.name" version="3.0.0-SNAPSHOT"
+  provider-name="%plugin.provider-name">
+  <runtime>
+    <library name="conf" />
+    <library name="org.seasar.kvasir.page.ability.timer.jar">
+      <export name="**" />
+      <export name="**" resource="true" />
+    </library>
+    <library name="lib" expand="true">
+      <export name="**" />
+      <export name="**" resource="true" />
+    </library>
+  </runtime>
+
+  <requires>
+    <import plugin="org.seasar.kvasir.base.dao" />
+    <import plugin="org.seasar.kvasir.base.timer" />
+    <import plugin="org.seasar.kvasir.page" />
+  </requires>
+
+  <extension point="org.seasar.kvasir.page.pageAbilityAlfrs">
+    <page-ability-alfr id="timerAbilityAlfr" />
+  </extension>
+</plugin>

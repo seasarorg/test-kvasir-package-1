@@ -126,8 +126,7 @@ public class TimerAbilityAlfrImpl extends AbstractPageAbilityAlfr
     @RequiredTx
     public Schedule getSchedule(Page page, int id)
     {
-        scheduleDao_.selectByPageIdAndId(page.getId(), id);
-        return null;
+        return toSchedule(scheduleDao_.selectByPageIdAndId(page.getId(), id));
     }
 
 
@@ -138,11 +137,20 @@ public class TimerAbilityAlfrImpl extends AbstractPageAbilityAlfr
     }
 
 
+    Schedule toSchedule(ScheduleDto dto)
+    {
+        if (dto == null) {
+            return null;
+        }
+        return new ScheduleImpl(dto);
+    }
+
+
     Schedule[] toSchedules(ScheduleDto[] dtos)
     {
         Schedule[] schedules = new Schedule[dtos.length];
         for (int i = 0; i < schedules.length; i++) {
-            schedules[i] = new ScheduleImpl(dtos[i]);
+            schedules[i] = toSchedule(dtos[i]);
         }
         return schedules;
     }
@@ -153,6 +161,20 @@ public class TimerAbilityAlfrImpl extends AbstractPageAbilityAlfr
     {
         return toSchedules(scheduleDao_.selectListByPageIdAndStatus(page
             .getId(), status.getId()));
+    }
+
+
+    @RequiredTx
+    public Schedule[] getSchedulesAndChangeStatus(ScheduleStatus fromStatus,
+        ScheduleStatus toStatus)
+    {
+        ScheduleDto[] dtos = scheduleDao_
+            .selectListForUpdateByStatus(fromStatus.getId());
+        for (ScheduleDto dto : dtos) {
+            scheduleDao_.updateStatusByPageIdAndId(toStatus.getId(), dto
+                .getPageId(), dto.getId());
+        }
+        return toSchedules(dtos);
     }
 
 
@@ -178,39 +200,9 @@ public class TimerAbilityAlfrImpl extends AbstractPageAbilityAlfr
 
 
     @RequiredTx
-    public void updateSchedule(Page page, int id, ScheduleMold mold)
+    public boolean cancelSchedule(Page page, int id)
     {
-        ScheduleDto dto = scheduleDao_.selectByPageIdAndId(page.getId(), id);
-        if (dto == null) {
-            // 存在しない場合は何もしない。
-            return;
-        }
-
-        if (mold.getStatus() != null) {
-            dto.setStatusEnum(mold.getStatus());
-        }
-
-        if (mold.getScheduledDate() != null) {
-            dto.setScheduledDate(mold.getScheduledDate());
-        }
-
-        if (mold.getComponent() != null) {
-            dto.setComponent(mold.getComponent());
-        }
-
-        if (mold.getBeginDate() != null) {
-            dto.setBeginDate(mold.getBeginDate());
-        }
-
-        if (mold.getFinishDate() != null) {
-            dto.setFinishDate(mold.getFinishDate());
-        }
-
-        if (mold.getErrorInformation() != null) {
-            dto.setErrorInformation(mold.getErrorInformation());
-        }
-
-        scheduleDao_.updateByPageIdAndId(dto, page.getId(), id);
+        return scheduleDao_.updateByPageIdAndIdToCancel(page.getId(), id) > 0;
     }
 
 

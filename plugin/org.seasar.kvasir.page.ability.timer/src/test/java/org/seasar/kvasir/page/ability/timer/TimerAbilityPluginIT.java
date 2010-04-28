@@ -52,16 +52,13 @@ public class TimerAbilityPluginIT extends
         assertEquals(date, schedules[0].getScheduledDate());
         assertEquals("component", schedules[0].getComponent());
 
-        // UPDATE
+        // CANCEL
 
-        mold = new ScheduleMold();
-        mold.setStatus(ScheduleStatus.CANCELLED);
-        ability.updateSchedule(schedules[0].getId(), mold);
+        boolean cancelled = ability.cancelSchedule(schedules[0].getId());
+        assertTrue(cancelled);
 
-        schedules = ability.getSchedules();
-        assertEquals(1, schedules.length);
-
-        assertEquals(ScheduleStatus.CANCELLED, schedules[0].getStatus());
+        Schedule schedule = ability.getSchedule(schedules[0].getId());
+        assertEquals(ScheduleStatus.CANCELLED, schedule.getStatus());
 
         // DELETE
 

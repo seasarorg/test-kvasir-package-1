@@ -1,8 +1,9 @@
 package org.seasar.kvasir.page.ability.timer;
 
-public enum ScheduleStatus
+public enum ScheduleStatus implements ScheduleStatusConstants
 {
-    INACTIVE(0), SCHEDULED(1), RUNNING(2), FINISHED(3), CANCELLED(4);
+    INACTIVE(ID_INACTIVE), SCHEDULED(ID_SCHEDULED), RUNNING(ID_RUNNING), FINISHED(
+        ID_FINISHED), CANCELLED(ID_CANCELLED);
 
     public static ScheduleStatus enumOf(Integer id)
     {

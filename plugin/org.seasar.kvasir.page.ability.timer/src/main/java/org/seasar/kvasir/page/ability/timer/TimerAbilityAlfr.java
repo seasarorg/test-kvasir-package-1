@@ -38,7 +38,11 @@ public interface TimerAbilityAlfr
     Schedule[] getSchedules(Page page, ScheduleStatus status);
 
 
-    void updateSchedule(Page page, int id, ScheduleMold mold);
+    Schedule[] getSchedulesAndChangeStatus(ScheduleStatus fromStatus,
+        ScheduleStatus toStatus);
+
+
+    boolean cancelSchedule(Page page, int id);
 
 
     void addSchedule(Page page, ScheduleMold mold);

@@ -22,7 +22,7 @@ public interface TimerAbility
     Schedule[] getSchedules(ScheduleStatus status);
 
 
-    void updateSchedule(int id, ScheduleMold mold);
+    boolean cancelSchedule(int id);
 
 
     void addSchedule(ScheduleMold mold);

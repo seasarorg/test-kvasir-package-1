@@ -31,6 +31,12 @@ public class TimerAbilityImpl extends AbstractPageAbility
     }
 
 
+    public boolean cancelSchedule(int id)
+    {
+        return alfr_.cancelSchedule(page_, id);
+    }
+
+
     public void clearSchedules()
     {
         alfr_.clearSchedules(page_);
@@ -64,11 +70,5 @@ public class TimerAbilityImpl extends AbstractPageAbility
     public void removeSchedules(ScheduleStatus status)
     {
         alfr_.removeSchedules(page_, status);
-    }
-
-
-    public void updateSchedule(int id, ScheduleMold mold)
-    {
-        alfr_.updateSchedule(page_, id, mold);
     }
 }

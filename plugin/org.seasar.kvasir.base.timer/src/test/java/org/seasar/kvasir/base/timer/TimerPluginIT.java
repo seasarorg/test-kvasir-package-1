@@ -17,6 +17,6 @@ public class TimerPluginIT extends KvasirPluginTestCase<TimerPlugin>
     public static Test suite()
         throws Exception
     {
-        return createTestSuite(TimerPluginIT.class);
+        return createTestSuite(TimerPluginIT.class, false);
     }
 }

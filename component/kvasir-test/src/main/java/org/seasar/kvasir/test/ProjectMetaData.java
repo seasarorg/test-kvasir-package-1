@@ -6,9 +6,9 @@ import org.seasar.kvasir.util.ClassUtils;
 import org.seasar.kvasir.util.io.Resource;
 import org.seasar.kvasir.util.io.impl.FileResource;
 
+public class ProjectMetaData {
+    private boolean useKvasirEclipsePluginTestEnvironmentIfPossible_;
 
-public class ProjectMetaData
-{
     private Resource projectDirectory_;
 
     private Resource testClassesDirectory_;
@@ -31,121 +31,105 @@ public class ProjectMetaData
 
     private boolean kvasirEclipsePluginProject_;
 
-
-    public ProjectMetaData(Class<? extends TestCase> clazz)
-    {
-        this(new FileResource(ClassUtils.getBaseDirectory(clazz)));
+    public ProjectMetaData(Class<? extends TestCase> clazz) {
+        this(clazz, true);
     }
 
+    public ProjectMetaData(Class<? extends TestCase> clazz,
+            boolean useKvasirEclipsePluginTestEnvironmentIfPossible) {
+        this(new FileResource(ClassUtils.getBaseDirectory(clazz)));
+        useKvasirEclipsePluginTestEnvironmentIfPossible_ = useKvasirEclipsePluginTestEnvironmentIfPossible;
+    }
 
-    public ProjectMetaData(Resource testClassesDirectory)
-    {
+    public ProjectMetaData(Resource testClassesDirectory) {
         prepare(testClassesDirectory);
     }
 
-
-    void prepare(Resource testClassesDirectory)
-    {
+    void prepare(Resource testClassesDirectory) {
         testClassesDirectory_ = testClassesDirectory;
         runningFromMaven2_ = "target".equals(testClassesDirectory
-            .getParentResource().getName());
+                .getParentResource().getName());
         if (runningFromMaven2_) {
             kvasirEclipsePluginProject_ = false;
         } else {
             kvasirEclipsePluginProject_ = testClassesDirectory
-                .getParentResource().getChildResource("webapp/kvasir").exists();
+                    .getParentResource().getChildResource("webapp/kvasir")
+                    .exists();
         }
-        if (kvasirEclipsePluginProject_) {
+        if (kvasirEclipsePluginProject_
+                && useKvasirEclipsePluginTestEnvironmentIfPossible_) {
             testHomeDirectory_ = testClassesDirectory.getParentResource()
-                .getChildResource("webapp/kvasir");
+                    .getChildResource("webapp/kvasir");
         } else {
             testHomeDirectory_ = testClassesDirectory.getParentResource()
-                .getChildResource("test-home");
+                    .getChildResource("test-home");
         }
 
         // Maven2の場合（TOP_PROJECT/MODULE/target/test-classes）。
         // Eclipse+手動の場合（TOP_PROJECT/MODULE/build/test-classes）。
         Resource projectDirectory = testClassesDirectory.getParentResource()
-            .getParentResource();
+                .getParentResource();
 
         projectDirectory_ = projectDirectory;
         testHomeSourceDirectory_ = projectDirectory_
-            .getChildResource("src/test/test-home");
+                .getChildResource("src/test/test-home");
         testResourcesSourceDirectory_ = projectDirectory_
-            .getChildResource("src/test/resources");
+                .getChildResource("src/test/resources");
         mavenTestHomeSourceDirectory_ = projectDirectory_
-            .getChildResource("src/test/test-home");
+                .getChildResource("src/test/test-home");
         mavenTestHomeDirectory_ = projectDirectory_
-            .getChildResource("target/test-home");
+                .getChildResource("target/test-home");
         mavenClassesDirectory_ = projectDirectory_
-            .getChildResource("target/classes");
+                .getChildResource("target/classes");
         classesDirectory_ = testClassesDirectory.getParentResource()
-            .getChildResource("classes");
+                .getChildResource("classes");
     }
 
+    public boolean isUseKvasirEclipsePluginTestEnvironmentIfPossible() {
+        return useKvasirEclipsePluginTestEnvironmentIfPossible_;
+    }
 
-    public boolean isRunningFromMaven2()
-    {
+    public boolean isRunningFromMaven2() {
         return runningFromMaven2_;
     }
 
-
-    public boolean isKvasirEclipsePluginProject()
-    {
+    public boolean isKvasirEclipsePluginProject() {
         return kvasirEclipsePluginProject_;
     }
 
-
-    public Resource getMavenClassesDirectory()
-    {
+    public Resource getMavenClassesDirectory() {
         return mavenClassesDirectory_;
     }
 
-
-    public Resource getMavenTestHomeDirectory()
-    {
+    public Resource getMavenTestHomeDirectory() {
         return mavenTestHomeDirectory_;
     }
 
-
-    public Resource getMavenTestHomeSourceDirectory()
-    {
+    public Resource getMavenTestHomeSourceDirectory() {
         return mavenTestHomeSourceDirectory_;
     }
 
-
-    public Resource getProjectDirectory()
-    {
+    public Resource getProjectDirectory() {
         return projectDirectory_;
     }
 
-
-    public Resource getTestClassesDirectory()
-    {
+    public Resource getTestClassesDirectory() {
         return testClassesDirectory_;
     }
 
-
-    public Resource getTestHomeDirectory()
-    {
+    public Resource getTestHomeDirectory() {
         return testHomeDirectory_;
     }
 
-
-    public Resource getTestHomeSourceDirectory()
-    {
+    public Resource getTestHomeSourceDirectory() {
         return testHomeSourceDirectory_;
     }
 
-
-    public Resource getTestResourcesSourceDirectory()
-    {
+    public Resource getTestResourcesSourceDirectory() {
         return testResourcesSourceDirectory_;
     }
 
-
-    public Resource getClassesDirectory()
-    {
+    public Resource getClassesDirectory() {
         return classesDirectory_;
     }
 }

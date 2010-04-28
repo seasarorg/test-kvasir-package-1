@@ -69,7 +69,6 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
             "org.seasar.kvasir.base.Asgard", // kvasir-base
             "org.seasar.kvasir.util.ClassUtils", // kvasir-util
             "net.skirnir.xom.XOMapper", // xom
-            "net.skirnir.xom.annotation.Bean", // xom-tiger
     };
 
     /**
@@ -112,7 +111,15 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
     public static Test createTestSuite(
             final Class<? extends KvasirPluginTestCase<?>> clazz)
             throws Exception {
-        metaData_ = new ProjectMetaData(clazz);
+        return createTestSuite(clazz, true);
+    }
+
+    public static Test createTestSuite(
+            final Class<? extends KvasirPluginTestCase<?>> clazz,
+            boolean useKvasirEclipsePluginTestEnvironmentIfPossible)
+            throws Exception {
+        metaData_ = new ProjectMetaData(clazz,
+                useKvasirEclipsePluginTestEnvironmentIfPossible);
 
         ClassLoader cl = createClassLoader(BASE_LIBRARIES, TEST_LIBRARIES,
                 new JUnitFilteredClassLoader(KvasirPluginTestCase.class
@@ -120,16 +127,23 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
                         .getClassLoader().getParent()));
 
         String pluginId = clazz.newInstance().getTargetPluginId();
-        boolean shouldPrepareTestHome = (!metaData_.isRunningFromMaven2() && !metaData_
-                .isKvasirEclipsePluginProject());
+        boolean shouldPrepareTestHome = (!metaData_.isRunningFromMaven2() && (!metaData_
+                .isKvasirEclipsePluginProject() || !metaData_
+                .isUseKvasirEclipsePluginTestEnvironmentIfPossible()));
 
-        return (Test) cl.loadClass(KvasirPluginTestCase.class.getName())
+        return (Test) cl
+                .loadClass(KvasirPluginTestCase.class.getName())
                 .getMethod(
                         "createTestSuite0",
-                        new Class[] { Class.class, Class.class, String.class,
-                                Boolean.TYPE }).invoke(
+                        new Class[] { Class.class, Class.class, Boolean.TYPE,
+                                String.class, Boolean.TYPE })
+                .invoke(
                         null,
-                        new Object[] { KvasirPluginTestCase.class, clazz,
+                        new Object[] {
+                                KvasirPluginTestCase.class,
+                                clazz,
+                                Boolean
+                                        .valueOf(useKvasirEclipsePluginTestEnvironmentIfPossible),
                                 pluginId,
                                 Boolean.valueOf(shouldPrepareTestHome) });
     }
@@ -189,12 +203,14 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
 
     public static Test createTestSuite0(
             final Class<? extends KvasirPluginTestCase<?>> originalKvasirPluginTestClass,
-            final Class<? extends TestCase> clazz, final String pluginId,
-            final boolean shouldPrepareTestHome)
+            final Class<? extends TestCase> clazz,
+            final boolean useKvasirEclipsePluginTestEnvironmentIfPossible,
+            final String pluginId, final boolean shouldPrepareTestHome)
 
     throws Exception {
         pluginId_ = pluginId;
-        metaData_ = new ProjectMetaData(clazz);
+        metaData_ = new ProjectMetaData(clazz,
+                useKvasirEclipsePluginTestEnvironmentIfPossible);
 
         final TestSuite suite = new TestSuite(clazz);
         TestSetup wrapper = new TestSetup(suite) {
@@ -203,9 +219,9 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
                 try {
                     onceSetUp(originalKvasirPluginTestClass, clazz,
                             shouldPrepareTestHome);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    suite.addTest(error(ex.getMessage()));
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                    suite.addTest(error(t.getMessage()));
                 }
             }
 
@@ -340,6 +356,11 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
 
     @Override
     public void runBare() throws Throwable {
+        if (actualTestClass_ == null) {
+            // セットアップ時になんらかの問題が生じた可能性がある。
+            return;
+        }
+
         TestCase testCase = actualTestClass_.newInstance();
         testCase.setName(getName());
         actualTestClass_.getMethod("runBare0", new Class[0]).invoke(testCase,

@@ -733,6 +733,8 @@ public interface Page
 
     /**
      * このページに排他ロックをかけた状態で指定された処理を実行します。
+     * <p>ページが削除されていた場合は{@link PageNotFoundRuntimeException}がスローされます。
+     * </p>
      * 
      * @param <R> 処理結果の型。
      * @param processable 処理を表すオブジェクト。

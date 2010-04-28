@@ -6,7 +6,6 @@ import java.util.Date;
 import org.seasar.cms.beantable.Formula;
 import org.seasar.cms.beantable.impl.BeantableDaoBase;
 import org.seasar.cms.database.SQLRuntimeException;
-import org.seasar.dao.annotation.tiger.Sql;
 import org.seasar.kvasir.page.ability.content.dao.ContentDao;
 import org.seasar.kvasir.page.ability.content.dao.ContentDto;
 
@@ -21,7 +20,6 @@ abstract public class GenericContentDao extends BeantableDaoBase<ContentDto>
     }
 
 
-    @Sql("pageid=?")
     public void touchByPageId(Integer pageId)
     {
         try {

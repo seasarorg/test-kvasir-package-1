@@ -2062,8 +2062,13 @@ public class PluginAlfrImpl
         }
         String dicon = getDiconName(classLoaderPair);
 
-        return ComponentContainerFactory.getInstance().createContainer(dicon,
-            classLoaderPair.getInnerClassLoader(), requirements);
+        try {
+            return ComponentContainerFactory.getInstance().createContainer(
+                dicon, classLoaderPair.getInnerClassLoader(), requirements);
+        } catch (Throwable t) {
+            throw new RuntimeException("Can't create ComponentContainer: id="
+                + descriptor.getId() + ", dicon=" + dicon, t);
+        }
     }
 
 

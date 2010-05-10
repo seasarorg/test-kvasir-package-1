@@ -69,10 +69,14 @@ public class TimerPluginImpl extends AbstractPlugin<TimerPluginSettings>
         if (executorService_ != null) {
             log_.info("Starting job executor service...");
             if (!perMinuteJobs_.isEmpty()) {
-                executorService_.execute(new JobRunner(perMinuteJobs_,
+                for (Job job : perMinuteJobs_) {
+                    job.init();
+                }
+                executorService_.execute(new PerMinuteJobRunner(perMinuteJobs_,
                     getSettings().getThreadPoolSize()));
             }
             for (Job job : onceJobs_) {
+                job.init();
                 executorService_.execute(job);
             }
             log_.info("Job executor service has been started.");
@@ -91,7 +95,22 @@ public class TimerPluginImpl extends AbstractPlugin<TimerPluginSettings>
             executorService_ = null;
         }
 
+        for (Job job : onceJobs_) {
+            try {
+                job.destroy();
+            } catch (Throwable t) {
+                log_.warn(t);
+            }
+        }
         onceJobs_.clear();
+
+        for (Job job : perMinuteJobs_) {
+            try {
+                job.destroy();
+            } catch (Throwable t) {
+                log_.warn(t);
+            }
+        }
         perMinuteJobs_.clear();
     }
 }

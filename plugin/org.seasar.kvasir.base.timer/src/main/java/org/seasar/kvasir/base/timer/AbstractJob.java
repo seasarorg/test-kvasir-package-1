@@ -1,4 +1,5 @@
 package org.seasar.kvasir.base.timer;
+
 import org.seasar.kvasir.base.timer.extension.JobElement;
 
 
@@ -23,5 +24,15 @@ abstract public class AbstractJob
     public JobElement getElement()
     {
         return element_;
+    }
+
+
+    public void init()
+    {
+    }
+
+
+    public void destroy()
+    {
     }
 }

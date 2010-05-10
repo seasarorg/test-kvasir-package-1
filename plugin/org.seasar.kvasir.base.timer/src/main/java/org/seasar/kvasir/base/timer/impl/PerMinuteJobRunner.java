@@ -18,14 +18,14 @@ import org.seasar.kvasir.base.timer.Job;
  * 
  * @author skirnir
  */
-public class JobRunner
+public class PerMinuteJobRunner
     implements Runnable
 {
     private final SimpleDateFormat sdf_ = new SimpleDateFormat(
         "yyyy-MM-dd HH:mm");
 
     private static final KvasirLog log_ = KvasirLogFactory
-        .getLog(JobRunner.class);
+        .getLog(PerMinuteJobRunner.class);
 
     private List<Job> jobs_;
 
@@ -36,7 +36,7 @@ public class JobRunner
     private ExecutorService executorService_;
 
 
-    public JobRunner(List<Job> jobs, Integer threadPoolSize)
+    public PerMinuteJobRunner(List<Job> jobs, Integer threadPoolSize)
     {
         jobs_ = jobs;
         threadPoolSize_ = threadPoolSize;
@@ -45,7 +45,11 @@ public class JobRunner
 
     public void run()
     {
-        executorService_ = Executors.newFixedThreadPool(threadPoolSize_);
+        if (threadPoolSize_ > 0) {
+            executorService_ = Executors.newFixedThreadPool(threadPoolSize_);
+        } else {
+            executorService_ = Executors.newCachedThreadPool();
+        }
 
         // 開始時刻をなるべく00秒にあわせる。
 

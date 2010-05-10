@@ -27,7 +27,7 @@ public class TimerPluginSettingsTest extends XOMBeanTestCase
         throws Exception
     {
         TimerPluginSettings target = new TimerPluginSettings();
-        target.setThreadPoolSize(1);
+        target.setThreadPoolSize(5);
 
         assertBeanEquals("<timer-plugin-settings />", target);
     }

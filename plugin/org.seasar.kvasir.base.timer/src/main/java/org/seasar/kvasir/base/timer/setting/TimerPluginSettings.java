@@ -6,7 +6,7 @@ import net.skirnir.xom.annotation.Default;
 
 public class TimerPluginSettings
 {
-    private Integer threadPoolSize = 1;
+    private Integer threadPoolSize = 5;
 
 
     public Integer getThreadPoolSize()
@@ -16,7 +16,7 @@ public class TimerPluginSettings
 
 
     @Attribute
-    @Default("1")
+    @Default("5")
     public void setThreadPoolSize(Integer threadPoolSize)
     {
         this.threadPoolSize = threadPoolSize;

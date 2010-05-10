@@ -51,9 +51,13 @@ public class ListingPop extends GenericPop
 
     public static final String PROP_DISPLAYONLYLISTED = "displayOnlyListed";
 
+    public static final String PROP_RECURSIVE = "recursive";
+
     public static final String PROP_SORTKEY = "sortKey";
 
     public static final String PROP_ASCENDING = "ascending";
+
+    public static final String PROP_SUMMARYSOURCE = "summarySource";
 
     public static final String PROP_SUMMARYLENGTH = "summaryLength";
 
@@ -70,6 +74,8 @@ public class ListingPop extends GenericPop
     public static final int SUMMARYLENGTH_DEFAULT = 128;
 
     private static final String SORTKEY_RANDOM = "random";
+
+    private static final String SUMMARYSOURCE_DESCRIPTION = "description";
 
     private AuthPlugin authPlugin_;
 
@@ -116,16 +122,19 @@ public class ListingPop extends GenericPop
             }
             baseDirectory = getPageAlfr().getPage(heimId, baseDirectoryPath);
 
+            String summarySource = getProperty(popScope, PROP_SUMMARYSOURCE);
             int summaryLength = PropertyUtils.valueOf(getProperty(popScope,
                 PROP_SUMMARYLENGTH), SUMMARYLENGTH_DEFAULT);
             String continuingLabel = getProperty(popScope, PROP_CONTINUINGLABEL);
-            boolean displayOnlyViewable = PropertyUtils.valueOf(getProperty(
-                popScope, PROP_DISPLAYONLYVIEWABLE), false);
-            boolean displayOnlyListed = PropertyUtils.valueOf(getProperty(
-                popScope, PROP_DISPLAYONLYLISTED), true);
 
             Page[] pages;
             if (baseDirectory != null) {
+                boolean displayOnlyViewable = PropertyUtils.valueOf(
+                    getProperty(popScope, PROP_DISPLAYONLYVIEWABLE), false);
+                boolean displayOnlyListed = PropertyUtils.valueOf(getProperty(
+                    popScope, PROP_DISPLAYONLYLISTED), true);
+                boolean recursive = PropertyUtils.valueOf(getProperty(popScope,
+                    PROP_RECURSIVE), false);
                 String sortKey = getProperty(popScope, PROP_SORTKEY);
                 boolean ascending = PropertyUtils.valueOf(getProperty(popScope,
                     PROP_ASCENDING), true);
@@ -140,8 +149,8 @@ public class ListingPop extends GenericPop
 
                 User actor = authPlugin_.getCurrentActor();
                 PageCondition cond = createCondition(actor, numberOfItems,
-                    displayOnlyViewable, displayOnlyListed, sortKey, ascending,
-                    option);
+                    displayOnlyViewable, displayOnlyListed, recursive, sortKey,
+                    ascending, option);
                 pages = baseDirectory.getChildren(cond);
                 if (SORTKEY_RANDOM.equals(sortKey)) {
                     randomize(pages, numberOfItems);
@@ -152,8 +161,8 @@ public class ListingPop extends GenericPop
 
             ListingEntry[] entries = new ListingEntry[pages.length];
             for (int i = 0; i < pages.length; i++) {
-                entries[i] = new ListingEntry(pages[i], locale, summaryLength,
-                    continuingLabel);
+                entries[i] = new ListingEntry(pages[i], locale, summarySource,
+                    summaryLength, continuingLabel);
             }
             popScope.put("entries", entries);
         } while (false);
@@ -181,13 +190,13 @@ public class ListingPop extends GenericPop
 
 
     protected PageCondition createCondition(User actor, int numberOfItems,
-        boolean displayOnlyViewable, boolean displayOnlyListed, String sortKey,
-        boolean ascending, Formula option)
+        boolean displayOnlyViewable, boolean displayOnlyListed,
+        boolean recursive, String sortKey, boolean ascending, Formula option)
     {
         PageCondition cond = new PageCondition().setIncludeConcealed(
-            actor.isAdministrator()).setOnlyListed(displayOnlyListed).setUser(
-            actor).setOption(new Formula(Page.FIELD_NODE + "=false"))
-            .setPrivilege(
+            actor.isAdministrator()).setOnlyListed(displayOnlyListed)
+            .setRecursive(recursive).setUser(actor).setOption(
+                new Formula(Page.FIELD_NODE + "=false")).setPrivilege(
                 displayOnlyViewable ? Privilege.ACCESS_VIEW
                     : Privilege.ACCESS_PEEK).addOption(option);
         if (!SORTKEY_RANDOM.equals(sortKey)) {
@@ -214,6 +223,8 @@ public class ListingPop extends GenericPop
 
         private Locale locale_;
 
+        private String summarySource_;
+
         private int summaryLength_;
 
         private String summary_;
@@ -229,11 +240,12 @@ public class ListingPop extends GenericPop
         private Date date_;
 
 
-        public ListingEntry(Page page, Locale locale, int summaryLength,
-            String continuingLabel)
+        public ListingEntry(Page page, Locale locale, String summarySource,
+            int summaryLength, String continuingLabel)
         {
             page_ = page;
             locale_ = locale;
+            summarySource_ = summarySource;
             summaryLength_ = summaryLength;
             continuingLabel_ = continuingLabel;
             styleClass_ = page.isConcealed() ? CLASS_CONCEALED : null;
@@ -302,31 +314,31 @@ public class ListingPop extends GenericPop
 
         void fetchSummary()
         {
-            summary_ = "";
-            continuing_ = Boolean.FALSE;
-
-            if (!page_.isAsFile()) {
-                Content content = page_.getAbility(ContentAbility.class)
-                    .getLatestContent(locale_);
-                if (content != null) {
-                    String bodyHTMLString = content
-                        .getBodyHTMLString(VariableResolver.EMPTY);
-                    if (summaryLength_ == SUMMARYLENGTH_ALL) {
-                        summary_ = bodyHTMLString;
-                        continuing_ = Boolean.FALSE;
-                    } else {
-                        HTMLParser parser = new HTMLParser(bodyHTMLString);
-                        String body = parser.getSummary();
-                        if (body.length() <= summaryLength_) {
-                            summary_ = HTMLUtils.filter(body);
-                            continuing_ = Boolean.FALSE;
-                        } else {
-                            summary_ = HTMLUtils.filter(body.substring(0,
-                                summaryLength_).concat(SUFFIX_LEADING));
-                            continuing_ = Boolean.TRUE;
-                        }
+            String summarySource;
+            if (SUMMARYSOURCE_DESCRIPTION.equals(summarySource_)) {
+                summarySource = page_.getAbility(PropertyAbility.class)
+                    .getProperty(PropertyAbility.PROP_DESCRIPTION, locale_);
+            } else {
+                summarySource = "";
+                if (!page_.isAsFile()) {
+                    Content content = page_.getAbility(ContentAbility.class)
+                        .getLatestContent(locale_);
+                    if (content != null) {
+                        HTMLParser parser = new HTMLParser(content
+                            .getBodyHTMLString(VariableResolver.EMPTY));
+                        summarySource = HTMLUtils.filter(parser.getSummary());
                     }
                 }
+            }
+
+            if (summaryLength_ == SUMMARYLENGTH_ALL
+                || summarySource.length() <= summaryLength_) {
+                summary_ = summarySource;
+                continuing_ = Boolean.FALSE;
+            } else {
+                summary_ = summarySource.substring(0, summaryLength_).concat(
+                    SUFFIX_LEADING);
+                continuing_ = Boolean.TRUE;
             }
         }
 

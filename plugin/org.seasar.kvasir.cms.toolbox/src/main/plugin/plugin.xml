@@ -2,8 +2,8 @@
 <plugin xmlns="http://kvasir.sandbox.seasar.org/plugin/3.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://kvasir.sandbox.seasar.org/plugin/3.0.0 http://kvasir.sandbox.seasar.org/support/plugin-3_0_0.xsd"
-  id="org.seasar.kvasir.cms.toolbox" name="%plugin.name"
-  version="3.0.0-SNAPSHOT" provider-name="%plugin.provider-name">
+  id="org.seasar.kvasir.cms.toolbox" name="%plugin.name" version="3.0.0-SNAPSHOT"
+  provider-name="%plugin.provider-name">
   <runtime>
     <library name="conf" />
     <library name="org.seasar.kvasir.cms.toolbox.jar">
@@ -29,8 +29,8 @@
   </requires>
 
   <extension point="org.seasar.kvasir.page.pageGards">
-    <page-gard id="toolbox" version="3.0.0-SNAPSHOT" singleton="true"
-      display-name="%toolbox.display-name" />
+    <page-gard id="toolbox" version="3.0.0-SNAPSHOT"
+      singleton="true" display-name="%toolbox.display-name" />
   </extension>
 
   <extension point="org.seasar.kvasir.page.pageGardInstalls">
@@ -58,9 +58,10 @@
     </pop>
     <pop id="languageSelectorPop">
       <form-unit kind="property" id="title" />
-      <form-unit kind="property" id="languages" human-readable="false"
-        default="*" />
-      <form-unit kind="property" id="styleClass" human-readable="false" />
+      <form-unit kind="property" id="languages"
+        human-readable="false" default="*" />
+      <form-unit kind="property" id="styleClass"
+        human-readable="false" />
       <form-unit kind="group" id="group.expert" />
       <form-unit kind="property" id="body" />
     </pop>
@@ -79,6 +80,8 @@
         human-readable="false" type="boolean" />
       <form-unit kind="property" id="displayOnlyListed"
         human-readable="false" type="boolean" default="true" />
+      <form-unit kind="property" id="recursive"
+        human-readable="false" type="boolean" default="false" />
       <form-unit kind="group" id="group.sorting" />
       <form-unit kind="property" id="sortKey" human-readable="false"
         type="select" default="createDate">
@@ -87,15 +90,19 @@
         <option>orderNumber</option>
         <option>random</option>
       </form-unit>
-      <form-unit kind="property" id="ascending" human-readable="false"
-        type="boolean" default="true" />
+      <form-unit kind="property" id="ascending"
+        human-readable="false" type="boolean" default="true" />
       <form-unit kind="group" id="group.summary" />
+      <form-unit kind="property" id="summarySource" human-readable="false"
+        type="select" default="body">
+        <option>body</option>
+        <option>description</option>
+      </form-unit>
       <form-unit kind="property" id="summaryLength"
         human-readable="false" default="128" />
       <form-unit kind="property" id="continuingLabel" />
       <form-unit kind="group" id="group.expert" />
-      <form-unit kind="property" id="option"
-        human-readable="false" />
+      <form-unit kind="property" id="option" human-readable="false" />
       <form-unit kind="property" id="body" />
     </pop>
     <pop id="loginPop" body-resource-path="pops/loginPop/login.html">
@@ -115,21 +122,22 @@
       <form-unit kind="property" id="linkURL" human-readable="false"
         type="page" />
       <form-unit kind="group" id="group.expert" />
-      <form-unit kind="property" id="styleClass" human-readable="false" />
+      <form-unit kind="property" id="styleClass"
+        human-readable="false" />
       <form-unit kind="property" id="body" />
     </pop>
     <pop id="customPop">
       <form-unit kind="property" id="title" />
       <form-unit kind="property" id="body" />
-      <form-unit kind="property" id="body-type" human-readable="false" />
+      <form-unit kind="property" id="body-type"
+        human-readable="false" />
       <form-unit kind="group" id="group.logic" />
       <form-unit kind="property" id="logic" human-readable="false" />
     </pop>
   </extension>
 
   <extension point="org.seasar.kvasir.cms.ymir.applications">
-    <application id="toolboxApplication"
-      gard-id="org.seasar.kvasir.cms.toolbox.toolbox"
+    <application id="toolboxApplication" gard-id="org.seasar.kvasir.cms.toolbox.toolbox"
       landmark="org.seasar.kvasir.cms.toolbox.ToolboxPlugin" />
   </extension>
 

@@ -9,4 +9,10 @@ public class ProcessableRuntimeException extends RuntimeException
     {
         super(cause);
     }
+
+
+    public ProcessableRuntimeException(String message, Throwable cause)
+    {
+        super(message, cause);
+    }
 }

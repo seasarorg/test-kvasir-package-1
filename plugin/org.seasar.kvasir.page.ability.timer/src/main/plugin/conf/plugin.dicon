@@ -10,4 +10,6 @@
     class="org.seasar.kvasir.page.ability.timer.dao.impl.GenericScheduleDao">
     <aspect>beantableDaoInterceptor</aspect>
   </component>
+  <component name="schedulerJob"
+    class="org.seasar.kvasir.page.ability.timer.impl.SchedulerJob" />
 </components>

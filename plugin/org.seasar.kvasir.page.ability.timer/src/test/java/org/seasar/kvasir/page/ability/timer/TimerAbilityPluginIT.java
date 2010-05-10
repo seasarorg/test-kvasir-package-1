@@ -1,8 +1,5 @@
 package org.seasar.kvasir.page.ability.timer;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import junit.framework.Test;
 
 import org.seasar.kvasir.page.Page;
@@ -38,9 +35,10 @@ public class TimerAbilityPluginIT extends
 
         // CREATE
 
-        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            .parse("2010-04-01 12:00:00");
-        ScheduleMold mold = new ScheduleMold(date, "component");
+        ScheduleMold mold = new ScheduleMold(CronFields.every(), CronFields
+            .of(1), CronFields.of(2), CronFields.of(3), CronFields.of(4),
+            CronFields.of(5), "org.seasar.kvasir.page.ability.timer",
+            "component");
         ability.addSchedule(mold);
 
         // READ
@@ -48,17 +46,24 @@ public class TimerAbilityPluginIT extends
         Schedule[] schedules = ability.getSchedules();
         assertEquals(1, schedules.length);
 
-        assertEquals(ScheduleStatus.SCHEDULED, schedules[0].getStatus());
-        assertEquals(date, schedules[0].getScheduledDate());
+        assertEquals("*", schedules[0].getDayOfWeek().toString());
+        assertEquals("1", schedules[0].getYear().toString());
+        assertEquals("2", schedules[0].getMonth().toString());
+        assertEquals("3", schedules[0].getDay().toString());
+        assertEquals("4", schedules[0].getHour().toString());
+        assertEquals("5", schedules[0].getMinute().toString());
+        assertEquals("org.seasar.kvasir.page.ability.timer", schedules[0]
+            .getPluginId());
         assertEquals("component", schedules[0].getComponent());
+        assertNull(schedules[0].getParameter());
+        assertTrue(schedules[0].isEnabled());
 
-        // CANCEL
+        // UPDATE
 
-        boolean cancelled = ability.cancelSchedule(schedules[0].getId());
-        assertTrue(cancelled);
-
+        ability.enableSchedule(schedules[0].getId(), false);
         Schedule schedule = ability.getSchedule(schedules[0].getId());
-        assertEquals(ScheduleStatus.CANCELLED, schedule.getStatus());
+        assertNotNull(schedule);
+        assertFalse(schedule.isEnabled());
 
         // DELETE
 

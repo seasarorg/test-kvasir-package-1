@@ -1,21 +1,30 @@
 package org.seasar.kvasir.page.ability.timer;
 
+import java.util.Calendar;
 import java.util.Date;
 
 
 public class ScheduleMold
 {
-    private ScheduleStatus status_ = ScheduleStatus.INACTIVE;
+    private CronFields dayOfWeek_;
 
-    private Date scheduledDate_;
+    private CronFields year_;
+
+    private CronFields month_;
+
+    private CronFields day_;
+
+    private CronFields hour_;
+
+    private CronFields minute_;
+
+    private String pluginId_;
 
     private String component_;
 
-    private Date beginDate_;
+    private String parameter_;
 
-    private Date finishDate_;
-
-    private String errorInformation_;
+    private Boolean enabled_;
 
 
     public ScheduleMold()
@@ -23,36 +32,136 @@ public class ScheduleMold
     }
 
 
-    public ScheduleMold(Date scheduledDate, String component)
+    public ScheduleMold(CronFields dayOfWeek, CronFields year,
+        CronFields month, CronFields day, CronFields hour, CronFields minute,
+        String pluginId, String component)
     {
-        scheduledDate_ = scheduledDate;
+        this(dayOfWeek, year, month, day, hour, minute, pluginId, component,
+            null);
+    }
+
+
+    public ScheduleMold(CronFields dayOfWeek, CronFields year,
+        CronFields month, CronFields day, CronFields hour, CronFields minute,
+        String pluginId, String component, String parameter)
+    {
+        dayOfWeek_ = dayOfWeek;
+        year_ = year;
+        month_ = month;
+        day_ = day;
+        hour_ = hour;
+        minute_ = minute;
+        pluginId_ = pluginId;
         component_ = component;
-
-        status_ = ScheduleStatus.SCHEDULED;
+        parameter_ = parameter;
     }
 
 
-    public ScheduleStatus getStatus()
+    public ScheduleMold(Date date, String pluginId, String component)
     {
-        return status_;
+        this(date, pluginId, component, null);
     }
 
 
-    public void setStatus(ScheduleStatus status)
+    public ScheduleMold(Date date, String pluginId, String component,
+        String parameter)
     {
-        status_ = status;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        setYear(CronFields.of(calendar.get(Calendar.YEAR)));
+        setMonth(CronFields.of(calendar.get(Calendar.MONTH) + 1));
+        setDay(CronFields.of(calendar.get(Calendar.DAY_OF_MONTH)));
+        setHour(CronFields.of(calendar.get(Calendar.HOUR_OF_DAY)));
+        setMinute(CronFields.of(calendar.get(Calendar.MINUTE)));
+
+        setPluginId(pluginId);
+        setComponent(component);
+        setParameter(parameter);
     }
 
 
-    public Date getScheduledDate()
+    public CronFields getDayOfWeek()
     {
-        return scheduledDate_;
+        return dayOfWeek_;
     }
 
 
-    public void setScheduledDate(Date executionDate)
+    public void setDayOfWeek(CronFields dayOfWeek)
     {
-        scheduledDate_ = executionDate;
+        dayOfWeek_ = dayOfWeek;
+    }
+
+
+    public CronFields getYear()
+    {
+        return year_;
+    }
+
+
+    public void setYear(CronFields year)
+    {
+        year_ = year;
+    }
+
+
+    public CronFields getMonth()
+    {
+        return month_;
+    }
+
+
+    public void setMonth(CronFields month)
+    {
+        month_ = month;
+    }
+
+
+    public CronFields getDay()
+    {
+        return day_;
+    }
+
+
+    public void setDay(CronFields day)
+    {
+        day_ = day;
+    }
+
+
+    public CronFields getHour()
+    {
+        return hour_;
+    }
+
+
+    public void setHour(CronFields hour)
+    {
+        hour_ = hour;
+    }
+
+
+    public CronFields getMinute()
+    {
+        return minute_;
+    }
+
+
+    public void setMinute(CronFields minute)
+    {
+        minute_ = minute;
+    }
+
+
+    public String getPluginId()
+    {
+        return pluginId_;
+    }
+
+
+    public void setPluginId(String pluginId)
+    {
+        pluginId_ = pluginId;
     }
 
 
@@ -68,38 +177,27 @@ public class ScheduleMold
     }
 
 
-    public Date getBeginDate()
+    public String getParameter()
     {
-        return beginDate_;
+        return parameter_;
     }
 
 
-    public void setBeginDate(Date beginDate)
+    public void setParameter(String parameter)
     {
-        beginDate_ = beginDate;
+        parameter_ = parameter;
     }
 
 
-    public Date getFinishDate()
+    public Boolean getEnabled()
     {
-        return finishDate_;
+        return enabled_;
     }
 
 
-    public void setFinishDate(Date finishDate)
+    public void setEnabled(Boolean enabled)
     {
-        finishDate_ = finishDate;
+        enabled_ = enabled;
     }
 
-
-    public String getErrorInformation()
-    {
-        return errorInformation_;
-    }
-
-
-    public void setErrorInformation(String errorInformation)
-    {
-        errorInformation_ = errorInformation;
-    }
 }

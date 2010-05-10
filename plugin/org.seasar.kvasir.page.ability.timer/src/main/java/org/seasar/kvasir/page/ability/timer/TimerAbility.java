@@ -19,19 +19,13 @@ public interface TimerAbility
     Schedule[] getSchedules();
 
 
-    Schedule[] getSchedules(ScheduleStatus status);
-
-
-    boolean cancelSchedule(int id);
+    void enableSchedule(int id, boolean enabled);
 
 
     void addSchedule(ScheduleMold mold);
 
 
     void removeSchedule(int id);
-
-
-    void removeSchedules(ScheduleStatus status);
 
 
     void clearSchedules();

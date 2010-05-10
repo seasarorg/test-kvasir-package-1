@@ -1,9 +1,10 @@
 package org.seasar.kvasir.page.ability.timer.impl;
 
-import java.util.Date;
+import java.util.Calendar;
 
+import org.seasar.kvasir.page.ability.timer.CronFields;
+import org.seasar.kvasir.page.ability.timer.DayOfWeek;
 import org.seasar.kvasir.page.ability.timer.Schedule;
-import org.seasar.kvasir.page.ability.timer.ScheduleStatus;
 import org.seasar.kvasir.page.ability.timer.dao.ScheduleDto;
 
 
@@ -12,16 +13,22 @@ public class ScheduleImpl
 {
     private ScheduleDto dto_;
 
+    private CronFields dayOfWeek_;
+
+    private CronFields year_;
+
+    private CronFields month_;
+
+    private CronFields day_;
+
+    private CronFields hour_;
+
+    private CronFields minute_;
+
 
     public ScheduleImpl(ScheduleDto dto)
     {
         dto_ = dto;
-    }
-
-
-    public Date getBeginDate()
-    {
-        return dto_.getBeginDate();
     }
 
 
@@ -31,15 +38,27 @@ public class ScheduleImpl
     }
 
 
-    public String getErrorInformation()
+    public CronFields getDay()
     {
-        return dto_.getErrorInformation();
+        if (day_ == null) {
+            day_ = CronFields.parse(dto_.getDay());
+        }
+        return day_;
     }
 
 
-    public Date getFinishDate()
+    public boolean isEnabled()
     {
-        return dto_.getFinishDate();
+        return dto_.getEnabled().intValue() == ScheduleDto.FALSE ? false : true;
+    }
+
+
+    public CronFields getHour()
+    {
+        if (hour_ == null) {
+            hour_ = CronFields.parse(dto_.getHour());
+        }
+        return hour_;
     }
 
 
@@ -49,21 +68,88 @@ public class ScheduleImpl
     }
 
 
-    public Date getScheduledDate()
+    public CronFields getMinute()
     {
-        return dto_.getScheduledDate();
+        if (minute_ == null) {
+            minute_ = CronFields.parse(dto_.getMinute());
+        }
+        return minute_;
     }
 
 
-    public ScheduleStatus getStatus()
+    public CronFields getMonth()
     {
-        return dto_.getStatusEnum();
+        if (month_ == null) {
+            month_ = CronFields.parse(dto_.getMonth());
+        }
+        return month_;
     }
 
 
-    public boolean isSucceed()
+    public CronFields getYear()
     {
-        return dto_.getErrorInformation() == null
-            || dto_.getErrorInformation().length() == 0;
+        if (year_ == null) {
+            year_ = CronFields.parse(dto_.getYear());
+        }
+        return year_;
+    }
+
+
+    public int getPageId()
+    {
+        return dto_.getPageId();
+    }
+
+
+    public String getParameter()
+    {
+        return dto_.getParameter();
+    }
+
+
+    public String getPluginId()
+    {
+        return dto_.getPluginId();
+    }
+
+
+    public CronFields getDayOfWeek()
+    {
+        if (dayOfWeek_ == null) {
+            dayOfWeek_ = CronFields.parse(dto_.getDayOfWeek());
+        }
+        return dayOfWeek_;
+    }
+
+
+    public boolean isMatched(Calendar calendar)
+    {
+        if (calendar == null) {
+            return false;
+        }
+
+        if (!getDayOfWeek().isMatched(
+            DayOfWeek.enumOfCalendarDayOfWeek(calendar
+                .get(Calendar.DAY_OF_WEEK)))) {
+            return false;
+        }
+
+        if (!getMonth().isMatched(calendar.get(Calendar.MONTH) + 1)) {
+            return false;
+        }
+
+        if (!getDay().isMatched(calendar.get(Calendar.DAY_OF_MONTH))) {
+            return false;
+        }
+
+        if (!getHour().isMatched(calendar.get(Calendar.HOUR_OF_DAY))) {
+            return false;
+        }
+
+        if (!getMinute().isMatched(calendar.get(Calendar.MINUTE))) {
+            return false;
+        }
+
+        return true;
     }
 }

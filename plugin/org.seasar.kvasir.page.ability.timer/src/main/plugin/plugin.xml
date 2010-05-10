@@ -25,4 +25,8 @@
   <extension point="org.seasar.kvasir.page.pageAbilityAlfrs">
     <page-ability-alfr id="timerAbilityAlfr" />
   </extension>
+  
+  <extension point="org.seasar.kvasir.base.timer.jobs">
+    <job id="schedulerJob" execution-frequency="per-minute" />
+  </extension>
 </plugin>

@@ -4,7 +4,6 @@ import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.ability.AbstractPageAbility;
 import org.seasar.kvasir.page.ability.timer.Schedule;
 import org.seasar.kvasir.page.ability.timer.ScheduleMold;
-import org.seasar.kvasir.page.ability.timer.ScheduleStatus;
 import org.seasar.kvasir.page.ability.timer.TimerAbility;
 import org.seasar.kvasir.page.ability.timer.TimerAbilityAlfr;
 
@@ -31,9 +30,9 @@ public class TimerAbilityImpl extends AbstractPageAbility
     }
 
 
-    public boolean cancelSchedule(int id)
+    public void enableSchedule(int id, boolean enabled)
     {
-        return alfr_.cancelSchedule(page_, id);
+        alfr_.enableSchedule(page_, id, enabled);
     }
 
 
@@ -55,20 +54,8 @@ public class TimerAbilityImpl extends AbstractPageAbility
     }
 
 
-    public Schedule[] getSchedules(ScheduleStatus status)
-    {
-        return alfr_.getSchedules(page_, status);
-    }
-
-
     public void removeSchedule(int id)
     {
         alfr_.removeSchedule(page_, id);
-    }
-
-
-    public void removeSchedules(ScheduleStatus status)
-    {
-        alfr_.removeSchedules(page_, status);
     }
 }

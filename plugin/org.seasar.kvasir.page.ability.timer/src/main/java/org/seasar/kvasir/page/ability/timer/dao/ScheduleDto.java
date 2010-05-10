@@ -1,31 +1,40 @@
 package org.seasar.kvasir.page.ability.timer.dao;
 
-import java.util.Date;
-
 import org.seasar.dao.annotation.tiger.Bean;
 import org.seasar.dao.annotation.tiger.Id;
 import org.seasar.dao.annotation.tiger.IdType;
-import org.seasar.kvasir.page.ability.timer.ScheduleStatus;
 
 
-@Bean(table = "schedule", noPersistentProperty = { "statusEnum" })
+@Bean(table = "schedule")
 public class ScheduleDto
 {
+    public static final int TRUE = 1;
+
+    public static final int FALSE = 0;
+
     private Integer id_;
 
     private Integer pageId_;
 
-    private Integer status_;
+    private String dayOfWeek_;
 
-    private Date scheduledDate_;
+    private String year_;
+
+    private String month_;
+
+    private String day_;
+
+    private String hour_;
+
+    private String minute_;
+
+    private String pluginId_;
 
     private String component_;
 
-    private Date beginDate_;
+    private String parameter_;
 
-    private Date finishDate_;
-
-    private String errorInformation_;
+    private Integer enabled_;
 
 
     public ScheduleDto()
@@ -58,39 +67,87 @@ public class ScheduleDto
     }
 
 
-    public Integer getStatus()
+    public String getDayOfWeek()
     {
-        return status_;
+        return dayOfWeek_;
     }
 
 
-    public ScheduleStatus getStatusEnum()
+    public void setDayOfWeek(String dayOfWeek)
     {
-        return ScheduleStatus.enumOf(status_);
+        dayOfWeek_ = dayOfWeek;
     }
 
 
-    public void setStatusEnum(ScheduleStatus statusEnum)
+    public String getYear()
     {
-        status_ = statusEnum.getId();
+        return year_;
     }
 
 
-    public void setStatus(Integer status)
+    public void setYear(String year)
     {
-        status_ = status;
+        year_ = year;
     }
 
 
-    public Date getScheduledDate()
+    public String getMonth()
     {
-        return scheduledDate_;
+        return month_;
     }
 
 
-    public void setScheduledDate(Date executionDate)
+    public void setMonth(String month)
     {
-        scheduledDate_ = executionDate;
+        month_ = month;
+    }
+
+
+    public String getDay()
+    {
+        return day_;
+    }
+
+
+    public void setDay(String day)
+    {
+        day_ = day;
+    }
+
+
+    public String getHour()
+    {
+        return hour_;
+    }
+
+
+    public void setHour(String hour)
+    {
+        hour_ = hour;
+    }
+
+
+    public String getMinute()
+    {
+        return minute_;
+    }
+
+
+    public void setMinute(String minute)
+    {
+        minute_ = minute;
+    }
+
+
+    public String getPluginId()
+    {
+        return pluginId_;
+    }
+
+
+    public void setPluginId(String pluginId)
+    {
+        pluginId_ = pluginId;
     }
 
 
@@ -106,38 +163,26 @@ public class ScheduleDto
     }
 
 
-    public Date getBeginDate()
+    public String getParameter()
     {
-        return beginDate_;
+        return parameter_;
     }
 
 
-    public void setBeginDate(Date beginDate)
+    public void setParameter(String parameter)
     {
-        beginDate_ = beginDate;
+        parameter_ = parameter;
     }
 
 
-    public Date getFinishDate()
+    public Integer getEnabled()
     {
-        return finishDate_;
+        return enabled_;
     }
 
 
-    public void setFinishDate(Date finishDate)
+    public void setEnabled(Integer enabled)
     {
-        finishDate_ = finishDate;
-    }
-
-
-    public String getErrorInformation()
-    {
-        return errorInformation_;
-    }
-
-
-    public void setErrorInformation(String errorInformation)
-    {
-        errorInformation_ = errorInformation;
+        enabled_ = enabled;
     }
 }

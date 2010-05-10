@@ -1,6 +1,6 @@
 package org.seasar.kvasir.page.ability.timer;
 
-import java.util.Date;
+import java.util.Calendar;
 
 
 /**
@@ -16,23 +16,38 @@ public interface Schedule
     int getId();
 
 
-    ScheduleStatus getStatus();
+    int getPageId();
 
 
-    Date getScheduledDate();
+    CronFields getDayOfWeek();
 
 
-    boolean isSucceed();
+    CronFields getYear();
+
+
+    CronFields getMonth();
+
+
+    CronFields getDay();
+
+
+    CronFields getHour();
+
+
+    CronFields getMinute();
+
+
+    String getPluginId();
 
 
     String getComponent();
 
 
-    Date getBeginDate();
+    String getParameter();
 
 
-    Date getFinishDate();
+    boolean isEnabled();
 
 
-    String getErrorInformation();
+    boolean isMatched(Calendar calendar);
 }

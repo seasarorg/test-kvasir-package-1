@@ -16,17 +16,25 @@ public interface TimerAbilityAlfr
 {
     String SHORTID = "timer";
 
-    String SUBNAME_STATUS = "status";
+    String SUBNAME_DAYOFWEEK = "week";
 
-    String SUBNAME_SCHEDULEDDATE = "scheduledDate";
+    String SUBNAME_YEAR = "year";
+
+    String SUBNAME_MONTH = "month";
+
+    String SUBNAME_DAY = "day";
+
+    String SUBNAME_HOUR = "hour";
+
+    String SUBNAME_MINUTE = "minute";
+
+    String SUBNAME_PLUGINID = "pluginId";
 
     String SUBNAME_COMPONENT = "component";
 
-    String SUBNAME_BEGINDATE = "beginDate";
+    String SUBNAME_PARAMETER = "parameter";
 
-    String SUBNAME_FINISHDATE = "finishDate";
-
-    String SUBNAME_ERRORINFORMATION = "errorInformation";
+    String SUBNAME_ENABLED = "enabled";
 
 
     Schedule getSchedule(Page page, int id);
@@ -35,26 +43,16 @@ public interface TimerAbilityAlfr
     Schedule[] getSchedules(Page page);
 
 
-    Schedule[] getSchedules(Page page, ScheduleStatus status);
+    Schedule[] getEnabledSchedules();
 
 
-    Schedule[] getSchedulesAndChangeStatus(ScheduleStatus fromStatus,
-        ScheduleStatus toStatus);
-
-
-    boolean cancelSchedule(Page page, int id);
+    void enableSchedule(Page page, int id, boolean enabled);
 
 
     void addSchedule(Page page, ScheduleMold mold);
 
 
     void removeSchedule(Page page, int id);
-
-
-    void removeSchedules(Page page, ScheduleStatus status);
-
-
-    void removeSchedules(ScheduleStatus status);
 
 
     void clearSchedules(Page page);

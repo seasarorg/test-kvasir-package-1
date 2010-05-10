@@ -1,7 +1,6 @@
 package org.seasar.kvasir.page.ability.timer.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,9 +14,10 @@ import org.seasar.kvasir.page.ability.AbstractPageAbilityAlfr;
 import org.seasar.kvasir.page.ability.Attribute;
 import org.seasar.kvasir.page.ability.AttributeFilter;
 import org.seasar.kvasir.page.ability.PageAbility;
+import org.seasar.kvasir.page.ability.timer.CronField;
+import org.seasar.kvasir.page.ability.timer.CronFields;
 import org.seasar.kvasir.page.ability.timer.Schedule;
 import org.seasar.kvasir.page.ability.timer.ScheduleMold;
-import org.seasar.kvasir.page.ability.timer.ScheduleStatus;
 import org.seasar.kvasir.page.ability.timer.TimerAbility;
 import org.seasar.kvasir.page.ability.timer.TimerAbilityAlfr;
 import org.seasar.kvasir.page.ability.timer.dao.ScheduleDao;
@@ -69,32 +69,34 @@ public class TimerAbilityAlfrImpl extends AbstractPageAbilityAlfr
 
         dto.setPageId(page.getId());
 
-        if (mold.getStatus() != null) {
-            dto.setStatusEnum(mold.getStatus());
-        }
+        dto.setDayOfWeek(mold.getDayOfWeek() != null ? mold.getDayOfWeek()
+            .toString() : CronField.EVERY);
+        dto.setYear(mold.getYear() != null ? mold.getYear().toString()
+            : CronField.EVERY);
+        dto.setMonth(mold.getMonth() != null ? mold.getMonth().toString()
+            : CronField.EVERY);
+        dto.setDay(mold.getDay() != null ? mold.getDay().toString()
+            : CronField.EVERY);
+        dto.setHour(mold.getHour() != null ? mold.getHour().toString()
+            : CronField.EVERY);
+        dto.setMinute(mold.getMinute() != null ? mold.getMinute().toString()
+            : CronField.EVERY);
 
-        if (mold.getScheduledDate() == null) {
-            throw new IllegalArgumentException(
-                "scheduledDate must be specified");
+        if (mold.getPluginId() == null) {
+            throw new IllegalArgumentException("pluginId must be specified");
         }
-        dto.setScheduledDate(mold.getScheduledDate());
+        dto.setPluginId(mold.getPluginId());
 
         if (mold.getComponent() == null) {
             throw new IllegalArgumentException("component must be specified");
         }
         dto.setComponent(mold.getComponent());
 
-        if (mold.getBeginDate() != null) {
-            dto.setBeginDate(mold.getBeginDate());
-        }
+        dto.setParameter(mold.getParameter());
 
-        if (mold.getFinishDate() != null) {
-            dto.setFinishDate(mold.getFinishDate());
-        }
-
-        if (mold.getErrorInformation() != null) {
-            dto.setErrorInformation(mold.getErrorInformation());
-        }
+        dto.setEnabled(mold.getEnabled() == null
+            || mold.getEnabled().booleanValue() ? ScheduleDto.TRUE
+            : ScheduleDto.FALSE);
 
         // 処理自体の排他制御の必要性はないと思われるが、addする際にPageオブジェクトが
         // 存在することを保証したいのでロックしている。
@@ -157,24 +159,16 @@ public class TimerAbilityAlfrImpl extends AbstractPageAbilityAlfr
 
 
     @RequiredTx
-    public Schedule[] getSchedules(Page page, ScheduleStatus status)
+    public Schedule[] getEnabledSchedules()
     {
-        return toSchedules(scheduleDao_.selectListByPageIdAndStatus(page
-            .getId(), status.getId()));
+        return toSchedules(scheduleDao_.selectEnabledList());
     }
 
 
-    @RequiredTx
-    public Schedule[] getSchedulesAndChangeStatus(ScheduleStatus fromStatus,
-        ScheduleStatus toStatus)
+    public void enableSchedule(Page page, int id, boolean enabled)
     {
-        ScheduleDto[] dtos = scheduleDao_
-            .selectListForUpdateByStatus(fromStatus.getId());
-        for (ScheduleDto dto : dtos) {
-            scheduleDao_.updateStatusByPageIdAndId(toStatus.getId(), dto
-                .getPageId(), dto.getId());
-        }
-        return toSchedules(dtos);
+        scheduleDao_.updateEnabledByPageIdAndId(enabled ? ScheduleDto.TRUE
+            : ScheduleDto.FALSE, page.getId(), id);
     }
 
 
@@ -182,27 +176,6 @@ public class TimerAbilityAlfrImpl extends AbstractPageAbilityAlfr
     public void removeSchedule(Page page, int id)
     {
         scheduleDao_.deleteByPageIdAndId(page.getId(), id);
-    }
-
-
-    @RequiredTx
-    public void removeSchedules(Page page, ScheduleStatus status)
-    {
-        scheduleDao_.deleteByPageIdAndStatus(page.getId(), status.getId());
-    }
-
-
-    @RequiredTx
-    public void removeSchedules(ScheduleStatus status)
-    {
-        scheduleDao_.deleteByStatus(status.getId());
-    }
-
-
-    @RequiredTx
-    public boolean cancelSchedule(Page page, int id)
-    {
-        return scheduleDao_.updateByPageIdAndIdToCancel(page.getId(), id) > 0;
     }
 
 
@@ -274,21 +247,23 @@ public class TimerAbilityAlfrImpl extends AbstractPageAbilityAlfr
             for (Schedule schedule : getSchedules(page)) {
                 if (name.equals(String.valueOf(schedule.getId()))) {
                     attr = new Attribute();
-                    attr.setString(SUBNAME_ERRORINFORMATION, schedule
-                        .getErrorInformation());
-                    attr.setString(SUBNAME_SCHEDULEDDATE, String
-                        .valueOf(schedule.getScheduledDate().getTime()));
+                    attr.setString(SUBNAME_DAYOFWEEK, schedule.getDayOfWeek()
+                        .toString());
+                    attr.setString(SUBNAME_YEAR, schedule.getYear().toString());
+                    attr.setString(SUBNAME_MONTH, schedule.getMonth()
+                        .toString());
+                    attr.setString(SUBNAME_DAY, schedule.getDay().toString());
+                    attr.setString(SUBNAME_HOUR, schedule.getHour().toString());
+                    attr.setString(SUBNAME_MINUTE, schedule.getMinute()
+                        .toString());
+                    attr.setString(SUBNAME_PLUGINID, schedule.getPluginId());
                     attr.setString(SUBNAME_COMPONENT, schedule.getComponent());
-                    attr.setString(SUBNAME_BEGINDATE,
-                        schedule.getBeginDate() != null ? String
-                            .valueOf(schedule.getBeginDate().getTime()) : null);
-                    attr
-                        .setString(SUBNAME_FINISHDATE,
-                            schedule.getFinishDate() != null ? String
-                                .valueOf(schedule.getFinishDate().getTime())
-                                : null);
-                    attr.setString(SUBNAME_STATUS, String.valueOf(schedule
-                        .getStatus().getId()));
+                    if (schedule.getParameter() != null) {
+                        attr.setString(SUBNAME_PARAMETER, schedule
+                            .getParameter());
+                    }
+                    attr.setString(SUBNAME_ENABLED, String.valueOf(schedule
+                        .isEnabled()));
                     break;
                 }
             }
@@ -329,19 +304,18 @@ public class TimerAbilityAlfrImpl extends AbstractPageAbilityAlfr
     {
         ScheduleMold mold = new ScheduleMold();
 
-        long scheduledDateLong = PropertyUtils.valueOf(attr
-            .getString(SUBNAME_SCHEDULEDDATE), 0L);
-        if (scheduledDateLong == 0L) {
-            return;
-        }
-        mold.setScheduledDate(new Date(scheduledDateLong));
+        mold.setDayOfWeek(CronFields.parse(attr.getString(SUBNAME_DAYOFWEEK)));
+        mold.setYear(CronFields.parse(attr.getString(SUBNAME_YEAR)));
+        mold.setMonth(CronFields.parse(attr.getString(SUBNAME_MONTH)));
+        mold.setDay(CronFields.parse(attr.getString(SUBNAME_DAY)));
+        mold.setHour(CronFields.parse(attr.getString(SUBNAME_HOUR)));
+        mold.setMinute(CronFields.parse(attr.getString(SUBNAME_MINUTE)));
 
-        ScheduleStatus status = ScheduleStatus.enumOf(PropertyUtils.valueOf(
-            attr.getString(SUBNAME_STATUS), -1));
-        if (status == null) {
+        String pluginId = attr.getString(SUBNAME_PLUGINID);
+        if (pluginId == null) {
             return;
         }
-        mold.setStatus(status);
+        mold.setPluginId(pluginId);
 
         String component = attr.getString(SUBNAME_COMPONENT);
         if (component == null) {
@@ -349,22 +323,10 @@ public class TimerAbilityAlfrImpl extends AbstractPageAbilityAlfr
         }
         mold.setComponent(component);
 
-        long beginDateLong = PropertyUtils.valueOf(attr
-            .getString(SUBNAME_BEGINDATE), 0L);
-        if (beginDateLong != 0L) {
-            mold.setBeginDate(new Date(beginDateLong));
-        }
+        mold.setParameter(attr.getString(SUBNAME_PARAMETER));
 
-        long finishDateLong = PropertyUtils.valueOf(attr
-            .getString(SUBNAME_FINISHDATE), 0L);
-        if (finishDateLong != 0L) {
-            mold.setFinishDate(new Date(finishDateLong));
-        }
-
-        String errorInformation = attr.getString(SUBNAME_ERRORINFORMATION);
-        if (errorInformation != null) {
-            mold.setErrorInformation(errorInformation);
-        }
+        mold.setEnabled(PropertyUtils.valueOf(attr.getString(SUBNAME_ENABLED),
+            true));
 
         addSchedule(page, mold);
     }

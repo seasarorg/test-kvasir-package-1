@@ -5,14 +5,35 @@ import org.seasar.kvasir.base.plugin.Plugin;
 
 import com.ozacc.mail.SendMail;
 
-public interface MailPlugin extends Plugin<MailPluginSettings> {
-	String ID = "org.seasar.kvasir.base.mail";
 
-	String ID_PATH = ID.replace('.', '/');
+public interface MailPlugin
+    extends Plugin<MailPluginSettings>
+{
+    String ID = "org.seasar.kvasir.base.mail";
 
-	String SENDMAIL_ID_DEFAULT = "default";
+    String ID_PATH = ID.replace('.', '/');
 
-	SendMail getDefaultSendMail();
+    String SENDMAIL_ID_DEFAULT = "default";
 
-	SendMail getSendMail(String id);
+
+    /**
+     * デフォルトの{@link SendMail}オブジェクトを返します。
+     * <p>IDが"default"であるSendMailオブジェクトを返します。
+     * </p>
+     * 
+     * @return デフォルトのSendMailオブジェクト。
+     * nullが返されることがあります。
+     */
+    SendMail getDefaultSendMail();
+
+
+    /**
+     * 指定されたIDに対応する{@link SendMail}オブジェクトを返します。
+     * 
+     * @param id ID。
+     * nullを指定してはいけません。
+     * @return SendMailオブジェクト。
+     * nullが返されることがあります。
+     */
+    SendMail getSendMail(String id);
 }

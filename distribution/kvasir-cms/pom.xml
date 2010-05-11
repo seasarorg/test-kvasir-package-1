@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -98,9 +97,10 @@
       <version>1.2.13</version>
       <scope>runtime</scope>
     </dependency>
-    <!-- The following 'kvasir-*' dependencies are specified in order to
-      declare the version of 'kvasir-*' artifacts included
-      in this distribution explicitly.
+    <!--
+      The following 'kvasir-*' dependencies are specified in order to
+      declare the version of 'kvasir-*' artifacts included in this
+      distribution explicitly.
     -->
     <dependency>
       <groupId>org.seasar.kvasir</groupId>
@@ -126,8 +126,9 @@
       <version>3.0.0-SNAPSHOT</version>
       <scope>runtime</scope>
     </dependency>
-    <!-- List the plugins you want to include in this distribution.
-      Plugins on which the listed plugins are depended are also included
+    <!--
+      List the plugins you want to include in this distribution. Plugins
+      on which the listed plugins are depended are also included
       automatically.
     -->
     <dependency>
@@ -147,6 +148,13 @@
     <dependency>
       <groupId>org.seasar.kvasir.base.mail</groupId>
       <artifactId>org.seasar.kvasir.base.mail</artifactId>
+      <version>3.0.0-SNAPSHOT</version>
+      <type>zip</type>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.seasar.kvasir.base.timer</groupId>
+      <artifactId>org.seasar.kvasir.base.timer</artifactId>
       <version>3.0.0-SNAPSHOT</version>
       <type>zip</type>
       <scope>runtime</scope>
@@ -203,6 +211,13 @@
     <dependency>
       <groupId>org.seasar.kvasir.page.ability.table</groupId>
       <artifactId>org.seasar.kvasir.page.ability.table</artifactId>
+      <version>3.0.0-SNAPSHOT</version>
+      <type>zip</type>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.seasar.kvasir.page.ability.timer</groupId>
+      <artifactId>org.seasar.kvasir.page.ability.timer</artifactId>
       <version>3.0.0-SNAPSHOT</version>
       <type>zip</type>
       <scope>runtime</scope>

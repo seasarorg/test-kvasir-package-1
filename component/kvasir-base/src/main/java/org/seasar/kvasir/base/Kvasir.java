@@ -83,6 +83,11 @@ public interface Kvasir
     ClassLoader getCommonClassLoader();
 
 
+    /**
+     * 全てのプラグインの公開リソースを参照可能なクラスローダを返します。
+     * 
+     * @return 全てのプラグインの公開リソースを参照可能なクラスローダ。
+     */
     ClassLoader getClassLoader();
 
 

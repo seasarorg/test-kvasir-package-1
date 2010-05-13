@@ -142,7 +142,7 @@ public class ListingPop extends GenericPop
                     PROP_NUMBEROFENTRIES), NUMBEROFENTRIES_DEFAULT);
 
                 Formula option = null;
-                String optionString = getProperty(popScope, PROP_SORTKEY);
+                String optionString = getProperty(popScope, PROP_OPTION);
                 if (optionString != null && optionString.length() > 0) {
                     option = new Formula(optionString);
                 }

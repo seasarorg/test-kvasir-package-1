@@ -1,3 +1,0 @@
-・scheduleテーブルにparameterカラムを追加する
-・scheduleを実際に実行するjobを作成する
-・CronAbilityを追加する

@@ -37,11 +37,17 @@ public class ProjectMetaData {
 
     public ProjectMetaData(Class<? extends TestCase> clazz,
             boolean useKvasirEclipsePluginTestEnvironmentIfPossible) {
-        this(new FileResource(ClassUtils.getBaseDirectory(clazz)));
-        useKvasirEclipsePluginTestEnvironmentIfPossible_ = useKvasirEclipsePluginTestEnvironmentIfPossible;
+        this(new FileResource(ClassUtils.getBaseDirectory(clazz)),
+                useKvasirEclipsePluginTestEnvironmentIfPossible);
     }
 
     public ProjectMetaData(Resource testClassesDirectory) {
+        this(testClassesDirectory, true);
+    }
+
+    public ProjectMetaData(Resource testClassesDirectory,
+            boolean useKvasirEclipsePluginTestEnvironmentIfPossible) {
+        useKvasirEclipsePluginTestEnvironmentIfPossible_ = useKvasirEclipsePluginTestEnvironmentIfPossible;
         prepare(testClassesDirectory);
     }
 

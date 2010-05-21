@@ -206,8 +206,7 @@ abstract public class KvasirPluginTestCase<P extends Plugin<?>> extends
             final Class<? extends TestCase> clazz,
             final boolean useKvasirEclipsePluginTestEnvironmentIfPossible,
             final String pluginId, final boolean shouldPrepareTestHome)
-
-    throws Exception {
+            throws Exception {
         pluginId_ = pluginId;
         metaData_ = new ProjectMetaData(clazz,
                 useKvasirEclipsePluginTestEnvironmentIfPossible);

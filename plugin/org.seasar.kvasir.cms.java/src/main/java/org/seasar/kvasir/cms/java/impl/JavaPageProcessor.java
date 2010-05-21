@@ -89,9 +89,17 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
                 pageRequest.getMy().getLocalPathname(), file).process(request,
                 response, pageRequest);
         } catch (Exception ex) {
-            throw (ServletException)new ServletException(
+            ServletException exeption = (ServletException)new ServletException(
                 "Can't process java file: file=" + file + ", pathname="
-                    + pageRequest.getMy().getPathname(), ex).initCause(ex);
+                    + pageRequest.getMy().getPathname(), ex);
+            // ServletAPIによってはコンストラクタの第二引数で与えたExceptionをinitCause
+            // として設定することがあるみたいだが、その場合にさらにinitCauseしてしまうとThrowableが
+            // 「Can't overwrite cause」と怒ることがある。
+            // それを避けるためにこうしている。
+            if (exeption.getCause() != ex) {
+                exeption.initCause(ex);
+            }
+            throw exeption;
         }
     }
 

@@ -72,9 +72,9 @@ abstract public class AbstractPageMatcher
 
     public String toString()
     {
-        return "what=" + what_ + ", how=" + how_ + ",except=" + except_
+        return "[ what=" + what_ + ", how=" + how_ + ",except=" + except_
             + ", not=" + not_ + ", regex=" + regex_ + ", gardIdProvider="
-            + gardIdProvider_;
+            + gardIdProvider_ + " ]";
     }
 
 

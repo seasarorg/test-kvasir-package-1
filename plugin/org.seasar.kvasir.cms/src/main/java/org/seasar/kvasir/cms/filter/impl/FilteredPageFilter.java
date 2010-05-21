@@ -38,7 +38,7 @@ public class FilteredPageFilter extends AbstractPageMatcher
 
     public String toString()
     {
-        return "FilteredPageFilter(" + filter_ + ")";
+        return "FilteredPageFilter(" + filter_ + ")" + super.toString();
     }
 
 

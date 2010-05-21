@@ -218,11 +218,11 @@ abstract public class AbstractGardSpecificChainFactory<C, E extends AbstractPage
 
         public CacheKey(Page[] gardRootPages)
         {
-            gardRootIds_ = new int[gardRootPages.length - 1];
-            gardIds_ = new String[gardRootPages.length - 1];
-            for (int i = 1, idx = 0; i < gardRootPages.length; i++, idx++) {
-                gardRootIds_[idx] = gardRootPages[i].getId();
-                gardIds_[idx] = gardRootPages[i].getGardId();
+            gardRootIds_ = new int[gardRootPages.length];
+            gardIds_ = new String[gardRootPages.length];
+            for (int i = 0; i < gardRootPages.length; i++) {
+                gardRootIds_[i] = gardRootPages[i].getId();
+                gardIds_[i] = gardRootPages[i].getGardId();
             }
         }
 

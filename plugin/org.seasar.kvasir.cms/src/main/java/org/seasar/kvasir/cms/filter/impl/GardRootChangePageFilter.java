@@ -30,6 +30,13 @@ public class GardRootChangePageFilter
     }
 
 
+    @Override
+    public String toString()
+    {
+        return "GardRootChangePageFilter(gardRootId=" + gardRootId_ + ")";
+    }
+
+
     public void doFilter(HttpServletRequest request,
         HttpServletResponse response, Dispatcher dispatcher,
         PageRequest pageRequest, PageFilterChain chain)

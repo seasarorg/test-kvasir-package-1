@@ -547,7 +547,8 @@ public class LayoutPage extends LayoutPageBase
     PopContext newPopContext()
     {
         return popPlugin_.newContext(null, httpRequest_, httpResponse_,
-            CmsUtils.newPageRequest(httpRequest_, findStartPathname()));
+            CmsUtils.newPageRequest(httpRequest_, getPageRequest().getThat()
+                .getDispatcher(), findStartPathname()));
     }
 
 

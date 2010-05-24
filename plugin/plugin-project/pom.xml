@@ -96,12 +96,14 @@
     <module>../org.seasar.kvasir.base.dao</module>
     <module>../org.seasar.kvasir.base.mime</module>
     <module>../org.seasar.kvasir.base.mail</module>
+    <module>../org.seasar.kvasir.base.timer</module>
     <module>../org.seasar.kvasir.base.webapp</module>
     <module>../org.seasar.kvasir.base.webapp.multibyte</module>
     <module>../org.seasar.kvasir.page</module>
     <module>../org.seasar.kvasir.page.ability.content</module>
     <module>../org.seasar.kvasir.page.ability.template</module>
     <module>../org.seasar.kvasir.page.ability.table</module>
+    <module>../org.seasar.kvasir.page.ability.timer</module>
     <module>../org.seasar.kvasir.page.auth</module>
     <module>../org.seasar.kvasir.cms</module>
     <module>../net.skirnir.freyja</module>

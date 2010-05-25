@@ -13,7 +13,6 @@ public interface PageListener
      * <dl>
      *   <dt>{@link PageEvent#CREATED}</dt><dd>{@link CreatedPageEvent}</dd>
      *   <dt>{@link PageEvent#MOVED}</dt><dd>{@link MovedPageEvent}</dd>
-     *   <dt>{@link PageEvent#CONCEALED}</dt><dd>{@link ConcealedPageEvent}</dd>
      *   <dt>{@link PageEvent#DELETED}</dt><dd>{@link DeletedPageEvent}</dd>
      *   <dt>{@link PageEvent#LORD_CHANGED}</dt><dd>{@link LordChangedPageEvent}</dd>
      *   <dt>{@link PageEvent#UPDATED}</dt><dd>{@link UpdatedPageEvent}</dd>

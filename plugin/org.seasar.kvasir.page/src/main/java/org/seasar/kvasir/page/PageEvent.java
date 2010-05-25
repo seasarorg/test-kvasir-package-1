@@ -17,9 +17,6 @@ abstract public class PageEvent
     /** Pageが移動されたことを表します。 */
     public static final int MOVED = 1;
 
-    /** Pageが非表示状態になったことを表します。 */
-    public static final int CONCEALED = 2;
-
     /** Pageが削除されたことを表します。 */
     public static final int DELETED = 3;
 

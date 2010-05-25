@@ -11,7 +11,6 @@ import java.util.Map;
 import org.seasar.kvasir.base.Version;
 import org.seasar.kvasir.base.annotation.ForTest;
 import org.seasar.kvasir.page.CollisionDetectedRuntimeException;
-import org.seasar.kvasir.page.ConcealedPageEvent;
 import org.seasar.kvasir.page.DuplicatePageException;
 import org.seasar.kvasir.page.LoopDetectedException;
 import org.seasar.kvasir.page.Page;
@@ -285,11 +284,6 @@ public class PageImpl
         PageDto dto = newDto();
         dto.setRevealDate(revealDate);
         update(dto);
-
-        if (isConcealed() != oldConcealed) {
-            // リスナに通知する。
-            notifyPageListeners(new ConcealedPageEvent(this));
-        }
     }
 
 
@@ -312,11 +306,6 @@ public class PageImpl
         PageDto dto = newDto();
         dto.setConcealDate(concealDate);
         update(dto);
-
-        if (isConcealed() != oldConcealed) {
-            // リスナに通知する。
-            notifyPageListeners(new ConcealedPageEvent(this));
-        }
     }
 
 

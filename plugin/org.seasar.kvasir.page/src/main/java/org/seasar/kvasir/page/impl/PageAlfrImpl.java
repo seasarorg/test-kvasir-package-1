@@ -471,7 +471,7 @@ public class PageAlfrImpl
 
         // リスナに通知する。
         plugin_.notifyPageListeners(new MovedPageEvent(heimId, fromPathname,
-            from));
+            wrapPage(from)));
     }
 
 

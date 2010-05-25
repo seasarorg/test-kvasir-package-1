@@ -279,8 +279,6 @@ public class PageImpl
 
     public void setRevealDate(Date revealDate)
     {
-        boolean oldConcealed = isConcealed();
-
         PageDto dto = newDto();
         dto.setRevealDate(revealDate);
         update(dto);
@@ -301,8 +299,6 @@ public class PageImpl
 
     public void setConcealDate(Date concealDate)
     {
-        boolean oldConcealed = isConcealed();
-
         PageDto dto = newDto();
         dto.setConcealDate(concealDate);
         update(dto);

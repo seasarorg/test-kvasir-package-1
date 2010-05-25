@@ -42,6 +42,14 @@
       <mime-type>image/jpeg</mime-type>
     </mime-mapping>
     <mime-mapping>
+      <extension>png</extension>
+      <mime-type>image/png</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+      <extension>bmp</extension>
+      <mime-type>image/x-bmp</mime-type>
+    </mime-mapping>
+    <mime-mapping>
       <extension>java</extension>
       <mime-type>text/plain</mime-type>
     </mime-mapping>

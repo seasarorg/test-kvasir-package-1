@@ -9,6 +9,7 @@ import org.seasar.kvasir.cms.PageDispatch;
 import org.seasar.kvasir.cms.PageRequest;
 import org.seasar.kvasir.cms.impl.PageDispatchImpl;
 import org.seasar.kvasir.cms.impl.PageRequestImpl;
+import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PagePlugin;
 import org.seasar.kvasir.page.PathId;
 import org.seasar.kvasir.webapp.Dispatcher;
@@ -91,7 +92,12 @@ public class CmsUtils
         if (request != null) {
             PageRequest pageRequest = getPageRequest(request);
             if (pageRequest != null) {
-                return pageRequest.getRootPage().getHeimId();
+                Page page = pageRequest.getMy().getPage();
+                if (page != null) {
+                    return page.getHeimId();
+                } else {
+                    return pageRequest.getRootPage().getHeimId();
+                }
             } else {
                 return Asgard.getKvasir().getPluginAlfr().getPlugin(
                     CmsPlugin.class).determineHeimId(request);

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.seasar.kvasir.cms.pop.PopContext;
 import org.seasar.kvasir.cms.pop.RenderedPop;
 import org.seasar.kvasir.cms.pop.pop.GenericPop;
@@ -65,6 +67,10 @@ public class ListingPop extends GenericPop
 
     public static final String PROP_OPTION = "option";
 
+    public static final String PROP_PAGING = "paging";
+
+    public static final String PROP_PAGENUMBERKEY = "pageNumberKey";
+
     public static final String BASEDIRECTORY_CURRENT = ".";
 
     public static final int NUMBEROFENTRIES_ALL = PageCondition.LENGTH_ALL;
@@ -76,6 +82,8 @@ public class ListingPop extends GenericPop
     private static final String SORTKEY_RANDOM = "random";
 
     private static final String SUMMARYSOURCE_DESCRIPTION = "description";
+
+    private static final int PAGENUMBER_FIRST = 1;
 
     private AuthPlugin authPlugin_;
 
@@ -126,6 +134,8 @@ public class ListingPop extends GenericPop
             int summaryLength = PropertyUtils.valueOf(getProperty(popScope,
                 PROP_SUMMARYLENGTH), SUMMARYLENGTH_DEFAULT);
             String continuingLabel = getProperty(popScope, PROP_CONTINUINGLABEL);
+            boolean paging = PropertyUtils.valueOf(getProperty(popScope,
+                PROP_PAGING), false);
 
             Page[] pages;
             if (baseDirectory != null) {
@@ -140,6 +150,11 @@ public class ListingPop extends GenericPop
                     PROP_ASCENDING), true);
                 int numberOfItems = PropertyUtils.valueOf(getProperty(popScope,
                     PROP_NUMBEROFENTRIES), NUMBEROFENTRIES_DEFAULT);
+                boolean gotAll = SORTKEY_RANDOM.equals(sortKey)
+                    || numberOfItems == PageCondition.LENGTH_ALL;
+                int pageNumber = getPageNumber(context, popScope);
+
+                int pagesCount = 0;
 
                 Formula option = null;
                 String optionString = getProperty(popScope, PROP_OPTION);
@@ -148,12 +163,25 @@ public class ListingPop extends GenericPop
                 }
 
                 User actor = authPlugin_.getCurrentActor();
-                PageCondition cond = createCondition(actor, numberOfItems,
-                    displayOnlyViewable, displayOnlyListed, recursive, sortKey,
-                    ascending, option);
+                PageCondition cond = createConditionForCount(actor,
+                    displayOnlyViewable, displayOnlyListed, recursive, option);
+                if (paging && !gotAll) {
+                    pagesCount = baseDirectory.getChildrenCount(cond);
+                }
+                cond = toConditionForPages(cond, paging ? pageNumber
+                    : PAGENUMBER_FIRST, numberOfItems, sortKey, ascending,
+                    option);
                 pages = baseDirectory.getChildren(cond);
+                if (paging && gotAll) {
+                    pagesCount = pages.length;
+                }
                 if (SORTKEY_RANDOM.equals(sortKey)) {
                     randomize(pages, numberOfItems);
+                }
+
+                if (paging && !gotAll && pagesCount > numberOfItems) {
+                    popScope.put("pager", new Pager(pagesCount, numberOfItems,
+                        pageNumber));
                 }
             } else {
                 pages = new Page[0];
@@ -175,6 +203,27 @@ public class ListingPop extends GenericPop
     }
 
 
+    int getPageNumber(PopContext context, Map<String, Object> popScope)
+    {
+        HttpServletRequest request = context.getRequest();
+        if (request == null) {
+            return PAGENUMBER_FIRST;
+        }
+
+        String pageNumber = request.getParameter(getProperty(popScope,
+            PROP_PAGENUMBERKEY));
+        if (pageNumber == null) {
+            return PAGENUMBER_FIRST;
+        }
+
+        try {
+            return Integer.parseInt(pageNumber);
+        } catch (Throwable t) {
+            return PAGENUMBER_FIRST;
+        }
+    }
+
+
     Page[] randomize(Page[] pages, int length)
     {
         List<Page> randomized = new ArrayList<Page>();
@@ -189,21 +238,31 @@ public class ListingPop extends GenericPop
     }
 
 
-    protected PageCondition createCondition(User actor, int numberOfItems,
-        boolean displayOnlyViewable, boolean displayOnlyListed,
-        boolean recursive, String sortKey, boolean ascending, Formula option)
+    PageCondition toConditionForPages(PageCondition cond, int pageNumber,
+        int numberOfItems, String sortKey, boolean ascending, Formula option)
     {
-        PageCondition cond = new PageCondition().setIncludeConcealed(
-            actor.isAdministrator()).setOnlyListed(displayOnlyListed)
-            .setRecursive(recursive).setUser(actor).setOption(
-                new Formula(Page.FIELD_NODE + "=false")).setPrivilege(
-                displayOnlyViewable ? Privilege.ACCESS_VIEW
-                    : Privilege.ACCESS_PEEK).addOption(option);
         if (!SORTKEY_RANDOM.equals(sortKey)) {
             cond.setOrder(new Order(sortKey, ascending)).setLength(
                 numberOfItems);
+            if (numberOfItems != PageCondition.LENGTH_ALL) {
+                cond.setOffset(PageCondition.OFFSET_FIRST + (pageNumber - 1)
+                    * numberOfItems);
+            }
         }
         return cond;
+    }
+
+
+    protected PageCondition createConditionForCount(User actor,
+        boolean displayOnlyViewable, boolean displayOnlyListed,
+        boolean recursive, Formula option)
+    {
+        return new PageCondition().setIncludeConcealed(actor.isAdministrator())
+            .setOnlyListed(displayOnlyListed).setRecursive(recursive).setUser(
+                actor).setOption(new Formula(Page.FIELD_NODE + "=false"))
+            .setPrivilege(
+                displayOnlyViewable ? Privilege.ACCESS_VIEW
+                    : Privilege.ACCESS_PEEK).addOption(option);
     }
 
 
@@ -314,12 +373,11 @@ public class ListingPop extends GenericPop
 
         void fetchSummary()
         {
-            String summarySource;
+            String summarySource = null;
             if (SUMMARYSOURCE_DESCRIPTION.equals(summarySource_)) {
                 summarySource = page_.getAbility(PropertyAbility.class)
                     .getProperty(PropertyAbility.PROP_DESCRIPTION, locale_);
             } else {
-                summarySource = "";
                 if (!page_.isAsFile()) {
                     Content content = page_.getAbility(ContentAbility.class)
                         .getLatestContent(locale_);
@@ -329,6 +387,9 @@ public class ListingPop extends GenericPop
                         summarySource = HTMLUtils.filter(parser.getSummary());
                     }
                 }
+            }
+            if (summarySource == null) {
+                summarySource = "";
             }
 
             if (summaryLength_ == SUMMARYLENGTH_ALL
@@ -373,6 +434,86 @@ public class ListingPop extends GenericPop
         public Date getDate()
         {
             return date_;
+        }
+    }
+
+    public static class Pager
+    {
+        public static class Element
+        {
+            private int pageNumber;
+
+            private boolean current;
+
+
+            private Element(int pageNumber, boolean current)
+            {
+                this.pageNumber = pageNumber;
+                this.current = current;
+            }
+
+
+            public int getPageNumber()
+            {
+                return pageNumber;
+            }
+
+
+            public boolean isCurrent()
+            {
+                return current;
+            }
+        }
+
+
+        private int pagesCount;
+
+        private int currentPageNumber;
+
+        private List<Element> elements;
+
+
+        public Pager(int itemsCount, int itemsPerPage, int currentPageNumber)
+        {
+            pagesCount = (itemsCount + itemsPerPage - 1) / itemsPerPage;
+            this.currentPageNumber = currentPageNumber;
+
+            List<Element> elements = new ArrayList<Element>();
+            for (int pageNumber = PAGENUMBER_FIRST; pageNumber <= pagesCount; pageNumber++) {
+                elements.add(new Element(pageNumber,
+                    pageNumber == currentPageNumber));
+            }
+            this.elements = elements;
+        }
+
+
+        public boolean isFirst()
+        {
+            return currentPageNumber == PAGENUMBER_FIRST;
+        }
+
+
+        public boolean isLast()
+        {
+            return currentPageNumber == pagesCount;
+        }
+
+
+        public int getPreviousPageNumber()
+        {
+            return currentPageNumber - 1;
+        }
+
+
+        public int getNextPageNumber()
+        {
+            return currentPageNumber + 1;
+        }
+
+
+        public List<Element> getElements()
+        {
+            return elements;
         }
     }
 }

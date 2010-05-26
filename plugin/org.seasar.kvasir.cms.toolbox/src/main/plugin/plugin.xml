@@ -93,14 +93,19 @@
       <form-unit kind="property" id="ascending"
         human-readable="false" type="boolean" default="true" />
       <form-unit kind="group" id="group.summary" />
-      <form-unit kind="property" id="summarySource" human-readable="false"
-        type="select" default="body">
+      <form-unit kind="property" id="summarySource"
+        human-readable="false" type="select" default="body">
         <option>body</option>
         <option>description</option>
       </form-unit>
       <form-unit kind="property" id="summaryLength"
         human-readable="false" default="128" />
       <form-unit kind="property" id="continuingLabel" />
+      <form-unit kind="group" id="group.paging" />
+      <form-unit kind="property" id="paging" human-readable="false"
+        type="boolean" default="false" />
+      <form-unit kind="property" id="pageNumberKey"
+        human-readable="false" default="p" />
       <form-unit kind="group" id="group.expert" />
       <form-unit kind="property" id="option" human-readable="false" />
       <form-unit kind="property" id="body" />

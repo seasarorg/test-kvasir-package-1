@@ -11,4 +11,9 @@
       </div>
     </dd>
   </div>
+  <div class="pager" tal:define="pager pager" tal:condition="pager">
+    <span tal:omit-tag="" tal:condition="not:pager/first"><a tal:attributes="href page:${that/pathname}?${pageNumberKey}=${pager/previousPageNumber}">Prev</a>&nbsp;</span> 
+    <span tal:omit-tag="" tal:repeat="element pager/elements"><a tal:omit-tag="element/current" tal:attributes="href page:${that/pathname}?${pageNumberKey}=${element/pageNumber}" tal:content="element/pageNumber"></a>&nbsp;</span> 
+    <span tal:omit-tag="" tal:condition="not:pager/last"><a tal:attributes="href page:${that/pathname}?${pageNumberKey}=${pager/nextPageNumber}">Next</a>&nbsp;</span> 
+  </div>
 </dl>

@@ -19,11 +19,15 @@
   <extension point="org.seasar.kvasir.cms.pop.pops">
     <pop id="poweredByPop">
       <form-unit kind="property" id="body" />
+      <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="super" human-readable="false" />
     </pop>
     <pop id="introductionPop">
       <form-unit kind="property" id="title" />
       <form-unit kind="property" id="body" />
       <form-unit kind="property" id="body-type" human-readable="false" />
+      <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="super" human-readable="false" />
     </pop>
     <pop id="siteTitlePop">
       <form-unit kind="property" id="siteTitle" />
@@ -44,6 +48,7 @@
       <form-unit kind="property" id="imageHeight"
         human-readable="false" />
       <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="super" human-readable="false" />
       <form-unit kind="property" id="body" />
     </pop>
     <pop id="contentPop">
@@ -67,6 +72,7 @@
       <form-unit kind="group" id="group.template" />
       <form-unit kind="property" id="body" />
       <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="super" human-readable="false" />
       <form-unit kind="property" id="defaultContentMediaType"
         human-readable="false" default="text/x-rst" />
       <form-unit kind="property" id="usePageLabelAsTitle"
@@ -78,6 +84,8 @@
     <pop id="loginUserPop">
       <form-unit kind="property" id="title" />
       <form-unit kind="property" id="body" />
+      <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="super" human-readable="false" />
     </pop>
   </extension>
   <extension point="org.seasar.kvasir.base.webapp.staticContents">

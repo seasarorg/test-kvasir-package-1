@@ -50,6 +50,8 @@ public class GenericPop
 
     public static final String PROP_BODY_TYPE = PopElement.PROP_BODY_TYPE;
 
+    public static final String PROP_SUPER = "super";
+
     private PageAlfr pageAlfr_;
 
     private PopElement element_;
@@ -73,7 +75,13 @@ public class GenericPop
 
     final public String getId()
     {
-        return getPopId() + INSTANCE_DELIMITER + instanceId_;
+        return getId(instanceId_);
+    }
+
+
+    String getId(int instanceId)
+    {
+        return getPopId() + INSTANCE_DELIMITER + instanceId;
     }
 
 
@@ -270,15 +278,67 @@ public class GenericPop
         String value = null;
         if (!isBodyAndShouldReferBodyFileDirectly(id)) {
             PropertyAbility prop = getRootPagePropertyAbility();
-            value = prop.getProperty(getPropertyKey(id), variant);
+            value = getInstanceProperty(prop, instanceId_, id, variant);
             if (value == null) {
-                value = prop.getProperty(getPopPropertyKey(id), variant);
+                value = getSuperProperty(prop, instanceId_, id, variant);
+                if (value == null) {
+                    value = prop.getProperty(getPopPropertyKey(id), variant);
+                }
             }
         }
         if (value == null) {
             value = element_.getProperty(id, variant);
         }
         return value;
+    }
+
+
+    String getInstanceProperty(PropertyAbility prop, int instanceId, String id,
+        Locale locale)
+    {
+        return prop.getProperty(getPropertyKey(instanceId, id), locale);
+    }
+
+
+    String getInstanceProperty(PropertyAbility prop, int instanceId, String id,
+        String variant)
+    {
+        return prop.getProperty(getPropertyKey(instanceId, id), variant);
+    }
+
+
+    String getSuperProperty(PropertyAbility prop, int instanceId, String id,
+        Locale locale)
+    {
+        String value = null;
+        for (Integer superInstanceId = null; value == null
+            && (superInstanceId = getSuperInstanceId(prop, instanceId)) != null; instanceId = superInstanceId) {
+            value = getInstanceProperty(prop, superInstanceId, id, locale);
+        }
+        return value;
+    }
+
+
+    String getSuperProperty(PropertyAbility prop, int instanceId, String id,
+        String variant)
+    {
+        String value = null;
+        for (Integer superInstanceId = null; value == null
+            && (superInstanceId = getSuperInstanceId(prop, instanceId)) != null; instanceId = superInstanceId) {
+            value = getInstanceProperty(prop, superInstanceId, id, variant);
+        }
+        return value;
+    }
+
+
+    Integer getSuperInstanceId(PropertyAbility prop, int instanceId)
+    {
+        try {
+            return Integer.valueOf(getInstanceProperty(prop, instanceId,
+                PROP_SUPER, VARIANT_DEFAULT));
+        } catch (Throwable t) {
+            return null;
+        }
     }
 
 
@@ -308,9 +368,12 @@ public class GenericPop
         String value = null;
         if (!isBodyAndShouldReferBodyFileDirectly(id)) {
             PropertyAbility prop = getRootPagePropertyAbility();
-            value = prop.getProperty(getPropertyKey(id), locale);
+            value = getInstanceProperty(prop, instanceId_, id, locale);
             if (value == null) {
-                value = prop.getProperty(getPopPropertyKey(id), locale);
+                value = getSuperProperty(prop, instanceId_, id, locale);
+                if (value == null) {
+                    value = prop.getProperty(getPopPropertyKey(id), locale);
+                }
             }
         }
         if (value == null) {
@@ -410,8 +473,20 @@ public class GenericPop
     public void setProperties(PopContext context, String variant,
         PopPropertyEntry[] entries)
     {
+        PopPropertyEntry superEntry = null;
         for (int i = 0; i < entries.length; i++) {
-            setProperty(context, entries[i].getId(), variant, entries[i]
+            String id = entries[i].getId();
+            if (PROP_SUPER.equals(id)) {
+                superEntry = entries[i];
+            } else {
+                setProperty(context, entries[i].getId(), variant, entries[i]
+                    .getValue());
+            }
+        }
+        // もともとデフォルトの値だったものを親インスタンスの値にみせかけられるように、
+        // superは最後に設定する。
+        if (superEntry != null) {
+            setProperty(context, superEntry.getId(), variant, superEntry
                 .getValue());
         }
     }
@@ -533,13 +608,19 @@ public class GenericPop
     }
 
 
-    protected String getPropertyKey(String metaDataId)
+    String getPropertyKey(String metaDataId)
     {
-        return "pop." + getId() + "." + metaDataId;
+        return getPropertyKey(instanceId_, metaDataId);
     }
 
 
-    protected String getPopPropertyKey(String metaDataId)
+    String getPropertyKey(int instanceId, String metaDataId)
+    {
+        return "pop." + getId(instanceId) + "." + metaDataId;
+    }
+
+
+    String getPopPropertyKey(String metaDataId)
     {
         return "pop." + getPopId() + "." + metaDataId;
     }

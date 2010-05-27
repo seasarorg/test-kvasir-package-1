@@ -1,14 +1,15 @@
 package org.seasar.kvasir.cms.zpt.impl;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.seasar.kvasir.base.util.collection.LRUMap;
-import org.seasar.kvasir.cms.util.CmsUtils;
 
 import net.skirnir.freyja.Element;
 import net.skirnir.freyja.Macro;
 import net.skirnir.freyja.TemplateSet;
+
+import org.seasar.kvasir.base.util.collection.LRUMap;
+import org.seasar.kvasir.cms.util.CmsUtils;
 
 
 public class KvasirCachedTemplateSet
@@ -16,12 +17,12 @@ public class KvasirCachedTemplateSet
 {
     private static final int CACHE_SIZE = 128;
 
-    private TemplateSet templateSet_;
+    private KvasirTemplateSet templateSet_;
 
     private Map<Integer, Map<String, CacheEntry>> cache_ = new HashMap<Integer, Map<String, CacheEntry>>();
 
 
-    public KvasirCachedTemplateSet(TemplateSet templateSet)
+    public KvasirCachedTemplateSet(KvasirTemplateSet templateSet)
     {
         templateSet_ = templateSet;
     }
@@ -105,6 +106,7 @@ public class KvasirCachedTemplateSet
         if (serialNumber == null) {
             return null;
         }
+        File file = templateSet_.getFile(templateName);
 
         Integer heimId = CmsUtils.getHeimId();
         Map<String, CacheEntry> map = cache_.get(heimId);
@@ -114,7 +116,8 @@ public class KvasirCachedTemplateSet
         }
         CacheEntry cacheEntry = map.get(templateName);
         if (cacheEntry != null) {
-            if (serialNumber.longValue() > cacheEntry.getSerialNumber()) {
+            if (!file.equals(cacheEntry.getFile())
+                || serialNumber.longValue() > cacheEntry.getSerialNumber()) {
                 cacheEntry = null;
             }
         }
@@ -123,8 +126,8 @@ public class KvasirCachedTemplateSet
             if (elems == null) {
                 return null;
             }
-            cacheEntry = new CacheEntry(templateName, serialNumber.longValue(),
-                elems);
+            cacheEntry = new CacheEntry(templateName, file, serialNumber
+                .longValue(), elems);
             map.put(templateName, cacheEntry);
         }
 
@@ -148,6 +151,8 @@ public class KvasirCachedTemplateSet
     {
         private String templateName_;
 
+        private File file_;
+
         private long serialNumber_;
 
         private Element[] elements_;
@@ -155,10 +160,11 @@ public class KvasirCachedTemplateSet
         private Map<String, Macro> macroMap_ = new HashMap<String, Macro>();
 
 
-        public CacheEntry(String templateName, long serialNumber,
+        public CacheEntry(String templateName, File file, long serialNumber,
             Element[] elements)
         {
             templateName_ = templateName;
+            file_ = file;
             serialNumber_ = serialNumber;
             elements_ = elements;
         }
@@ -167,6 +173,12 @@ public class KvasirCachedTemplateSet
         public String getTemplateName()
         {
             return templateName_;
+        }
+
+
+        public File getFile()
+        {
+            return file_;
         }
 
 

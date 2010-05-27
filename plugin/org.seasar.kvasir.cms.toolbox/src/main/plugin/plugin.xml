@@ -54,6 +54,7 @@
       <form-unit kind="property" id="displayOnlyViewable"
         human-readable="false" type="boolean" />
       <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="super" human-readable="false" />
       <form-unit kind="property" id="body" />
     </pop>
     <pop id="languageSelectorPop">
@@ -63,11 +64,13 @@
       <form-unit kind="property" id="styleClass"
         human-readable="false" />
       <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="super" human-readable="false" />
       <form-unit kind="property" id="body" />
     </pop>
     <pop id="breadcrumbsPop">
       <form-unit kind="property" id="topLabel" />
       <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="super" human-readable="false" />
       <form-unit kind="property" id="body" />
     </pop>
     <pop id="listingPop">
@@ -107,17 +110,20 @@
       <form-unit kind="property" id="pageNumberKey"
         human-readable="false" default="p" />
       <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="super" human-readable="false" />
       <form-unit kind="property" id="option" human-readable="false" />
       <form-unit kind="property" id="body" />
     </pop>
     <pop id="loginPop" body-resource-path="pops/loginPop/login.html">
       <form-unit kind="property" id="title" />
       <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="super" human-readable="false" />
       <form-unit kind="property" id="body" />
     </pop>
     <pop id="searchPop">
       <form-unit kind="property" id="title" />
       <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="super" human-readable="false" />
       <form-unit kind="property" id="body" />
     </pop>
     <pop id="imagePop">
@@ -127,6 +133,7 @@
       <form-unit kind="property" id="linkURL" human-readable="false"
         type="page" />
       <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="super" human-readable="false" />
       <form-unit kind="property" id="styleClass"
         human-readable="false" />
       <form-unit kind="property" id="body" />
@@ -138,6 +145,8 @@
         human-readable="false" />
       <form-unit kind="group" id="group.logic" />
       <form-unit kind="property" id="logic" human-readable="false" />
+      <form-unit kind="group" id="group.expert" />
+      <form-unit kind="property" id="super" human-readable="false" />
     </pop>
   </extension>
 

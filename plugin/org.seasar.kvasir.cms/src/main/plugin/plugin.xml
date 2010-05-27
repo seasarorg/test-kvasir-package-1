@@ -52,7 +52,7 @@
 
   <!-- PAGE PROCESSORS -->
   <extension point="org.seasar.kvasir.cms.pageProcessors">
-    <page-processor id="standardPageProcessor" phase="presentation" />
+    <page-processor id="standardPageProcessor" phase="controller" />
     <page-processor id="noEntryPageProcessor" phase="else"
       after="_last" />
   </extension>

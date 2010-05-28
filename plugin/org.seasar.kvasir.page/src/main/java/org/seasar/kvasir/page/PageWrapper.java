@@ -175,6 +175,12 @@ public class PageWrapper
     }
 
 
+    public Page getLordPage()
+    {
+        return getLord();
+    }
+
+
     public Page[] getLords()
     {
         return page_.getLords();
@@ -293,6 +299,12 @@ public class PageWrapper
     public boolean isLord()
     {
         return page_.isLord();
+    }
+
+
+    public boolean isAsLord()
+    {
+        return isLord();
     }
 
 

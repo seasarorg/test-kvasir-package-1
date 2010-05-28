@@ -191,6 +191,12 @@ public class MockPage
     }
 
 
+    public Page getLordPage()
+    {
+        return getLord();
+    }
+
+
     public Page[] getLords()
     {
         LinkedList<Page> lordList = new LinkedList<Page>();
@@ -403,6 +409,12 @@ public class MockPage
     public boolean isLord()
     {
         return lord_;
+    }
+
+
+    public boolean isAsLord()
+    {
+        return isLord();
     }
 
 

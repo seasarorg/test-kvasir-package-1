@@ -1,6 +1,7 @@
 package org.seasar.kvasir.page.condition;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,13 +35,68 @@ import org.seasar.kvasir.util.PropertyUtils;
  */
 public class PageConditionParser
 {
+    static interface Function
+    {
+        Function FUNCTION_CURRENT_DATE_STRING = new Function() {
+            public String get()
+            {
+                return "'"
+                    + new SimpleDateFormat("yyyy-MM-dd").format(new Date())
+                    + "'";
+            }
+        };
+
+        Function FUNCTION_CURRENT_TIME_STRING = new Function() {
+            public String get()
+            {
+                return "'"
+                    + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "'";
+            }
+        };
+
+        Function FUNCTION_CURRENT_DATETIME_STRING = new Function() {
+            public String get()
+            {
+                return "'"
+                    + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                        .format(new Date()) + "'";
+            }
+        };
+
+
+        String get();
+    }
+
+    static class StringFunction
+        implements Function
+    {
+        static StringFunction FUNCTION_TRUE = new StringFunction("1");
+
+        static StringFunction FUNCTION_FALSE = new StringFunction("0");
+
+        private String string;
+
+
+        StringFunction(String string)
+        {
+            this.string = string;
+        }
+
+
+        public String get()
+        {
+            return string;
+        }
+    }
+
+
     private final Set<String> reservedSet_;
 
     private final Set<String> pageFieldSet_;
 
     private final Set<String> pageAliasSet_;
 
-    private final Map<String, String> constantMap_;
+    private final Map<String, Function> constantMap_;
 
     private final PageType[] pageTypes_;
 
@@ -80,9 +136,13 @@ public class PageConditionParser
         }
         pageAliasSet_ = Collections.unmodifiableSet(set);
 
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("true", "1");
-        map.put("false", "0");
+        Map<String, Function> map = new HashMap<String, Function>();
+        map.put("true", StringFunction.FUNCTION_TRUE);
+        map.put("false", StringFunction.FUNCTION_FALSE);
+        map.put("current_date_string", Function.FUNCTION_CURRENT_DATE_STRING);
+        map.put("current_time_string", Function.FUNCTION_CURRENT_TIME_STRING);
+        map.put("current_datetime_string",
+            Function.FUNCTION_CURRENT_DATETIME_STRING);
         constantMap_ = Collections.unmodifiableMap(map);
 
         pageTypes_ = plugin.getPageTypes();
@@ -277,13 +337,17 @@ public class PageConditionParser
                 } else if (stat == 4) {
                     // property('a.b.c') または property('a.b.c')=
 
-                    if ((tp == WhereTokenizer.TYPE_SPACE)
-                        || (tp == WhereTokenizer.TYPE_OTHER)
-                        || (tp == WhereTokenizer.TYPE_SYMBOL)) {
+                    if (tp == WhereTokenizer.TYPE_SPACE
+                        || tp == WhereTokenizer.TYPE_OTHER
+                        || tp == WhereTokenizer.TYPE_SYMBOL) {
                         // property('a.b.c')=...
-                        sb.append(value);
-                    } else if ((tp == WhereTokenizer.TYPE_STRING)
-                        || (tp == WhereTokenizer.TYPE_PARAM)) {
+                        if (tp == WhereTokenizer.TYPE_SYMBOL) {
+                            convert(sb, null, value);
+                        } else {
+                            sb.append(value);
+                        }
+                    } else if (tp == WhereTokenizer.TYPE_STRING
+                        || tp == WhereTokenizer.TYPE_PARAM) {
                         // XXX 複雑になるので今のところinはサポートしていない。
 
                         sb.append("? AND ").append(TableConstants.TABLE_PAGE)
@@ -482,9 +546,9 @@ public class PageConditionParser
             }
             return null;
         } else {
-            String constant = constantMap_.get(lsymbol);
+            Function constant = constantMap_.get(lsymbol);
             if (constant != null) {
-                sb.append(constant);
+                sb.append(constant.get());
                 return null;
             } else {
                 String converted = null;

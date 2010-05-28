@@ -238,8 +238,23 @@ public interface Page
      * </p>
      * 
      * @return Lord。
+     * @see #getLordPage()
+     * @see #isLord()
      */
     Page getLord();
+
+
+    /**
+     * このページのLordを返します。
+     * <p>このメソッドは{@link #getLord()}と同じです。
+     * 主にJavaBeans規約に沿ったプロパティアクセスでLordを取得するために用意されています。
+     * </p>
+     * 
+     * @return Lord。
+     * @see #getLord()
+     * @see #isLord()
+     */
+    Page getLordPage();
 
 
     /**
@@ -563,8 +578,22 @@ public interface Page
      * このページがLordかどうかを返します。
      * 
      * @return Lordかどうか。
+     * @see #isAsLord()
      */
     boolean isLord();
+
+
+    /**
+     * このページがLordかどうかを返します。
+     * <p>このメソッドは{@link #isLord()}と同じです。
+     * 主にJavaBeans規約に沿ったプロパティアクセスでLordかどうかを判定するために用意されています。
+     * </p>
+     * 
+     * @return Lordかどうか。
+     * @see #isLord()
+     * @see #getLord()
+     */
+    boolean isAsLord();
 
 
     /**

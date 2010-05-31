@@ -76,7 +76,7 @@
     <pop id="listingPop">
       <form-unit kind="property" id="title" />
       <form-unit kind="property" id="baseDirectory"
-        human-readable="false" type="page" default="." />
+        human-readable="false" default="." />
       <form-unit kind="property" id="numberOfEntries"
         human-readable="false" default="10" />
       <form-unit kind="property" id="displayOnlyViewable"
@@ -91,8 +91,11 @@
         <option>createDate</option>
         <option>modifyDate</option>
         <option>orderNumber</option>
+        <option>field</option>
         <option>random</option>
       </form-unit>
+      <form-unit kind="property" id="sortKeyField"
+        human-readable="false" />
       <form-unit kind="property" id="ascending"
         human-readable="false" type="boolean" default="true" />
       <form-unit kind="group" id="group.summary" />

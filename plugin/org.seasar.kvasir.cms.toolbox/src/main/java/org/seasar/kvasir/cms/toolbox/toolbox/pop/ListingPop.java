@@ -57,6 +57,8 @@ public class ListingPop extends GenericPop
 
     public static final String PROP_SORTKEY = "sortKey";
 
+    public static final String PROP_SORTKEYFIELD = "sortKeyField";
+
     public static final String PROP_ASCENDING = "ascending";
 
     public static final String PROP_SUMMARYSOURCE = "summarySource";
@@ -78,6 +80,8 @@ public class ListingPop extends GenericPop
     public static final int NUMBEROFENTRIES_DEFAULT = 10;
 
     public static final int SUMMARYLENGTH_DEFAULT = 128;
+
+    private static final String SORTKEY_FIELD = "field";
 
     private static final String SORTKEY_RANDOM = "random";
 
@@ -146,11 +150,15 @@ public class ListingPop extends GenericPop
                 boolean recursive = PropertyUtils.valueOf(getProperty(popScope,
                     PROP_RECURSIVE), false);
                 String sortKey = getProperty(popScope, PROP_SORTKEY);
+                boolean random = SORTKEY_RANDOM.equals(sortKey);
+                if (SORTKEY_FIELD.equals(sortKey)) {
+                    sortKey = getProperty(popScope, PROP_SORTKEYFIELD);
+                }
                 boolean ascending = PropertyUtils.valueOf(getProperty(popScope,
                     PROP_ASCENDING), true);
                 int numberOfItems = PropertyUtils.valueOf(getProperty(popScope,
                     PROP_NUMBEROFENTRIES), NUMBEROFENTRIES_DEFAULT);
-                boolean gotAll = SORTKEY_RANDOM.equals(sortKey)
+                boolean gotAll = random
                     || numberOfItems == PageCondition.LENGTH_ALL;
                 int pageNumber = getPageNumber(context, popScope);
 
@@ -166,16 +174,26 @@ public class ListingPop extends GenericPop
                 PageCondition cond = createConditionForCount(actor,
                     displayOnlyViewable, displayOnlyListed, recursive, option);
                 if (paging && !gotAll) {
-                    pagesCount = baseDirectory.getChildrenCount(cond);
+                    if (baseDirectory.isRoot() && recursive) {
+                        // 効率化のためこうしている。
+                        pagesCount = getPageAlfr().getPagesCount(heimId, cond);
+                    } else {
+                        pagesCount = baseDirectory.getChildrenCount(cond);
+                    }
                 }
                 cond = toConditionForPages(cond, paging ? pageNumber
                     : PAGENUMBER_FIRST, numberOfItems, sortKey, ascending,
-                    option);
-                pages = baseDirectory.getChildren(cond);
+                    random, option);
+                if (baseDirectory.isRoot() && recursive) {
+                    // 効率化のためこうしている。
+                    pages = getPageAlfr().getPages(heimId, cond);
+                } else {
+                    pages = baseDirectory.getChildren(cond);
+                }
                 if (paging && gotAll) {
                     pagesCount = pages.length;
                 }
-                if (SORTKEY_RANDOM.equals(sortKey)) {
+                if (random) {
                     randomize(pages, numberOfItems);
                 }
 
@@ -239,9 +257,10 @@ public class ListingPop extends GenericPop
 
 
     PageCondition toConditionForPages(PageCondition cond, int pageNumber,
-        int numberOfItems, String sortKey, boolean ascending, Formula option)
+        int numberOfItems, String sortKey, boolean ascending, boolean random,
+        Formula option)
     {
-        if (!SORTKEY_RANDOM.equals(sortKey)) {
+        if (!random) {
             cond.setOrder(new Order(sortKey, ascending)).setLength(
                 numberOfItems);
             if (numberOfItems != PageCondition.LENGTH_ALL) {

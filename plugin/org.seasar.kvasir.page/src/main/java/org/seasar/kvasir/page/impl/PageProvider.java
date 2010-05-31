@@ -217,6 +217,13 @@ public class PageProvider
 
 
     @Aspect("j2ee.requiredTx")
+    public Number getCount(PageCondition cond)
+    {
+        return dao_.getCount(cond);
+    }
+
+
+    @Aspect("j2ee.requiredTx")
     public void deleteById(Number id)
     {
         dao_.deleteById(id);

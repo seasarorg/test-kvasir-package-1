@@ -139,6 +139,9 @@ public interface PageAlfr
     Page[] getPages(int heimId, PageCondition cond);
 
 
+    int getPagesCount(int heimId, PageCondition cond);
+
+
     Page getRootPage(int heimId);
 
 

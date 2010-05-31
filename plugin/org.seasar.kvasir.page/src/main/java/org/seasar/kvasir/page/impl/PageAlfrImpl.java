@@ -199,6 +199,12 @@ public class PageAlfrImpl
     }
 
 
+    public int getPagesCount(int heimId, PageCondition cond)
+    {
+        return cache_.getPagesCount(new PageConditionWithHeimId(cond, heimId));
+    }
+
+
     public Page getRootPage(int heimId)
     {
         return getPage(heimId, "");

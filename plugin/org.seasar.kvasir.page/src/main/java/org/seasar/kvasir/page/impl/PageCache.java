@@ -265,6 +265,13 @@ public class PageCache
     }
 
 
+    public int getPagesCount(PageCondition cond)
+    {
+        // XXX 今のところキャッシュしていない。
+        return provider_.getCount(cond).intValue();
+    }
+
+
     public int[] getPageIds(PageCondition cond)
     {
         // XXX 今のところキャッシュしていない。

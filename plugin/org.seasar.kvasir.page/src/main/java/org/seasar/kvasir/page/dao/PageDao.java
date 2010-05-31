@@ -48,6 +48,9 @@ public interface PageDao
         PageCondition cond);
 
 
+    Number getCount(PageCondition cond);
+
+
     boolean childNameExists(Number heimId, String pathname, String name);
 
 

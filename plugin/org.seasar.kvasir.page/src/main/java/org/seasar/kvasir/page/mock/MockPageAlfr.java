@@ -222,6 +222,12 @@ public class MockPageAlfr
     }
 
 
+    public int getPagesCount(int heimId, PageCondition cond)
+    {
+        return 0;
+    }
+
+
     public Page getRootPage(int heimId)
     {
         if (heimId == PathId.HEIM_MIDGARD) {

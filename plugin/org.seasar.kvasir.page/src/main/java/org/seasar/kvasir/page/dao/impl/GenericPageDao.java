@@ -283,6 +283,13 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
     }
 
 
+    public Number getCount(PageCondition cond)
+    {
+        return (Number)getPageList(cond, true, PAGELIST_COLUMNS_COUNT,
+            scalarListHandler_).get(0);
+    }
+
+
     public boolean childNameExists(Number heimId, String pathname, String name)
     {
         Connection con = null;

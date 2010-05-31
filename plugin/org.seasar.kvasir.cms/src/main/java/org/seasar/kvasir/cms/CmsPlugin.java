@@ -134,7 +134,7 @@ public interface CmsPlugin
      * </p>
      *
      * @param site サイトURL。「スキーム＋ドメイン（＋ポート番号）」という形式で、
-     * 末尾に「<code>/</code>」はつけない文字列を指定して下さい。
+     * 末尾に「<code>/</code>」はついていてもついていなくても構いません。
      * @return HeimのID。
      */
     int determineHeimId(String site);

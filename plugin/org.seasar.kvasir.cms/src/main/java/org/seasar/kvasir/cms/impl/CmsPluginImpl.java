@@ -18,8 +18,8 @@ import org.seasar.kvasir.base.plugin.SettingsListener;
 import org.seasar.kvasir.base.webapp.WebappPlugin;
 import org.seasar.kvasir.base.webapp.impl.ResourceContent;
 import org.seasar.kvasir.cms.CmsPlugin;
-import org.seasar.kvasir.cms.RequestSnapshot;
 import org.seasar.kvasir.cms.ContentDraft;
+import org.seasar.kvasir.cms.RequestSnapshot;
 import org.seasar.kvasir.cms.extension.PageFilterPhaseElement;
 import org.seasar.kvasir.cms.extension.PageProcessorPhaseElement;
 import org.seasar.kvasir.cms.setting.CmsPluginSettings;
@@ -328,6 +328,7 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
             if (site.endsWith("/")) {
                 site = site.substring(0, site.length() - 1);
             }
+
             if (heimIdBySiteMap_.containsKey(site)) {
                 heimId = heimIdBySiteMap_.get(site);
             }
@@ -429,9 +430,8 @@ public class CmsPluginImpl extends AbstractPlugin<CmsPluginSettings>
             draft.setCreateDate(new Date());
         }
 
-        page.getAbility(PropertyAbility.class)
-            .setProperty(PROP_CONTENTDRAFT, variant,
-                SerializationUtils.serialize(draft));
+        page.getAbility(PropertyAbility.class).setProperty(PROP_CONTENTDRAFT,
+            variant, SerializationUtils.serialize(draft));
     }
 
 

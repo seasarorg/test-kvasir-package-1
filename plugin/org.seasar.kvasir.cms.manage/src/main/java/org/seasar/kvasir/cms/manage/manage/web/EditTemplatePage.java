@@ -4,16 +4,17 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import net.skirnir.freyja.render.Note;
+import net.skirnir.freyja.render.Notes;
+import net.skirnir.freyja.render.html.OptionTag;
+
 import org.seasar.kvasir.cms.manage.tab.impl.PageTab;
 import org.seasar.kvasir.page.Page;
+import org.seasar.kvasir.page.ability.PropertyAbility;
 import org.seasar.kvasir.page.ability.template.Template;
 import org.seasar.kvasir.page.ability.template.TemplateAbility;
 import org.seasar.kvasir.page.ability.template.TemplateAbilityPlugin;
 import org.seasar.kvasir.page.ability.template.extension.TemplateHandlerElement;
-
-import net.skirnir.freyja.render.Note;
-import net.skirnir.freyja.render.Notes;
-import net.skirnir.freyja.render.html.OptionTag;
 
 
 public class EditTemplatePage extends MainPanePage
@@ -176,30 +177,49 @@ public class EditTemplatePage extends MainPanePage
 
     private TemplateAbility findDefaultTemplateAbility()
     {
-        Page page = getPage();
-        String type = page.getType();
         Page templatePage = null;
-        Page[] gardPages = page.getGardRoots();
-        for (int i = 1; i < gardPages.length; i++) {
-            templatePage = gardPages[i].getChild(Page.PATHNAME_TEMPLATES + "/"
-                + type);
-            if (templatePage != null) {
+
+        Page page = getPage();
+        String subType = page.getAbility(PropertyAbility.class).getProperty(
+            PropertyAbility.PROP_SUBTYPE);
+        Page[] lords = page.getLords();
+        for (int i = 1; i < lords.length; i++) {
+            if ((templatePage = findTemplatePage(page.getType(), subType,
+                lords[i])) != null) {
                 break;
             }
         }
         if (templatePage == null) {
-            templatePage = getPageAlfr().getPage(getCurrentHeimId(),
-                Page.PATHNAME_TEMPLATES + "/" + type);
-            if (templatePage == null) {
-                templatePage = getPageAlfr().getPage(getCurrentHeimId(),
-                    Page.PATHNAME_TEMPLATES + "/" + Page.TYPE);
-            }
+            templatePage = findTemplatePage(page.getType(), subType, page
+                .getRoot());
         }
         if (templatePage != null) {
             return templatePage.getAbility(TemplateAbility.class);
         } else {
             return null;
         }
+    }
+
+
+    Page findTemplatePage(String type, String subType, Page lord)
+    {
+        Page templatePage = null;
+        if (subType != null) {
+            templatePage = lord.getChild(Page.PATHNAME_TEMPLATES + "/" + type
+                + "." + subType);
+        }
+        if (templatePage == null) {
+            templatePage = lord.getChild(Page.PATHNAME_TEMPLATES + "/" + type);
+        }
+        if (templatePage == null) {
+            templatePage = lord.getChild(Page.PATHNAME_TEMPLATES + "/default");
+        }
+        // 後方互換性のため。
+        if (templatePage == null && !Page.TYPE.equals(type)) {
+            templatePage = lord.getChild(Page.PATHNAME_TEMPLATES + "/"
+                + Page.TYPE);
+        }
+        return templatePage;
     }
 
 

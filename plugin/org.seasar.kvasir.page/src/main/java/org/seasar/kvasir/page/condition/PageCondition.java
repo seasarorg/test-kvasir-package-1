@@ -149,6 +149,84 @@ public class PageCondition
     }
 
 
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+            + ((currentDate_ == null) ? 0 : currentDate_.hashCode());
+        result = prime * result + (includeConcealed_ ? 1231 : 1237);
+        result = prime * result + length_;
+        result = prime * result + offset_;
+        result = prime * result + (onlyListed_ ? 1231 : 1237);
+        result = prime * result
+            + ((optionList_ == null) ? 0 : optionList_.hashCode());
+        result = prime * result
+            + ((orderList_ == null) ? 0 : orderList_.hashCode());
+        result = prime * result
+            + ((privilege_ == null) ? 0 : privilege_.hashCode());
+        result = prime * result + (recursive_ ? 1231 : 1237);
+        result = prime * result + ((type_ == null) ? 0 : type_.hashCode());
+        result = prime * result + ((user_ == null) ? 0 : user_.getId());
+        return result;
+    }
+
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        PageCondition other = (PageCondition)obj;
+        if (currentDate_ == null) {
+            if (other.currentDate_ != null)
+                return false;
+        } else if (!currentDate_.equals(other.currentDate_))
+            return false;
+        if (includeConcealed_ != other.includeConcealed_)
+            return false;
+        if (length_ != other.length_)
+            return false;
+        if (offset_ != other.offset_)
+            return false;
+        if (onlyListed_ != other.onlyListed_)
+            return false;
+        if (optionList_ == null) {
+            if (other.optionList_ != null)
+                return false;
+        } else if (!optionList_.equals(other.optionList_))
+            return false;
+        if (orderList_ == null) {
+            if (other.orderList_ != null)
+                return false;
+        } else if (!orderList_.equals(other.orderList_))
+            return false;
+        if (privilege_ == null) {
+            if (other.privilege_ != null)
+                return false;
+        } else if (!privilege_.equals(other.privilege_))
+            return false;
+        if (recursive_ != other.recursive_)
+            return false;
+        if (type_ == null) {
+            if (other.type_ != null)
+                return false;
+        } else if (!type_.equals(other.type_))
+            return false;
+        if (user_ == null) {
+            if (other.user_ != null)
+                return false;
+        } else if (user_.getId() != other.user_.getId())
+            return false;
+        return true;
+    }
+
+
     /**
      * 条件にマッチするPageの列の何番目からを検索結果として返すかを返します。
      * <p>この値が{@link #OFFSET_FIRST}である場合は最初のPageから返すようになります。

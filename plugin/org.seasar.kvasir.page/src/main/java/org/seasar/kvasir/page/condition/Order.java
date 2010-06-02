@@ -68,24 +68,34 @@ public class Order
 
 
     @Override
-    public boolean equals(Object o)
+    public int hashCode()
     {
-        if ((o == null) || (o.getClass() != getClass())) {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (ascend_ ? 1231 : 1237);
+        result = prime * result
+            + ((fieldName_ == null) ? 0 : fieldName_.hashCode());
+        return result;
+    }
+
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
             return false;
-        }
-        Order order = (Order)o;
+        if (getClass() != obj.getClass())
+            return false;
+        Order other = (Order)obj;
+        if (ascend_ != other.ascend_)
+            return false;
         if (fieldName_ == null) {
-            if (order.fieldName_ != null) {
+            if (other.fieldName_ != null)
                 return false;
-            }
-        } else {
-            if (!fieldName_.equals(order.fieldName_)) {
-                return false;
-            }
-        }
-        if (ascend_ != order.ascend_) {
+        } else if (!fieldName_.equals(other.fieldName_))
             return false;
-        }
         return true;
     }
 

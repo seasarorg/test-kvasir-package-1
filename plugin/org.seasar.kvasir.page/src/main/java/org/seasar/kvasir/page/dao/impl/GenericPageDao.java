@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -25,6 +27,7 @@ import org.seasar.kvasir.base.dao.QueryHandler;
 import org.seasar.kvasir.base.dao.SQLUtils;
 import org.seasar.kvasir.base.log.KvasirLog;
 import org.seasar.kvasir.base.log.KvasirLogFactory;
+import org.seasar.kvasir.base.util.collection.LRUMap;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PageNotFoundRuntimeException;
 import org.seasar.kvasir.page.PagePlugin;
@@ -38,6 +41,8 @@ import org.seasar.kvasir.page.condition.ParsedPageCondition;
 import org.seasar.kvasir.page.dao.PageDao;
 import org.seasar.kvasir.page.dao.PageDto;
 import org.seasar.kvasir.page.dao.TableConstants;
+import org.seasar.kvasir.page.impl.CachedPair;
+import org.seasar.kvasir.page.impl.PageConditionKey;
 import org.seasar.kvasir.util.PropertyUtils;
 
 
@@ -81,6 +86,10 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
 
     private final KvasirLog log_ = KvasirLogFactory
         .getLog(GenericPageDao.class);
+
+    // FIXME サイズを設定で変更できるように。
+    private Map<PageConditionKey, CachedPair> cachedPairMap = Collections
+        .synchronizedMap(new LRUMap<PageConditionKey, CachedPair>(500));
 
     static {
         List<String> list = new ArrayList<String>();
@@ -537,6 +546,47 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
     protected List<Object> getPageList(PageCondition cond,
         boolean suppressOrders, String[] columns, ResultSetHandler h)
     {
+        Pair pair = getPair(cond, suppressOrders, columns);
+
+        Connection con = null;
+        try {
+            con = getConnection();
+            QueryRunner run = newQueryRunner();
+
+            return (List<Object>)run.query(con, pair.getTemplate(), pair
+                .getParameters(), h);
+        } catch (SQLException ex) {
+            throw new SQLRuntimeException(ex);
+        } finally {
+            DbUtils.closeQuietly(con);
+        }
+    }
+
+
+    Pair getPair(PageCondition cond, boolean suppressOrders, String[] columns)
+    {
+        PageConditionKey key = new PageConditionKey(cond, suppressOrders,
+            columns);
+        CachedPair cachedPair = cachedPairMap.get(key);
+        if (cachedPair == null) {
+            cachedPair = newCachedPair(cond, suppressOrders, columns);
+            cachedPairMap.put(key, cachedPair);
+        }
+        if (cond.isIncludeConcealed()) {
+            // 可変パラメータがないのでそのまま返してよい。
+            return cachedPair.getPair(null);
+        } else {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put(PageConditionParser.PARAMETER_CURRENTDATE, new Timestamp(
+                System.currentTimeMillis()));
+            return cachedPair.getPair(map);
+        }
+    }
+
+
+    CachedPair newCachedPair(PageCondition cond, boolean suppressOrders,
+        String[] columns)
+    {
         int offset = cond.getOffset();
         int length = cond.getLength();
         String key;
@@ -580,20 +630,9 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
         }
         String[] blocks = new String[] { sb.toString(),
             PropertyUtils.join(parsed.getTables()), parsed.getBase() };
-        Pair pair = constructPair(key, blocks, paramMap, parsed.getParameters());
 
-        Connection con = null;
-        try {
-            con = getConnection();
-            QueryRunner run = newQueryRunner();
-
-            return (List<Object>)run.query(con, pair.getTemplate(), pair
-                .getParameters(), h);
-        } catch (SQLException ex) {
-            throw new SQLRuntimeException(ex);
-        } finally {
-            DbUtils.closeQuietly(con);
-        }
+        return new CachedPair(constructPair(key, blocks, paramMap, parsed
+            .getParameters()));
     }
 
 

@@ -32,4 +32,12 @@ public class PageConditionTest extends TestCase
         assertEquals("1", actual[idx++].getFieldName());
         assertEquals("2", actual[idx++].getFieldName());
     }
+
+
+    public void test_hashCode()
+        throws Exception
+    {
+        assertEquals(new PageCondition().hashCode(), new PageCondition()
+            .hashCode());
+    }
 }

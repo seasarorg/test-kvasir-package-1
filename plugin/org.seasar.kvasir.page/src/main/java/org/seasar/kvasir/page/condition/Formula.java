@@ -1,6 +1,7 @@
 package org.seasar.kvasir.page.condition;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -322,60 +323,37 @@ public class Formula
 
 
     @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((base_ == null) ? 0 : base_.hashCode());
+        result = prime * result + Arrays.hashCode(params_);
+        result = prime * result + Arrays.hashCode(setParams_);
+        return result;
+    }
+
+
+    @Override
     public boolean equals(Object obj)
     {
-        if (this == obj) {
+        if (this == obj)
             return true;
-        }
-
-        if ((obj != null) && (obj.getClass() == getClass())) {
-            Formula formula = (Formula)obj;
-            if (base_ == null) {
-                if (formula.base_ != null) {
-                    return false;
-                }
-            } else if (!base_.equals(formula.base_)) {
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Formula other = (Formula)obj;
+        if (base_ == null) {
+            if (other.base_ != null)
                 return false;
-            }
-
-            if (params_ == null) {
-                if (formula.params_ != null) {
-                    return false;
-                }
-            } else if ((formula.params_ == null)
-                || (params_.length != formula.params_.length)) {
-                return false;
-            } else {
-                for (int i = 0; i < params_.length; i++) {
-                    if (params_[i] == null) {
-                        if (formula.params_[i] != null) {
-                            return false;
-                        }
-                    } else if (!params_[i].equals(formula.params_[i])) {
-                        return false;
-                    }
-                }
-            }
-
-            if (setParams_ == null) {
-                if (formula.setParams_ != null) {
-                    return false;
-                }
-            } else if ((formula.setParams_ == null)
-                || (setParams_.length != formula.setParams_.length)) {
-                return false;
-            } else {
-                for (int i = 0; i < setParams_.length; i++) {
-                    if (setParams_[i] != formula.setParams_[i]) {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        return false;
+        } else if (!base_.equals(other.base_))
+            return false;
+        if (!Arrays.equals(params_, other.params_))
+            return false;
+        if (!Arrays.equals(setParams_, other.setParams_))
+            return false;
+        return true;
     }
 
 

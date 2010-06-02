@@ -21,6 +21,39 @@ public class PageConditionWithHeimId extends PageCondition
 
 
     @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + heimId_;
+        result = prime * result
+            + ((pageCondition_ == null) ? 0 : pageCondition_.hashCode());
+        return result;
+    }
+
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        PageConditionWithHeimId other = (PageConditionWithHeimId)obj;
+        if (heimId_ != other.heimId_)
+            return false;
+        if (pageCondition_ == null) {
+            if (other.pageCondition_ != null)
+                return false;
+        } else if (!pageCondition_.equals(other.pageCondition_))
+            return false;
+        return true;
+    }
+
+
+    @Override
     public PageCondition addOption(Formula option)
     {
         return pageCondition_.addOption(option);

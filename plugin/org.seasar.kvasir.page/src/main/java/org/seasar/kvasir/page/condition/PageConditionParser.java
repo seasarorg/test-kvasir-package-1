@@ -90,6 +90,8 @@ public class PageConditionParser
     }
 
 
+    public static final String PARAMETER_CURRENTDATE = "currentDate";
+
     private final Set<String> reservedSet_;
 
     private final Set<String> pageFieldSet_;
@@ -119,6 +121,7 @@ public class PageConditionParser
         set.add("not");
         set.add("like");
         set.add("in");
+        set.add("is");
         set.add("exist");
         set.add("null");
         set.add("escape");
@@ -211,6 +214,8 @@ public class PageConditionParser
             columnList.add(maxClause);
         }
 
+        StringBuilder optionSb = new StringBuilder();
+        List<Object> optionList = new ArrayList<Object>();
         if (option != null && option.length() > 0) {
             if (!option.validateParameters()) {
                 throw new IllegalArgumentException("option is not filled: "
@@ -220,7 +225,7 @@ public class PageConditionParser
             String base = option.getBase();
             WhereTokenizer wt = new WhereTokenizer(base);
             Object[] params = option.getParameters();
-            String propTable = null;
+            String propName = null;
             int idx = 0;
             int stat = 0;
             while (wt.hasMoreTokens()) {
@@ -232,8 +237,8 @@ public class PageConditionParser
                     switch (tp) {
                     case WhereTokenizer.TYPE_PARAM:
                         // '?'。
-                        sb.append('?');
-                        list.add(params[idx++]);
+                        optionSb.append('?');
+                        optionList.add(params[idx++]);
                         break;
 
                     case WhereTokenizer.TYPE_SPACE:
@@ -242,7 +247,7 @@ public class PageConditionParser
                         // 数値。
                     case WhereTokenizer.TYPE_OTHER:
                         // その他。
-                        sb.append(value);
+                        optionSb.append(value);
                         break;
 
                     case WhereTokenizer.TYPE_STRING:
@@ -253,42 +258,25 @@ public class PageConditionParser
                         // もっとうまくできないか…。
                         if ((value.indexOf('\'') < 0)
                             && (value.indexOf('\\') < 0)) {
-                            sb.append('\'').append(value).append('\'');
+                            optionSb.append('\'').append(value).append('\'');
                         } else {
-                            sb.append('?');
-                            list.add(value);
+                            optionSb.append('?');
+                            optionList.add(value);
                         }
                         break;
 
                     case WhereTokenizer.TYPE_SYMBOL:
                         // シンボル。
                         if (value.equals("property")) {
-                            propTable = TableConstants.TABLE_PROPERTY
-                                + propertyCount;
-                            tableList.add(TableConstants.TABLE_PROPERTY
-                                + " AS " + propTable);
-                            propertyCount++;
-
-                            sb.append(propTable).append(".name=? AND ").append(
-                                propTable).append(".value");
                             stat = 1;
                         } else {
-                            String converted = convert(sb, null, value);
-                            if (converted != null) {
+                            propName = convert(optionSb, null, value);
+                            if (propName != null) {
                                 // プロパティに変換された。
-                                propTable = TableConstants.TABLE_PROPERTY
-                                    + propertyCount;
-                                tableList.add(TableConstants.TABLE_PROPERTY
-                                    + " AS " + propTable);
-                                tableByPropertyMap.put(value, propTable);
-                                propertyCount++;
-
-                                sb.append(propTable).append(".").append(
-                                    TableConstants.COL_PROPERTY_NAME).append(
-                                    "=? AND ").append(propTable).append(".")
-                                    .append(TableConstants.COL_PROPERTY_VALUE);
-                                list.add(converted);
-                                stat = 4;
+                                propertyCount = setUpForProperty(tableList,
+                                    tableByPropertyMap, propName,
+                                    propertyCount, sb, list, optionSb,
+                                    optionList);
                             }
                         }
                         break;
@@ -312,11 +300,11 @@ public class PageConditionParser
                     if ((tp == WhereTokenizer.TYPE_STRING)
                         || (tp == WhereTokenizer.TYPE_PARAM)) {
                         // property('a.b.c'
-                        String name = value;
+                        propName = value;
                         if (tp == WhereTokenizer.TYPE_PARAM) {
-                            name = PropertyUtils.toStringOrNull(params[idx++]);
+                            propName = PropertyUtils
+                                .toStringOrNull(params[idx++]);
                         }
-                        list.add(name);
                         stat = 3;
                     } else {
                         throw new IllegalArgumentException("Syntax error at: "
@@ -328,40 +316,10 @@ public class PageConditionParser
                     if ((tp == WhereTokenizer.TYPE_OTHER)
                         && value.startsWith(")")) {
                         // property('a.b.c')
-                        sb.append(value.substring(1));
-                        stat = 4;
-                    } else {
-                        throw new IllegalArgumentException("Syntax error at: "
-                            + value + " in option: " + base);
-                    }
-                } else if (stat == 4) {
-                    // property('a.b.c') または property('a.b.c')=
-
-                    if (tp == WhereTokenizer.TYPE_SPACE
-                        || tp == WhereTokenizer.TYPE_OTHER
-                        || tp == WhereTokenizer.TYPE_SYMBOL) {
-                        // property('a.b.c')=...
-                        if (tp == WhereTokenizer.TYPE_SYMBOL) {
-                            convert(sb, null, value);
-                        } else {
-                            sb.append(value);
-                        }
-                    } else if (tp == WhereTokenizer.TYPE_STRING
-                        || tp == WhereTokenizer.TYPE_PARAM) {
-                        // XXX 複雑になるので今のところinはサポートしていない。
-
-                        sb.append("? AND ").append(TableConstants.TABLE_PAGE)
-                            .append(".").append(TableConstants.COL_PAGE_ID)
-                            .append("=").append(propTable).append(".").append(
-                                TableConstants.COL_PROPERTY_PAGEID);
-                        if (tp == WhereTokenizer.TYPE_PARAM) {
-                            list.add(params[idx++]);
-                        } else if (tp == WhereTokenizer.TYPE_STRING) {
-                            // property('a.b.c')='value'
-                            list.add(value);
-                        } else {
-                            throw new RuntimeException("LOGIC ERROR");
-                        }
+                        propertyCount = setUpForProperty(tableList,
+                            tableByPropertyMap, propName, propertyCount, sb,
+                            list, optionSb, optionList);
+                        optionSb.append(value.substring(1));
                         stat = 0;
                     } else {
                         throw new IllegalArgumentException("Syntax error at: "
@@ -371,6 +329,14 @@ public class PageConditionParser
                     throw new RuntimeException("LOGIC ERROR");
                 }
             }
+        }
+
+        if (optionSb.length() > 0) {
+            if (sb.length() > 0) {
+                sb.append(" AND ");
+            }
+            sb.append("(").append(optionSb.toString()).append(")");
+            list.addAll(optionList);
         }
 
         if (type != null) {
@@ -391,8 +357,11 @@ public class PageConditionParser
             sb.append(" AND ");
             convert(sb, null, PageCondition.FIELD_CONCEALDATE);
             sb.append(")");
-            list.add(new Timestamp((currentDate != null ? currentDate
-                : new Date()).getTime()));
+            if (currentDate != null) {
+                list.add(new Timestamp(currentDate.getTime()));
+            } else {
+                list.add(new Replacement(PARAMETER_CURRENTDATE));
+            }
         }
 
         if (onlyListed) {
@@ -442,14 +411,15 @@ public class PageConditionParser
                 }
                 Order order = orders[i];
                 String field = order.getFieldName();
-                String converted = convert(orderBySb, groupBySet, field);
-                if (converted != null) {
-                    String table = tableByPropertyMap.get(converted);
-                    if (table == null) {
-                        table = TableConstants.TABLE_PROPERTY + propertyCount;
+                String propName = convert(orderBySb, groupBySet, field);
+                if (propName != null) {
+                    String propTable = tableByPropertyMap.get(propName);
+                    if (propTable == null) {
+                        propTable = TableConstants.TABLE_PROPERTY
+                            + propertyCount;
                         tableList.add(TableConstants.TABLE_PROPERTY + " AS "
-                            + table);
-                        tableByPropertyMap.put(converted, table);
+                            + propTable);
+                        tableByPropertyMap.put(propName, propTable);
                         propertyCount++;
 
                         if (sb.length() > 0) {
@@ -457,14 +427,14 @@ public class PageConditionParser
                         }
                         sb.append(TableConstants.TABLE_PAGE).append(".")
                             .append(TableConstants.COL_PAGE_ID).append("=")
-                            .append(table).append(".").append(
+                            .append(propTable).append(".").append(
                                 TableConstants.COL_PROPERTY_PAGEID).append(
-                                " AND ").append(table).append(".").append(
+                                " AND ").append(propTable).append(".").append(
                                 TableConstants.COL_PROPERTY_NAME).append("=?");
-                        list.add(converted);
+                        list.add(propName);
                     }
 
-                    String col = table + ".value";
+                    String col = propTable + ".value";
                     if (isNumeric(field)) {
                         col = identity_.toNumericExpression(col);
                     }
@@ -501,6 +471,32 @@ public class PageConditionParser
 
         return new ParsedPageCondition(columnList.toArray(new String[0]),
             tableList.toArray(new String[0]), sb.toString(), list.toArray());
+    }
+
+
+    int setUpForProperty(List<String> tableList,
+        Map<String, String> tableByPropertyMap, String propName,
+        int propertyCount, StringBuilder sb, List<Object> list,
+        StringBuilder optionSb, List<Object> optionList)
+    {
+        String propTable = tableByPropertyMap.get(propName);
+        if (propTable == null) {
+            propTable = TableConstants.TABLE_PROPERTY + propertyCount;
+            tableList.add(TableConstants.TABLE_PROPERTY + " AS " + propTable);
+            tableByPropertyMap.put(propName, propTable);
+            propertyCount++;
+
+            if (sb.length() > 0) {
+                sb.append(" AND ");
+            }
+            sb.append(TableConstants.TABLE_PAGE).append(".").append(
+                TableConstants.COL_PAGE_ID).append("=").append(propTable)
+                .append(".").append(TableConstants.COL_PROPERTY_PAGEID).append(
+                    " AND ").append(propTable).append(".name=?");
+            list.add(propName);
+        }
+        optionSb.append(propTable).append(".value");
+        return propertyCount;
     }
 
 

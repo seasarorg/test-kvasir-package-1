@@ -392,33 +392,40 @@ public class ListingPop extends GenericPop
 
         void fetchSummary()
         {
-            String summarySource = null;
-            if (SUMMARYSOURCE_DESCRIPTION.equals(summarySource_)) {
-                summarySource = page_.getAbility(PropertyAbility.class)
-                    .getProperty(PropertyAbility.PROP_DESCRIPTION, locale_);
-            } else {
-                if (!page_.isAsFile()) {
-                    Content content = page_.getAbility(ContentAbility.class)
-                        .getLatestContent(locale_);
-                    if (content != null) {
-                        HTMLParser parser = new HTMLParser(content
-                            .getBodyHTMLString(VariableResolver.EMPTY));
-                        summarySource = HTMLUtils.filter(parser.getSummary());
-                    }
-                }
-            }
-            if (summarySource == null) {
-                summarySource = "";
-            }
-
-            if (summaryLength_ == SUMMARYLENGTH_ALL
-                || summarySource.length() <= summaryLength_) {
-                summary_ = summarySource;
+            if (summaryLength_ == 0) {
+                summary_ = "";
                 continuing_ = Boolean.FALSE;
             } else {
-                summary_ = summarySource.substring(0, summaryLength_).concat(
-                    SUFFIX_LEADING);
-                continuing_ = Boolean.TRUE;
+                String summarySource = null;
+                if (SUMMARYSOURCE_DESCRIPTION.equals(summarySource_)) {
+                    summarySource = page_.getAbility(PropertyAbility.class)
+                        .getProperty(PropertyAbility.PROP_DESCRIPTION, locale_);
+                } else {
+                    if (!page_.isAsFile()) {
+                        Content content = page_
+                            .getAbility(ContentAbility.class).getLatestContent(
+                                locale_);
+                        if (content != null) {
+                            HTMLParser parser = new HTMLParser(content
+                                .getBodyHTMLString(VariableResolver.EMPTY));
+                            summarySource = HTMLUtils.filter(parser
+                                .getSummary());
+                        }
+                    }
+                }
+                if (summarySource == null) {
+                    summarySource = "";
+                }
+
+                if (summaryLength_ == SUMMARYLENGTH_ALL
+                    || summarySource.length() <= summaryLength_) {
+                    summary_ = summarySource;
+                    continuing_ = Boolean.FALSE;
+                } else {
+                    summary_ = summarySource.substring(0, summaryLength_)
+                        .concat(SUFFIX_LEADING);
+                    continuing_ = Boolean.TRUE;
+                }
             }
         }
 

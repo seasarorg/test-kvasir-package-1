@@ -64,18 +64,43 @@ public class StandardPageProcessor
                 // テンプレートを持たない場合は
                 // ページタイプ毎のデフォルトのページにフォワードする。
                 Page templatePage = null;
+                String type = page.getType();
                 String subType = page.getAbility(PropertyAbility.class)
                     .getProperty(PropertyAbility.PROP_SUBTYPE);
+
                 Page[] lords = page.getLords();
                 for (int i = 1; i < lords.length; i++) {
-                    if ((templatePage = findTemplatePage(page.getType(),
-                        subType, lords[i])) != null) {
+                    if ((templatePage = findTemplatePage(type, subType,
+                        lords[i])) != null) {
                         break;
                     }
                 }
+
+                // myが差し替えられてリクエストページと処理ページのHeimが異なっている場合に対応。
+                boolean processingPageOnAnotherHeim = page.getHeimId() != pageRequest
+                    .getRootPage().getHeimId();
+                if (templatePage == null && processingPageOnAnotherHeim) {
+                    Page pageOnRequestedHeim = page.getAlfr().findNearestPage(
+                        pageRequest.getRootPage().getHeimId(),
+                        pageRequest.getMy().getPathname());
+                    lords = pageOnRequestedHeim.getLords();
+                    for (int i = 1; i < lords.length; i++) {
+                        if ((templatePage = findTemplatePage(type, subType,
+                            lords[i])) != null) {
+                            break;
+                        }
+                    }
+                }
+
                 if (templatePage == null) {
-                    templatePage = findTemplatePage(page.getType(), subType,
-                        pageRequest.getRootPage());
+                    templatePage = findTemplatePage(type, subType, page
+                        .getRoot());
+                }
+
+                // myが差し替えられてリクエストページと処理ページのHeimが異なっている場合に対応。
+                if (templatePage == null && processingPageOnAnotherHeim) {
+                    templatePage = findTemplatePage(type, subType, pageRequest
+                        .getRootPage());
                 }
 
                 if (templatePage != null) {
@@ -101,7 +126,7 @@ public class StandardPageProcessor
     Page findTemplatePage(String type, String subType, Page lord)
     {
         Page templatePage = null;
-        if (subType != null) {
+        if (subType != null && subType.length() > 0) {
             templatePage = lord.getChild(Page.PATHNAME_TEMPLATES + "/" + type
                 + "." + subType);
         }

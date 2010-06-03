@@ -160,7 +160,7 @@ public class PageRequestFilter
 
             PageRequest pageRequest = new PageRequestImpl(contextPath,
                 LocaleUtils.findLocale(request), my, my, pageAlfr_
-                    .getRootPage(heimId));
+                    .getRootPage(heimId), path);
             request.setAttribute(ATTR_PAGEREQUEST, pageRequest);
             request.setAttribute(ATTR_CONTEXT_PATH, contextPath);
 

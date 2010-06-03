@@ -27,19 +27,22 @@ public class PageRequestImpl
 
     private Page rootPage_;
 
+    private String pathname_;
+
 
     /*
      * constructors
      */
 
     public PageRequestImpl(String contextPath, Locale locale, PageDispatch my,
-        PageDispatch that, Page rootPage)
+        PageDispatch that, Page rootPage, String pathname)
     {
         contextPath_ = contextPath;
         locale_ = locale;
         my_ = my;
         that_ = that;
         rootPage_ = rootPage;
+        pathname_ = pathname;
     }
 
 
@@ -90,5 +93,11 @@ public class PageRequestImpl
     public Page getRootPage()
     {
         return rootPage_;
+    }
+
+
+    public String getPathname()
+    {
+        return pathname_;
     }
 }

@@ -38,19 +38,20 @@ public class CmsUtils
         Dispatcher dispatcher, String path)
     {
         PageDispatch my = newPageDispatch(request, dispatcher, path);
-        return newPageRequest(request, my, my);
+        return newPageRequest(request, my, my, path);
     }
 
 
     public static PageRequest newPageRequest(HttpServletRequest request,
-        PageDispatch my, PageDispatch that)
+        PageDispatch my, PageDispatch that, String path)
     {
         PluginAlfr pluginAlfr = Asgard.getKvasir().getPluginAlfr();
         return new PageRequestImpl((String)request
             .getAttribute(CmsPlugin.ATTR_CONTEXT_PATH), LocaleUtils
             .findLocale(request), my, that, pluginAlfr.getPlugin(
             PagePlugin.class).getPageAlfr().getRootPage(
-            pluginAlfr.getPlugin(CmsPlugin.class).determineHeimId(request)));
+            pluginAlfr.getPlugin(CmsPlugin.class).determineHeimId(request)),
+            path);
     }
 
 

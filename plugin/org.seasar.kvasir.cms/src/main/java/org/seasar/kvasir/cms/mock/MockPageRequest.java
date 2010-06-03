@@ -22,6 +22,8 @@ public class MockPageRequest
 
     private Page rootPage_;
 
+    private String pathname_;
+
 
     /*
      * constructors
@@ -33,6 +35,7 @@ public class MockPageRequest
         contextPath_ = contextPath;
         locale_ = locale;
         rootPage_ = pageAlfr.getRootPage(PathId.HEIM_MIDGARD);
+        pathname_ = page.getPathname();
 
         MockPageDispatch pageDispatch = new MockPageDispatch();
         pageDispatch.setPage(page);
@@ -85,5 +88,11 @@ public class MockPageRequest
     public Page getRootPage()
     {
         return rootPage_;
+    }
+
+
+    public String getPathname()
+    {
+        return pathname_;
     }
 }

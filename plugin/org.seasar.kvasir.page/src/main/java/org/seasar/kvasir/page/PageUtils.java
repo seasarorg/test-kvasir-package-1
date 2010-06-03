@@ -9,9 +9,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.seasar.kvasir.base.Asgard;
 import org.seasar.kvasir.base.annotation.ForTest;
@@ -596,5 +599,32 @@ public class PageUtils
     public static String[] tokenizePathname(String pathname)
     {
         return pathname.split("/", -1);
+    }
+
+
+    /**
+     * 指定されたPageの配列からランダムにPageを取り出して並べた配列を返します。
+     * <p>元の配列の中身は変更されません。
+     * </p>
+     * 
+     * @param pages Pageの配列。nullを指定してはいけません。
+     * @param length 結果の配列の長さ。
+     * 引数で与えられた配列よりも長い長さを指定した場合、引数で与えられた配列と同じ長さになります。
+     * </p>
+     * 
+     * @return 配列。
+     * nullが返されることはありません。
+     */
+    public static Page[] randomize(Page[] pages, int length)
+    {
+        List<Page> randomized = new ArrayList<Page>();
+        LinkedList<Page> list = new LinkedList<Page>(Arrays.asList(pages));
+        if (length < 0 || length > pages.length) {
+            length = pages.length;
+        }
+        for (int i = 0; i < length; i++) {
+            randomized.add(list.remove((int)(Math.random() * list.size())));
+        }
+        return randomized.toArray(new Page[0]);
     }
 }

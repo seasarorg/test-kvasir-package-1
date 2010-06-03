@@ -505,6 +505,10 @@ public class PageConditionParser
         List<String> list = new ArrayList<String>();
         for (int i = 0; i < columns.length; i++) {
             // TODO もっと正確にエイリアス名を切り出す仕組みにしよう。
+            if (columns[i].indexOf('(') >= 0) {
+                // COUNT(*)などの関数はgroup byには含めない。
+                continue;
+            }
             int space = columns[i].lastIndexOf(' ');
             if (space < 0) {
                 list.add(columns[i]);

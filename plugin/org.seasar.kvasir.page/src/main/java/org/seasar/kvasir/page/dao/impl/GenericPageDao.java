@@ -287,15 +287,36 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
         PageCondition pc = preparePageConditionToGetPageListByParentPathname(
             heimId, parentPathname, cond);
 
-        return (Number)getPageList(pc, true, PAGELIST_COLUMNS_COUNT,
-            scalarListHandler_).get(0);
+        List<Object> list = getPageList(pc, true, PAGELIST_COLUMNS_COUNT,
+            scalarListHandler_);
+        // SELECT COUNT(*), MAX( ) ...
+        // というSQLを発行しているが、これがH2ではレコードを返さないことがある。
+        // ex.
+        // SELECT COUNT(*),MAX(permission.level)
+        // FROM page,property AS property0,property AS property1,
+        // member,casto,permission
+        // WHERE page.id=property0.pageid AND property0.name='a'
+        // AND page.id=property1.pageid AND property1.name='subType'
+        // AND ((property0.value='A' AND property1.value='sub')
+        // AND (page.parentPathname='/path/to/dir'))
+        // AND page.type='page'
+        // AND ('2010-06-02 19:41:43' BETWEEN page.revealDate AND page.concealDate)
+        // AND page.heimid=10 AND page.id=permission.pageid
+        // AND permission.type=0 AND permission.level>=2
+        // AND permission.roleid=casto.roleid
+        // AND casto.groupid=member.groupid
+        // AND (permission.roleid=8 OR casto.groupid=5 OR permission.roleid=9
+        // AND page.owneruserid=3 OR casto.userid=3 OR member.userid=3)
+        // GROUP BY permission.type HAVING MAX(permission.level)<>127
+        return list.isEmpty() ? Integer.valueOf(0) : (Number)list.get(0);
     }
 
 
     public Number getCount(PageCondition cond)
     {
-        return (Number)getPageList(cond, true, PAGELIST_COLUMNS_COUNT,
-            scalarListHandler_).get(0);
+        List<Object> list = getPageList(cond, true, PAGELIST_COLUMNS_COUNT,
+            scalarListHandler_);
+        return list.isEmpty() ? Integer.valueOf(0) : (Number)list.get(0);
     }
 
 

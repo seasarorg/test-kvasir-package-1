@@ -162,6 +162,10 @@ public class KvasirTemplateSet extends AbstractPathTemplateSet
                 baseTemplateName).getLordPathname()
                 + templateName.substring(VARNAME_MYLORD.length());
         } else {
+            String name = baseTemplateName + "/" + templateName;
+            if (hasEntry(name)) {
+                return name;
+            }
             return super.getCanonicalName0(baseTemplateName, templateName);
         }
     }

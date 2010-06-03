@@ -4,6 +4,8 @@ import java.io.StringReader;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.seasar.kvasir.cms.java.CompileException;
 import org.seasar.kvasir.cms.java.JavaPlugin;
 import org.seasar.kvasir.cms.pop.PopContext;
@@ -43,6 +45,8 @@ public class CustomPop extends GenericPop
 
     private PopLogic popLogic_;
 
+    private static final Log log = LogFactory.getLog(CustomPop.class);
+
 
     public final void setJavaPlugin(JavaPlugin javaPlugin)
     {
@@ -69,6 +73,7 @@ public class CustomPop extends GenericPop
         try {
             getPopLogicInstance(context).process(context, args, popScope);
         } catch (Throwable t) {
+            log.error("Can't process logic of custom pop", t);
             popScope.put(VAR_EXCEPTION, t);
         }
     }

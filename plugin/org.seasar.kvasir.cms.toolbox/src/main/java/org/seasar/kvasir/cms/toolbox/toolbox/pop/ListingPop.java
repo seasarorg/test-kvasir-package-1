@@ -2,9 +2,7 @@ package org.seasar.kvasir.cms.toolbox.toolbox.pop;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -194,7 +192,7 @@ public class ListingPop extends GenericPop
                     pagesCount = pages.length;
                 }
                 if (random) {
-                    randomize(pages, numberOfItems);
+                    PageUtils.randomize(pages, numberOfItems);
                 }
 
                 if (paging && !gotAll && pagesCount > numberOfItems) {
@@ -239,20 +237,6 @@ public class ListingPop extends GenericPop
         } catch (Throwable t) {
             return PAGENUMBER_FIRST;
         }
-    }
-
-
-    Page[] randomize(Page[] pages, int length)
-    {
-        List<Page> randomized = new ArrayList<Page>();
-        LinkedList<Page> list = new LinkedList<Page>(Arrays.asList(pages));
-        if (length < 0 || length > pages.length) {
-            length = pages.length;
-        }
-        for (int i = 0; i < length; i++) {
-            randomized.add(list.remove((int)(Math.random() * list.size())));
-        }
-        return randomized.toArray(new Page[0]);
     }
 
 

@@ -76,7 +76,7 @@ public class JavaPageProcessorTest extends TestCase
         JavaPageProcessor processor = new JavaPageProcessor();
         processor.setPlugin(new JavaPluginImpl());
         processor.setEncoding("UTF-8");
-        JavaPageProcessor.Entry entry = processor.new Entry(file);
+        JavaPageProcessor.Entry entry = processor.new Entry("", file);
         entry.compile();
         assertTrue(file.delete());
     }

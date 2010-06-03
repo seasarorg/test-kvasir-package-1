@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -39,6 +41,15 @@ import org.seasar.kvasir.util.io.IOUtils;
 public class JavaPageProcessor extends AbstractLocalPathPageProcessor
 {
     public static final String PARAM_ENCODING = "encoding";
+
+    private static final Pattern PATTERN_PACKAGE = Pattern
+        .compile("^package\\s+([a-zA-Z_0-9\\.]+)\\s*;");
+
+    private static final Pattern PATTERN_CLASS = Pattern
+        .compile("\\s+class\\s+([a-zA-Z_0-9]+)\\s");
+
+    private static final Pattern PATTERN_ROOTPACKAGENAME = Pattern
+        .compile("^rootPackageName\\s*=\\s*([a-zA-Z_0-9\\.]+)\\s*");
 
     private JavaPlugin plugin_;
 
@@ -125,7 +136,7 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
             if (entry != null) {
                 entry.update(file);
             } else {
-                entry = new Entry(file);
+                entry = new Entry(localPathname, file);
                 map.put(localPathname, new SoftReference<Entry>(entry));
             }
             return entry.newInstance();
@@ -139,6 +150,12 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
 
     class Entry
     {
+        private static final String SUFFIX_CLASS = "Page";
+
+        private static final String ROOT_CLASS = "_Root" + SUFFIX_CLASS;
+
+        private String localPathname_;
+
         private File file_;
 
         private long lastModified_;
@@ -146,8 +163,9 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
         private Class<?> clazz_;
 
 
-        public Entry(File file)
+        public Entry(String localPathname, File file)
         {
+            localPathname_ = localPathname;
             file_ = file;
             compile();
         }
@@ -183,9 +201,56 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
             InputStream in = null;
             try {
                 in = new FileInputStream(file_);
-                clazz_ = plugin_.compileClassBody(new InputStreamReader(in,
-                    encoding_), Base.class, Thread.currentThread()
-                    .getContextClassLoader());
+                String source = IOUtils.readString(in, encoding_, false);
+
+                Matcher rootPackageNameMatcher = PATTERN_ROOTPACKAGENAME
+                    .matcher(source);
+                if (rootPackageNameMatcher.find()) {
+                    // クラスローダからJavaクラスを探すモード。
+                    String className;
+                    int slash = localPathname_.lastIndexOf('/');
+                    if (slash >= 0) {
+                        String dir = localPathname_.substring(0, slash + 1);
+                        String name = localPathname_.substring(slash + 1);
+                        className = rootPackageNameMatcher.group(1)
+                            + dir.replace('/', '.') + capitalize(name)
+                            + SUFFIX_CLASS;
+                    } else {
+                        className = rootPackageNameMatcher.group(1) + "."
+                            + ROOT_CLASS;
+                    }
+                    try {
+                        clazz_ = Thread.currentThread().getContextClassLoader()
+                            .loadClass(className);
+                    } catch (ClassNotFoundException ex) {
+                        throw new IORuntimeException(
+                            "Class corresponding path (" + localPathname_
+                                + ") does not exist: " + className, ex);
+                    }
+                } else {
+                    Matcher packageMatcher = PATTERN_PACKAGE.matcher(source);
+                    Matcher classMatcher = PATTERN_CLASS.matcher(source);
+                    if (packageMatcher.find() && classMatcher.find()) {
+                        String className = packageMatcher.group(1) + "."
+                            + classMatcher.group(1);
+                        try {
+                            clazz_ = plugin_.compile(new StringReader(source),
+                                Thread.currentThread().getContextClassLoader())
+                                .loadClass(className);
+                        } catch (ClassNotFoundException ex) {
+                            throw new IORuntimeException(ex);
+                        }
+                        if (!Base.class.isAssignableFrom(clazz_)) {
+                            throw new IORuntimeException("class " + className
+                                + " must extends " + Base.class.getName()
+                                + " class");
+                        }
+                    } else {
+                        clazz_ = plugin_.compileClassBody(new StringReader(
+                            source), Base.class, Thread.currentThread()
+                            .getContextClassLoader());
+                    }
+                }
                 lastModified_ = System.currentTimeMillis();
             } catch (CompileException ex) {
                 throw new IORuntimeException(ex);
@@ -193,6 +258,17 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
                 throw new IORuntimeException(ex);
             } finally {
                 IOUtils.closeQuietly(in);
+            }
+        }
+
+
+        String capitalize(String name)
+        {
+            if (name.length() == 0) {
+                return name;
+            } else {
+                return Character.toUpperCase(name.charAt(0))
+                    + name.substring(1);
             }
         }
     }

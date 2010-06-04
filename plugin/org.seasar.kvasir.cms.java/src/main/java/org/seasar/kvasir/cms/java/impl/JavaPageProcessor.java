@@ -46,7 +46,7 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
         .compile("^package\\s+([a-zA-Z_0-9\\.]+)\\s*;");
 
     private static final Pattern PATTERN_CLASS = Pattern
-        .compile("\\s+class\\s+([a-zA-Z_0-9]+)\\s");
+        .compile("(\\s+class\\s+)([a-zA-Z_0-9]+)(\\s)");
 
     private static final Pattern PATTERN_ROOTPACKAGENAME = Pattern
         .compile("^rootPackageName\\s*=\\s*([a-zA-Z_0-9\\.]+)\\s*");
@@ -231,8 +231,15 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
                     Matcher packageMatcher = PATTERN_PACKAGE.matcher(source);
                     Matcher classMatcher = PATTERN_CLASS.matcher(source);
                     if (packageMatcher.find() && classMatcher.find()) {
+                        // クラスパス上に同名のクラスがあっても優先されるようにクラス名を変更しておく。
+                        String suffix = String.valueOf(System
+                            .currentTimeMillis());
+                        String classSimpleName = classMatcher.group(2) + suffix;
                         String className = packageMatcher.group(1) + "."
-                            + classMatcher.group(1);
+                            + classSimpleName;
+                        source = classMatcher.replaceFirst(classMatcher
+                            .group(1)
+                            + classSimpleName + classMatcher.group(3));
                         try {
                             clazz_ = plugin_.compile(new StringReader(source),
                                 Thread.currentThread().getContextClassLoader())

@@ -40,12 +40,13 @@ public class BreadcrumbsPop extends GenericPop
         Locale locale = context.getLocale();
         LinkedList<ATag> list = new LinkedList<ATag>();
         while (!page.isRoot()) {
-            String label = page.getAbility(PropertyAbility.class).getProperty(
-                PropertyAbility.PROP_LABEL, locale);
-            if (label == null) {
-                label = page.getName();
+            if (!page.isConcealed()) {
+                String label = page.getAbility(PropertyAbility.class)
+                    .getProperty(PropertyAbility.PROP_LABEL, locale);
+                if (label != null) {
+                    list.addFirst(new ATag(page.getPathname(), label));
+                }
             }
-            list.addFirst(new ATag(page.getPathname(), label));
             page = page.getParent();
         }
         String topLabel = getProperty(popScope, PROP_TOPLABEL);

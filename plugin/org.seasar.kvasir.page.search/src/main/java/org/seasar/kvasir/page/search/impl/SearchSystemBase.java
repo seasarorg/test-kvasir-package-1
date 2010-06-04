@@ -85,8 +85,13 @@ public abstract class SearchSystemBase
         if (!handler.hasNext()) {
             return new SearchResult[0];
         }
-        int end = offset + length;
-        for (int raw = rawOffset, cooked = offset; cooked < end
+        int end;
+        if (length == SearchQuery.LENGTH_ALL) {
+            end = SearchQuery.LENGTH_ALL;
+        } else {
+            end = offset + length;
+        }
+        for (int raw = rawOffset, cooked = offset; (end == SearchQuery.LENGTH_ALL || cooked < end)
             && handler.hasNext(); raw++) {
             SearchResult result = handler.next();
             boolean visible = isVisible(context, result, pageSet);

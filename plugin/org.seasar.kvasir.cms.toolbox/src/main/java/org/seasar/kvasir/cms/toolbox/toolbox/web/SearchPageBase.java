@@ -41,6 +41,8 @@ public class SearchPageBase
 
     protected static final int INIDCATOR_DISPLAY_RANGE = 4;
 
+    protected static final int INDICATOR_DISPLAY_RANGE_ALL = -1;
+
     @Binding(bindingType = BindingType.MUST)
     protected Plugin<?> plugin_;
 
@@ -97,6 +99,7 @@ public class SearchPageBase
 
         total_ = 0;
         results_ = new SearchResultDto[0];
+        int queryLength = getQueryLength();
         do {
             if (query_.length() == 0) {
                 session.removeAttribute(ATTR_SEARCHCONTEXT);
@@ -123,21 +126,71 @@ public class SearchPageBase
             }
 
             Locale locale = pageRequest_.getLocale();
-            SearchResult[] results = system.search(context, offset_,
-                QUERY_LENGTH);
-            results_ = new SearchResultDto[results.length];
-            total_ = system.getResultsCount(context);
-            for (int i = 0; i < results.length; i++) {
-                results_[i] = buildDto(results[i], locale);
+            int searchCount = getSearchCount();
+            SearchResult[] results;
+            int availableResultOffset;
+            int availableResultCount;
+            if (searchCount == SearchQuery.LENGTH_ALL) {
+                results = system.search(context, 0, searchCount);
+                total_ = results.length;
+                availableResultOffset = offset_;
+                int available = results.length - availableResultOffset;
+                if (queryLength != SearchQuery.LENGTH_ALL) {
+                    availableResultCount = queryLength;
+                    if (availableResultCount > available) {
+                        availableResultCount = available;
+                    }
+                } else {
+                    availableResultCount = available;
+                }
+            } else {
+                results = system.search(context, offset_, searchCount);
+                total_ = system.getResultsCount(context);
+                availableResultOffset = 0;
+                availableResultCount = results.length;
+            }
+
+            results_ = new SearchResultDto[availableResultCount];
+            for (int i = 0; i < availableResultCount; i++) {
+                results_[i] = buildDto(results[availableResultOffset + i],
+                    locale);
             }
         } while (false);
 
-        if (total_ > QUERY_LENGTH) {
-            indicator_ = new SearchResultIndicatorDto(total_, QUERY_LENGTH,
-                offset_, INIDCATOR_DISPLAY_RANGE);
+        if (queryLength != SearchQuery.LENGTH_ALL && total_ > queryLength) {
+            indicator_ = createIndicator();
         }
 
         return "/search.html";
+    }
+
+
+    /**
+     * 一度の検索で取得する検索結果の個数を返します。
+     * 
+     * @return 一度の検索で取得する検索結果の個数。
+     */
+    protected int getSearchCount()
+    {
+        return QUERY_LENGTH;
+    }
+
+
+    /**
+     * 1画面に表示する検索結果の個数を返します。
+     * 
+     * @return 1画面に表示する検索結果の個数。
+     */
+    protected int getQueryLength()
+    {
+        return QUERY_LENGTH;
+    }
+
+
+    protected SearchResultIndicatorDto createIndicator()
+    {
+        return new SearchResultIndicatorDto(total_, getQueryLength(), offset_,
+            INIDCATOR_DISPLAY_RANGE);
     }
 
 
@@ -211,6 +264,12 @@ public class SearchPageBase
             return plugin_.getProperty("line.search.description.noResult",
                 pageRequest_.getLocale());
         }
+    }
+
+
+    public int getTotal()
+    {
+        return total_;
     }
 
 

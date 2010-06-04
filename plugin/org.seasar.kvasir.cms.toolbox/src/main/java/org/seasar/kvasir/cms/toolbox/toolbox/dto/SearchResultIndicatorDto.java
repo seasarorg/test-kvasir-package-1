@@ -28,12 +28,21 @@ public class SearchResultIndicatorDto
 
     private Element[] elements_;
 
+    private int currentPagePosition_;
+
+    private int previousOffset_;
+
+    private int nextOffset_;
+
 
     public SearchResultIndicatorDto(int entriesCount, int unit,
         int currentEntryPosition, int displayPageRange)
     {
         entriesCount_ = entriesCount;
         unit_ = unit;
+        currentPagePosition_ = currentEntryPosition / unit;
+        previousOffset_ = max(0, currentEntryPosition - unit);
+        nextOffset_ = currentEntryPosition + unit;
 
         pagesCount_ = (entriesCount + unit - 1) / unit;
         lastEntryPosition_ = (pagesCount_ == 0) ? 0 : (pagesCount_ - 1) * unit;
@@ -47,30 +56,29 @@ public class SearchResultIndicatorDto
         int firstPagePositionForLastPageRange = max(pagesCount_
             - displayPageRange, lastPagePositionForFirstPageRange);
 
-        int currentPagePosition = currentEntryPosition / unit;
-        int firstPagePositionForCurrentPageRange = max(currentPagePosition
+        int firstPagePositionForCurrentPageRange = max(currentPagePosition_
             - displayPageRange + 1, lastPagePositionForFirstPageRange);
-        int lastPagePositionForCurrentPageRange = min(currentPagePosition
+        int lastPagePositionForCurrentPageRange = min(currentPagePosition_
             + displayPageRange, firstPagePositionForLastPageRange);
 
         List<Element> list = new ArrayList<Element>();
         for (int pageIdx = 0; pageIdx < lastPagePositionForFirstPageRange; pageIdx++) {
             list.add(new Element(pageIdx + 1, pageIdx * unit,
-                pageIdx == currentPagePosition));
+                pageIdx == currentPagePosition_));
         }
         if (lastPagePositionForFirstPageRange < firstPagePositionForCurrentPageRange) {
             list.add(null);
         }
         for (int pageIdx = firstPagePositionForCurrentPageRange; pageIdx < lastPagePositionForCurrentPageRange; pageIdx++) {
             list.add(new Element(pageIdx + 1, pageIdx * unit,
-                pageIdx == currentPagePosition));
+                pageIdx == currentPagePosition_));
         }
         if (lastPagePositionForCurrentPageRange < firstPagePositionForLastPageRange) {
             list.add(null);
         }
         for (int pageIdx = firstPagePositionForLastPageRange; pageIdx < pagesCount_; pageIdx++) {
             list.add(new Element(pageIdx + 1, pageIdx * unit,
-                pageIdx == currentPagePosition));
+                pageIdx == currentPagePosition_));
         }
         elements_ = list.toArray(new Element[0]);
     }
@@ -79,6 +87,18 @@ public class SearchResultIndicatorDto
     /*
      * public scope methods
      */
+
+    public boolean isFirstPage()
+    {
+        return currentPagePosition_ == 0;
+    }
+
+
+    public boolean isLastPage()
+    {
+        return currentPagePosition_ == pagesCount_ - 1;
+    }
+
 
     public int getEntriesCount()
     {
@@ -89,6 +109,18 @@ public class SearchResultIndicatorDto
     public int getUnit()
     {
         return unit_;
+    }
+
+
+    public int getPreviousOffset()
+    {
+        return previousOffset_;
+    }
+
+
+    public int getNextOffset()
+    {
+        return nextOffset_;
     }
 
 

@@ -4,6 +4,8 @@ import org.seasar.kvasir.cms.pop.RenderedPop;
 import org.seasar.kvasir.cms.pop.test.PopTestCase;
 import org.seasar.kvasir.cms.toolbox.ToolboxPlugin;
 import org.seasar.kvasir.page.Page;
+import org.seasar.kvasir.page.ability.PropertyAbility;
+import org.seasar.kvasir.page.ability.mock.MockPropertyAbility;
 import org.seasar.kvasir.page.mock.MockPage;
 
 
@@ -34,6 +36,13 @@ public class BreadcrumbsPopTest extends PopTestCase<BreadcrumbsPop>
         throws Exception
     {
         Page page = registerPage(new MockPage(1000, "/path/to/page"));
+        for (Page p = page; p != null; p = p.getParent()) {
+            MockPage mock = (MockPage)p;
+            mock.setConcealed(false);
+            MockPropertyAbility prop = new MockPropertyAbility(p);
+            mock.registerAbility(PropertyAbility.class, prop);
+            prop.setProperty(PropertyAbility.PROP_LABEL, p.getName());
+        }
 
         RenderedPop actual = newPopInstance().render(newContext(null, page),
             new String[0]);
@@ -48,6 +57,13 @@ public class BreadcrumbsPopTest extends PopTestCase<BreadcrumbsPop>
         throws Exception
     {
         Page page = registerPage(new MockPage(1000, "/path/to/page"));
+        for (Page p = page; p != null; p = p.getParent()) {
+            MockPage mock = (MockPage)p;
+            mock.setConcealed(false);
+            MockPropertyAbility prop = new MockPropertyAbility(p);
+            mock.registerAbility(PropertyAbility.class, prop);
+            prop.setProperty(PropertyAbility.PROP_LABEL, p.getName());
+        }
         setProperty(BreadcrumbsPop.PROP_TOPLABEL, "");
 
         RenderedPop actual = newPopInstance().render(newContext(null, page),

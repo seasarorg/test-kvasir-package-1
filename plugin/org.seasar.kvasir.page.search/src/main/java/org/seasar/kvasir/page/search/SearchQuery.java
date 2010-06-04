@@ -451,12 +451,22 @@ public class SearchQuery
     }
 
 
+    /**
+     * 検索結果から一部の結果を除外するための{@link SearchResultFilter}を返します。
+     * 
+     * @return SearchResultFilter。
+     */
     public SearchResultFilter getSearchResultFilter()
     {
         return searchResultFilter_;
     }
 
 
+    /**
+     * 検索結果から一部の結果を除外するための{@link SearchResultFilter}を設定します。
+     * 
+     * @param searchResultFilter SearchResultFilter。
+     */
     public SearchQuery setSearchResultFilter(
         SearchResultFilter searchResultFilter)
     {

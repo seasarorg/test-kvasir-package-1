@@ -54,7 +54,7 @@ public interface SearchSystem
      * @param context 検索コンテキスト。
      * @param offset 何番目の結果から返すか。0オリジンです。
      * @param length 最大何個の結果を返すか。
-     * 個数の上限を指定したくない場合は<code>LENGTH_ALL</code>
+     * 個数の上限を指定したくない場合は{@link SearchQuery#LENGTH_ALL}
      * を指定して下さい。
      * @return 検索結果。
      */
@@ -64,6 +64,12 @@ public interface SearchSystem
     /**
      * 検索結果の総数を返します。
      * <p><code>context</code>に指定されたクエリにマッチする検索結果の総数を返します。
+     * </p>
+     * <p>このメソッドが返す総数は検索システムが返す「生の」検索結果の総数です。
+     * {@link #search(SearchContext)}が返す検索結果は
+     * {@link SearchResultHandler}や{@link SearchResultFilter}によってフィルタされるため、
+     * 通常{@link #search(SearchContext)}で取得できる全ての検索結果の個数は
+     * このメソッドが返す総数と同じか少なくなります。
      * </p>
      * <p>このメソッドを呼び出す前に{@link SearchContext#setQuery(SearchQuery)}を用いて
      * コンテキストに検索クエリをセットしておく必要があります。

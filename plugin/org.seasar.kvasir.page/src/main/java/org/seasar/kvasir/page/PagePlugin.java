@@ -121,6 +121,9 @@ public interface PagePlugin
         throws DuplicatePageException;
 
 
+    void imports(Page page, Resource dir);
+
+
     void exports(Resource dir, Page page);
 
 

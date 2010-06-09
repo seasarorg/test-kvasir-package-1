@@ -16,4 +16,7 @@ public interface PageGardImporter
 {
     Page imports(Page parent, String name, Resource dir)
         throws DuplicatePageException;
+
+
+    void imports(Page page, Resource dir);
 }

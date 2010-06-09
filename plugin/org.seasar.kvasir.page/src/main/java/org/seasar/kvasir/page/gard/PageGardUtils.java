@@ -2,13 +2,19 @@ package org.seasar.kvasir.page.gard;
 
 import static org.seasar.kvasir.page.ability.PropertyAbility.PROPPREFIX_PAGEGARD_INSTALLED;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.seasar.kvasir.base.Version;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PageUtils;
 import org.seasar.kvasir.page.ability.PropertyAbility;
 import org.seasar.kvasir.util.PropertyUtils;
+import org.seasar.kvasir.util.collection.MapProperties;
+import org.seasar.kvasir.util.io.IORuntimeException;
+import org.seasar.kvasir.util.io.Resource;
+import org.seasar.kvasir.util.io.ResourceNotFoundException;
 
 
 /**
@@ -101,5 +107,19 @@ public class PageGardUtils
         }
         return PropertyUtils.valueOf(page.getAbility(PropertyAbility.class)
             .getProperty(PROPPREFIX_PAGEGARD_INSTALLED + pageGardId), false);
+    }
+
+
+    public static MapProperties loadProperties(Resource resource)
+    {
+        MapProperties prop = new MapProperties(new HashMap<String, String>());
+        try {
+            prop.load(resource.getInputStream(), "UTF-8");
+        } catch (ResourceNotFoundException ex) {
+            ;
+        } catch (IOException ex) {
+            throw new IORuntimeException(ex);
+        }
+        return prop;
     }
 }

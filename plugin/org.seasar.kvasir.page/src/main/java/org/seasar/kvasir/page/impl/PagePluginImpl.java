@@ -193,6 +193,12 @@ public class PagePluginImpl extends AbstractPlugin<EmptySettings>
     }
 
 
+    public void imports(Page page, Resource dir)
+    {
+        importer_.imports(page, dir);
+    }
+
+
     public void exports(Resource dir, Page page)
     {
         exporter_.exports(dir, page);

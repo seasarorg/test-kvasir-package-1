@@ -17,8 +17,8 @@ initialize.createPage= \
         type                VARCHAR(255) NOT NULL, \
         heimid              INTEGER NOT NULL, \
         lordid              INTEGER NOT NULL, \
-        parentpathname   VARCHAR(255) NOT NULL, \
-        name             VARCHAR(255) NOT NULL, \
+        parentpathname   VARCHAR(200) NOT NULL, \
+        name             VARCHAR(100) NOT NULL, \
         ordernumber         INTEGER NOT NULL, \
         createdate          DATETIME NOT NULL, \
         modifydate          DATETIME NOT NULL, \

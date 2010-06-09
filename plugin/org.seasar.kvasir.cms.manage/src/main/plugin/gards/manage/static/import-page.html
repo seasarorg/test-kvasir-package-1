@@ -1,5 +1,6 @@
 <html metal:use-macro="%/frame.html">
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
   </head>
   <body>
@@ -9,6 +10,7 @@
     <div metal:fill-slot="body">
 <p class="form-help">
 現在のページの子ページとしてページをインポートすることができます。
+「現在のページを上書きする」にチェックを入れると、現在のページに上書きされるようにインポートされます。
 </p>
 <form tal:attributes="action page:@/import-page.do${self/pathname}" method="post" enctype="multipart/form-data">
   <table cellspacing="0" cellpadding="2" width="100%" border="0">
@@ -26,6 +28,12 @@
       </td>
       <td width="99%" valign="top" align="left">
         <input type="file" name="archive" size="32" />
+      </td>
+    </tr>
+    <tr>
+      <td width="1%" valign="top" align="left" nowrap="nowrap">&nbsp;</td>
+      <td width="99%" valign="top" align="left">
+        <input type="checkbox" name="overwrite" value="true" tal:attributes="checked overwrite" /> 現在のページを上書きする
       </td>
     </tr>
     <tr>

@@ -28,6 +28,8 @@ public class ImportPagePage extends MainPanePage
 
     private FormFile archive_;
 
+    private boolean overwrite_;
+
 
     /*
      * for presentation tier
@@ -58,7 +60,7 @@ public class ImportPagePage extends MainPanePage
 
     boolean importPage()
     {
-        if (name_ == null || name_.trim().length() == 0) {
+        if ((name_ == null || name_.trim().length() == 0) && !overwrite_) {
             setNotes(new Notes().add(new Note(
                 "app.error.importPage.nameIsEmpty")));
             return false;
@@ -76,8 +78,12 @@ public class ImportPagePage extends MainPanePage
             IOUtils.pipe(archive_.getInputStream(), new FileOutputStream(
                 tempFile));
             zipFile = new ZipFile(tempFile);
-            pagePlugin_.imports(getPage(), name_.trim(),
-                new ZipReaderResource(zipFile));
+            if (overwrite_) {
+                pagePlugin_.imports(getPage(), new ZipReaderResource(zipFile));
+            } else {
+                pagePlugin_.imports(getPage(), name_.trim(),
+                    new ZipReaderResource(zipFile));
+            }
             return true;
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -124,6 +130,12 @@ public class ImportPagePage extends MainPanePage
     public void setArchive(FormFile archive)
     {
         archive_ = archive;
+    }
+
+
+    public void setOverwrite(boolean overwrite)
+    {
+        overwrite_ = overwrite;
     }
 
 

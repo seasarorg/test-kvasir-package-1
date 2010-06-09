@@ -304,7 +304,9 @@ public class ContentAbilityAlfrImpl extends AbstractPageAbilityAlfr
         Integer revisionNumber = parseAsInteger(name);
         if (revisionNumber != null) {
             ContentMold mold = new ContentMold();
-            mold.setRevisionNumber(revisionNumber);
+            // 2010-06-09 コンテンツが既に存在する場合にupdateContent()でDuplicateEntryエラー
+            // になるのを避けるため、リビジョン番号は自動採番させるようMoldにセットしない。
+            //            mold.setRevisionNumber(revisionNumber);
             String createDate = attr.getString(SUBNAME_CREATEDATE);
             if (createDate != null) {
                 mold.setCreateDate(new Date(PropertyUtils.valueOf(createDate,

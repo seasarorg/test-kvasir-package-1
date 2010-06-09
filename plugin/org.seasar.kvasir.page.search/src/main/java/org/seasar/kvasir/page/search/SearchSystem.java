@@ -13,6 +13,11 @@ import org.seasar.kvasir.page.Page;
  */
 public interface SearchSystem
 {
+    /**
+     * 検索インデックスに登録するかどうかを表わすプロパティのキーです。
+     * <p>このプロパティが存在しないかtrueであるページは更新時に検索インデックスに登録されます。
+     * </p>
+     */
     String PROP_INDEXED = "_framework.search.indexed";
 
 

@@ -9,7 +9,9 @@ import org.seasar.kvasir.page.type.PageType;
 import net.skirnir.freyja.render.Note;
 import net.skirnir.freyja.render.Notes;
 
-public class NewPagePage extends MainPanePage {
+
+public class NewPagePage extends MainPanePage
+{
     /*
      * set by framwork
      */
@@ -20,14 +22,15 @@ public class NewPagePage extends MainPanePage {
 
     private String type_;
 
+
     /*
      * public scope methods
      */
 
-    public Object do_execute() {
+    public Object do_execute()
+    {
         PageType pageType = getPagePlugin().getPageType(
-                (type_ != null && type_.trim().length() > 0) ? type_
-                        : Page.TYPE);
+            (type_ != null && type_.trim().length() > 0) ? type_ : Page.TYPE);
 
         if (Request.METHOD_POST.equals(getYmirRequest().getMethod())) {
             Page created = createPage(pageType);
@@ -37,26 +40,30 @@ public class NewPagePage extends MainPanePage {
                 updateMenu();
                 if (createAndEdit_) {
                     return getRedirection("/edit-page.do"
-                            + created.getPathname());
+                        + created.getPathname());
                 } else {
                     return getRedirection("/list-page.do" + getPathname());
                 }
             }
         }
 
+        enableLocationBar(true);
+
         return "/" + pageType.getId() + "/new-page.html";
     }
+
 
     /*
      * private scope methods
      */
 
     @SuppressWarnings("unchecked")
-    private Page createPage(PageType pageType) {
+    private Page createPage(PageType pageType)
+    {
         Page page = getPage();
         if (!canParent(page)) {
             setNotes(new Notes().add(new Note("app.error.parentPageIsNotNode",
-                    page.getPathname())));
+                page.getPathname())));
             return null;
         }
 
@@ -73,39 +80,51 @@ public class NewPagePage extends MainPanePage {
         PageService pageService = getPlugin().getPageService(pageType.getId());
         try {
             return pageService.createPage(getPage(), pageType.newPageMold(),
-                    getYmirRequest().getParameterMap());
+                getYmirRequest().getParameterMap());
         } catch (DuplicatePageException ex) {
             setNotes(new Notes().add(new Note("app.error.pageAlreadyExists",
-                    name_)));
+                name_)));
             return null;
         }
     }
+
 
     /*
      * for framework / presentation tier
      */
 
-    public String getName() {
+    public String getName()
+    {
         return name_;
     }
 
-    public void setName(String name) {
+
+    public void setName(String name)
+    {
         name_ = name;
     }
 
-    public boolean isCreateAndEdit() {
+
+    public boolean isCreateAndEdit()
+    {
         return createAndEdit_;
     }
 
-    public void setCreateAndEdit(boolean createAndEdit) {
+
+    public void setCreateAndEdit(boolean createAndEdit)
+    {
         createAndEdit_ = createAndEdit;
     }
 
-    public String getType() {
+
+    public String getType()
+    {
         return type_;
     }
 
-    public void setType(String type) {
+
+    public void setType(String type)
+    {
         type_ = type;
     }
 }

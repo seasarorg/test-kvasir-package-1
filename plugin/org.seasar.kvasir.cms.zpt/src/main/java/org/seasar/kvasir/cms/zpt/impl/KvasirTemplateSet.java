@@ -1,6 +1,7 @@
 package org.seasar.kvasir.cms.zpt.impl;
 
 import static org.seasar.kvasir.cms.zpt.impl.KvasirVariableResolver.VARNAME_MYLORD;
+import static org.seasar.kvasir.cms.zpt.impl.KvasirVariableResolver.VARNAME_THATLORD;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,18 +14,19 @@ import java.util.Map;
 
 import javax.servlet.ServletConfig;
 
+import net.skirnir.freyja.TemplateEvaluator;
+import net.skirnir.freyja.impl.AbstractPathTemplateSet;
+
 import org.seasar.kvasir.base.annotation.ForPreparingMode;
 import org.seasar.kvasir.base.container.ComponentContainer;
 import org.seasar.kvasir.cms.GardIdProvider;
+import org.seasar.kvasir.cms.PageRequest;
 import org.seasar.kvasir.cms.extension.PageProcessorElement;
 import org.seasar.kvasir.cms.processor.LocalPathResolver;
 import org.seasar.kvasir.cms.util.CmsUtils;
 import org.seasar.kvasir.cms.zpt.LocalPathResolverFactory;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PageAlfr;
-
-import net.skirnir.freyja.TemplateEvaluator;
-import net.skirnir.freyja.impl.AbstractPathTemplateSet;
 
 
 /**
@@ -161,13 +163,20 @@ public class KvasirTemplateSet extends AbstractPathTemplateSet
             return pageAlfr_.findNearestPage(CmsUtils.getHeimId(),
                 baseTemplateName).getLordPathname()
                 + templateName.substring(VARNAME_MYLORD.length());
-        } else {
-            String name = baseTemplateName + "/" + templateName;
-            if (hasEntry(name)) {
-                return name;
+        } else if (templateName.startsWith(VARNAME_THATLORD)) {
+            PageRequest pageRequest = CmsUtils.getPageRequest();
+            if (pageRequest != null) {
+                return pageAlfr_.findNearestPage(CmsUtils.getHeimId(),
+                    pageRequest.getThat().getPathname()).getLordPathname()
+                    + templateName.substring(VARNAME_THATLORD.length());
             }
-            return super.getCanonicalName0(baseTemplateName, templateName);
         }
+
+        String name = baseTemplateName + "/" + templateName;
+        if (hasEntry(name)) {
+            return name;
+        }
+        return super.getCanonicalName0(baseTemplateName, templateName);
     }
 
 

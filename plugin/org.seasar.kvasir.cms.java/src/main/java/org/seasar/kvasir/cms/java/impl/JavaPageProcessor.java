@@ -213,8 +213,8 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
                         String dir = localPathname_.substring(0, slash + 1);
                         String name = localPathname_.substring(slash + 1);
                         className = rootPackageNameMatcher.group(1)
-                            + dir.replace('/', '.') + capitalize(name)
-                            + SUFFIX_CLASS;
+                            + dir.replace('/', '.')
+                            + capitalize(name.replace('.', '_')) + SUFFIX_CLASS;
                     } else {
                         className = rootPackageNameMatcher.group(1) + "."
                             + ROOT_CLASS;

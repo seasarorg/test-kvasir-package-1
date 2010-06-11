@@ -66,7 +66,7 @@ public class PageGardImporterImpl
         }
         Page page = createPages(parent, name, new ResourceBag(dir),
             new DirectoryMold());
-        imports(page, dir, false);
+        imports0(page, dir, false);
         touch(page);
         return page;
     }
@@ -103,7 +103,7 @@ public class PageGardImporterImpl
     }
 
 
-    public void imports(Page page, Resource dir)
+    public void imports(Page page, Resource dir, boolean replace)
     {
         if (!dir.exists()) {
             throw new IllegalArgumentException(
@@ -111,7 +111,7 @@ public class PageGardImporterImpl
                     + dir);
         }
         createPages(page, new ResourceBag(dir));
-        imports(page, dir, true);
+        imports0(page, dir, replace);
         touch(page);
     }
 
@@ -182,32 +182,33 @@ public class PageGardImporterImpl
     }
 
 
-    void imports(final Page page, Resource dir, final boolean replace)
+    void imports0(final Page page, Resource dir, final boolean replace)
     {
         if (page == null) {
             return;
         }
 
         final Resource contentDir = dir.getChildResource(".kv");
+        if (contentDir.exists()) {
+            page.runWithLocking(new Processable<Object>() {
+                public Object process()
+                    throws ProcessableRuntimeException
+                {
+                    // fieldの情報をインポートする。
+                    importsFields(page, contentDir
+                        .getChildResource(FIELD_XPROPERTIES), false);
 
-        page.runWithLocking(new Processable<Object>() {
-            public Object process()
-                throws ProcessableRuntimeException
-            {
-                // fieldの情報をインポートする。
-                importsFields(page, contentDir
-                    .getChildResource(FIELD_XPROPERTIES), false);
-
-                // PageAbilityAlfr毎の情報をインポートする。
-                PageAbilityAlfr[] alfrs = pagePlugin_.getPageAbilityAlfrs();
-                for (int i = 0; i < alfrs.length; i++) {
-                    importsAbility(page, alfrs[i], contentDir
-                        .getChildResource("ability." + alfrs[i].getShortId()),
-                        replace);
+                    // PageAbilityAlfr毎の情報をインポートする。
+                    PageAbilityAlfr[] alfrs = pagePlugin_.getPageAbilityAlfrs();
+                    for (int i = 0; i < alfrs.length; i++) {
+                        importsAbility(page, alfrs[i], contentDir
+                            .getChildResource("ability."
+                                + alfrs[i].getShortId()), replace);
+                    }
+                    return null;
                 }
-                return null;
-            }
-        });
+            });
+        }
 
         Resource[] resources = dir.listResources();
         if (resources != null) {
@@ -216,7 +217,7 @@ public class PageGardImporterImpl
                 if (shouldIgnoreFileName(n) || n.equals(".kv")) {
                     continue;
                 }
-                imports(page.getChild(n), resources[i], replace);
+                imports0(page.getChild(n), resources[i], replace);
             }
         }
     }

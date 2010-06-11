@@ -18,5 +18,5 @@ public interface PageGardImporter
         throws DuplicatePageException;
 
 
-    void imports(Page page, Resource dir);
+    void imports(Page page, Resource dir, boolean replace);
 }

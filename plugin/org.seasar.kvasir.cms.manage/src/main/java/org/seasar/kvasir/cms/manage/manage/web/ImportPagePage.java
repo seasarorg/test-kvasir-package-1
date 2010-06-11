@@ -5,15 +5,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipFile;
 
+import net.skirnir.freyja.render.Note;
+import net.skirnir.freyja.render.Notes;
+
 import org.seasar.cms.ymir.FormFile;
 import org.seasar.kvasir.page.DuplicatePageException;
 import org.seasar.kvasir.page.PagePlugin;
+import org.seasar.kvasir.util.PropertyUtils;
 import org.seasar.kvasir.util.ThrowableUtils;
 import org.seasar.kvasir.util.io.IOUtils;
 import org.seasar.kvasir.util.io.impl.ZipReaderResource;
-
-import net.skirnir.freyja.render.Note;
-import net.skirnir.freyja.render.Notes;
 
 
 public class ImportPagePage extends MainPanePage
@@ -29,6 +30,8 @@ public class ImportPagePage extends MainPanePage
     private FormFile archive_;
 
     private boolean overwrite_;
+
+    private boolean replace_;
 
 
     /*
@@ -79,7 +82,8 @@ public class ImportPagePage extends MainPanePage
                 tempFile));
             zipFile = new ZipFile(tempFile);
             if (overwrite_) {
-                pagePlugin_.imports(getPage(), new ZipReaderResource(zipFile));
+                pagePlugin_.imports(getPage(), new ZipReaderResource(zipFile),
+                    replace_);
             } else {
                 pagePlugin_.imports(getPage(), name_.trim(),
                     new ZipReaderResource(zipFile));
@@ -133,9 +137,15 @@ public class ImportPagePage extends MainPanePage
     }
 
 
-    public void setOverwrite(boolean overwrite)
+    public void setOverwrite(String overwrite)
     {
-        overwrite_ = overwrite;
+        overwrite_ = PropertyUtils.valueOf(overwrite, false);
+    }
+
+
+    public void setReplace(String replace)
+    {
+        replace_ = PropertyUtils.valueOf(replace, false);
     }
 
 

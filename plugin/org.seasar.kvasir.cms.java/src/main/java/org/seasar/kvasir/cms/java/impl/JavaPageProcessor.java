@@ -207,18 +207,8 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
                     .matcher(source);
                 if (rootPackageNameMatcher.find()) {
                     // クラスローダからJavaクラスを探すモード。
-                    String className;
-                    int slash = localPathname_.lastIndexOf('/');
-                    if (slash >= 0) {
-                        String dir = localPathname_.substring(0, slash + 1);
-                        String name = localPathname_.substring(slash + 1);
-                        className = rootPackageNameMatcher.group(1)
-                            + dir.replace('/', '.')
-                            + capitalize(name.replace('.', '_')) + SUFFIX_CLASS;
-                    } else {
-                        className = rootPackageNameMatcher.group(1) + "."
-                            + ROOT_CLASS;
-                    }
+                    String className = getClassName(rootPackageNameMatcher
+                        .group(1), localPathname_);
                     try {
                         clazz_ = Thread.currentThread().getContextClassLoader()
                             .loadClass(className);
@@ -266,6 +256,26 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
             } finally {
                 IOUtils.closeQuietly(in);
             }
+        }
+
+
+        String getClassName(String rootPackageName, String localPathname)
+        {
+            String className;
+            int slash = localPathname.lastIndexOf('/');
+            if (slash >= 0) {
+                String dir = localPathname.substring(0, slash + 1);
+                String name = localPathname.substring(slash + 1);
+                char ch = name.charAt(0);
+                if ('0' <= ch && ch <= '9') {
+                    name = "_" + name;
+                }
+                className = rootPackageName + dir.replace('/', '.')
+                    + capitalize(name.replace('.', '_')) + SUFFIX_CLASS;
+            } else {
+                className = rootPackageName + "." + ROOT_CLASS;
+            }
+            return className;
         }
 
 

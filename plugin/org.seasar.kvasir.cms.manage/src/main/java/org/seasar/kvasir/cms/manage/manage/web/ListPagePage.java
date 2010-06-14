@@ -74,7 +74,7 @@ public class ListPagePage extends MainPanePage
         changedAscend_ = ascend_ ? false : true;
         newItemMenuEntries_ = prepareNewItemMenuEntries();
         pageIndicator_ = new PageIndicator(page.getChildrenCount(), unit_,
-            start_);
+            start_).setAscend(ascend_).setSortBy(sortBy_);
         pages_ = preparePageRows();
         clipboardNotEmpty_ = (clipboard_ != null && clipboard_
             .getEntriesCount() > 0);

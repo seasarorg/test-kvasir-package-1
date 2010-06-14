@@ -84,8 +84,16 @@ public class CmsUtils
 
     /**
      * 現在処理中のリクエストにマッピングされているHeimのIDを返します。
+     * <p>PageRequestが存在してかつmyがPageを持つ場合は
+     * myが持つPageが所属するHeimのIDが返されます。
+     * このためmyが差し替えられている場合は
+     * リクエストされた直接のHeimのIDは返されないことがあるので注意して下さい。
+     * リクエストされた直接のHeimのIDを取得したい場合は{@link #getOriginalHeimId()}
+     * を使って下さい。 
+     * </p>
      * 
      * @return 現在処理中のリクエストにマッピングされているHeimのID。
+     * @see #getOriginalHeimId()
      */
     public static int getHeimId()
     {
@@ -103,6 +111,26 @@ public class CmsUtils
                 return Asgard.getKvasir().getPluginAlfr().getPlugin(
                     CmsPlugin.class).determineHeimId(request);
             }
+        }
+        return PathId.HEIM_MIDGARD;
+    }
+
+
+    /**
+     * 現在処理中のリクエストにマッピングされているHeimのIDを返します。
+     * <p>このメソッドは{@link #getHeimId()}とは異なり、
+     * 元々のHeimのIDを返します。
+     * </p>
+     * 
+     * @return 現在処理中のリクエストにマッピングされているHeimのID。
+     * @see #getHeimId()
+     */
+    public static int getOriginalHeimId()
+    {
+        HttpServletRequest request = ServletUtils.getHttpServletRequest();
+        if (request != null) {
+            return Asgard.getKvasir().getPluginAlfr()
+                .getPlugin(CmsPlugin.class).determineHeimId(request);
         }
         return PathId.HEIM_MIDGARD;
     }

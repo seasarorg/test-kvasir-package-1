@@ -7,6 +7,9 @@ getPageList.offset.all=\
 getPageList.offset.length=\
     SELECT ?? FROM ?? ?? LIMIT :offset,:length
 
+moveTo.updateDescendants=\
+    UPDATE page SET parentpathname=CONCAT(?,COALESCE(SUBSTRING(parentpathname FROM ?),'')),version=version+1 WHERE heimid=? AND (parentpathname=? OR parentpathname LIKE ? ESCAPE '|')
+
 #
 # FOR INITIALIZATION
 #

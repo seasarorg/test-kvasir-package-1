@@ -448,10 +448,41 @@ public class GenericPageDao extends BeantableDaoBase<PageDto>
             pst.close();
             pst = null;
 
+            int orderNumber;
+            if (fromParentPathname.equals(toParentPathname)) {
+                pst = con.prepareStatement(getQuery("moveTo.getOrderNumber"));
+                idx = 1;
+                pst.setObject(idx++, fromId);
+                rs = pst.executeQuery();
+                rs.next();
+                orderNumber = rs.getInt(1);
+                rs.close();
+                rs = null;
+                pst.close();
+                pst = null;
+            } else {
+                pst = con
+                    .prepareStatement(getQuery("moveTo.getMaxOrderNumber"));
+                idx = 1;
+                pst.setInt(idx++, heimId.intValue());
+                pst.setString(idx++, toParentPathname);
+                rs = pst.executeQuery();
+                if (rs.next()) {
+                    orderNumber = rs.getInt(1) + 1;
+                } else {
+                    orderNumber = 1;
+                }
+                rs.close();
+                rs = null;
+                pst.close();
+                pst = null;
+            }
+
             pst = con.prepareStatement(getQuery("moveTo.updateTarget"));
             idx = 1;
             pst.setObject(idx++, toParentPathname);
             pst.setObject(idx++, toName);
+            pst.setInt(idx++, orderNumber);
             pst.setObject(idx++, heimId);
             pst.setObject(idx++, fromParentPathname);
             pst.setObject(idx++, fromName);

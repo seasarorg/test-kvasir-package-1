@@ -52,8 +52,14 @@ changeLordId=\
 moveTo.lock=\
     SELECT id FROM page WHERE id IN (?, ?) OR heimid=? AND (parentpathname=? OR parentpathname LIKE ? ESCAPE '|') FOR UPDATE
 
+moveTo.getMaxOrderNumber=\
+    SELECT COALESCE(MAX(ordernumber), 0) FROM page WHERE heimid=? AND parentpathname=?
+
+moveTo.getOrderNumber=\
+    SELECT ordernumber FROM page WHERE id=?
+
 moveTo.updateTarget=\
-    UPDATE page SET parentpathname=?,name=?,version=version+1 WHERE heimid=? AND parentpathname=? AND name=?
+    UPDATE page SET parentpathname=?,name=?,ordernumber=?,version=version+1 WHERE heimid=? AND parentpathname=? AND name=?
 
 moveTo.updateDescendants=\
     UPDATE page SET parentpathname=? || COALESCE(SUBSTRING(parentpathname FROM ?),''),version=version+1 WHERE heimid=? AND (parentpathname=? OR parentpathname LIKE ? ESCAPE '|')

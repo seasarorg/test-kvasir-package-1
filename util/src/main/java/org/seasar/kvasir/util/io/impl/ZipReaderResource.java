@@ -36,12 +36,17 @@ public class ZipReaderResource
     implements Resource
 {
     private ZipFile file_;
+
     private String name_;
+
     private String path_;
+
     private String spath_;
 
     private SortedMap entryMap_;
+
     private boolean exists_;
+
     private boolean directory_;
 
 
@@ -55,10 +60,31 @@ public class ZipReaderResource
         entryMap_ = new TreeMap();
         for (Enumeration enm = file_.entries(); enm.hasMoreElements();) {
             ZipEntry entry = (ZipEntry)enm.nextElement();
-            entryMap_.put(entry.getName(), entry);
+            String entryName = entry.getName();
+            putEntry(entryMap_, entryName, entry);
+            putDirectoryEntries(entryMap_, entryName);
         }
         exists_ = true;
         directory_ = true;
+    }
+
+
+    void putDirectoryEntries(SortedMap entryMap, String entryName)
+    {
+        int slash;
+        int pre = entryName.length() - 1;
+        while ((slash = entryName.lastIndexOf('/', pre)) >= 0) {
+            putEntry(entryMap, entryName.substring(0, slash + 1), null);
+            pre = slash - 1;
+        }
+    }
+
+
+    void putEntry(SortedMap entryMap, String entryName, ZipEntry entry)
+    {
+        if (entryMap.get(entryName) == null) {
+            entryMap.put(entryName, entry);
+        }
     }
 
 
@@ -199,8 +225,8 @@ public class ZipReaderResource
         } else {
             int slash = path_.lastIndexOf('/');
             if (slash >= 0) {
-                return new ZipReaderResource(file_,
-                    path_.substring(0, slash), entryMap_);
+                return new ZipReaderResource(file_, path_.substring(0, slash),
+                    entryMap_);
             } else {
                 return new ZipReaderResource(file_, "", entryMap_);
             }
@@ -345,8 +371,8 @@ public class ZipReaderResource
         if (path_.length() == 0) {
             return entryMap_;
         } else {
-            return entryMap_.subMap(
-                path_ + '/' + (char)0,  path_ + (char)('/' + 1));
+            return entryMap_.subMap(path_ + '/' + (char)0, path_
+                + (char)('/' + 1));
         }
     }
 }

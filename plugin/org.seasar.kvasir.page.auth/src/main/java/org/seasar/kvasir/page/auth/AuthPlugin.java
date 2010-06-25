@@ -64,7 +64,8 @@ public interface AuthPlugin
      * 現在のリクエストの実行ユーザを返します。
      * 
      * @return 現在のリクエストの実行ユーザ。
-     * 実行ユーザが未指定の場合はnullが返されます。
+     * 実行ユーザが未指定の場合は匿名ユーザを表わすUserオブジェクトが返されます。
+     * @see Page#ID_ANONYMOUS_USER
      */
     User getCurrentActor();
 
@@ -73,8 +74,7 @@ public interface AuthPlugin
      * 現在のリクエストの実行ユーザを返します。
      * 
      * @return 現在のリクエストの実行ユーザ。
-     * 実行ユーザが未指定の場合は匿名ユーザを表わすUserオブジェクトが返されます。
-     * @see Page#ID_ANONYMOUS_USER
+     * 実行ユーザが未指定の場合はnullが返されます。
      */
     User getCurrentActualActor();
 

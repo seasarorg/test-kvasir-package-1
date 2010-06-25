@@ -1,17 +1,22 @@
 package org.seasar.kvasir.cms.zpt.impl;
 
-import org.seasar.kvasir.page.Page;
-import org.seasar.kvasir.page.ability.PropertyAbility;
-import org.seasar.kvasir.page.ability.content.Content;
-import org.seasar.kvasir.page.ability.content.ContentAbility;
-import org.seasar.kvasir.util.collection.AttributeReader;
-import org.seasar.kvasir.util.collection.I18NPropertyReader;
-import org.seasar.kvasir.util.collection.PropertyReader;
-
 import net.skirnir.freyja.TemplateContext;
 import net.skirnir.freyja.VariableResolver;
 import net.skirnir.freyja.render.Note;
 import net.skirnir.freyja.zpt.tales.NotePathResolver;
+
+import org.seasar.kvasir.base.Asgard;
+import org.seasar.kvasir.page.Page;
+import org.seasar.kvasir.page.ability.Privilege;
+import org.seasar.kvasir.page.ability.PropertyAbility;
+import org.seasar.kvasir.page.ability.content.Content;
+import org.seasar.kvasir.page.ability.content.ContentAbility;
+import org.seasar.kvasir.page.auth.AuthPlugin;
+import org.seasar.kvasir.page.condition.Order;
+import org.seasar.kvasir.page.condition.PageCondition;
+import org.seasar.kvasir.util.collection.AttributeReader;
+import org.seasar.kvasir.util.collection.I18NPropertyReader;
+import org.seasar.kvasir.util.collection.PropertyReader;
 
 
 /**
@@ -34,7 +39,19 @@ public class KvasirPathResolver extends NotePathResolver
 
     private static final String END_PAREN = ")";
 
-    private static final Object NAME_LATESTCONTENT = "latestContent";
+    private static final String NAME_LATESTCONTENT = "latestContent";
+
+    private static final String NAME_L7D_LABEL = "%"
+        + PropertyAbility.PROP_LABEL;
+
+    private static final String NAME_L7D_DESCRIPTION = "%"
+        + PropertyAbility.PROP_DESCRIPTION;
+
+    private static final String NAME_VISIBLECHILDREN = "visibleChildren";
+
+    private static final String NAME_VISIBLECHILDRENCOUNT = "visibleChildrenCount";
+
+    private static final String NAME_VISIBLECHILDNAMES = "visibleChildNames";
 
 
     public KvasirPathResolver()
@@ -68,8 +85,31 @@ public class KvasirPathResolver extends NotePathResolver
                     .length()
                     - END_PAREN.length());
                 return page.getAbility(name);
+            } else if (child.equals(PropertyAbility.PROP_LABEL)) {
+                return page.getAbility(PropertyAbility.class).getProperty(
+                    PropertyAbility.PROP_LABEL);
+            } else if (child.equals(PropertyAbility.PROP_DESCRIPTION)) {
+                return page.getAbility(PropertyAbility.class).getProperty(
+                    PropertyAbility.PROP_DESCRIPTION);
+            } else if (child.equals(PropertyAbility.PROP_SUBTYPE)) {
+                return page.getAbility(PropertyAbility.class).getProperty(
+                    PropertyAbility.PROP_SUBTYPE);
+            } else if (child.equals(NAME_L7D_LABEL)) {
+                return page.getAbility(PropertyAbility.class).getProperty(
+                    PropertyAbility.PROP_LABEL,
+                    getNoteLocalizer().findLocale(context, varResolver));
+            } else if (child.equals(NAME_L7D_DESCRIPTION)) {
+                return page.getAbility(PropertyAbility.class).getProperty(
+                    PropertyAbility.PROP_DESCRIPTION,
+                    getNoteLocalizer().findLocale(context, varResolver));
+            } else if (child.equals(NAME_VISIBLECHILDREN)) {
+                return page.getChildren(buildVisibleCondition());
+            } else if (child.equals(NAME_VISIBLECHILDRENCOUNT)) {
+                return page.getChildrenCount(buildVisibleCondition());
+            } else if (child.equals(NAME_VISIBLECHILDNAMES)) {
+                return page.getChildNames(buildVisibleCondition());
             } else {
-                throw new RuntimeException("Logic error");
+                return null;
             }
         } else if (obj instanceof PropertyAbility) {
             PropertyAbility ability = (PropertyAbility)obj;
@@ -122,5 +162,15 @@ public class KvasirPathResolver extends NotePathResolver
             return ((AttributeReader)obj).getAttribute(child);
         }
         return null;
+    }
+
+
+    PageCondition buildVisibleCondition()
+    {
+        return new PageCondition().setIncludeConcealed(false).setOnlyListed(
+            true).setUser(
+            Asgard.getKvasir().getPluginAlfr().getPlugin(AuthPlugin.class)
+                .getCurrentActor()).setPrivilege(Privilege.ACCESS_VIEW)
+            .setOrder(new Order(PageCondition.FIELD_ORDERNUMBER));
     }
 }

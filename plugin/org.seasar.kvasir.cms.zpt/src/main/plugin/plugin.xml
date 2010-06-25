@@ -12,6 +12,7 @@
     <import plugin="org.seasar.kvasir.page" />
     <import plugin="org.seasar.kvasir.page.ability.content" />
     <import plugin="org.seasar.kvasir.page.ability.template" />
+    <import plugin="org.seasar.kvasir.page.auth" />
     <import plugin="org.seasar.kvasir.cms" />
     <import plugin="net.skirnir.freyja" />
   </requires>

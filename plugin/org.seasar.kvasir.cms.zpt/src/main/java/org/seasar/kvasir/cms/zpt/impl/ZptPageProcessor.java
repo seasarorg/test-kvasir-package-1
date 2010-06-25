@@ -93,6 +93,8 @@ public class ZptPageProcessor
 
     public static final String TEMPLATETYPE = "zpt";
 
+    private static final String TYPE_CMSPAGE = "cmspage";
+
     private Kvasir kvasir_;
 
     private PagePlugin pagePlugin_;
@@ -163,6 +165,7 @@ public class ZptPageProcessor
                 new KvasirPageTypePrefixHandler().setPageAlfr(pageAlfr_))
             .addTypePrefix(ServletTalesExpressionEvaluator.TYPE_INCLUDE,
                 new KvasirIncludeTypePrefixHandler().setPageAlfr(pageAlfr_))
+            .addTypePrefix(TYPE_CMSPAGE, new CmspageTypePrefixHandler())
             .addPathResolver(new KvasirPathResolver());
         for (int i = 0; i < pathResolvers_.length; i++) {
             expEvaluator.addPathResolver(pathResolvers_[i]);

@@ -21,16 +21,19 @@ import org.seasar.kvasir.util.PropertyUtils;
 public class UserImpl extends PageWrapper
     implements User
 {
-    public static final String PROP_PASSWORD
-        = User.TYPE + ".password";
-    public static final String PROP_MAILADDRESS
-        = User.TYPE + ".mailAddress";
+    public static final String PROP_PASSWORD = User.TYPE + ".password";
 
-    private PropertyAbility     prop_;
-    private Role                adminRole_;
-    private Role                anonymousRole_;
-    private GroupAbilityAlfr    groupAlfr_;
-    private RoleAbilityAlfr     roleAlfr_;
+    public static final String PROP_MAILADDRESS = User.TYPE + ".mailAddress";
+
+    private PropertyAbility prop_;
+
+    private Role adminRole_;
+
+    private Role anonymousRole_;
+
+    private GroupAbilityAlfr groupAlfr_;
+
+    private RoleAbilityAlfr roleAlfr_;
 
 
     public UserImpl(Page page, Role adminRole, Role anonymousRole,
@@ -59,29 +62,28 @@ public class UserImpl extends PageWrapper
 
     public String[] getMailAddresses()
     {
-        return PropertyUtils.toLines(
-            prop_.getProperty(PROP_MAILADDRESS));
+        return PropertyUtils.toLines(prop_.getProperty(PROP_MAILADDRESS));
     }
 
 
     public void setMailAddresses(String[] mailAddresses)
     {
-        prop_.setProperty(PROP_MAILADDRESS,
-            PropertyUtils.toString(mailAddresses));
+        prop_.setProperty(PROP_MAILADDRESS, PropertyUtils
+            .toString(mailAddresses));
     }
 
 
     public boolean isAdministrator()
     {
-        return ((getId() == Page.ID_ADMINISTRATOR_USER)
-            || adminRole_.contains(this));
+        return ((getId() == Page.ID_ADMINISTRATOR_USER) || adminRole_
+            .isUserInRole(this));
     }
 
 
     public boolean isAnonymous()
     {
-        return ((getId() == Page.ID_ANONYMOUS_USER)
-            || anonymousRole_.contains(this));
+        return ((getId() == Page.ID_ANONYMOUS_USER) || anonymousRole_
+            .isUserInRole(this));
     }
 
 

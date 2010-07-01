@@ -502,7 +502,7 @@ public class PageBase
      * 指定したパス名のページにアクセスするためのURLを返します。
      * <p>返されるURLはKvasir/Soraのコンテキスト相対のパスです。
      * </p>
-     * <p>パス名としてはgard root相対表記（<code>@/path/to/page</code>
+     * <p>パス名としてはlord相対表記（<code>@/path/to/page</code>
      * や<code>%/path/to/page</code>）のパス名を指定することもできます。
      * </p>
      *

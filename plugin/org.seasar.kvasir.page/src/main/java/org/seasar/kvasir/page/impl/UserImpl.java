@@ -75,15 +75,15 @@ public class UserImpl extends PageWrapper
 
     public boolean isAdministrator()
     {
-        return ((getId() == Page.ID_ADMINISTRATOR_USER) || adminRole_
-            .isUserInRole(this));
+        return ((getId() == Page.ID_ADMINISTRATOR_USER) || roleAlfr_
+            .isUserInRole(adminRole_, this));
     }
 
 
     public boolean isAnonymous()
     {
-        return ((getId() == Page.ID_ANONYMOUS_USER) || anonymousRole_
-            .isUserInRole(this));
+        return ((getId() == Page.ID_ANONYMOUS_USER) || roleAlfr_.isUserInRole(
+            anonymousRole_, this));
     }
 
 

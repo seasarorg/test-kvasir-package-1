@@ -18,7 +18,7 @@ import org.seasar.kvasir.page.type.User;
 public class RoleImpl extends PageWrapper
     implements Role
 {
-    private RoleAbilityAlfr     alfr_;
+    private RoleAbilityAlfr alfr_;
 
 
     public RoleImpl(RoleAbilityAlfr alfr, Page page)
@@ -54,7 +54,7 @@ public class RoleImpl extends PageWrapper
 
     public boolean isUserInRole(User user)
     {
-        return alfr_.isUserInRole(this, user);
+        return alfr_.isUserInRole(this, user) || user.isAdministrator();
     }
 
 

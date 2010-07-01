@@ -173,8 +173,8 @@ public class PageRequestFilter
                         log_.debug("[IGNORE] Ignorable exception", ex);
                     }
                 } else {
-                    if (log_.isDebugEnabled()) {
-                        log_.debug("Execption occured", ex);
+                    if (log_.isWarnEnabled()) {
+                        log_.warn("Execption occured", ex);
                     }
                     request.setAttribute(ATTR_EXCEPTION, ex);
                     boolean exceptionWasPassedThrough = false;

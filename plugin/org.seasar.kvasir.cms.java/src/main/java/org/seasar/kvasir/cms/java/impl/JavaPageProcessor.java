@@ -4,14 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -21,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.kvasir.base.annotation.ForTest;
 import org.seasar.kvasir.cms.PageRequest;
 import org.seasar.kvasir.cms.java.Base;
-import org.seasar.kvasir.cms.java.CompileException;
 import org.seasar.kvasir.cms.java.JavaPlugin;
+import org.seasar.kvasir.cms.java.util.CompilerUtils;
 import org.seasar.kvasir.cms.processor.impl.AbstractLocalPathPageProcessor;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.util.io.IORuntimeException;
@@ -41,15 +38,6 @@ import org.seasar.kvasir.util.io.IOUtils;
 public class JavaPageProcessor extends AbstractLocalPathPageProcessor
 {
     public static final String PARAM_ENCODING = "encoding";
-
-    private static final Pattern PATTERN_PACKAGE = Pattern
-        .compile("^package\\s+([a-zA-Z_0-9\\.]+)\\s*;");
-
-    private static final Pattern PATTERN_CLASS = Pattern
-        .compile("(\\s+class\\s+)([a-zA-Z_0-9]+)(\\s)");
-
-    private static final Pattern PATTERN_ROOTPACKAGENAME = Pattern
-        .compile("^rootPackageName\\s*=\\s*([a-zA-Z_0-9\\.]+)\\s*");
 
     private JavaPlugin plugin_;
 
@@ -150,9 +138,7 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
 
     class Entry
     {
-        private static final String SUFFIX_CLASS = "Page";
-
-        private static final String ROOT_CLASS = "_Root" + SUFFIX_CLASS;
+        private static final String CLASSNAMESUFFIX = "Page";
 
         private String localPathname_;
 
@@ -160,7 +146,7 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
 
         private long lastModified_;
 
-        private Class<?> clazz_;
+        private Class<Base> clazz_;
 
 
         public Entry(String localPathname, File file)
@@ -187,7 +173,7 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
         public Base newInstance()
         {
             try {
-                return (Base)clazz_.newInstance();
+                return clazz_.newInstance();
             } catch (InstantiationException ex) {
                 throw new RuntimeException(ex);
             } catch (IllegalAccessException ex) {
@@ -203,89 +189,13 @@ public class JavaPageProcessor extends AbstractLocalPathPageProcessor
                 in = new FileInputStream(file_);
                 String source = IOUtils.readString(in, encoding_, false);
 
-                Matcher rootPackageNameMatcher = PATTERN_ROOTPACKAGENAME
-                    .matcher(source);
-                if (rootPackageNameMatcher.find()) {
-                    // クラスローダからJavaクラスを探すモード。
-                    String className = getClassName(rootPackageNameMatcher
-                        .group(1), localPathname_);
-                    try {
-                        clazz_ = Thread.currentThread().getContextClassLoader()
-                            .loadClass(className);
-                    } catch (ClassNotFoundException ex) {
-                        throw new IORuntimeException(
-                            "Class corresponding path (" + localPathname_
-                                + ") does not exist: " + className, ex);
-                    }
-                } else {
-                    Matcher packageMatcher = PATTERN_PACKAGE.matcher(source);
-                    Matcher classMatcher = PATTERN_CLASS.matcher(source);
-                    if (packageMatcher.find() && classMatcher.find()) {
-                        // クラスパス上に同名のクラスがあっても優先されるようにクラス名を変更しておく。
-                        String suffix = String.valueOf(System
-                            .currentTimeMillis());
-                        String classSimpleName = classMatcher.group(2) + suffix;
-                        String className = packageMatcher.group(1) + "."
-                            + classSimpleName;
-                        source = classMatcher.replaceFirst(classMatcher
-                            .group(1)
-                            + classSimpleName + classMatcher.group(3));
-                        try {
-                            clazz_ = plugin_.compile(new StringReader(source),
-                                Thread.currentThread().getContextClassLoader())
-                                .loadClass(className);
-                        } catch (ClassNotFoundException ex) {
-                            throw new IORuntimeException(ex);
-                        }
-                        if (!Base.class.isAssignableFrom(clazz_)) {
-                            throw new IORuntimeException("class " + className
-                                + " must extends " + Base.class.getName()
-                                + " class");
-                        }
-                    } else {
-                        clazz_ = plugin_.compileClassBody(new StringReader(
-                            source), Base.class, Thread.currentThread()
-                            .getContextClassLoader());
-                    }
-                }
+                clazz_ = CompilerUtils.compile(plugin_, localPathname_,
+                    CLASSNAMESUFFIX, Base.class, source);
                 lastModified_ = System.currentTimeMillis();
-            } catch (CompileException ex) {
-                throw new IORuntimeException(ex);
             } catch (IOException ex) {
                 throw new IORuntimeException(ex);
             } finally {
                 IOUtils.closeQuietly(in);
-            }
-        }
-
-
-        String getClassName(String rootPackageName, String localPathname)
-        {
-            String className;
-            int slash = localPathname.lastIndexOf('/');
-            if (slash >= 0) {
-                String dir = localPathname.substring(0, slash + 1);
-                String name = localPathname.substring(slash + 1);
-                char ch = name.charAt(0);
-                if ('0' <= ch && ch <= '9') {
-                    name = "_" + name;
-                }
-                className = rootPackageName + dir.replace('/', '.')
-                    + capitalize(name.replace('.', '_')) + SUFFIX_CLASS;
-            } else {
-                className = rootPackageName + "." + ROOT_CLASS;
-            }
-            return className;
-        }
-
-
-        String capitalize(String name)
-        {
-            if (name.length() == 0) {
-                return name;
-            } else {
-                return Character.toUpperCase(name.charAt(0))
-                    + name.substring(1);
             }
         }
     }

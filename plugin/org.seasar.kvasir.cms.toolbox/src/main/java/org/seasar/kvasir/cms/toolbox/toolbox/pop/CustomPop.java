@@ -1,6 +1,5 @@
 package org.seasar.kvasir.cms.toolbox.toolbox.pop;
 
-import java.io.StringReader;
 import java.util.Locale;
 import java.util.Map;
 
@@ -8,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.kvasir.cms.java.CompileException;
 import org.seasar.kvasir.cms.java.JavaPlugin;
+import org.seasar.kvasir.cms.java.util.CompilerUtils;
 import org.seasar.kvasir.cms.pop.PopContext;
 import org.seasar.kvasir.cms.pop.RenderedPop;
 import org.seasar.kvasir.cms.pop.pop.GenericPop;
@@ -16,6 +16,7 @@ import org.seasar.kvasir.page.Page;
 
 
 /**
+ * 任意のロジックとテンプレートを指定できるPOPです。
  * <p><b>同期化：</b>
  * このクラスはスレッドセーフです。
  * </p>
@@ -46,6 +47,10 @@ public class CustomPop extends GenericPop
     private PopLogic popLogic_;
 
     private static final Log log = LogFactory.getLog(CustomPop.class);
+
+    private static final String CLASSNAMESUFFIX = "PopLogic";
+
+    private static final String LOCALPATHNAMESUFFIX = "/custom";
 
 
     public final void setJavaPlugin(JavaPlugin javaPlugin)
@@ -121,10 +126,11 @@ public class CustomPop extends GenericPop
         throws InstantiationException, IllegalAccessException, CompileException
     {
         if (popLogic_ == null) {
-            popLogic_ = javaPlugin_.compileClassBody(
-                new StringReader(getProperty(context, PROP_LOGIC,
-                    Page.VARIANT_DEFAULT)), AbstractPopLogic.class,
-                Thread.currentThread().getContextClassLoader()).newInstance();
+            popLogic_ = CompilerUtils.compile(javaPlugin_,
+                LOCALPATHNAMESUFFIX + getInstanceId(), CLASSNAMESUFFIX,
+                AbstractPopLogic.class,
+                getProperty(context, PROP_LOGIC, Page.VARIANT_DEFAULT))
+                .newInstance();
         }
         return popLogic_;
     }

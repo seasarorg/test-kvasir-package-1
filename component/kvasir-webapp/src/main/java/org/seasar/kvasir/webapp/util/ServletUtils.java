@@ -595,6 +595,14 @@ public class ServletUtils
     }
 
 
+    /**
+     * Kvasir WebアプリケーションのルートURLを返します。
+     * <p>返されるURLは、プロトコルやドメイン名を含むURLです。
+     * また末尾に「/」はつきません。
+     * </p>
+     *
+     * @return ルートURL。
+     */
     public static String getWebappURL()
     {
         return getWebappURL(getHttpServletRequest());

@@ -2,6 +2,7 @@ package org.seasar.kvasir.cms.util;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.seasar.kvasir.base.Asgard;
 import org.seasar.kvasir.cms.CmsPlugin;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.util.html.HTMLUtils;
@@ -9,8 +10,21 @@ import org.seasar.kvasir.util.html.HTMLUtils;
 
 public class ServletUtils extends org.seasar.kvasir.webapp.util.ServletUtils
 {
+    private static CmsPlugin cmsPlugin;
+
+
     protected ServletUtils()
     {
+    }
+
+
+    protected static CmsPlugin getCmsPlugin()
+    {
+        if (cmsPlugin == null) {
+            cmsPlugin = Asgard.getKvasir().getPluginAlfr().getPlugin(
+                CmsPlugin.class);
+        }
+        return cmsPlugin;
     }
 
 
@@ -70,6 +84,7 @@ public class ServletUtils extends org.seasar.kvasir.webapp.util.ServletUtils
         if (request == null) {
             return null;
         }
+
         return getDomainURL(request) + getOriginalContextPath(request);
     }
 
@@ -77,6 +92,29 @@ public class ServletUtils extends org.seasar.kvasir.webapp.util.ServletUtils
     public static String getWebappURL()
     {
         return getWebappURL(getHttpServletRequest());
+    }
+
+
+    public static String getWebappURL(int heimId)
+    {
+        return getWebappURL(heimId, getHttpServletRequest());
+    }
+
+
+    public static String getWebappURL(int heimId, HttpServletRequest request)
+    {
+        return getDomainURL(heimId) + getOriginalContextPath(request);
+    }
+
+
+    public static String getDomainURL(int heimId)
+    {
+        String site = getCmsPlugin().getSite(heimId);
+        if (site != null) {
+            return site;
+        } else {
+            return getDomainURL();
+        }
     }
 
 
@@ -101,6 +139,19 @@ public class ServletUtils extends org.seasar.kvasir.webapp.util.ServletUtils
     }
 
 
+    public static String getURL(int heimId, String pathname,
+        HttpServletRequest request)
+    {
+        return getWebappURL(heimId, request) + pathname;
+    }
+
+
+    public static String getURL(int heimId, String pathname)
+    {
+        return getWebappURL(heimId) + pathname;
+    }
+
+
     /**
      * 指定されたPageオブジェクトに対応するWebページを表すURLを返します。
      * <p>Pageオブジェクトがnodeである場合はURLの末尾に「/」がつきます。
@@ -121,7 +172,8 @@ public class ServletUtils extends org.seasar.kvasir.webapp.util.ServletUtils
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(getWebappURL(request)).append(page.getPathname());
+        sb.append(getWebappURL(page.getHeimId(), request)).append(
+            page.getPathname());
         if (page.isNode()) {
             sb.append('/');
         }

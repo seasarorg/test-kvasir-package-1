@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+  "http://www.seasar.org/dtd/components24.dtd">
+<components>
+  <component name="plugin"
+    class="org.seasar.kvasir.cms.publish.impl.PublishPluginImpl" />
+  <component name="scpWagon"
+    class="org.apache.maven.wagon.providers.ssh.jsch.ScpWagon" instance="prototype" />
+  <component name="sftpWagon"
+    class="org.apache.maven.wagon.providers.ssh.jsch.SftpWagon"
+    instance="prototype" />
+</components>

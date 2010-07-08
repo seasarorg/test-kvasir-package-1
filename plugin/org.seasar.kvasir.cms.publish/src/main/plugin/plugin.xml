@@ -2,7 +2,7 @@
 <plugin xmlns="http://kvasir.sandbox.seasar.org/plugin/3.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://kvasir.sandbox.seasar.org/plugin/3.0.0 http://kvasir.sandbox.seasar.org/support/plugin-3_0_0.xsd"
-  id="org.seasar.kvasir.cms.publish" name="%plugin.name" version="0.0.1-SNAPSHOT"
+  id="org.seasar.kvasir.cms.publish" name="%plugin.name" version="3.0.0-SNAPSHOT"
   provider-name="%plugin.provider-name">
   <runtime>
     <library name="conf" />

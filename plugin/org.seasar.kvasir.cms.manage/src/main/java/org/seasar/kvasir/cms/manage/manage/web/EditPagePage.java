@@ -17,6 +17,8 @@ import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.kvasir.cms.manage.PageService;
 import org.seasar.kvasir.cms.manage.tab.impl.PageTab;
+import org.seasar.kvasir.cms.publish.PublishPlugin;
+import org.seasar.kvasir.cms.publish.setting.RepositoryElement;
 import org.seasar.kvasir.page.Page;
 import org.seasar.kvasir.page.PathId;
 import org.seasar.kvasir.page.ability.PropertyAbility;
@@ -33,6 +35,13 @@ public class EditPagePage extends MainPanePage
     @Binding(bindingType = BindingType.MUST)
     protected ServletContext servletContext;
 
+    @Binding(bindingType = BindingType.MUST)
+    protected PublishPlugin publishPlugin_;
+
+    private List<RepositoryElement> repositories_;
+
+    private String repositoryId_;
+
 
     /*
      * set by framework
@@ -41,6 +50,12 @@ public class EditPagePage extends MainPanePage
     /*
      * for presentation tier
      */
+
+    public void setRepositoryId(String repositoryId)
+    {
+        repositoryId_ = repositoryId;
+    }
+
 
     /*
      * public scope methods
@@ -69,6 +84,23 @@ public class EditPagePage extends MainPanePage
     }
 
 
+    public Object do_publish()
+    {
+        if (Request.METHOD_POST.equalsIgnoreCase(getYmirRequest().getMethod())) {
+            if (repositoryId_ == null || repositoryId_.length() == 0) {
+                setNotes(new Notes().add(new Note(
+                    "app.note.editPage.publish.required.repositoryId")));
+            } else {
+                publishPlugin_.publish(getPage(), true, repositoryId_, true);
+
+                setNotes(new Notes().add(new Note(
+                    "app.note.editPage.publish.succeed")));
+            }
+        }
+        return getRedirection("/edit-page.do" + getPathname());
+    }
+
+
     /*
      * private scope methods
      */
@@ -88,6 +120,9 @@ public class EditPagePage extends MainPanePage
         if (url == null) {
             path = "/" + GenericPageType.ID + "/edit-page.html";
         }
+
+        repositories_ = publishPlugin_.getRepositories();
+
         return path;
     }
 
@@ -146,5 +181,11 @@ public class EditPagePage extends MainPanePage
     public OptionTag[] getOwnerUserCandidates()
     {
         return ownerUserCandidates_;
+    }
+
+
+    public List<RepositoryElement> getRepositories()
+    {
+        return repositories_;
     }
 }

@@ -1,5 +1,6 @@
 <html metal:define-macro="edit-page" metal:use-macro="%/frame.html">
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link tal:attributes="href page:@/css/manage.css" rel="stylesheet" type="text/css" href="css/manage.css" />
   </head>
   <body>
@@ -117,6 +118,31 @@
     </tr>
   </table>
 </form>
+<div tal:define="repositories self/repositories" tal:condition="repositories" tal:omit-tag="">
+<h2 class="subtitle">ページの配信</h2>
+<p class="form-help">
+このページのスナップショットを配信することができます。ページが子孫ページを持つ場合は子孫ページの内容も配信されます。
+</p>
+<form tal:attributes="action page:@/edit-page.publish.do${self/pathname}" method="post">
+  <table cellspacing="0" cellpadding="2" width="100%" border="0">
+    <tr>
+      <td valign="center" align="left">配信先</td>
+      <td valign="top" align="left">
+        <select name="repositoryId">
+          <option value="" disabled="disabled" selected="selected">配信先を選択...</option>
+          <option tal:repeat="repository repositories" tal:attributes="value repository/id" tal:content="repository/url"></option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td valign="center" align="left">&nbsp;</td>
+      <td valign="top" align="left">
+        <input type="submit" value="このページを配信" />
+      </td>
+    </tr>
+  </table>
+</form>
+</div>
     </div>
   </body>
 </html>

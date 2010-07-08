@@ -20,6 +20,7 @@
     <import plugin="org.seasar.kvasir.cms.pop" />
     <import plugin="org.seasar.kvasir.cms.ymir" />
     <import plugin="org.seasar.kvasir.cms.zpt" />
+    <import plugin="org.seasar.kvasir.cms.publish" />
     <import plugin="net.skirnir.freyja" />
   </requires>
 

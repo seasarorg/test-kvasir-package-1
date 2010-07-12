@@ -66,6 +66,14 @@
           <artifactId>s2-dao</artifactId>
         </exclusion>
         <exclusion>
+          <groupId>org.seasar.container</groupId>
+          <artifactId>s2-extension</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.seasar.container</groupId>
+          <artifactId>s2-tiger</artifactId>
+        </exclusion>
+        <exclusion>
       <groupId>org.seasar.cms.database</groupId>
           <artifactId>database</artifactId>
         </exclusion>

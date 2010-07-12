@@ -25,6 +25,8 @@
         <property name="timeout">${(xml)db.pool.timeout}</property>
         <property name="maxPoolSize">${(xml)db.pool.maxPoolSize}</property>
         <property name="allowLocalTx">true</property>
+        <property name="validationQuery">"${(xml)db.validationQuery}"</property>
+        <property name="validationInterval">${(xml)db.validationInterval}</property>
         <destroyMethod name="close"/>
     </component>
   <component name="dataSource"

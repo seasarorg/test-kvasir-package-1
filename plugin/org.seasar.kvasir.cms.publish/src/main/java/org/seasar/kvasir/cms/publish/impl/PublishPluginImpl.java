@@ -5,12 +5,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -55,9 +56,11 @@ public class PublishPluginImpl extends AbstractPlugin<PublishPluginSettings>
 
     private static final String NAME_INDEX = "index.html";
 
-    private Map<String, Repository> repositoryMap = new ConcurrentHashMap<String, Repository>();
+    private Map<String, RepositoryElement> repositoryMap = new LinkedHashMap<String, RepositoryElement>();
 
-    private Map<String, DistributionGroupElement> distributionGroupMap = new ConcurrentHashMap<String, DistributionGroupElement>();
+    private Map<String, Repository> wagonRepositoryMap = new LinkedHashMap<String, Repository>();
+
+    private Map<String, DistributionGroupElement> distributionGroupMap = new LinkedHashMap<String, DistributionGroupElement>();
 
     @Binding(bindingType = BindingType.MUST)
     protected PagePlugin pagePlugin;
@@ -81,13 +84,15 @@ public class PublishPluginImpl extends AbstractPlugin<PublishPluginSettings>
 
     void prepareForRepositories() {
         repositoryMap.clear();
+        wagonRepositoryMap.clear();
         distributionGroupMap.clear();
 
         PublishPluginSettings settings = getSettings();
 
         for (RepositoryElement repository : settings.getRepositories()) {
-            repositoryMap.put(repository.getId(), new Repository(repository
-                    .getId(), repository.getUrl()));
+            repositoryMap.put(repository.getId(), repository);
+            wagonRepositoryMap.put(repository.getId(), new Repository(
+                    repository.getId(), repository.getUrl()));
         }
 
         for (DistributionGroupElement distributionGroup : settings
@@ -99,11 +104,20 @@ public class PublishPluginImpl extends AbstractPlugin<PublishPluginSettings>
 
     protected void doStop() {
         repositoryMap.clear();
+        wagonRepositoryMap.clear();
         distributionGroupMap.clear();
     }
 
-    Repository getRepository(String id) {
+    public RepositoryElement getRepository(String id) {
         return repositoryMap.get(id);
+    }
+
+    public List<RepositoryElement> getRepositories() {
+        return new ArrayList<RepositoryElement>(repositoryMap.values());
+    }
+
+    Repository getWagonRepository(String id) {
+        return wagonRepositoryMap.get(id);
     }
 
     public DistributionGroupElement getDistributionGroup(String id) {
@@ -120,19 +134,6 @@ public class PublishPluginImpl extends AbstractPlugin<PublishPluginSettings>
         if (distributionGroup == null) {
             throw new PublishRuntimeException("Unknown distributionGroupId: "
                     + distributionGroupId);
-        }
-
-        Repository repository = getRepository(distributionGroup
-                .getRepositoryId());
-        if (repository == null) {
-            throw new PublishRuntimeException("Unknown repositoryId: "
-                    + distributionGroup.getRepositoryId());
-        }
-
-        Wagon wagon = getWagon(repository);
-        if (wagon == null) {
-            throw new PublishRuntimeException("Unsupported repository: "
-                    + repository.getUrl());
         }
 
         PageAlfr pageAlfr = pagePlugin.getPageAlfr();
@@ -159,8 +160,34 @@ public class PublishPluginImpl extends AbstractPlugin<PublishPluginSettings>
                 recursives.add(page.getId());
             }
         }
+
+        publish(pages, recursives, distributionGroup.getRepositoryId(),
+                optimize);
+    }
+
+    public void publish(Page page, boolean recursive, String repositoryId,
+            boolean optimize) {
+        publish(Arrays.asList(new Page[] { page }), new HashSet<Integer>(Arrays
+                .asList(new Integer[] { page.getId() })), repositoryId,
+                optimize);
+    }
+
+    public void publish(Collection<Page> pages, Set<Integer> recursives,
+            String repositoryId, boolean optimize) {
         if (pages.isEmpty()) {
             return;
+        }
+
+        Repository repository = getWagonRepository(repositoryId);
+        if (repository == null) {
+            throw new PublishRuntimeException("Unknown repositoryId: "
+                    + repositoryId);
+        }
+
+        Wagon wagon = getWagon(repository);
+        if (wagon == null) {
+            throw new PublishRuntimeException("Unsupported repository: "
+                    + repository.getUrl());
         }
 
         try {

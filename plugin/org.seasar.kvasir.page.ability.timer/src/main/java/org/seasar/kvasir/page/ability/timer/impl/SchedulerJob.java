@@ -6,6 +6,8 @@ import java.util.concurrent.Executors;
 
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
+import org.seasar.kvasir.base.log.KvasirLog;
+import org.seasar.kvasir.base.log.KvasirLogFactory;
 import org.seasar.kvasir.base.timer.AbstractJob;
 import org.seasar.kvasir.page.ability.timer.Schedule;
 import org.seasar.kvasir.page.ability.timer.TimerAbilityAlfr;
@@ -21,6 +23,9 @@ public class SchedulerJob extends AbstractJob
     protected TimerAbilityAlfr timerAbilityAlfr_;
 
     private ExecutorService executorService_;
+
+    private static final KvasirLog log = KvasirLogFactory
+        .getLog(SchedulerJob.class);
 
 
     @Override
@@ -41,7 +46,15 @@ public class SchedulerJob extends AbstractJob
 
         for (Schedule schedule : timerAbilityAlfr_.getEnabledSchedules()) {
             if (schedule.isMatched(calendar)) {
-                executorService_.execute(new ScheduleRunner(schedule));
+                if (log.isDebugEnabled()) {
+                    log.debug("MATCHED: calendar=" + calendar + ", schedule="
+                        + schedule);
+                }
+                try {
+                    executorService_.execute(new ScheduleRunner(schedule));
+                } catch (Throwable t) {
+                    log.error("Cannot execute scheduled job: " + schedule, t);
+                }
             }
         }
     }

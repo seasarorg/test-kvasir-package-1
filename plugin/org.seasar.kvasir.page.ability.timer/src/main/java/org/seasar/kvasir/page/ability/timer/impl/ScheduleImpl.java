@@ -32,6 +32,15 @@ public class ScheduleImpl
     }
 
 
+    @Override
+    public String toString()
+    {
+        return "ScheduleImpl [dayOfWeek=" + dayOfWeek_ + ", day=" + day_
+            + ", dto=" + dto_ + ", hour=" + hour_ + ", minute=" + minute_
+            + ", month=" + month_ + ", year=" + year_ + "]";
+    }
+
+
     public String getComponent()
     {
         return dto_.getComponent();

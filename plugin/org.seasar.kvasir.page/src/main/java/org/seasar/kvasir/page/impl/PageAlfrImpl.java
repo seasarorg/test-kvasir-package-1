@@ -269,6 +269,12 @@ public class PageAlfrImpl
     public Page createChildPage(final Page parent, final PageMold mold)
         throws DuplicatePageException
     {
+        // 名前が適切かどうかチェックする。
+        if (!plugin_.isValidName(mold.getName())) {
+            throw new IllegalArgumentException("Illegal name: "
+                + mold.getName());
+        }
+
         Page child = newPage(cache_.createChildPageDto(parent.getDto(), mold));
 
         // ページに関する初期化があれば実行する。
@@ -448,6 +454,11 @@ public class PageAlfrImpl
         if (toName == null) {
             actualToName = from.getName();
         } else {
+            // 名前が適切かどうかチェックする。
+            if (!plugin_.isValidName(toName)) {
+                throw new IllegalArgumentException("Illegal name: " + toName);
+            }
+
             actualToName = toName;
         }
 

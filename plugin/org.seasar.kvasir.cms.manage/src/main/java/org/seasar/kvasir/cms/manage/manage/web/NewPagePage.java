@@ -72,8 +72,10 @@ public class NewPagePage extends MainPanePage
             return null;
         }
 
-        if (!getPagePlugin().isValidName(name_)) {
-            setNotes(new Notes().add(new Note("app.error.nameIsInvalid")));
+        String name = name_.trim();
+
+        if (!getPagePlugin().isValidName(name)) {
+            setNotes(new Notes().add(new Note("app.error.nameIsInvalid", name)));
             return null;
         }
 
@@ -83,7 +85,7 @@ public class NewPagePage extends MainPanePage
                 getYmirRequest().getParameterMap());
         } catch (DuplicatePageException ex) {
             setNotes(new Notes().add(new Note("app.error.pageAlreadyExists",
-                name_)));
+                name)));
             return null;
         }
     }

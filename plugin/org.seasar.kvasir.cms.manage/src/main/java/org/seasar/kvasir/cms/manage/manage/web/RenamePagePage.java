@@ -53,7 +53,7 @@ public class RenamePagePage extends MainPanePage
                 continue;
             }
             key = key.substring(1);
-            list.add(new NamePair(key, ((String[])entry.getValue())[0]));
+            list.add(new NamePair(key, ((String[])entry.getValue())[0].trim()));
         }
         return (NamePair[])list.toArray(new NamePair[0]);
     }
@@ -77,6 +77,13 @@ public class RenamePagePage extends MainPanePage
                 if (namePairs[i].current.equals(namePairs[i].newer)) {
                     continue;
                 }
+
+                if (!getPagePlugin().isValidName(namePairs[i].newer)) {
+                    setNotes(new Notes().add(new Note(
+                        "app.error.nameIsInvalid", namePairs[i].newer)));
+                    return false;
+                }
+
                 Page child = page.getChild(namePairs[i].current);
                 if (child != null) {
                     try {
@@ -84,7 +91,6 @@ public class RenamePagePage extends MainPanePage
                     } catch (DuplicatePageException ex) {
                         setNotes(new Notes().add(new Note(
                             "app.error.pageAlreadyExists", namePairs[i].newer)));
-                        updateMenu();
                         return false;
                     } catch (LoopDetectedException ex) {
                         throw new RuntimeException("Can't happen!", ex);

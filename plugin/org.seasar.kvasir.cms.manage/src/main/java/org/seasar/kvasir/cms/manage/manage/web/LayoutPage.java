@@ -28,6 +28,7 @@ import org.seasar.kvasir.cms.pop.ValidationResult;
 import org.seasar.kvasir.cms.pop.ValidationResult.Entry;
 import org.seasar.kvasir.cms.pop.extension.FormUnitElement;
 import org.seasar.kvasir.cms.pop.extension.PopElement;
+import org.seasar.kvasir.cms.pop.pop.GenericPop;
 import org.seasar.kvasir.cms.util.CmsUtils;
 import org.seasar.kvasir.cms.util.ServletUtils;
 import org.seasar.kvasir.cms.zpt.util.HTMLUtils;
@@ -336,8 +337,16 @@ public class LayoutPage extends LayoutPageBase
         PopPropertyMetaData[] metaDatas = pop.getPropertyMetaDatas();
 
         if (remove_) {
+            boolean genericPop = pop instanceof GenericPop;
             for (int i = 0; i < metaDatas.length; i++) {
-                pop.removeProperty(context, metaDatas[i].getId(), variant_);
+                // superだけは削除されると「固有の設定を削除して初期状態に戻す」という
+                // 挙動にならなくなってしまうため削除しない。
+                String id = metaDatas[i].getId();
+                if (genericPop && GenericPop.PROP_SUPER.equals(id)) {
+                    continue;
+                }
+
+                pop.removeProperty(context, id, variant_);
             }
         }
 

@@ -1,0 +1,28 @@
+description=メール送信のための設定です。
+connection-timeout.description=\
+  SMTPサーバとの接続タイムアウト時間です。\
+  単位はミリ秒。デフォルトは5,000ミリ秒(5秒)です。\
+  -1を指定すると無限大になりますが、お薦めしません。
+host.description=\
+  SMTPサーバのホスト名、またはIPアドレスです。\
+  デフォルトは localhost です。
+message-id.description=\
+  生成されるMimeMessageに付けられるMessage-Idヘッダのドメイン部分を指定します。\
+  指定されない場合(nullや空文字列の場合)は、JavaMailがMessage-Idヘッダを生成します。\
+  JavaMailが生成する「JavaMail.実行ユーザ名@ホスト名」のMessage-Idを避けたい場合に、このメソッドを使用します。
+password.description=\
+  SMTPサーバの接続認証が必要な場合にパスワードです。
+port.description=\
+  SMTPサーバのポート番号です。
+protocol.description=\
+  プロトコルです。\
+  デフォルトは「smtp」です。
+read-timeout.description=\
+  SMTPサーバへの送信時のタイムアウト時間です。\
+  単位はミリ秒。デフォルトは5,000ミリ秒(5秒)です。\
+  -1を指定すると無限大になりますが、お薦めしません。
+return-path.description=\
+  Return-Pathアドレスです。\
+  送信するMailインスタンスに指定されたFromアドレス以外のアドレスをReturn-Pathとしたい場合に使用します。
+username.description=\
+  SMTPサーバの接続認証が必要な場合にユーザ名です。

@@ -1,0 +1,10 @@
+description=Settings to send e-mail.
+connection-timeout.description=Connection timeout (milli-sec).-1 to infinity.
+host.description=Host name or IP address of SMTP server.
+message-id.description=Domain part of Message-Id header value.
+password.description=Password to connect to SMTP server.
+port.description=Port number of SMTP server.
+protocol.description=Protocol to send e-mail.
+read-timeout.description=Read timeout (milli-sec).-1 to infinity.
+return-path.description=Return-Path address.
+username.description=User name to connect to SMTP server.

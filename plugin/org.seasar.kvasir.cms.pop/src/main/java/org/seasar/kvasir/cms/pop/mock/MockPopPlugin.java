@@ -129,4 +129,10 @@ public class MockPopPlugin extends MockPlugin<EmptySettings>
     public void removePop(Pop pop)
     {
     }
+
+
+    public void setPaneLabel(int heimId, String paneId, String variant,
+        String label)
+    {
+    }
 }

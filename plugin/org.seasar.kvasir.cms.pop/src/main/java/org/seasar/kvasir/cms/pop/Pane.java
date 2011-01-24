@@ -1,5 +1,8 @@
 package org.seasar.kvasir.cms.pop;
 
+import java.util.Locale;
+
+
 /**
  * Webページ内でPOPを配置できる領域である「ペイン」を表すインタフェースです。
  * 
@@ -14,6 +17,15 @@ public interface Pane
      * @return ID。
      */
     String getId();
+
+
+    /**
+     * このペインの表示名を返します。
+     * 
+     * @param locale ロケール。
+     * @return 表示名。指定されていない場合はnullを返します。
+     */
+    String getLabel(Locale locale);
 
 
     /**

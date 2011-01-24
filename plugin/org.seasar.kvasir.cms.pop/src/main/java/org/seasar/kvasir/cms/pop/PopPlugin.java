@@ -72,6 +72,9 @@ public interface PopPlugin
     void removePane(int heimId, String paneId);
 
 
+    void setPaneLabel(int heimId, String paneId, String variant, String label);
+
+
     /**
      * 指定されたIDに対応するPopインスタンスを返します。
      * <p>このメソッドは<code>getPop(heim, key, instanceId, true)</code>と同じです。

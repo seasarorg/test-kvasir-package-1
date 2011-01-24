@@ -197,7 +197,32 @@ public class PopPluginImpl extends AbstractPlugin<EmptySettings>
         Map<String, Pane> map = paneMap_.get(heimId);
         if (map != null) {
             map.remove(paneId);
+            removePaneLabel(heimId, paneId);
             serializePanes(heimId);
+        }
+    }
+
+
+    public void setPaneLabel(int heimId, String paneId, String variant,
+        String label)
+    {
+        PropertyAbility prop = pageAlfr_.getRootPage(heimId).getAbility(
+            PropertyAbility.class);
+        String key = ID + ".pane." + paneId + ".label";
+        if (label == null) {
+            prop.removeProperty(key, variant);
+        } else {
+            prop.setProperty(key, variant, label);
+        }
+    }
+
+
+    void removePaneLabel(int heimId, String paneId)
+    {
+        PropertyAbility prop = pageAlfr_.getRootPage(heimId).getAbility(
+            PropertyAbility.class);
+        for (String variant : prop.getVariants()) {
+            setPaneLabel(heimId, paneId, variant, null);
         }
     }
 

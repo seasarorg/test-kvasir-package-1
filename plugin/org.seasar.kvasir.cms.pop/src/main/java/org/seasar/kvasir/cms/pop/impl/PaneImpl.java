@@ -2,6 +2,7 @@ package org.seasar.kvasir.cms.pop.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.seasar.framework.util.ArrayUtil;
 import org.seasar.kvasir.cms.pop.Pane;
@@ -72,15 +73,28 @@ public class PaneImpl
     }
 
 
+    String getPropertySuffix()
+    {
+        return PopPlugin.ID + ".pane." + id_ + ".";
+    }
+
+
     String getPopsKey()
     {
-        return PopPlugin.ID + ".pane." + id_ + ".pops";
+        return getPropertySuffix() + "pops";
     }
 
 
     public String getId()
     {
         return id_;
+    }
+
+
+    public String getLabel(Locale locale)
+    {
+        return pageAlfr_.getRootPage(heimId_).getAbility(PropertyAbility.class)
+            .getProperty(getPropertySuffix() + "label", locale);
     }
 
 

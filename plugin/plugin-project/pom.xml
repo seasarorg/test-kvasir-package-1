@@ -112,6 +112,7 @@
     <module>../org.seasar.kvasir.cms.zpt</module>
     <module>../org.seasar.kvasir.cms.pop</module>
     <module>../org.seasar.kvasir.cms.ymir</module>
+    <module>../org.seasar.kvasir.cms.publish</module>
     <module>../org.seasar.kvasir.cms.toolbox</module>
     <module>../org.seasar.kvasir.cms.manage</module>
     <module>../org.seasar.kvasir.cms.webdav</module>

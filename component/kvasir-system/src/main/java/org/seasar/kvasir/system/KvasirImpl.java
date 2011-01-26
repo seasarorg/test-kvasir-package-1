@@ -2,9 +2,11 @@ package org.seasar.kvasir.system;
 
 import static org.seasar.kvasir.base.Globals.BUILD_NUMBER;
 import static org.seasar.kvasir.base.Globals.CONFIGURATION_DIR;
+import static org.seasar.kvasir.base.Globals.KVASIR_POM_PROPERTIES;
 import static org.seasar.kvasir.base.Globals.PROP_BUILD_NUMBER;
 import static org.seasar.kvasir.base.Globals.PROP_SYSTEM_ENABLECLUSTERING;
 import static org.seasar.kvasir.base.Globals.PROP_SYSTEM_HOME_DIR;
+import static org.seasar.kvasir.base.Globals.PROP_VERSION;
 import static org.seasar.kvasir.base.Globals.RUNTIMEWORK_DIR;
 
 import java.io.File;
@@ -106,6 +108,8 @@ public class KvasirImpl
 
     private boolean standalone_;
 
+    private Version version_;
+
     private long buildNumber_;
 
     private final KvasirLog log_ = KvasirLogFactory.getLog(getClass());
@@ -127,24 +131,13 @@ public class KvasirImpl
         }
         log_.info(sb.toString());
 
-        InputStream in = getClass().getClassLoader().getResourceAsStream(
-            BUILD_NUMBER);
-        if (in != null) {
-            Properties buildNubmerProp = new Properties();
-            try {
-                buildNubmerProp.load(in);
-            } catch (IOException ex) {
-                throw new IORuntimeException("Can't load '" + BUILD_NUMBER
-                    + "' resource: "
-                    + getClass().getClassLoader().getResource(BUILD_NUMBER), ex);
-            } finally {
-                IOUtils.closeQuietly(in);
-            }
-            buildNumber_ = PropertyUtils.valueOf(buildNubmerProp
-                .getProperty(PROP_BUILD_NUMBER), 0L);
-        } else {
-            buildNumber_ = 0;
-        }
+        Properties pomProperties = loadProperties(KVASIR_POM_PROPERTIES);
+        version_ = new Version(pomProperties.getProperty(PROP_VERSION,
+            "Unknown"));
+
+        Properties buildNubmerProp = loadProperties(BUILD_NUMBER);
+        buildNumber_ = PropertyUtils.valueOf(buildNubmerProp
+            .getProperty(PROP_BUILD_NUMBER), 0L);
 
         boolean startedSuccessfully = true;
         String detailMessage = null;
@@ -249,6 +242,25 @@ public class KvasirImpl
         } finally {
             endSession();
         }
+    }
+
+
+    private Properties loadProperties(String path)
+    {
+        Properties prop = new Properties();
+        InputStream in = getClass().getClassLoader().getResourceAsStream(path);
+        if (in != null) {
+            try {
+                prop.load(in);
+            } catch (IOException ex) {
+                throw new IORuntimeException("Can't load '" + path
+                    + "' resource: "
+                    + getClass().getClassLoader().getResource(path), ex);
+            } finally {
+                IOUtils.closeQuietly(in);
+            }
+        }
+        return prop;
     }
 
 
@@ -423,7 +435,7 @@ public class KvasirImpl
 
     public Version getVersion()
     {
-        return Globals.BASE_VERSION;
+        return version_;
     }
 
 

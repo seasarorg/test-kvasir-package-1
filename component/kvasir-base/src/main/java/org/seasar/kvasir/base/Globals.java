@@ -6,11 +6,6 @@ package org.seasar.kvasir.base;
 public interface Globals
 {
     /**
-     * Kvasir/Soraのベースシステムのバージョンです。
-     */
-    Version BASE_VERSION = new Version("3.0.0-SNAPSHOT");
-
-    /**
      * 設定ファイルの格納ディレクトリのホームディレクトリからの相対パスです。
      */
     String CONFIGURATION_DIR = "configuration";
@@ -131,6 +126,16 @@ public interface Globals
      * 複数のKvasir/Soraインスタンスで単一のデータストレージを共有させるかどうかを表すプロパティのキーです。
      */
     String PROP_SYSTEM_ENABLECLUSTERING = "system.enableClustering";
+
+    /**
+     * Kvasir/Soraのバージョンを保持しているプロパティリソースのパスです。
+     */
+    String KVASIR_POM_PROPERTIES = "META-INF/maven/org.seasar.kvasir/kvasir-base/pom.properties";
+
+    /**
+     * Kvasir/Soraのバージョンを保持しているプロパティリソースのパスです。
+     */
+    String PROP_VERSION = "version";
 
     /**
      * ディストリビューションのビルド番号を保持しているプロパティリソースのパスです。

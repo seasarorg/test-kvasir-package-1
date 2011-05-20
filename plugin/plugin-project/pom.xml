@@ -19,6 +19,7 @@
         <plugin>
           <groupId>org.seasar.kvasir.maven.plugin</groupId>
           <artifactId>maven-kvasir-plugin</artifactId>
+          <version>${pom.version}</version>
           <extensions>true</extensions>
           <configuration>
             <baseLibraries>
@@ -57,6 +58,14 @@
       <id>maven.seasar.org</id>
       <name>The Seasar Foundation Maven2 Repository</name>
       <url>http://maven.seasar.org/maven2</url>
+    </pluginRepository>
+    <pluginRepository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>snapshot.maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Snapshot Repository</name>
+      <url>http://maven.seasar.org/maven2-snapshot</url>
     </pluginRepository>
   </pluginRepositories>
   <dependencies>

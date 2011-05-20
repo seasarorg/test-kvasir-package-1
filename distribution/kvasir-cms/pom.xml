@@ -195,6 +195,13 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
+      <groupId>org.seasar.kvasir.cms.publish</groupId>
+      <artifactId>org.seasar.kvasir.cms.publish</artifactId>
+      <version>3.0.0-SNAPSHOT</version>
+      <type>zip</type>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>org.seasar.kvasir.cms.toolbox</groupId>
       <artifactId>org.seasar.kvasir.cms.toolbox</artifactId>
       <version>3.0.0-SNAPSHOT</version>

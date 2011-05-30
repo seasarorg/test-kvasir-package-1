@@ -31,7 +31,7 @@ public class PageIT extends PagePluginITCase
     public static Test suite()
         throws Exception
     {
-        return createTestSuite(PageIT.class);
+        return createTestSuite(PageIT.class, false);
     }
 
 
@@ -653,6 +653,47 @@ public class PageIT extends PagePluginITCase
         assertFalse(testPage.isAsFile());
         assertTrue(testPage.isListing());
     }
+
+
+
+    public void test_楽観的排他が働くこと()
+        throws Exception
+    {
+        Page root = pageAlfr_.getRootPage(PathId.HEIM_MIDGARD);
+        Page testPage = root.getChild("test");
+        if (testPage != null) {
+            testPage.delete();
+        }
+
+        testPage = root.createChild(new PageMold("test")); // v1
+
+        Page tmpPage = root.getChild("test"); // v1
+        tmpPage.setListing(false); // v1->v2
+        testPage.setOptimisticLockEnabled(false);
+        try {
+            testPage.setListing(false); // v1->v3
+        } catch (CollisionDetectedRuntimeException ex) {
+            fail("楽観的ロックしないモードでは衝突が検知されないこと");
+        }
+
+        tmpPage.setOptimisticLockEnabled(true);
+        try {
+            tmpPage.setListing(false); // v2->v4 ... FAIL
+            fail("楽観的ロックしないモードでは衝突が検知されること");
+        } catch (CollisionDetectedRuntimeException expected) {
+        }
+
+        testPage.setOptimisticLockEnabled(true);
+        try {
+            testPage.setListing(false); // v3->v4
+            testPage.setListing(false); // v4->v5
+        } catch (CollisionDetectedRuntimeException ex) {
+            fail("楽観的ロックするモードでは他から更新されない限り同じページに対する連続した変更ができること");
+        }
+
+        testPage.delete();
+    }
+
 
 
     /*

@@ -3,6 +3,7 @@
     <artifactId>plugin-project</artifactId>
     <groupId>org.seasar.kvasir.plugin</groupId>
     <version>3.0.0-SNAPSHOT</version>
+    <relativePath>../plugin-project/pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.seasar.kvasir.page</groupId>

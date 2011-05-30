@@ -21,7 +21,7 @@ public class PagePluginIT extends PagePluginITCase
     public static Test suite()
         throws Exception
     {
-        return createTestSuite(PagePluginIT.class);
+        return createTestSuite(PagePluginIT.class, false);
     }
 
 

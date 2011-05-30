@@ -26,7 +26,7 @@ public class PageAlfrIT extends PagePluginITCase
     public static Test suite()
         throws Exception
     {
-        return createTestSuite(PageAlfrIT.class);
+        return createTestSuite(PageAlfrIT.class, false);
     }
 
 
@@ -70,8 +70,7 @@ public class PageAlfrIT extends PagePluginITCase
         assertNotNull(page);
         assertTrue(page instanceof Group);
         assertEquals(Page.ID_ADMINISTRATOR_GROUP, page.getId());
-        assertEquals(Page.PATHNAME_ADMINISTRATOR_GROUP, page
-            .getPathname());
+        assertEquals(Page.PATHNAME_ADMINISTRATOR_GROUP, page.getPathname());
 
         page = target_.getPage(Page.ID_ALL_GROUP);
         assertNotNull(page);

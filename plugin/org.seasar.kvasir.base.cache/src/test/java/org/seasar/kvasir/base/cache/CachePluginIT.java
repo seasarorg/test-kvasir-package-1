@@ -15,6 +15,6 @@ public class CachePluginIT extends KvasirPluginTestCase<CachePlugin>
     public static Test suite()
         throws Exception
     {
-        return createTestSuite(CachePluginIT.class);
+        return createTestSuite(CachePluginIT.class, false);
     }
 }

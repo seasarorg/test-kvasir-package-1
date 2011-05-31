@@ -2,6 +2,7 @@ package org.seasar.kvasir.page.dao;
 
 import java.util.Date;
 
+import org.seasar.cms.beantable.annotation.VersionNo;
 import org.seasar.dao.annotation.tiger.Bean;
 import org.seasar.dao.annotation.tiger.Column;
 import org.seasar.dao.annotation.tiger.Id;
@@ -15,8 +16,7 @@ import org.seasar.dao.annotation.tiger.IdType;
  *
  * @author YOKOTA Takehiko
  */
-@Bean(table = "page", noPersistentProperty = { "parentPathname",
-    "pathname" })
+@Bean(table = "page", noPersistentProperty = { "parentPathname", "pathname" })
 public class PageDto
 {
     public static final String PARENT_DUMMY = "_";
@@ -272,6 +272,7 @@ public class PageDto
     }
 
 
+    @VersionNo
     public Integer getVersion()
     {
         return version_;

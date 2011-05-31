@@ -655,7 +655,6 @@ public class PageIT extends PagePluginITCase
     }
 
 
-
     public void test_楽観的排他が働くこと()
         throws Exception
     {
@@ -679,7 +678,7 @@ public class PageIT extends PagePluginITCase
         tmpPage.setOptimisticLockEnabled(true);
         try {
             tmpPage.setListing(false); // v2->v4 ... FAIL
-            fail("楽観的ロックしないモードでは衝突が検知されること");
+            fail("楽観的ロックするモードでは衝突が検知されること");
         } catch (CollisionDetectedRuntimeException expected) {
         }
 
@@ -693,7 +692,6 @@ public class PageIT extends PagePluginITCase
 
         testPage.delete();
     }
-
 
 
     /*
